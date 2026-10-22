@@ -107,4 +107,14 @@ units are available.
 
 ## Amendments
 
-None yet.
+1. **Ties at the precision@k cutoff** (2026-10-22, after the first analysis of
+   the clean run, before any result was reported). 170 of the 1,383 test units
+   share the same shipped score (0.918455, an isotonic plateau), and all three
+   cutoffs (14, 70 and 139 units) fall inside that tie group. Breaking ties "by
+   run, then ring id" made precision@k depend on the order of the runs: it put
+   the baseline scenario's units first, gave 0.929 at 1%, and gave bootstrap
+   intervals that excluded the point estimate. Precision@k is now tie-aware.
+   Units tied with the cutoff score count with their group's positive rate,
+   which is the expected precision over every order of the tied units.
+   Lift is that precision divided by the base rate, as before. No other
+   definition changed.

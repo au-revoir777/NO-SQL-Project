@@ -35,13 +35,23 @@ EPS = 1e-6
 
 
 def precision_at(scores: np.ndarray, labels: np.ndarray, k_pct: float) -> float | None:
-    """Share of positives in the top ceil(k% * n) by score; None when n = 0."""
+    """
+    Share of positives in the top ceil(k% * n) by score; None when n = 0.
+
+    Tie-aware (protocol amendment 1): units tied with the score at the cutoff
+    contribute their group's positive rate, i.e. the expected precision over
+    all orders of the tied units, so the result never depends on input order.
+    """
     n = len(scores)
     if n == 0:
         return None
     top = max(1, math.ceil(k_pct / 100.0 * n))
-    order = np.argsort(-scores, kind="stable")  # ties keep the input order
-    return float(labels[order[:top]].mean())
+    cut = np.sort(scores)[::-1][top - 1]
+    above = scores > cut
+    tied = scores == cut
+    taken_from_ties = top - int(above.sum())
+    positives = float(labels[above].sum()) + taken_from_ties * float(labels[tied].mean())
+    return positives / top
 
 
 def lift_at(scores: np.ndarray, labels: np.ndarray, k_pct: float) -> float | None:

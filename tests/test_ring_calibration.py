@@ -60,6 +60,15 @@ def test_precision_and_lift_at_k() -> None:
     assert precision_at(s, y, 1) == 1.0  # at least one unit
 
 
+def test_precision_at_k_does_not_depend_on_the_order_of_ties() -> None:
+    s = np.array([0.9, 0.9, 0.9, 0.9, 0.1])
+    y1 = np.array([1, 1, 0, 0, 0])
+    y2 = np.array([0, 0, 1, 1, 0])  # same tie group, positives in a different order
+    # top ceil(40% of 5) = 2 from a tie group of 4 with 2 positives: expected 0.5
+    assert precision_at(s, y1, 40) == pytest.approx(0.5)
+    assert precision_at(s, y2, 40) == pytest.approx(0.5)
+
+
 def test_undefined_metrics_are_none_not_zero() -> None:
     empty = np.array([])
     assert precision_at(empty, empty, 5) is None and lift_at(empty, empty, 5) is None
