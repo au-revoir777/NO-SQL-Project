@@ -65,14 +65,29 @@ at `/api/v1`. P1 lays the foundations:
 - the OpenAPI document and typed client;
 - the app shell with a live system-status card.
 
+P2 adds sign-in and roles:
+- cookie sessions (JWT, argon2 passwords, CSRF, rate-limited login);
+- analyst and admin roles, checked on the server for every route;
+- a Users admin page (create, change role, deactivate; never delete);
+- every login, logout and admin action written to the hash-chained audit trail.
+
 Pages for later milestones say so instead of showing sample data. Details:
 [docs/webapp.md](docs/webapp.md).
 
 ```bash
 make db-upgrade                          # app-state DB (runs/app.db by default)
-python -m fraudsim.cli api --port 8000   # API, incl. /api/v1
+python -m fraudsim.cli create-user --email you@example.test --role admin   # prompts for a password
+python -m fraudsim.cli api --port 8000   # API, incl. /api/v1 (set JWT_SECRET, see .env.example)
 cd webapp && npm ci && npm run dev       # http://localhost:3000
+make e2e                                 # Playwright (once: cd webapp && npm run e2e:install)
 ```
+
+| Sign in | Users admin | Analyst opening an admin page (HTTP 403) |
+|---|---|---|
+| ![Login](docs/images/webapp_p2_login.png) | ![Users admin](docs/images/webapp_p2_users_admin.png) | ![403 page](docs/images/webapp_p2_forbidden.png) |
+
+The P2 screenshots are taken by `webapp/e2e/screenshots.spec.ts` against the
+real API, with the e2e fixture accounts (`SCREENSHOTS=1 npx playwright test screenshots`).
 
 | Dashboard (dark) | A page of a later milestone (light) |
 |---|---|
@@ -306,8 +321,9 @@ Phase 2 (web app and research extensions, [plan](docs/phase2/phase2_prompt.md)):
 | Milestone | Status |
 |---|---|
 | P1 Foundations: `/api/v1` contract, app-state store, Next.js shell, CI | done |
-| P2 Authentication and roles | next |
-| P3–P16 | planned |
+| P2 Authentication and roles | done |
+| P3 Live dashboard (KPIs and alert feed over SSE) | next |
+| P4–P16 | planned |
 
 Known open items:
 - Paper: check the bibliography entries against the publishers' pages before submission.

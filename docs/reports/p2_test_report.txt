@@ -1,0 +1,124 @@
+# Milestone P2 test report (2026-10-22, Windows 11, Python 3.11.9, Node 22.14.0)
+# Local runs on branch feat/p2-auth; the CI run is recorded at the end once pushed.
+
+## ruff check src tests scripts
+All checks passed!
+
+## ruff format --check src tests scripts
+128 files already formatted
+
+## mypy (strict) src/fraudsim/api/v1 src/fraudsim/appdb src/fraudsim/api/openapi.py
+Success: no issues found in 25 source files
+
+## contract: regenerated OpenAPI vs docs/api/openapi.json
+identical
+
+## pytest tests/test_auth.py -v
+tests/test_auth.py::test_login_sets_hardened_cookies_and_me_works PASSED
+tests/test_auth.py::test_wrong_password_and_unknown_user_get_the_same_answer PASSED
+tests/test_auth.py::test_rate_limit_locks_out_after_repeated_failures PASSED
+tests/test_auth.py::test_inactive_user_cannot_log_in PASSED
+tests/test_auth.py::test_expired_token_is_rejected PASSED
+tests/test_auth.py::test_tampered_and_wrong_type_tokens_are_rejected PASSED
+tests/test_auth.py::test_refresh_issues_a_new_session PASSED
+tests/test_auth.py::test_logout_revokes_existing_tokens PASSED
+tests/test_auth.py::test_csrf_is_required_on_state_changing_requests PASSED
+tests/test_auth.py::test_admin_route_list_is_not_empty PASSED
+tests/test_auth.py::test_analyst_is_forbidden_from_every_admin_endpoint[GET-/api/v1/admin/users] PASSED
+tests/test_auth.py::test_analyst_is_forbidden_from_every_admin_endpoint[POST-/api/v1/admin/users] PASSED
+tests/test_auth.py::test_analyst_is_forbidden_from_every_admin_endpoint[PATCH-/api/v1/admin/users/1] PASSED
+tests/test_auth.py::test_analyst_is_forbidden_from_every_admin_endpoint[GET-/api/v1/rules] PASSED
+tests/test_auth.py::test_anonymous_requests_are_rejected[POST-/api/v1/auth/logout] PASSED
+tests/test_auth.py::test_anonymous_requests_are_rejected[GET-/api/v1/auth/me] PASSED
+tests/test_auth.py::test_anonymous_requests_are_rejected[GET-/api/v1/runs/current] PASSED
+tests/test_auth.py::test_anonymous_requests_are_rejected[GET-/api/v1/admin/users] PASSED
+tests/test_auth.py::test_anonymous_requests_are_rejected[POST-/api/v1/admin/users] PASSED
+tests/test_auth.py::test_anonymous_requests_are_rejected[PATCH-/api/v1/admin/users/1] PASSED
+tests/test_auth.py::test_anonymous_requests_are_rejected[GET-/api/v1/alerts] PASSED
+tests/test_auth.py::test_anonymous_requests_are_rejected[GET-/api/v1/cases] PASSED
+tests/test_auth.py::test_anonymous_requests_are_rejected[GET-/api/v1/entities] PASSED
+tests/test_auth.py::test_anonymous_requests_are_rejected[GET-/api/v1/graph] PASSED
+tests/test_auth.py::test_anonymous_requests_are_rejected[GET-/api/v1/reports] PASSED
+tests/test_auth.py::test_anonymous_requests_are_rejected[GET-/api/v1/experiments] PASSED
+tests/test_auth.py::test_anonymous_requests_are_rejected[GET-/api/v1/rules] PASSED
+tests/test_auth.py::test_anonymous_requests_are_rejected[GET-/api/v1/stream] PASSED
+tests/test_auth.py::test_planned_routers_answer_501_when_signed_in PASSED
+tests/test_auth.py::test_admin_manages_users_without_deleting PASSED
+tests/test_auth.py::test_auth_events_are_audited_and_the_chain_verifies PASSED
+tests/test_auth.py::test_demo_users_come_only_from_env PASSED
+tests/test_auth.py::test_cli_create_user PASSED
+tests/test_auth.py::test_redis_limiter_shares_counts PASSED
+======================= 34 passed, 6 warnings in 38.53s =======================
+
+## pytest (full suite; the 12 skipped are integration tests that need Docker and run in CI)
+220 passed, 12 skipped, 12 warnings in 278.16s (0:04:38)
+
+## webapp: eslint .
+no problems
+
+## webapp: tsc --noEmit
+no type errors
+
+## webapp: prettier --check .
+All matched files use Prettier code style!
+
+## webapp: vitest run
+ ✓ src/components/system-status-card.test.tsx > SystemStatusCard > shows a skeleton while loading 193ms
+ ✓ src/components/system-status-card.test.tsx > SystemStatusCard > lists each component with an icon-and-text status 158ms
+ ✓ src/components/system-status-card.test.tsx > SystemStatusCard > shows the error envelope's message and request id, and retries 377ms
+ ✓ src/components/app-sidebar.test.tsx > AppSidebar > shows every navigation group and page to an admin 941ms
+ ✓ src/components/app-sidebar.test.tsx > AppSidebar > hides the admin pages from an analyst 407ms
+ ✓ src/components/app-sidebar.test.tsx > AppSidebar > marks the current page and labels unbuilt pages with their milestone 342ms
+ ✓ src/components/login-form.test.tsx > LoginForm > validates the fields before calling the API 958ms
+ ✓ src/components/login-form.test.tsx > LoginForm > sends the CSRF header and goes to the requested page on success 834ms
+ ✓ src/components/login-form.test.tsx > LoginForm > explains a lockout with the wait time from Retry-After 566ms
+ ✓ src/lib/schemas.test.ts > form schemas > rejects malformed login input 9ms
+ ✓ src/lib/schemas.test.ts > form schemas > requires a 12-character password and a known role for new users 19ms
+ ✓ src/lib/schemas.test.ts > safeNext > /cases -> /cases 2ms
+ ✓ src/lib/schemas.test.ts > safeNext > /users?x=1 -> /users?x=1 1ms
+ ✓ src/lib/schemas.test.ts > safeNext > null -> / 0ms
+ ✓ src/lib/schemas.test.ts > safeNext > https://evil.example -> / 0ms
+ ✓ src/lib/schemas.test.ts > safeNext > //evil.example -> / 0ms
+ ✓ src/lib/schemas.test.ts > safeNext > /\evil.example -> / 0ms
+ ✓ src/lib/schemas.test.ts > safeNext > /login?next=/x -> / 1ms
+ Test Files  4 passed (4)
+      Tests  18 passed (18)
+
+## webapp: next build
+✓ Compiled successfully in 29.4s
+✓ Generating static pages using 3 workers (14/14) in 956ms
+
+## webapp: playwright test --repeat-each=3 (Chromium; API on :8100 with a fresh DB, next start on :3100)
+  ok  1 [chromium] › e2e\auth.spec.ts:14:1 › anonymous visitors are sent to the login page (4.2s)
+  ok  2 [chromium] › e2e\auth.spec.ts:20:1 › a wrong password is refused with a clear message (2.9s)
+  ok  3 [chromium] › e2e\auth.spec.ts:29:1 › analyst: admin pages are hidden and a direct URL returns the 403 page (6.4s)
+  ok  4 [chromium] › e2e\auth.spec.ts:43:1 › admin: the rules page is visible and users can be managed (11.2s)
+  ok  5 [chromium] › e2e\auth.spec.ts:62:1 › signing out ends the session (7.6s)
+  ok  6 [chromium] › e2e\auth.spec.ts:14:1 › anonymous visitors are sent to the login page (2.0s)
+  ok  7 [chromium] › e2e\auth.spec.ts:20:1 › a wrong password is refused with a clear message (2.8s)
+  ok  8 [chromium] › e2e\auth.spec.ts:29:1 › analyst: admin pages are hidden and a direct URL returns the 403 page (7.8s)
+  ok  9 [chromium] › e2e\auth.spec.ts:43:1 › admin: the rules page is visible and users can be managed (9.8s)
+  ok 10 [chromium] › e2e\auth.spec.ts:62:1 › signing out ends the session (6.0s)
+  ok 11 [chromium] › e2e\auth.spec.ts:14:1 › anonymous visitors are sent to the login page (2.5s)
+  ok 12 [chromium] › e2e\auth.spec.ts:20:1 › a wrong password is refused with a clear message (4.5s)
+  ok 13 [chromium] › e2e\auth.spec.ts:29:1 › analyst: admin pages are hidden and a direct URL returns the 403 page (5.5s)
+  ok 14 [chromium] › e2e\auth.spec.ts:43:1 › admin: the rules page is visible and users can be managed (5.2s)
+  ok 15 [chromium] › e2e\auth.spec.ts:62:1 › signing out ends the session (5.8s)
+  15 passed (3.1m)
+
+## e2e timing note (found while writing this report)
+Two earlier local Playwright runs failed: a sign-in and a create-user request
+were still pending when the 5 s / 10 s assertion timeout expired. Diagnosis,
+with a request timer and a thread-stack watchdog around the e2e API
+(diagnostic wrapper, not committed):
+- the slow requests were inside argon2 `verify_secret`, not deadlocked; one
+  login took 5.41 s while Chromium and `next start` were busy (0.16-0.22 s per
+  hash when the machine is idle);
+- the auth and admin handlers were `async def`, so every hash also blocked the
+  event loop for all other requests.
+Fixes: those handlers are now plain `def` (FastAPI threadpool), and the
+Playwright assertion timeout is 15 s. The argon2 parameters were not lowered.
+After the fix: 20/20 in a 4x repeat (with the watchdog) and 15/15 in the 3x repeat above.
+A 50-iteration concurrent load test of csrf/refresh/login/page/logout through the
+Next.js BFF and a 134 s run with 4-6 s idle gaps between requests had no errors
+and no request slower than 3 s.
