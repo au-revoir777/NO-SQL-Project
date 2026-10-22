@@ -364,6 +364,34 @@ def public(
     pd.concat([table, pd.DataFrame([row])], ignore_index=True).to_csv(csv_path, index=False)
 
 
+@main.command("db-upgrade")
+@click.option(
+    "--url", default=None, help="Database URL (default: $DATABASE_URL or sqlite:///runs/app.db)"
+)
+@click.option("--revision", default="head", help="Alembic revision to upgrade to")
+def db_upgrade(url: str | None, revision: str) -> None:
+    """Create or migrate the web app's state database (users, cases, notes, ...)."""
+    from fraudsim import appdb
+
+    appdb.upgrade(url, revision)
+    click.echo(
+        f"app-state store at revision {appdb.current_revision(url)} ({url or appdb.database_url()})"
+    )
+
+
+@main.command("export-openapi")
+@click.option("--out", default="docs/api/openapi.json", help="Where to write the OpenAPI schema")
+def export_openapi(out: str) -> None:
+    """Write the API's OpenAPI schema (the contract the web app's types are generated from)."""
+    from pathlib import Path
+
+    from fraudsim.api.openapi import openapi_json
+
+    Path(out).parent.mkdir(parents=True, exist_ok=True)
+    Path(out).write_text(openapi_json(), encoding="utf-8", newline="\n")
+    click.echo(f"wrote {out}")
+
+
 @main.command()
 def seed() -> None:
     """Seed the Neo4j database using the legacy seed dataset."""

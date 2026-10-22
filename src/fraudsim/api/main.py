@@ -14,6 +14,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import PlainTextResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
+from fraudsim.api import v1
 from fraudsim.api.live import LiveRun
 from fraudsim.api.schemas import (
     AnalystFeedbackRequest,
@@ -47,6 +48,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Phase 2 web-app API (/api/v1), request ids and the /api/v1 error envelope.
+# The routes below keep their original paths and response shapes.
+v1.install(app)
 
 
 @app.get("/health", response_model=HealthResponse)
