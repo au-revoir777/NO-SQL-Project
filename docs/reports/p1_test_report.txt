@@ -1,4 +1,7 @@
 # Milestone P1 test report (2026-10-22, Windows 11, Python 3.11.9, Node 22.14.0)
+# CI: GitHub Actions run 39748028084 on commit 984c0c5, all 10 jobs passed:
+#   py-lint, py-test, integration-tests, smoke-experiment, dashboard, docker-image,
+#   web-lint, web-test, web-build, contract
 
 ## ruff check src tests scripts
 All checks passed!
