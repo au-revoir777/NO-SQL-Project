@@ -86,7 +86,7 @@ implemented · **B** blocked by environment or data.
 
 | # | Item | Fix in |
 |---|---|---|
-| R1 | Unauthenticated legacy routes, `/oracle` and `/ws`; CORS `*` | Next milestone, before P3 (P3 moves the live data to authenticated `/api/v1` SSE anyway) |
+| R1 | Unauthenticated legacy routes, `/oracle` and `/ws`; CORS `*` | **Fixed** on `feat/r1-legacy-auth`: same role and CSRF dependencies as `/api/v1`, cookie-authenticated `/ws` with an Origin check, CORS from `CORS_ORIGINS`; 32 tests in `tests/test_legacy_auth.py` enumerate every route |
 | R2 | Redis delivery semantics: at-least-once with idempotent processing, or documented replay-from-start | P10 (real-stack experiment) |
 | R3 | Run manifests: git commit, timestamps, status/errors; manifests for E4, E7, public | Before any new experiment (P10) |
 | R4 | Early-warning look-ahead in member matching; per-ring lead times not stored | P10 (Workstream F) |

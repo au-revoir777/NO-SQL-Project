@@ -5,7 +5,7 @@ Recharts for the charts. FastAPI serves the built app at `/ui`, and live data
 arrives over the API's WebSocket `/ws`.
 
 ```bash
-make demo            # npm ci + build, then the API on :8000 -> open http://localhost:8000/ui/
+make demo            # npm ci + build, then the API on :8000 -> open http://localhost:8000/ui/ and sign in
 make web-dev         # hot-reload dev server on :5173 (run `make api` in another terminal)
 ```
 

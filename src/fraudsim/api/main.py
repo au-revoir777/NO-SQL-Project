@@ -4,6 +4,7 @@ FastAPI application with REST routes and WebSocket streaming.
 
 from __future__ import annotations
 
+import asyncio
 import os
 from datetime import UTC, datetime
 from pathlib import Path
@@ -30,6 +31,11 @@ from fraudsim.api.schemas import (
     StartRunRequest,
 )
 from fraudsim.api.state import state
+from fraudsim.api.v1.auth.websocket import (
+    WS_UNAUTHENTICATED,
+    authenticate_websocket,
+    cors_origins,
+)
 from fraudsim.metrics.exporters import prometheus_text
 from fraudsim.simulator.scenario_loader import list_scenarios, load_scenario
 from fraudsim.types import EvasionMode, RingType, new_run_id
@@ -40,14 +46,19 @@ app = FastAPI(
     version="0.1.0",
 )
 
-# Enable CORS for dashboard development
+# Cross-origin browser access only from the configured origins (CORS_ORIGINS).
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=cors_origins(),
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "X-CSRF-Token", "X-Request-ID"],
 )
+
+# Every original route below except /health needs a signed-in user; POSTs also
+# need the CSRF header, and changing live detector config needs the admin role.
+ANALYST = v1.ANALYST
+ADMIN = v1.ADMIN
 
 # Phase 2 web-app API (/api/v1), request ids and the /api/v1 error envelope.
 # The routes below keep their original paths and response shapes.
@@ -65,7 +76,7 @@ async def get_health() -> HealthResponse:
     return HealthResponse(status="ok", version="0.1.0", neo4j_connected=neo4j_ok)
 
 
-@app.get("/status", response_model=RunStatusResponse)
+@app.get("/status", response_model=RunStatusResponse, dependencies=ANALYST)
 async def get_status() -> RunStatusResponse:
     live = state.live.snapshot() if state.live is not None else {}
     if state.live is not None:
@@ -88,7 +99,7 @@ async def get_status() -> RunStatusResponse:
     )
 
 
-@app.post("/runs/start", response_model=RunStatusResponse)
+@app.post("/runs/start", response_model=RunStatusResponse, dependencies=ANALYST)
 async def start_run(req: StartRunRequest) -> RunStatusResponse:
     if req.scenario not in list_scenarios():
         raise HTTPException(status_code=404, detail=f"Unknown scenario '{req.scenario}'")
@@ -123,7 +134,7 @@ async def start_run(req: StartRunRequest) -> RunStatusResponse:
     return await get_status()
 
 
-@app.post("/runs/pause", response_model=RunStatusResponse)
+@app.post("/runs/pause", response_model=RunStatusResponse, dependencies=ANALYST)
 async def pause_run() -> RunStatusResponse:
     if state.live is not None and state.live.status == "running":
         state.live.pause()
@@ -131,7 +142,7 @@ async def pause_run() -> RunStatusResponse:
     return await get_status()
 
 
-@app.post("/runs/resume", response_model=RunStatusResponse)
+@app.post("/runs/resume", response_model=RunStatusResponse, dependencies=ANALYST)
 async def resume_run() -> RunStatusResponse:
     if state.live is not None and state.live.status == "paused":
         state.live.resume()
@@ -139,7 +150,7 @@ async def resume_run() -> RunStatusResponse:
     return await get_status()
 
 
-@app.post("/runs/stop", response_model=RunStatusResponse)
+@app.post("/runs/stop", response_model=RunStatusResponse, dependencies=ANALYST)
 async def stop_run() -> RunStatusResponse:
     if state.live is not None:
         await state.live.stop()
@@ -150,7 +161,7 @@ async def stop_run() -> RunStatusResponse:
     return await get_status()
 
 
-@app.post("/runs/speed", response_model=RunStatusResponse)
+@app.post("/runs/speed", response_model=RunStatusResponse, dependencies=ANALYST)
 async def set_speed(req: SpeedRequest) -> RunStatusResponse:
     """Change the speed multiplier (simulated seconds per wall second; 0 = max)."""
     if state.live is None:
@@ -161,7 +172,7 @@ async def set_speed(req: SpeedRequest) -> RunStatusResponse:
     return await get_status()
 
 
-@app.post("/runs/rate", response_model=RunStatusResponse)
+@app.post("/runs/rate", response_model=RunStatusResponse, dependencies=ANALYST)
 async def set_rate(req: RateRequest) -> RunStatusResponse:
     """Change the benign event rate (events per simulated second)."""
     if state.live is None:
@@ -177,7 +188,7 @@ def _require_live() -> Any:
     return state.live
 
 
-@app.get("/scenarios")
+@app.get("/scenarios", dependencies=ANALYST)
 async def scenarios() -> list[dict[str, Any]]:
     """Available scenarios with their description and size."""
     out = []
@@ -196,7 +207,7 @@ async def scenarios() -> list[dict[str, Any]]:
     return out
 
 
-@app.get("/catalog")
+@app.get("/catalog", dependencies=ANALYST)
 async def catalog() -> dict[str, list[str]]:
     """Ring types and evasion modes that can be injected."""
     return {
@@ -205,7 +216,7 @@ async def catalog() -> dict[str, list[str]]:
     }
 
 
-@app.post("/runs/inject")
+@app.post("/runs/inject", dependencies=ANALYST)
 async def inject_ring(req: InjectRingRequest) -> dict[str, Any]:
     """Spawn a fraud ring of the given type right now."""
     live = _require_live()
@@ -225,12 +236,12 @@ async def inject_ring(req: InjectRingRequest) -> dict[str, Any]:
     return {"ring_id": ring_id, "sim_time_s": live.snapshot()["sim_time_s"]}
 
 
-@app.get("/detectors")
+@app.get("/detectors", dependencies=ANALYST)
 async def get_detectors() -> list[dict[str, Any]]:
     return _require_live().detectors()
 
 
-@app.post("/detectors/{detector_type}")
+@app.post("/detectors/{detector_type}", dependencies=ADMIN)
 async def toggle_detector(detector_type: str, req: DetectorToggleRequest) -> list[dict[str, Any]]:
     live = _require_live()
     try:
@@ -240,12 +251,12 @@ async def toggle_detector(detector_type: str, req: DetectorToggleRequest) -> lis
     return live.detectors()
 
 
-@app.get("/config")
+@app.get("/config", dependencies=ANALYST)
 async def get_config() -> dict[str, Any]:
     return _require_live().current_config()
 
 
-@app.post("/config")
+@app.post("/config", dependencies=ADMIN)
 async def set_config(req: ConfigRequest) -> dict[str, Any]:
     """Retune the alert threshold and hub weighting live (applies from the next batch)."""
     live = _require_live()
@@ -257,7 +268,7 @@ async def set_config(req: ConfigRequest) -> dict[str, Any]:
     return live.current_config() | {"applied": applied}
 
 
-@app.get("/graph")
+@app.get("/graph", dependencies=ANALYST)
 async def graph(
     max_users: int = 400, window_s: float = 60.0, oracle: bool = False
 ) -> dict[str, Any]:
@@ -267,12 +278,12 @@ async def graph(
     return state.live.graph_snapshot(max(10, min(max_users, 3000)), window_s, oracle)
 
 
-@app.get("/oracle")
+@app.get("/oracle", dependencies=ANALYST)
 async def oracle() -> dict[str, Any]:
     return _require_live().oracle()
 
 
-@app.get("/events/recent")
+@app.get("/events/recent", dependencies=ANALYST)
 async def recent_events(limit: int = 50) -> list[dict[str, Any]]:
     """Tail of the observable event stream for the current run."""
     if state.live is None:
@@ -285,13 +296,13 @@ def _sync_rings() -> None:
         state.active_rings.update({r["ring_id"]: r for r in state.live.rings()})
 
 
-@app.get("/rings", response_model=list[RingDetailResponse])
+@app.get("/rings", response_model=list[RingDetailResponse], dependencies=ANALYST)
 async def list_rings() -> list[RingDetailResponse]:
     _sync_rings()
     return [RingDetailResponse(**r) for r in state.active_rings.values()]
 
 
-@app.get("/rings/{ring_id}", response_model=RingDetailResponse)
+@app.get("/rings/{ring_id}", response_model=RingDetailResponse, dependencies=ANALYST)
 async def get_ring(ring_id: str) -> RingDetailResponse:
     _sync_rings()
     if ring_id not in state.active_rings:
@@ -299,7 +310,7 @@ async def get_ring(ring_id: str) -> RingDetailResponse:
     return RingDetailResponse(**state.active_rings[ring_id])
 
 
-@app.post("/rings/{ring_id}/feedback")
+@app.post("/rings/{ring_id}/feedback", dependencies=ANALYST)
 async def analyst_feedback(ring_id: str, feedback: AnalystFeedbackRequest) -> dict[str, Any]:
     if ring_id not in state.active_rings:
         raise HTTPException(status_code=404, detail=f"Ring '{ring_id}' not found")
@@ -342,7 +353,7 @@ def _live_summary() -> dict[str, Any]:
     return state.live.metrics().summary
 
 
-@app.get("/metrics/summary", response_model=MetricsResponse)
+@app.get("/metrics/summary", response_model=MetricsResponse, dependencies=ANALYST)
 async def get_metrics_summary() -> MetricsResponse:
     """Metrics of the current run, computed from its batch reports and ground truth."""
     s = _live_summary()
@@ -371,7 +382,7 @@ async def get_metrics_summary() -> MetricsResponse:
     )
 
 
-@app.get("/metrics", response_class=PlainTextResponse)
+@app.get("/metrics", response_class=PlainTextResponse, dependencies=ANALYST)
 async def prometheus_metrics() -> PlainTextResponse:
     """Prometheus-style metrics: run controls plus every numeric metric of the live run."""
     lines = [
@@ -407,7 +418,10 @@ async def root() -> Any:
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket) -> None:
-    await websocket.accept()
+    auth = await authenticate_websocket(websocket)
+    if auth is None:
+        return
+    _, claims = auth
     state.ws_clients.add(websocket)
     try:
         # Send initial status
@@ -421,9 +435,18 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
                 "rings": list(state.active_rings.values()),
             }
         )
+        # The socket lives only as long as the access token: at expiry it closes
+        # with WS_UNAUTHENTICATED and the client refreshes, then reconnects.
         while True:
-            _ = await websocket.receive_text()
-            # Handle client actions over WS if any
+            remaining = (claims.expires_at - datetime.now(UTC)).total_seconds()
+            if remaining <= 0:
+                state.ws_clients.discard(websocket)
+                await websocket.close(code=WS_UNAUTHENTICATED, reason="token_expired")
+                return
+            try:
+                await asyncio.wait_for(websocket.receive_text(), timeout=remaining)
+            except TimeoutError:
+                continue
     except WebSocketDisconnect:
         state.ws_clients.discard(websocket)
     except Exception:

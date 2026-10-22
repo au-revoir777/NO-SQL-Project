@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import { AuthGate } from './components/AuthGate';
 import './index.css';
 
 /** Keeps a rendering error from blanking the whole dashboard during a demo. */
@@ -28,7 +29,7 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { err
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ErrorBoundary>
-      <App />
+      <AuthGate>{(user, signOut) => <App user={user} onSignOut={signOut} />}</AuthGate>
     </ErrorBoundary>
   </React.StrictMode>,
 );

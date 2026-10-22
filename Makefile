@@ -114,7 +114,8 @@ web: ## Build the React dashboard into web/dist (served by the API at /ui)
 web-dev: ## Dashboard dev server with hot reload on :5173 (run `make api` too)
 	cd web && npm run dev
 
-api: ## Run the FastAPI backend (dashboard at http://localhost:8000/ui/)
+api: ## Run the FastAPI backend (dashboard at http://localhost:8000/ui/; sign in first, see docs/HOWTO.md)
+	$(PYTHON) -m fraudsim.cli db-upgrade
 	$(PYTHON) -m fraudsim.cli api --port 8000
 
 demo-docker: ## Everything in containers: Neo4j, Redis and the API + dashboard on http://localhost:8000/ui/
@@ -125,7 +126,9 @@ demo: web ## Build the dashboard and serve it with the API (open http://localhos
 	@echo "Dashboard:  http://localhost:8000/ui/"
 	@echo "API docs:   http://localhost:8000/docs"
 	@echo "Neo4j:      http://localhost:7474 (only needed for --backend neo4j runs)"
+	@echo "Sign in with an account from DEMO_* in .env or \`fraudsim create-user\`."
 	@echo ""
+	$(PYTHON) -m fraudsim.cli db-upgrade
 	$(PYTHON) -m fraudsim.cli api --port 8000
 
 # ─── Web app (Phase 2) ───────────────────────────────────────────────

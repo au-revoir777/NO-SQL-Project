@@ -83,6 +83,19 @@ server would refuse):
 | `/rules`, `/admin/*` | 401 | 403 | yes |
 | Pages: Dashboard, Alerts, Cases, Explorer, Reports, Simulator, Replays, Experiments | redirect to `/login` | yes | yes |
 | Pages: Rules, Users, Audit | redirect to `/login` | 403 page | yes |
+| Original API (`/status`, `/runs/*`, `/scenarios`, `/catalog`, `/graph`, `/rings*`, `/events/recent`, `/oracle`, `/metrics*`, `GET /detectors`, `GET /config`) | 401 | yes | yes |
+| Original API: `POST /config`, `POST /detectors/{type}` (live detector settings) | 401 | 403 | yes |
+| `/ws` live stream | closed (4401) | yes | yes |
+| `GET /health` (original) | yes | yes | yes |
+
+The original routes in `api/main.py` use the same dependencies (POSTs also need
+the CSRF header) since the M0 audit (R1). The `/ws` handshake reads the session
+cookie: a foreign `Origin` is refused (HTTP 403), a missing or invalid session
+is closed with code 4401, and an open socket closes with 4401 when its access
+token expires, so the client refreshes and reconnects. CORS allows only
+`CORS_ORIGINS` (default `http://localhost:3000,http://localhost:5173`), with
+credentials. The M7 dashboard at `/ui` shows a sign-in form and greys out the
+admin-only controls for analysts.
 
 **Web side.** `webapp/src/proxy.ts` redirects requests without an access
 cookie to `/login?next=...` (only same-site relative paths are accepted as

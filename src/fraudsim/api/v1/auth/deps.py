@@ -1,7 +1,8 @@
 """
-FastAPI dependencies that enforce authentication, roles and CSRF on /api/v1.
+FastAPI dependencies that enforce authentication, roles and CSRF.
 
-Every protected router is mounted with `Depends(require_user)` (analyst or
+Every protected router (the /api/v1 routers and the original routes in
+api/main.py) is mounted with `Depends(require_user)` (analyst or
 admin) or `Depends(require_admin)`, plus `Depends(csrf_protect)`; the check
 happens on the server for every request, whatever the UI shows.
 """
@@ -20,6 +21,7 @@ from fraudsim.api.v1.auth.security import (
     ACCESS_COOKIE,
     CSRF_COOKIE,
     CSRF_HEADER,
+    TokenClaims,
     TokenError,
     decode_token,
 )
@@ -36,8 +38,8 @@ def get_db() -> Iterator[Session]:
 DB = Annotated[Session, Depends(get_db)]
 
 
-def require_user(request: Request, db: DB) -> User:
-    token = request.cookies.get(ACCESS_COOKIE)
+def authenticate(token: str | None, db: Session) -> tuple[User, TokenClaims]:
+    """Validate an access-token cookie value; shared by HTTP routes and the WebSocket."""
     if not token:
         raise ApiError(401, "unauthenticated", "Sign in to use this endpoint")
     try:
@@ -47,6 +49,11 @@ def require_user(request: Request, db: DB) -> User:
     user = db.get(User, claims.user_id)
     if user is None or not user.is_active or user.token_version != claims.token_version:
         raise ApiError(401, "session_revoked", "Session is no longer valid; sign in again")
+    return user, claims
+
+
+def require_user(request: Request, db: DB) -> User:
+    user, _ = authenticate(request.cookies.get(ACCESS_COOKIE), db)
     request.state.user = user
     return user
 

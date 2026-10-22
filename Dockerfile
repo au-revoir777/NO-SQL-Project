@@ -25,4 +25,5 @@ COPY --from=web /web/dist web/dist
 
 EXPOSE 8000
 
-CMD ["python", "-m", "fraudsim.cli", "api", "--host", "0.0.0.0", "--port", "8000"]
+# Migrate the app-state DB, then serve; demo accounts come from DEMO_* (compose passes them from .env).
+CMD ["sh", "-c", "python -m fraudsim.cli db-upgrade && exec python -m fraudsim.cli api --host 0.0.0.0 --port 8000"]

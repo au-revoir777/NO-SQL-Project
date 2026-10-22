@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { DetectorInfo, LiveConfig, Scenario, Status } from '../types';
-import { fmt } from '../api';
+import { fmt, SessionUser } from '../api';
 
 interface Props {
   status: Status | null;
@@ -20,6 +20,8 @@ interface Props {
   onConfig: (changes: Partial<LiveConfig>) => void;
   onOracle: (on: boolean) => void;
   onExport: (kind: 'png' | 'svg') => void;
+  user: SessionUser;
+  onSignOut: () => void;
 }
 
 const SPEEDS = [1, 2, 5, 10, 25, 0];
@@ -34,6 +36,9 @@ export function ControlsHeader(p: Props) {
   const running = p.status?.status === 'running';
   const paused = p.status?.status === 'paused';
   const live = running || paused;
+  // Live detector settings are admin-only on the server (403 for analysts).
+  const canTune = live && p.user.role === 'admin';
+  const tuneHint = p.user.role === 'admin' ? undefined : 'Admin only';
 
   return (
     <header className="controls">
@@ -45,6 +50,10 @@ export function ControlsHeader(p: Props) {
             {p.status ? `run ${p.status.run_id} · ${p.status.scenario} · seed ${p.status.seed} · ${p.status.status}` : 'no run'}
           </div>
         </div>
+      </div>
+      <div className="group account">
+        <span className="mini" title={p.user.email}>{p.user.display_name || p.user.email} · {p.user.role}</span>
+        <button className="btn" onClick={p.onSignOut}>Sign out</button>
       </div>
 
       <div className="group">
@@ -92,7 +101,7 @@ export function ControlsHeader(p: Props) {
         <span className="lbl">detectors</span>
         {p.detectors.map((d) => (
           <label key={d.type} className="chk" title={d.incremental ? 'incremental' : 'full graph, on a timer'}>
-            <input type="checkbox" checked={d.enabled} disabled={!live} onChange={(e) => p.onDetector(d.type, e.target.checked)} />
+            <input type="checkbox" checked={d.enabled} disabled={!canTune} title={tuneHint} onChange={(e) => p.onDetector(d.type, e.target.checked)} />
             {d.type.replace('_', ' ')}
           </label>
         ))}
@@ -100,16 +109,16 @@ export function ControlsHeader(p: Props) {
 
       <div className="group wide">
         <label className="slider">alert threshold <b>{fmt(p.config?.alert_threshold)}</b>
-          <input type="range" min={0.05} max={0.95} step={0.05} disabled={!live || !p.config?.model}
+          <input type="range" min={0.05} max={0.95} step={0.05} disabled={!canTune || !p.config?.model} title={tuneHint}
             value={p.config?.alert_threshold ?? 0.5}
             onChange={(e) => p.onConfig({ alert_threshold: Number(e.target.value) })} />
         </label>
         <label className="slider">hub edge threshold <b>{fmt(p.config?.edge_threshold)}</b>
-          <input type="range" min={0.2} max={1.5} step={0.05} disabled={!live}
+          <input type="range" min={0.2} max={1.5} step={0.05} disabled={!canTune} title={tuneHint}
             value={p.config?.edge_threshold ?? 0.5}
             onChange={(e) => p.onConfig({ edge_threshold: Number(e.target.value) })} />
         </label>
-        <select value={p.config?.hub_weight_method ?? 'inverse_log_degree'} disabled={!live}
+        <select value={p.config?.hub_weight_method ?? 'inverse_log_degree'} disabled={!canTune} title={tuneHint}
           onChange={(e) => p.onConfig({ hub_weight_method: e.target.value })} aria-label="Hub weighting">
           <option value="inverse_log_degree">1/ln(1+deg)</option>
           <option value="adamic_adar">Adamic-Adar</option>

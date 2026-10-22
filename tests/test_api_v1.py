@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 
 import pytest
+from auth_fixtures import setup_app_db, sign_in
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, inspect
@@ -95,7 +96,10 @@ def test_validation_and_internal_errors_are_enveloped() -> None:
     assert "secret" not in resp.text  # internals never leak
 
 
-def test_old_routes_keep_their_error_shape(client: TestClient) -> None:
+def test_old_routes_keep_their_error_shape(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    users = setup_app_db(tmp_path, monkeypatch)
+    client = TestClient(app, base_url="https://testserver")
+    sign_in(client, *users["analyst"])
     resp = client.get("/rings/not-a-ring")
     assert resp.status_code == 404 and "detail" in resp.json()
 

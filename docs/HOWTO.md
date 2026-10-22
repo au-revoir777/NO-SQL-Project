@@ -27,7 +27,12 @@ cd web && npm ci && npm run build && cd ..        # once, and after web/ changes
 python -m fraudsim.cli api --port 8000
 ```
 
-Open <http://localhost:8000/ui/>. The default backend is the in-memory store, so
+Open <http://localhost:8000/ui/> and sign in. Every route needs an account:
+set `DEMO_ADMIN_EMAIL`/`DEMO_ADMIN_PASSWORD` (and optionally the analyst pair) in
+`.env` before starting (`cp .env.example .env`), or create one with
+`python -m fraudsim.cli create-user --email you@example.test --role admin`.
+Analysts can run and inspect scenarios; changing live detector settings needs
+the admin role. The default backend is the in-memory store, so
 nothing else needs to run. For the Neo4j backend, first start the databases
 with `docker compose up -d` (Neo4j on :7474/:7687, Redis on :6379).
 
@@ -37,7 +42,7 @@ with `docker compose up -d` (Neo4j on :7474/:7687, Redis on :6379).
 make demo-docker          # docker compose --profile app up --build
 ```
 
-then open <http://localhost:8000/ui/>.
+then open <http://localhost:8000/ui/> and sign in with a `DEMO_*` account from `.env`.
 
 **A five-minute walkthrough**
 

@@ -29,7 +29,7 @@ It is now a streaming research system with these parts:
 
 ```bash
 pip install -e ".[dev,redis]"
-make demo              # builds web/ (Node 18+) and serves it with the API -> http://localhost:8000/ui/
+make demo              # builds web/ (Node 18+) and serves it with the API -> http://localhost:8000/ui/ (sign in: DEMO_* in .env)
 make demo-docker       # or everything in containers: docker compose --profile app up --build
 ```
 

@@ -6,7 +6,7 @@ import { RingDetailDrawer } from './components/RingDetailDrawer';
 import { AlertQueue } from './components/AlertQueue';
 import { EventLog } from './components/EventLog';
 import { LatencyChart, LatencyPoint, ThroughputChart } from './components/Charts';
-import { connectWs, getJSON, postJSON } from './api';
+import { connectWs, getJSON, postJSON, SessionUser } from './api';
 import type {
   BatchMsg, DetectorInfo, GraphSnapshot, LiveConfig, MetricsSummaryFull, Ring, RingUpdateMsg,
   Scenario, Status,
@@ -22,7 +22,7 @@ function pctOf(xs: number[], p: number): number {
   return +(s[lo] + (s[hi] - s[lo]) * (k - lo)).toFixed(2);
 }
 
-export default function App() {
+export default function App({ user, onSignOut }: { user: SessionUser; onSignOut: () => void }) {
   const [status, setStatus] = useState<Status | null>(null);
   const [connected, setConnected] = useState(false);
   const [scenarios, setScenarios] = useState<Scenario[]>([]);
@@ -111,6 +111,8 @@ export default function App() {
   return (
     <div className="app">
       <ControlsHeader
+        user={user}
+        onSignOut={onSignOut}
         status={status}
         connected={connected}
         scenarios={scenarios}

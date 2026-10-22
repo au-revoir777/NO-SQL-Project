@@ -9,6 +9,7 @@ from collections.abc import Iterator
 from pathlib import Path
 
 import pytest
+from auth_fixtures import setup_app_db, sign_in
 from fastapi.testclient import TestClient
 
 from fraudsim.api.main import app
@@ -18,9 +19,12 @@ from fraudsim.api.main import app
 def client(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Iterator[TestClient]:
     # Live runs write their logs and audit trail under FRAUDSIM_RUNS_DIR/live/<run_id>.
     monkeypatch.setenv("FRAUDSIM_RUNS_DIR", str(tmp_path))
+    users = setup_app_db(tmp_path, monkeypatch)
     # Context manager keeps one event loop alive across requests, so the background
-    # player task started by /runs/start survives until the test ends.
-    with TestClient(app) as c:
+    # player task started by /runs/start survives until the test ends. https: the
+    # session cookies are Secure. Signed in as admin (the config tests need it).
+    with TestClient(app, base_url="https://testserver") as c:
+        sign_in(c, *users["admin"])
         yield c
         c.post("/runs/stop")
 
