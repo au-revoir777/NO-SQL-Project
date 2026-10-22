@@ -1,3 +1,5 @@
+import { randomBytes } from "node:crypto";
+
 import { expect, type Page, test } from "@playwright/test";
 
 import { E2E_USERS } from "../playwright.config";
@@ -20,7 +22,7 @@ test("anonymous visitors are sent to the login page", async ({ page }) => {
 test("a wrong password is refused with a clear message", async ({ page }) => {
   await page.goto("/login");
   await page.getByLabel("Email").fill(E2E_USERS.analyst.email);
-  await page.getByLabel("Password").fill("not-the-password");
+  await page.getByLabel("Password").fill(`wrong-${Date.now()}`);
   await page.getByRole("button", { name: "Sign in" }).click();
   await expect(page.getByText("Email or password is incorrect.")).toBeVisible();
   await expect(page).toHaveURL(/\/login/);
@@ -54,7 +56,7 @@ test("admin: the rules page is visible and users can be managed", async ({ page 
   const email = `new.${Date.now()}@example.test`;
   await page.getByRole("button", { name: "New user" }).click();
   await page.getByLabel("Email").fill(email);
-  await page.getByLabel("Password").fill("a-new-user-password");
+  await page.getByLabel("Password").fill(randomBytes(18).toString("base64url"));
   await page.getByRole("button", { name: "Create user" }).click();
   await expect(page.getByRole("row").filter({ hasText: email })).toBeVisible();
 });

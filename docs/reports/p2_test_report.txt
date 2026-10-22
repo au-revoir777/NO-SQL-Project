@@ -1,5 +1,7 @@
 # Milestone P2 test report (2026-10-22, Windows 11, Python 3.11.9, Node 22.14.0)
-# Local runs on branch feat/p2-auth; the CI run is recorded at the end once pushed.
+# CI: GitHub Actions run 39793233939 on commit 5bbc38f, all 11 jobs passed:
+#   py-lint, py-test, integration-tests, smoke-experiment, dashboard, docker-image,
+#   web-lint, web-test, web-build, contract, e2e
 
 ## ruff check src tests scripts
 All checks passed!
@@ -122,3 +124,13 @@ After the fix: 20/20 in a 4x repeat (with the watchdog) and 15/15 in the 3x repe
 A 50-iteration concurrent load test of csrf/refresh/login/page/logout through the
 Next.js BFF and a 134 s run with 4-6 s idle gaps between requests had no errors
 and no request slower than 3 s.
+
+## No committed credentials (follow-up after GitGuardian flagged the repository)
+- Test passwords, the e2e fixture passwords and JWT secrets are generated at random
+  per run (secrets.token_urlsafe / crypto.randomBytes); none are literals any more.
+- The Neo4j password is no longer in docker-compose.yml, CI, docs or code defaults:
+  it comes from NEO4J_PASSWORD in the git-ignored .env (Compose refuses to start
+  without it); CI derives a throwaway one from the run id.
+- After the change: pytest tests/test_auth.py tests/test_envfile.py 37 passed;
+  full suite 223 passed, 12 skipped (integration, no NEO4J_PASSWORD locally);
+  Playwright 5 passed with random credentials.

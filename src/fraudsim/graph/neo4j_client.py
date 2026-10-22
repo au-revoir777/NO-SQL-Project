@@ -8,6 +8,7 @@ this module — no other code imports the neo4j driver directly.
 
 from __future__ import annotations
 
+import os
 import time
 from collections.abc import Generator
 from contextlib import contextmanager
@@ -53,10 +54,13 @@ class Neo4jClient:
         self,
         uri: str = "bolt://localhost:7687",
         user: str = "neo4j",
-        password: str = "fraudring123",
+        password: str | None = None,
         database: str = "neo4j",
         max_connection_pool_size: int = 50,
     ) -> None:
+        password = password or os.environ.get("NEO4J_PASSWORD")
+        if not password:
+            raise ValueError("Set NEO4J_PASSWORD (see .env.example); there is no default password")
         self._uri = uri
         self._database = database
         self._driver: Driver = GraphDatabase.driver(

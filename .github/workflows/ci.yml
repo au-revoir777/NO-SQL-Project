@@ -54,8 +54,8 @@ jobs:
         image: neo4j:5.26-community
         ports: ["7687:7687", "7474:7474"]
         env:
-          # Local test database only (same value as docker-compose.yml).
-          NEO4J_AUTH: neo4j/fraudring123
+          # Throwaway database: the password is derived from the run, not stored.
+          NEO4J_AUTH: neo4j/ci-${{ github.run_id }}-${{ github.run_attempt }}
           NEO4J_PLUGINS: '["graph-data-science"]'
           NEO4J_dbms_security_procedures_unrestricted: "gds.*"
           NEO4J_dbms_security_procedures_allowlist: "gds.*"
@@ -67,7 +67,7 @@ jobs:
         ports: ["6379:6379"]
     env:
       NEO4J_URI: bolt://localhost:7687
-      NEO4J_PASSWORD: fraudring123
+      NEO4J_PASSWORD: ci-${{ github.run_id }}-${{ github.run_attempt }}
       REDIS_URL: redis://localhost:6379/0
     steps:
       - uses: actions/checkout@v4

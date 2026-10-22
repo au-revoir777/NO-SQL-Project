@@ -342,7 +342,8 @@ pip install -r requirements.txt
 python seed.py
 ```
 
-Then open http://localhost:7474 (user `neo4j`, password `fraudring123`), and
+Set `NEO4J_PASSWORD` in `.env` first (`cp .env.example .env`; Compose refuses to start
+without it). Then open http://localhost:7474 (user `neo4j`, your `NEO4J_PASSWORD`), and
 paste queries from `queries.cypher` one block at a time. Setup help is in
 [`SETUP.md`](SETUP.md), and the original plan is in
 [`docs/PLAN.md`](docs/PLAN.md).

@@ -15,6 +15,9 @@ import uvicorn
 @click.option("--log-level", default="INFO", help="Console log level (DEBUG shows ring updates)")
 def main(log_level: str) -> None:
     """FraudSim: Hub-Aware Incremental Fraud Ring Detection System."""
+    from fraudsim.envfile import load_dotenv
+
+    load_dotenv()  # local credentials from the git-ignored .env
     import logging
 
     import structlog

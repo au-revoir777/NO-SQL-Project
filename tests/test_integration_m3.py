@@ -29,9 +29,11 @@ pytestmark = pytest.mark.integration
 
 @pytest.fixture(scope="module")
 def client() -> Neo4jClient:
+    if not os.environ.get("NEO4J_PASSWORD"):
+        pytest.skip("NEO4J_PASSWORD is not set (see .env.example)")
     c = Neo4jClient(
         uri=os.environ.get("NEO4J_URI", "bolt://localhost:7687"),
-        password=os.environ.get("NEO4J_PASSWORD", "fraudring123"),
+        password=os.environ.get("NEO4J_PASSWORD", ""),
     )
     try:
         c._driver.verify_connectivity()

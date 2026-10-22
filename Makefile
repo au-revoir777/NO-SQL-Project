@@ -1,5 +1,9 @@
 .PHONY: help install dev lint test test-unit test-integration simulate simulate-all train-scorer demo-story web web-dev api experiment experiment-all figures tables paper demo demo-docker db-upgrade openapi api-types webapp-dev webapp-build webapp-test e2e stack-up clean
 
+# Local credentials (NEO4J_PASSWORD, JWT_SECRET, ...) come from the git-ignored .env.
+-include .env
+export
+
 PYTHON ?= python
 DOCKER ?= docker compose
 SEEDS  ?= 5

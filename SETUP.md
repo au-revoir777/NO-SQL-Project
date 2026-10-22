@@ -32,25 +32,27 @@ your graph.
 ## The password
 
 **Username:** `neo4j`
-**Password:** `fraudring123`
+**Password:** the one you choose. It is never stored in the repository.
 
-It comes from this line in `docker-compose.yml`:
+Copy `.env.example` to `.env` (git-ignored) and set `NEO4J_PASSWORD` to a
+password of your own:
 
-```yaml
-NEO4J_AUTH: neo4j/fraudring123
+```bash
+cp .env.example .env      # then edit NEO4J_PASSWORD in .env
 ```
 
-Neo4j reads that line **only the very first time the container starts** and
-creates the account. After that the password lives in the volume, and editing
-the compose file has no effect.
+`docker compose` reads `.env` automatically and refuses to start Neo4j while
+`NEO4J_PASSWORD` is empty. `seed.py`, the `fraudsim` CLI and `make` read the same
+file, so it is the only place the password lives.
 
-To genuinely change it: run `docker compose down -v` (the `-v` wipes the volume),
-edit the password in `docker-compose.yml`, change `AUTH` in `seed.py` to match,
+Neo4j uses it **only the very first time the container starts**, when it
+creates the account. After that the password lives in the volume, and editing
+`.env` has no effect on the database. To change it, run `docker compose down -v`
+(the `-v` wipes the volume; `python seed.py` rebuilds the data), edit `.env`,
 then `docker compose up -d` and `python seed.py`.
 
-The same password appears in three places and all three must agree:
-`docker-compose.yml`, the `AUTH` line in `seed.py`, and whatever you type into
-the browser login form.
+If you created the container before this change, it still has the password it
+was created with: put that one in `.env`, or recreate the volume as above.
 
 ---
 
@@ -61,7 +63,10 @@ Run these from inside the project folder.
 **1. Start Docker Desktop.** Open it from Applications and wait for the whale
 icon to stop animating.
 
-**2. Start the database.**
+**2. Set the password.** `cp .env.example .env` and set `NEO4J_PASSWORD` in
+`.env` (see [The password](#the-password)).
+
+**3. Start the database.**
 
 ```bash
 docker compose up -d
@@ -71,7 +76,7 @@ First run downloads Neo4j (~500 MB, a few minutes). Later runs take seconds.
 The `-d` means "detached" — it runs in the background instead of taking over
 your terminal.
 
-**3. Install the Python driver.**
+**4. Install the Python driver.**
 
 ```bash
 pip install -r requirements.txt
@@ -79,7 +84,7 @@ pip install -r requirements.txt
 
 This is the library `seed.py` uses to talk to Neo4j. One-time.
 
-**4. Load the data.**
+**5. Load the data.**
 
 ```bash
 python seed.py
@@ -89,10 +94,10 @@ Wipes anything already there, creates 126 nodes and 185 relationships, and
 plants the fraud rings. It prints what it planted so you can check the queries
 against it.
 
-**5. Open the browser.** Go to http://localhost:7474, enter `neo4j` /
-`fraudring123`, click Connect. You only log in once per machine.
+**6. Open the browser.** Go to http://localhost:7474, enter `neo4j` and your
+`NEO4J_PASSWORD`, click Connect. You only log in once per machine.
 
-**6. Run a query.** Paste this into the bar at the top and press `Cmd+Enter`:
+**7. Run a query.** Paste this into the bar at the top and press `Cmd+Enter`:
 
 ```
 MATCH (n)-[r]->(m) RETURN n, r, m
@@ -146,7 +151,7 @@ get a byte-identical graph every time.
 Handy for a quick check:
 
 ```bash
-docker exec fraud-neo4j cypher-shell -u neo4j -p fraudring123 "MATCH (n) RETURN count(n);"
+docker exec fraud-neo4j sh -c 'cypher-shell -u neo4j -p "${NEO4J_AUTH#neo4j/}" "MATCH (n) RETURN count(n);"'
 ```
 
 Should print `126`.
@@ -163,9 +168,9 @@ The container is stopped. Run `docker compose up -d` and wait ~20 seconds —
 Neo4j takes a moment to boot even after Docker reports it as started.
 
 **Login says "authentication failure"**
-The password must be exactly `fraudring123`. If you changed it in
-`docker-compose.yml` after the first startup, that change did nothing — see the
-password section above.
+Use the `NEO4J_PASSWORD` the container was first created with. If you changed
+`.env` after the first startup, that change did nothing — see the password
+section above.
 
 **A query returns "no changes, no records"**
 The database is empty. Run `python seed.py`.

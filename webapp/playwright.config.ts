@@ -1,16 +1,25 @@
+import { randomBytes } from "node:crypto";
+
 import { defineConfig, devices } from "@playwright/test";
 
 /**
  * End-to-end tests against the real API and a production build of the web app.
  * Both servers are started here on test ports; the API gets a throwaway
- * database seeded with the fixture accounts below (test values, not secrets).
+ * database seeded with the fixture accounts below. Their passwords and the JWT
+ * secret are random per run (set once in the main process; workers inherit them
+ * through the environment), so no credential is committed.
  */
 const API_PORT = 8100;
 const WEB_PORT = 3100;
 
+function randomOnce(name: string): string {
+  process.env[name] ??= randomBytes(24).toString("base64url");
+  return process.env[name];
+}
+
 export const E2E_USERS = {
-  admin: { email: "e2e.admin@example.test", password: "e2e-admin-password" },
-  analyst: { email: "e2e.analyst@example.test", password: "e2e-analyst-password" },
+  admin: { email: "e2e.admin@example.test", password: randomOnce("E2E_ADMIN_PASSWORD") },
+  analyst: { email: "e2e.analyst@example.test", password: randomOnce("E2E_ANALYST_PASSWORD") },
 };
 
 const python = process.env.PYTHON ?? "python";
@@ -39,7 +48,7 @@ export default defineConfig({
       timeout: 120_000,
       env: {
         PYTHONPATH: "src",
-        JWT_SECRET: "e2e-only-secret-not-for-production-0123456789",
+        JWT_SECRET: randomOnce("E2E_JWT_SECRET"),
         DEMO_ADMIN_EMAIL: E2E_USERS.admin.email,
         DEMO_ADMIN_PASSWORD: E2E_USERS.admin.password,
         DEMO_ANALYST_EMAIL: E2E_USERS.analyst.email,

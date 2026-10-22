@@ -11,14 +11,22 @@ every fraud pattern lives in one place we can point at.
 Run:  python seed.py
 """
 
+import os
 import random
+import sys
 import time
 from collections import defaultdict
 
 from neo4j import GraphDatabase
 
 URI = "bolt://localhost:7687"
-AUTH = ("neo4j", "fraudring123")
+try:  # read NEO4J_PASSWORD from the git-ignored .env when the package is installed
+    from fraudsim.envfile import load_dotenv
+
+    load_dotenv()
+except ImportError:
+    pass
+AUTH = ("neo4j", os.environ.get("NEO4J_PASSWORD", ""))  # never a password in code
 
 random.seed(42)  # reproducible - same graph every run
 
@@ -222,6 +230,8 @@ def wait_for_neo4j(driver, attempts=15):
 
 
 def main():
+    if not AUTH[1]:
+        sys.exit("Set NEO4J_PASSWORD in .env (copy .env.example) or in your shell.")
     data = build_graph()
 
     with GraphDatabase.driver(URI, auth=AUTH) as driver:

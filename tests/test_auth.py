@@ -1,11 +1,13 @@
 """
 Phase 2, P2: authentication, roles, CSRF, rate limiting and the audit trail.
 
-Users and passwords below are test fixtures created in a temporary database.
+Users live in a temporary database. Every password and the JWT secret are
+generated at random per test session, so no credential-like literal is committed.
 """
 
 from __future__ import annotations
 
+import secrets
 from collections.abc import Iterator
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
@@ -24,15 +26,21 @@ from fraudsim.api.v1.auth.users import create_user, seed_demo_users
 from fraudsim.appdb.models import Role
 from fraudsim.cli import main as cli
 
-ADMIN = ("admin@example.test", "admin-fixture-pass-1")
-ANALYST = ("analyst@example.test", "analyst-fixture-pass-1")
+
+def random_password() -> str:
+    return secrets.token_urlsafe(18)
+
+
+ADMIN = ("admin@example.test", random_password())
+ANALYST = ("analyst@example.test", random_password())
+WRONG = random_password()
 
 
 @pytest.fixture
 def env(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Iterator[str]:
     url = f"sqlite:///{(tmp_path / 'app.db').as_posix()}"
     monkeypatch.setenv("DATABASE_URL", url)
-    monkeypatch.setenv("JWT_SECRET", "test-secret-" + "x" * 40)
+    monkeypatch.setenv("JWT_SECRET", secrets.token_urlsafe(48))
     monkeypatch.setenv("APP_AUDIT_DIR", str(tmp_path / "app_audit"))
     monkeypatch.delenv("REDIS_URL", raising=False)
     for k in (
@@ -95,8 +103,8 @@ def test_login_sets_hardened_cookies_and_me_works(client: TestClient) -> None:
 
 
 def test_wrong_password_and_unknown_user_get_the_same_answer(client: TestClient) -> None:
-    wrong = login(client, ANALYST[0], "not-the-password")
-    unknown = login(client, "nobody@example.test", "whatever-password")
+    wrong = login(client, ANALYST[0], WRONG)
+    unknown = login(client, "nobody@example.test", WRONG)
     for resp in (wrong, unknown):
         assert resp.status_code == 401
         assert resp.json()["error"]["code"] == "invalid_credentials"
@@ -108,7 +116,7 @@ def test_rate_limit_locks_out_after_repeated_failures(
 ) -> None:
     monkeypatch.setenv("LOGIN_MAX_FAILURES", "3")
     for _ in range(3):
-        assert login(client, ANALYST[0], "wrong-password").status_code == 401
+        assert login(client, ANALYST[0], WRONG).status_code == 401
     locked = login(client, *ANALYST)  # even the right password is refused now
     assert locked.status_code == 429
     assert locked.json()["error"]["code"] == "rate_limited"
@@ -181,7 +189,7 @@ def test_csrf_is_required_on_state_changing_requests(client: TestClient) -> None
     )
     assert no_header.status_code == 403 and no_header.json()["error"]["code"] == "csrf_failed"
     login(client, *ADMIN)
-    bad = {"X-CSRF-Token": "not-the-cookie-value"}
+    bad = {"X-CSRF-Token": secrets.token_urlsafe(16)}  # never the cookie value
     for method, path, body in (
         ("POST", "/api/v1/auth/logout", None),
         ("POST", "/api/v1/admin/users", {"email": "x@example.test", "password": "x" * 12}),
@@ -251,12 +259,13 @@ def test_planned_routers_answer_501_when_signed_in(client: TestClient) -> None:
 
 def test_admin_manages_users_without_deleting(client: TestClient) -> None:
     login(client, *ADMIN)
+    new_password = random_password()
     h = headers(client)
     created = client.post(
         "/api/v1/admin/users",
         json={
             "email": "New.Person@Example.test",
-            "password": "new-person-pass-1",
+            "password": new_password,
             "role": "analyst",
         },
         headers=h,
@@ -265,7 +274,7 @@ def test_admin_manages_users_without_deleting(client: TestClient) -> None:
     uid = created.json()["id"]
     dup = client.post(
         "/api/v1/admin/users",
-        json={"email": "new.person@example.test", "password": "another-pass-12"},
+        json={"email": "new.person@example.test", "password": random_password()},
         headers=h,
     )
     assert dup.status_code == 409
@@ -276,14 +285,14 @@ def test_admin_manages_users_without_deleting(client: TestClient) -> None:
 
     # The new user signs in; promoting them revokes their current session.
     other = TestClient(app, base_url="https://testserver")
-    assert login(other, "new.person@example.test", "new-person-pass-1").status_code == 200
+    assert login(other, "new.person@example.test", new_password).status_code == 200
     up = client.patch(f"/api/v1/admin/users/{uid}", json={"role": "admin"}, headers=h)
     assert up.status_code == 200 and up.json()["role"] == "admin"
     assert other.get("/api/v1/auth/me").status_code == 401
 
     off = client.patch(f"/api/v1/admin/users/{uid}", json={"is_active": False}, headers=h)
     assert off.json()["is_active"] is False
-    assert login(other, "new.person@example.test", "new-person-pass-1").status_code == 401
+    assert login(other, "new.person@example.test", new_password).status_code == 401
     page = client.get("/api/v1/admin/users").json()
     assert page["total"] == 3 and {u["email"] for u in page["items"]} >= {"new.person@example.test"}
 
@@ -300,11 +309,11 @@ def test_admin_manages_users_without_deleting(client: TestClient) -> None:
 
 
 def test_auth_events_are_audited_and_the_chain_verifies(client: TestClient, env: str) -> None:
-    login(client, ANALYST[0], "wrong-password")
+    login(client, ANALYST[0], WRONG)
     login(client, *ADMIN)
     client.post(
         "/api/v1/admin/users",
-        json={"email": "audited@example.test", "password": "audited-pass-123"},
+        json={"email": "audited@example.test", "password": random_password()},
         headers=headers(client),
     )
     client.post("/api/v1/auth/logout", headers=headers(client))
@@ -332,14 +341,14 @@ def test_demo_users_come_only_from_env(env: str, monkeypatch: pytest.MonkeyPatch
     db = next(appdb.session_scope(env))
     assert seed_demo_users(db) == []  # nothing configured, nothing created
     monkeypatch.setenv("DEMO_ANALYST_EMAIL", "demo.analyst@example.test")
-    monkeypatch.setenv("DEMO_ANALYST_PASSWORD", "demo-analyst-pass")
+    monkeypatch.setenv("DEMO_ANALYST_PASSWORD", random_password())
     assert seed_demo_users(db) == ["demo.analyst@example.test"]
     assert seed_demo_users(db) == []  # idempotent
     db.close()
 
 
 def test_cli_create_user(env: str, monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setenv("NEW_ADMIN_PW", "cli-admin-password")
+    monkeypatch.setenv("NEW_ADMIN_PW", random_password())
     result = CliRunner().invoke(
         cli,
         [

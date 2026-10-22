@@ -23,12 +23,14 @@ from fraudsim.types import Event, EventType
 pytestmark = pytest.mark.integration
 
 NEO4J_URI = os.environ.get("NEO4J_URI", "bolt://localhost:7687")
-NEO4J_PASSWORD = os.environ.get("NEO4J_PASSWORD", "fraudring123")
+NEO4J_PASSWORD = os.environ.get("NEO4J_PASSWORD", "")
 REDIS_URL = os.environ.get("REDIS_URL", "redis://localhost:6379/0")
 
 
 @pytest.fixture(scope="module")
 def neo4j() -> Neo4jClient:
+    if not NEO4J_PASSWORD:
+        pytest.skip("NEO4J_PASSWORD is not set (see .env.example)")
     client = Neo4jClient(uri=NEO4J_URI, password=NEO4J_PASSWORD)
     try:
         client._driver.verify_connectivity()
