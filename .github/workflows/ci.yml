@@ -36,6 +36,8 @@ jobs:
           python-version: "3.11"
           cache: pip
       - run: pip install -e ".[dev,redis]"
+      - name: Existing evidence unchanged (results, models, paper tables regenerate)
+        run: python scripts/baseline_snapshot.py --check docs/audit/m0_baseline.json
       - name: Unit tests (no services)
         run: pytest -m "not integration" -q -p no:logging --junitxml=unit-tests.xml
       - name: Failures as annotations
