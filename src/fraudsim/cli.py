@@ -345,26 +345,34 @@ def public(
     import pandas as pd
 
     from fraudsim.datasets import load_dataset, run_public
+    from fraudsim.experiments.provenance import recorded, repo_relative
 
     kw = {"max_rows": max_rows} if dataset in ("amlworld", "paysim") else {}
     if dataset == "amlworld":
         kw |= {"start_day": start_day, "days": days}
-    ds = load_dataset(dataset, path or f"data/raw/{dataset}", **kw)
-    row = run_public(ds, window_s=window_s, log=lambda m: click.echo(m, err=True))
-    row = {k: (json.dumps(v) if isinstance(v, (dict, list)) else v) for k, v in row.items()}
-    row["window_s"] = window_s
     out = Path(output_dir) / "public"
     (out / "runs").mkdir(parents=True, exist_ok=True)
-    click.echo(json.dumps(row, indent=2))
-    # Each run is kept as JSON first; the CSV is the union of all runs' columns, since
-    # datasets report different fields (attempt recall exists only for AMLworld).
-    stamp = time.strftime("%Y%m%dT%H%M%S")
-    (out / "runs" / f"{row['dataset']}_{stamp}.json").write_text(
-        json.dumps(row, indent=2), encoding="utf-8"
-    )
-    csv_path = out / "results.csv"
-    table = pd.read_csv(csv_path) if csv_path.exists() else pd.DataFrame()
-    pd.concat([table, pd.DataFrame([row])], ignore_index=True).to_csv(csv_path, index=False)
+    details = {
+        "dataset": dataset,
+        "path": repo_relative(path or f"data/raw/{dataset}"),
+        "loader_options": kw,
+        "window_s": window_s,
+    }
+    with recorded(out, f"public_{dataset}", details):
+        ds = load_dataset(dataset, path or f"data/raw/{dataset}", **kw)
+        row = run_public(ds, window_s=window_s, log=lambda m: click.echo(m, err=True))
+        row = {k: (json.dumps(v) if isinstance(v, (dict, list)) else v) for k, v in row.items()}
+        row["window_s"] = window_s
+        click.echo(json.dumps(row, indent=2))
+        # Each run is kept as JSON first; the CSV is the union of all runs' columns, since
+        # datasets report different fields (attempt recall exists only for AMLworld).
+        stamp = time.strftime("%Y%m%dT%H%M%S")
+        (out / "runs" / f"{row['dataset']}_{stamp}.json").write_text(
+            json.dumps(row, indent=2), encoding="utf-8"
+        )
+        csv_path = out / "results.csv"
+        table = pd.read_csv(csv_path) if csv_path.exists() else pd.DataFrame()
+        pd.concat([table, pd.DataFrame([row])], ignore_index=True).to_csv(csv_path, index=False)
 
 
 @main.command("db-upgrade")

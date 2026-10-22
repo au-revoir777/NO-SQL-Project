@@ -16,7 +16,6 @@ from __future__ import annotations
 
 import csv
 import json
-import platform
 import time
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
@@ -26,6 +25,7 @@ from typing import Any
 from fraudsim.detectors.engine import DetectionEngine, EngineConfig, build_detectors
 from fraudsim.detectors.ensemble import EnsembleConfig, RingTracker
 from fraudsim.detectors.runner import hub_degrees
+from fraudsim.experiments.provenance import recorded, repo_relative
 from fraudsim.graph.store import InMemoryGraphStore
 from fraudsim.metrics.evaluation import EvalConfig, evaluate_run
 from fraudsim.scoring.early_warning import lead_times
@@ -310,36 +310,32 @@ def run_grid(
     extra_columns: dict[str, Any] | None = None,
     eval_cfg: EvalConfig | None = None,
 ) -> Path:
-    """Run every method on every (scenario, seed) stream; append rows to results.csv."""
+    """
+    Run every method on every (scenario, seed) stream; append rows to results.csv.
+    The run is recorded in manifest.json (provenance.recorded), also when it fails.
+    """
     out_dir = Path(out_dir) / experiment
     out_dir.mkdir(parents=True, exist_ok=True)
+    scenarios = list(scenarios)
+    seeds = list(seeds)
     scorer = RingScorer.load(model_path) if Path(model_path).exists() else None
     path = out_dir / "results.csv"
-    rows_written = 0
+    details = _grid_details(scenarios, seeds, methods, scenario_overrides, model_path)
     t0 = time.perf_counter()
-    for scenario in scenarios:
-        for seed in seeds:
-            stream = make_stream(scenario, seed, scenario_overrides)
-            for method in methods:
-                row = run_method(stream, method, scorer, experiment, eval_cfg=eval_cfg)
-                row.update(extra_columns or {})
-                _append(path, row)
-                rows_written += 1
-                log(
-                    f"[{experiment}] {stream.scenario} seed={seed} {method.name:16s} "
-                    f"P={_f(row['precision'])} R={_f(row['recall'])} F1={_f(row['f1'])} "
-                    f"det_p50={_f(row['detect_ms_p50'], 1)}ms ({time.perf_counter() - t0:.0f}s)"
-                )
-    _write_manifest(
-        out_dir,
-        experiment,
-        list(scenarios) if not isinstance(scenarios, list) else scenarios,
-        list(seeds),
-        methods,
-        scenario_overrides,
-        model_path,
-        rows_written,
-    )
+    with recorded(out_dir, experiment, details):
+        for scenario in scenarios:
+            for seed in seeds:
+                stream = make_stream(scenario, seed, scenario_overrides)
+                for method in methods:
+                    row = run_method(stream, method, scorer, experiment, eval_cfg=eval_cfg)
+                    row.update(extra_columns or {})
+                    _append(path, row)
+                    log(
+                        f"[{experiment}] {stream.scenario} seed={seed} {method.name:16s} "
+                        f"P={_f(row['precision'])} R={_f(row['recall'])} F1={_f(row['f1'])} "
+                        f"det_p50={_f(row['detect_ms_p50'], 1)}ms "
+                        f"({time.perf_counter() - t0:.0f}s)"
+                    )
     return path
 
 
@@ -371,41 +367,26 @@ def _append(path: Path, row: dict[str, Any]) -> None:
         w.writerow(row)
 
 
-def _write_manifest(
-    out_dir: Path,
-    experiment: str,
+def _grid_details(
     scenarios: list[str],
     seeds: list[int],
     methods: list[Method],
     overrides: dict[str, Any] | None,
     model_path: Path,
-    rows: int,
-) -> None:
+) -> dict[str, Any]:
     from fraudsim.logging.replay import file_sha256
 
-    manifest_path = out_dir / "manifest.json"
-    manifest = (
-        json.loads(manifest_path.read_text(encoding="utf-8"))
-        if manifest_path.exists()
-        else {"grids": []}
-    )
-    manifest["grids"].append(
-        {
-            "experiment": experiment,
-            "scenarios": scenarios,
-            "scenario_hashes": {
-                s: config_hash(load_scenario(s)) for s in scenarios if isinstance(s, str)
-            },
-            "seeds": seeds,
-            "methods": [
-                m.config() | {"label": m.label, "hash": config_hash(m.config())} for m in methods
-            ],
-            "scenario_overrides": overrides or {},
-            "model": {"path": str(model_path), "sha256": file_sha256(model_path)}
-            if Path(model_path).exists()
-            else None,
-            "rows": rows,
-            "python": platform.python_version(),
-        }
-    )
-    manifest_path.write_text(json.dumps(manifest, indent=2, default=str), encoding="utf-8")
+    return {
+        "scenarios": scenarios,
+        "scenario_hashes": {
+            s: config_hash(load_scenario(s)) for s in scenarios if isinstance(s, str)
+        },
+        "seeds": seeds,
+        "methods": [
+            m.config() | {"label": m.label, "hash": config_hash(m.config())} for m in methods
+        ],
+        "scenario_overrides": overrides or {},
+        "model": {"path": repo_relative(model_path), "sha256": file_sha256(model_path)}
+        if Path(model_path).exists()
+        else None,
+    }

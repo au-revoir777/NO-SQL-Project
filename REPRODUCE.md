@@ -50,6 +50,19 @@ python scripts/run_paper_experiments.py frontier # or one
 Every row carries `run_id`, `scenario_hash`, `method_hash` and `stream_digest`
 (the digest of the exact event stream), so any number can be traced to a run
 and re-run. `manifest.json` next to each CSV lists the methods' full configurations.
+
+Since the M0 audit every run, including E4, E7 and `fraudsim public`, appends one
+entry to `manifest.json` (`fraudsim.experiments.provenance`), also when it fails
+or is interrupted. Each entry holds:
+- `status` (`complete`, `failed`, `interrupted`) and `error` (type, message, traceback tail);
+- `started_at` and `ended_at` (UTC), `wall_s`, and `rows` (rows this run added to `results.csv`);
+- `git_commit` and `git_dirty`;
+- Python, platform, CPU count and library versions;
+- repo-relative paths with SHA-256 for models.
+
+Results committed before this change keep their original manifests: E4, E7 and
+`public/` have none, and the others lack these fields. They are frozen by
+`docs/audit/m0_baseline.json`, not rewritten.
 On the test laptop (Core i3-1115G4, 7.7 GB) the tuning grid took about 1.5 h (interrupted once and completed), the suite about 35 min, and the 100,000-user scale point another 30 min.
 
 ## 4. Tables, figures, paper

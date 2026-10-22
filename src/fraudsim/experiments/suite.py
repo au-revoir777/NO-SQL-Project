@@ -34,7 +34,9 @@ from fraudsim.experiments.harness import (
     make_stream,
     run_grid,
 )
+from fraudsim.experiments.provenance import recorded, repo_relative
 from fraudsim.experiments.tuning import load_tuned
+from fraudsim.logging.replay import file_sha256
 from fraudsim.metrics.evaluation import EvalConfig
 from fraudsim.scoring.scorer import RingScorer
 
@@ -199,56 +201,66 @@ def e4_scale(
     path = out_dir / "results.csv"
     off = {"static_cypher": {"enabled": False}, "community": {"enabled": False}}
     t0 = time.perf_counter()
-    for n in sizes:
-        for seed in test_seeds(seeds):
-            f = n / 1000
-            stream = make_stream(
-                "scale_sweep",
-                seed,
-                {
-                    "simulation.num_users": n,
-                    "simulation.num_devices": int(400 * f),
-                    "simulation.num_cards": int(400 * f),
-                    "simulation.num_ips": int(300 * f),
-                    "simulation.duration_seconds": 20,
-                },
-            )
-            start = stream.generator.ts(0.0)
-            head = [e for e in stream.events if (e.ts - start).total_seconds() < 10]
-            tail = stream.events[len(head) :]
-            for mode, incremental in (("incremental", True), ("full", False)):
-                store = InMemoryGraphStore()
-                store.apply(head)
-                engine = DetectionEngine(
-                    store, build_detectors(store, off), config=EngineConfig(incremental=incremental)
+    details = {
+        "scenario": "scale_sweep",
+        "sizes": list(sizes),
+        "seeds": list(test_seeds(seeds)),
+        "detector_overrides": off,
+        "backend": "in_memory",
+    }
+    with recorded(out_dir, "e4_scale", details):
+        for n in sizes:
+            for seed in test_seeds(seeds):
+                f = n / 1000
+                stream = make_stream(
+                    "scale_sweep",
+                    seed,
+                    {
+                        "simulation.num_users": n,
+                        "simulation.num_devices": int(400 * f),
+                        "simulation.num_cards": int(400 * f),
+                        "simulation.num_ips": int(300 * f),
+                        "simulation.duration_seconds": 20,
+                    },
                 )
-                engine.run(tail)
-                det = sorted(
-                    r.timings_ms.get("dirty", 0)
-                    + r.timings_ms["view"]
-                    + sum(r.detector_ms.values())
-                    for r in engine.reports
-                )
-                regions = sorted(r.region for r in engine.reports)
-                row = {
-                    "experiment": "e4_scale",
-                    "run_id": f"e4_scale:{n}:{seed}:{mode}",
-                    "users": n,
-                    "seed": seed,
-                    "mode": mode,
-                    "stream_digest": stream.generator.digest[:16],
-                    "events_total": len(stream.events),
-                    "batches": len(engine.reports),
-                    "region_p50": regions[len(regions) // 2],
-                    "detect_ms_p50": round(det[len(det) // 2], 3),
-                    "detect_ms_p95": round(det[int(len(det) * 0.95)], 3),
-                    "detect_ms_mean": round(sum(det) / len(det), 3),
-                }
-                _append(path, row)
-                log(
-                    f"[e4_scale] users={n} seed={seed} {mode:11s} region={row['region_p50']} "
-                    f"p50={row['detect_ms_p50']}ms ({time.perf_counter() - t0:.0f}s)"
-                )
+                start = stream.generator.ts(0.0)
+                head = [e for e in stream.events if (e.ts - start).total_seconds() < 10]
+                tail = stream.events[len(head) :]
+                for mode, incremental in (("incremental", True), ("full", False)):
+                    store = InMemoryGraphStore()
+                    store.apply(head)
+                    engine = DetectionEngine(
+                        store,
+                        build_detectors(store, off),
+                        config=EngineConfig(incremental=incremental),
+                    )
+                    engine.run(tail)
+                    det = sorted(
+                        r.timings_ms.get("dirty", 0)
+                        + r.timings_ms["view"]
+                        + sum(r.detector_ms.values())
+                        for r in engine.reports
+                    )
+                    regions = sorted(r.region for r in engine.reports)
+                    row = {
+                        "experiment": "e4_scale",
+                        "run_id": f"e4_scale:{n}:{seed}:{mode}",
+                        "users": n,
+                        "seed": seed,
+                        "mode": mode,
+                        "stream_digest": stream.generator.digest[:16],
+                        "events_total": len(stream.events),
+                        "batches": len(engine.reports),
+                        "region_p50": regions[len(regions) // 2],
+                        "detect_ms_p50": round(det[len(det) // 2], 3),
+                        "detect_ms_p95": round(det[int(len(det) * 0.95)], 3),
+                        "detect_ms_mean": round(sum(det) / len(det), 3),
+                    }
+                    _append(path, row)
+                    log(
+                        f"[e4_scale] users={n} seed={seed} {mode:11s} region={row['region_p50']} "
+                        f"p50={row['detect_ms_p50']}ms ({time.perf_counter() - t0:.0f}s)"
+                    )
     return path
 
 
@@ -364,42 +376,50 @@ def e7_adaptivity(out: Path, seeds: int, log: Log) -> Path:
     out_dir.mkdir(parents=True, exist_ok=True)
     path = out_dir / "results.csv"
     t0 = time.perf_counter()
-    for seed in test_seeds(seeds):
-        for feedback in (False, True):
-            stage = ScoringStage(scorer=RingScorer.load(model))
-            stage.policy.default_threshold = tuned.get("alert_threshold", 0.5)
-            res = run_detection(
-                "adversarial",
-                seed,
-                None,
-                detector_overrides=_merge(
-                    PROPOSED, {"hub_aware": {"edge_threshold": tuned.get("edge_threshold", 0.5)}}
-                ),
-                attacker_feedback=feedback,
-                scoring=stage,
-            )
-            s = res.metrics.summary
-            adaptive = [r for r in res.metrics.rings if r["evasion"] == "adaptive"]
-            hist = res.generator.attacker.history if res.generator.attacker else []
-            row = {
-                "experiment": "e7_adaptivity",
-                "run_id": f"e7:{seed}:{'feedback' if feedback else 'no_feedback'}",
-                "seed": seed,
-                "feedback": feedback,
-                "stream_digest": res.manifest["stream_digest"][:16],
-                "recall": s["ring"]["recall"],
-                "precision": s["ring"]["precision"],
-                "adaptive_rings": len(adaptive),
-                "adaptive_detected": sum(1 for r in adaptive if r["detected"]),
-                "strategy_switches": len(hist),
-                "final_weights": json.dumps(hist[-1]["weights"]) if hist else "",
-            }
-            _append(path, row)
-            log(
-                f"[e7] seed={seed} feedback={feedback} adaptive "
-                f"{row['adaptive_detected']}/{row['adaptive_rings']} "
-                f"switches={row['strategy_switches']} ({time.perf_counter() - t0:.0f}s)"
-            )
+    details = {
+        "scenario": "adversarial",
+        "seeds": list(test_seeds(seeds)),
+        "tuned": tuned,
+        "model": {"path": repo_relative(model), "sha256": file_sha256(model)},
+    }
+    with recorded(out_dir, "e7_adaptivity", details):
+        for seed in test_seeds(seeds):
+            for feedback in (False, True):
+                stage = ScoringStage(scorer=RingScorer.load(model))
+                stage.policy.default_threshold = tuned.get("alert_threshold", 0.5)
+                res = run_detection(
+                    "adversarial",
+                    seed,
+                    None,
+                    detector_overrides=_merge(
+                        PROPOSED,
+                        {"hub_aware": {"edge_threshold": tuned.get("edge_threshold", 0.5)}},
+                    ),
+                    attacker_feedback=feedback,
+                    scoring=stage,
+                )
+                s = res.metrics.summary
+                adaptive = [r for r in res.metrics.rings if r["evasion"] == "adaptive"]
+                hist = res.generator.attacker.history if res.generator.attacker else []
+                row = {
+                    "experiment": "e7_adaptivity",
+                    "run_id": f"e7:{seed}:{'feedback' if feedback else 'no_feedback'}",
+                    "seed": seed,
+                    "feedback": feedback,
+                    "stream_digest": res.manifest["stream_digest"][:16],
+                    "recall": s["ring"]["recall"],
+                    "precision": s["ring"]["precision"],
+                    "adaptive_rings": len(adaptive),
+                    "adaptive_detected": sum(1 for r in adaptive if r["detected"]),
+                    "strategy_switches": len(hist),
+                    "final_weights": json.dumps(hist[-1]["weights"]) if hist else "",
+                }
+                _append(path, row)
+                log(
+                    f"[e7] seed={seed} feedback={feedback} adaptive "
+                    f"{row['adaptive_detected']}/{row['adaptive_rings']} "
+                    f"switches={row['strategy_switches']} ({time.perf_counter() - t0:.0f}s)"
+                )
     return path
 
 
