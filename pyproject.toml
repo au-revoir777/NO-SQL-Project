@@ -16,10 +16,10 @@ authors = [
 
 dependencies = [
     "neo4j>=5.26",
-    "fastapi>=0.115",
+    "fastapi==0.115.0",  # exact: the committed OpenAPI contract depends on it
     "uvicorn[standard]>=0.32",
     "websockets>=13.0",
-    "pydantic>=2.9",
+    "pydantic==2.9.2",  # exact: JSON-schema output is part of the contract
     "pydantic-settings>=2.6",
     "structlog>=24.4",
     "pyyaml>=6.0",

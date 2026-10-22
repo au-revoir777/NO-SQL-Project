@@ -99,6 +99,8 @@ dependencies keep their existing minimum versions.
 | @testing-library/react, /dom, /jest-dom, /user-event | 16.3.3, 10.4.2, 7.0.1, 14.6.7 | |
 | eslint | 9.39.5 | 10.x not yet supported by all of eslint-config-next's plugins |
 | prettier, prettier-plugin-tailwindcss | 3.9.9, 0.8.1 | |
+| fastapi | 0.115.0 | Python; exact because the committed OpenAPI contract depends on its schema output |
+| pydantic | 2.9.2 | Python; exact for the same reason (pydantic-core 2.23.4 follows) |
 | sqlalchemy | 2.0.35 | Python |
 | alembic | 1.20.0 | Python |
 | mypy | 1.18.2 | Python (dev) |
