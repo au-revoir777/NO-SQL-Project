@@ -13,7 +13,7 @@ env:
   PYTHONUNBUFFERED: "1"
 
 jobs:
-  lint:
+  py-lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,11 +21,13 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
-      - run: pip install "ruff>=0.7"
+      - run: pip install -e ".[dev,redis]"
       - run: ruff check src tests scripts
       - run: ruff format --check src tests scripts
+      - name: mypy (strict) on the Phase 2 packages
+        run: mypy src/fraudsim/api/v1 src/fraudsim/appdb src/fraudsim/api/openapi.py
 
-  unit-tests:
+  py-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -144,3 +146,81 @@ jobs:
           for i in $(seq 1 30); do curl -sf http://localhost:8000/health && break; sleep 2; done
           curl -sf http://localhost:8000/health
           curl -sf http://localhost:8000/ui/ | grep -qi "<div id=\"root\""
+
+  web-lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: webapp
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: webapp/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run format:check
+
+  web-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: webapp
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: webapp/package-lock.json
+      - run: npm ci
+      - run: npm run test
+
+  web-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: webapp
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: webapp/package-lock.json
+      - run: npm ci
+      - run: npm run build
+
+  contract:
+    # The committed OpenAPI document and the web app's generated types must match
+    # what the API produces now.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: webapp/package-lock.json
+      - run: pip install -e ".[dev,redis]"
+      - run: python -m fraudsim.cli export-openapi --out /tmp/openapi.json
+      - name: docs/api/openapi.json is up to date
+        run: diff -u docs/api/openapi.json /tmp/openapi.json
+      - run: npm ci
+        working-directory: webapp
+      - name: webapp/src/lib/api/schema.d.ts is up to date
+        working-directory: webapp
+        run: |
+          npx openapi-typescript ../docs/api/openapi.json -o /tmp/schema.d.ts
+          diff -u src/lib/api/schema.d.ts /tmp/schema.d.ts

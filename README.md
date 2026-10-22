@@ -55,6 +55,33 @@ rings. Details are in [`docs/dashboard.md`](docs/dashboard.md).
 
 ![Ring drawer](docs/images/dashboard_oracle_drawer.jpg)
 
+## Web app (Phase 2, in progress)
+
+Phase 2 ([plan](docs/phase2/phase2_prompt.md)) builds a fraud-investigation web
+app in `webapp/` (Next.js, TypeScript, Tailwind, shadcn/ui) on a versioned API
+at `/api/v1`. P1 lays the foundations:
+- the API contract, with request ids and a uniform error envelope;
+- an app-state database (users, cases, notes, labels, rule sets, reports);
+- the OpenAPI document and typed client;
+- the app shell with a live system-status card.
+
+Pages for later milestones say so instead of showing sample data. Details:
+[docs/webapp.md](docs/webapp.md).
+
+```bash
+make db-upgrade                          # app-state DB (runs/app.db by default)
+python -m fraudsim.cli api --port 8000   # API, incl. /api/v1
+cd webapp && npm ci && npm run dev       # http://localhost:3000
+```
+
+| Dashboard (dark) | A page of a later milestone (light) |
+|---|---|
+| ![Web app dashboard](docs/images/webapp_p1_dashboard_dark.png) | ![Empty state](docs/images/webapp_p1_empty_state_light.png) |
+
+| Mobile (375 px) | Mobile navigation |
+|---|---|
+| <img src="docs/images/webapp_p1_mobile.jpg" width="220" alt="Mobile dashboard"/> | <img src="docs/images/webapp_p1_mobile_nav.jpg" width="220" alt="Mobile navigation sheet"/> |
+
 ## Offline demo (story replay)
 
 ```bash
@@ -198,6 +225,8 @@ flowchart LR
 | `src/fraudsim/experiments/` | Experiment harness, threshold tuning, suite (E1-E7), statistics, figures, LaTeX tables |
 | `src/fraudsim/datasets/` | Loaders for IBM AMLworld, Elliptic, IBM AMLSim samples, PaySim |
 | `web/` | Live dashboard (React, Vite, TypeScript, Cytoscape.js, Recharts) |
+| `webapp/` | Phase 2 web app (Next.js App Router, TypeScript, Tailwind, shadcn/ui) |
+| `src/fraudsim/api/v1/`, `src/fraudsim/appdb/` | Versioned API for the web app; app-state store (SQLAlchemy + Alembic) |
 | `configs/scenarios/` | baseline, high_noise, hub_heavy, adversarial, scale_sweep, drift, demo_story |
 
 Design notes are in [`docs/simulator.md`](docs/simulator.md),
@@ -271,6 +300,14 @@ the all-in-one Docker image.
 | M7 Live React dashboard | done |
 | M8 Experiments, statistics, paper, public-data loaders | done (see Results above and `docs/paper/`) |
 | M9 Quality bar (tests, CI, README, how-to) | done |
+
+Phase 2 (web app and research extensions, [plan](docs/phase2/phase2_prompt.md)):
+
+| Milestone | Status |
+|---|---|
+| P1 Foundations: `/api/v1` contract, app-state store, Next.js shell, CI | done |
+| P2 Authentication and roles | next |
+| P3–P16 | planned |
 
 Known open items:
 - Paper: check the bibliography entries against the publishers' pages before submission.

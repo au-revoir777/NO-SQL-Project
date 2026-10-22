@@ -1,4 +1,4 @@
-.PHONY: help install dev lint test test-unit test-integration simulate simulate-all train-scorer demo-story web web-dev api experiment experiment-all figures tables paper demo demo-docker clean
+.PHONY: help install dev lint test test-unit test-integration simulate simulate-all train-scorer demo-story web web-dev api experiment experiment-all figures tables paper demo demo-docker db-upgrade openapi api-types webapp-dev webapp-build webapp-test e2e stack-up clean
 
 PYTHON ?= python
 DOCKER ?= docker compose
@@ -124,9 +124,35 @@ demo: web ## Build the dashboard and serve it with the API (open http://localhos
 	@echo ""
 	$(PYTHON) -m fraudsim.cli api --port 8000
 
+# ─── Web app (Phase 2) ───────────────────────────────────────────────
+
+db-upgrade: ## Create or migrate the web app's state database ($$DATABASE_URL, default runs/app.db)
+	$(PYTHON) -m fraudsim.cli db-upgrade
+
+openapi: ## Write the API contract to docs/api/openapi.json
+	$(PYTHON) -m fraudsim.cli export-openapi --out docs/api/openapi.json
+
+api-types: openapi ## Regenerate webapp/src/lib/api/schema.d.ts from the OpenAPI contract
+	cd webapp && npm run api-types
+
+webapp-dev: ## Next.js dev server on :3000 (run `make api` alongside it)
+	cd webapp && npm run dev
+
+webapp-build: ## Production build of the web app (next build)
+	cd webapp && npm ci && npm run build
+
+webapp-test: ## Web app lint, type check and unit tests (eslint, tsc, Vitest)
+	cd webapp && npm run lint && npm run typecheck && npm run test
+
+e2e: ## End-to-end browser tests (Playwright suite arrives with P2)
+	@echo "No Playwright tests yet: the e2e suite starts in milestone P2 (login flow)."
+
+stack-up: ## Bring up Neo4j, Redis and the API + dashboard container (webapp service arrives in P14)
+	docker compose --profile app up -d --build
+
 # ─── Cleanup ──────────────────────────────────────────────────────────
 
 clean: ## Remove build artifacts and caches
 	rm -rf build/ dist/ *.egg-info .pytest_cache .mypy_cache .ruff_cache
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
-	rm -rf results/ runs/
+	rm -rf runs/   # results/ holds the committed paper runs and is never cleaned
