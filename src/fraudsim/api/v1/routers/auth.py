@@ -3,6 +3,9 @@
 
 Login and refresh are CSRF-protected too (the client first calls GET /auth/csrf).
 Failed logins count against both the email and the client address (rate limit).
+
+Handlers that use the database or hash passwords are plain `def`: FastAPI runs
+them in its threadpool, so argon2 and SQLite never block the event loop.
 """
 
 from __future__ import annotations
@@ -63,7 +66,7 @@ async def csrf(response: Response) -> CsrfToken:
         429: {"model": ErrorEnvelope, "description": "Too many failed attempts"},
     },
 )
-async def login(body: LoginRequest, request: Request, response: Response, db: DB) -> Session:
+def login(body: LoginRequest, request: Request, response: Response, db: DB) -> Session:
     email = normalise_email(body.email)
     ip = client_ip(request)
     keys = (f"email:{email}", f"ip:{ip}")
@@ -99,7 +102,7 @@ async def login(body: LoginRequest, request: Request, response: Response, db: DB
     dependencies=[Depends(csrf_protect)],
     responses=ERRORS,
 )
-async def refresh(request: Request, response: Response, db: DB) -> Session:
+def refresh(request: Request, response: Response, db: DB) -> Session:
     token = request.cookies.get(REFRESH_COOKIE)
     if not token:
         raise ApiError(401, "unauthenticated", "No refresh session")
@@ -124,7 +127,7 @@ async def refresh(request: Request, response: Response, db: DB) -> Session:
     dependencies=[Depends(require_user), Depends(csrf_protect)],
     responses=ERRORS,
 )
-async def logout(user: CurrentUser, request: Request, db: DB) -> Response:
+def logout(user: CurrentUser, request: Request, db: DB) -> Response:
     # Revoke every token issued so far for this user, then drop the cookies.
     user.token_version += 1
     db.commit()

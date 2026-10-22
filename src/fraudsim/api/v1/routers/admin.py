@@ -1,4 +1,8 @@
-"""/api/v1/admin: user management (admin only). Users are deactivated, never deleted."""
+"""/api/v1/admin: user management (admin only). Users are deactivated, never deleted.
+
+Handlers that use the database or hash passwords are plain `def`: FastAPI runs
+them in its threadpool, so argon2 and SQLite never block the event loop.
+"""
 
 from __future__ import annotations
 
@@ -25,7 +29,7 @@ ERRORS: dict[int | str, dict[str, Any]] = {
 @router.get(
     "/users", response_model=Page[UserOut], operation_id="admin_list_users", responses=ERRORS
 )
-async def list_users(
+def list_users(
     admin: AdminUser,
     db: DB,
     cursor: int = Query(default=0, ge=0, description="Offset returned as next_cursor"),
@@ -48,7 +52,7 @@ async def list_users(
     operation_id="admin_create_user",
     responses={**ERRORS, 409: {"model": ErrorEnvelope, "description": "Email already in use"}},
 )
-async def create(body: CreateUserRequest, admin: AdminUser, request: Request, db: DB) -> UserOut:
+def create(body: CreateUserRequest, admin: AdminUser, request: Request, db: DB) -> UserOut:
     try:
         user = create_user(db, body.email, body.password, Role(body.role), body.display_name)
     except UserError as exc:
@@ -73,7 +77,7 @@ async def create(body: CreateUserRequest, admin: AdminUser, request: Request, db
     operation_id="admin_update_user",
     responses={**ERRORS, 404: {"model": ErrorEnvelope, "description": "No such user"}},
 )
-async def update(
+def update(
     user_id: int, body: UpdateUserRequest, admin: AdminUser, request: Request, db: DB
 ) -> UserOut:
     user = db.get(User, user_id)
