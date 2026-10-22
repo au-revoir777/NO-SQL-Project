@@ -423,6 +423,13 @@ def e7_adaptivity(out: Path, seeds: int, log: Log) -> Path:
     return path
 
 
+def e10_ring_alerts(out: Path, seeds: int, log: Log) -> Path:
+    """Ring-level alert units for calibration and alert utility (docs/research/e10_protocol.md)."""
+    from fraudsim.experiments.alert_units import run_e10
+
+    return run_e10(out, test_seeds(seeds), log)
+
+
 SUITES = {
     "baselines": e1_baselines,
     "ablations": e2_ablations,
@@ -431,6 +438,7 @@ SUITES = {
     "hub_size": e5_hub_size,
     "sweeps": e6_sweeps,
     "adaptivity": e7_adaptivity,
+    "ring_alerts": e10_ring_alerts,
 }
 
 
