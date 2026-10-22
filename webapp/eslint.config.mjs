@@ -16,6 +16,11 @@ const config = [
   {
     rules: {
       // Components use CSS tokens only (design system): no hex colours in TSX.
+      // shadcn's CLI rewrites imports to the "cn" package; use the pinned helper instead.
+      "no-restricted-imports": [
+        "error",
+        { paths: [{ name: "cn", message: 'Import { cn } from "@/lib/utils".' }] },
+      ],
       "no-restricted-syntax": [
         "error",
         {

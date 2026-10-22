@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 import { ConnectionIndicator } from "@/components/connection-indicator";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { UserMenu } from "@/components/user-menu";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -49,6 +50,7 @@ export function SiteHeader() {
       <div className="ml-auto flex items-center gap-3">
         <ConnectionIndicator />
         <ThemeToggle />
+        <UserMenu />
       </div>
     </header>
   );

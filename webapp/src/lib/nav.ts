@@ -60,13 +60,21 @@ export const NAV: NavGroup[] = [
     label: "Admin",
     items: [
       { title: "Rules", href: "/rules", icon: SlidersHorizontal, milestone: "P9", adminOnly: true },
-      { title: "Users", href: "/users", icon: Users, milestone: "P2", adminOnly: true },
+      { title: "Users", href: "/users", icon: Users, adminOnly: true },
       { title: "Audit", href: "/audit", icon: ShieldCheck, milestone: "P5", adminOnly: true },
     ],
   },
 ];
 
 export const ALL_ITEMS: NavItem[] = NAV.flatMap((g) => g.items);
+
+/** The navigation a role may see: admin-only items (and empty groups) removed for analysts. */
+export function navFor(role: "analyst" | "admin"): NavGroup[] {
+  return NAV.map((g) => ({
+    ...g,
+    items: g.items.filter((i) => role === "admin" || !i.adminOnly),
+  })).filter((g) => g.items.length > 0);
+}
 
 export function findNav(pathname: string): { group: NavGroup; item: NavItem } | undefined {
   for (const group of NAV) {

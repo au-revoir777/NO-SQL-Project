@@ -16,11 +16,13 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { APP_ICON, findNav, NAV } from "@/lib/nav";
+import { useSessionUser } from "@/components/session-provider";
+import { APP_ICON, findNav, navFor } from "@/lib/nav";
 
 export function AppSidebar() {
   const pathname = usePathname() ?? "/";
   const active = findNav(pathname)?.item.href;
+  const user = useSessionUser();
   const AppIcon = APP_ICON;
 
   return (
@@ -44,7 +46,7 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <nav aria-label="Main navigation">
-          {NAV.map((group) => (
+          {navFor(user.role).map((group) => (
             <SidebarGroup key={group.label}>
               <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
               <SidebarMenu>
