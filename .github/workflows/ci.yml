@@ -224,3 +224,34 @@ jobs:
         run: |
           npx openapi-typescript ../docs/api/openapi.json -o /tmp/schema.d.ts
           diff -u src/lib/api/schema.d.ts /tmp/schema.d.ts
+
+  e2e:
+    # Playwright against the real API (fresh SQLite DB, fixture users) and a
+    # production build of the web app.
+    runs-on: ubuntu-latest
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: webapp/package-lock.json
+      - run: pip install -e ".[dev]"
+      - run: npm ci
+        working-directory: webapp
+      - run: npx playwright install --with-deps chromium
+        working-directory: webapp
+      - run: npx playwright test
+        working-directory: webapp
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: webapp/playwright-report
+          retention-days: 7

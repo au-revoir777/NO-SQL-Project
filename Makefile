@@ -144,8 +144,8 @@ webapp-build: ## Production build of the web app (next build)
 webapp-test: ## Web app lint, type check and unit tests (eslint, tsc, Vitest)
 	cd webapp && npm run lint && npm run typecheck && npm run test
 
-e2e: ## End-to-end browser tests (Playwright suite arrives with P2)
-	@echo "No Playwright tests yet: the e2e suite starts in milestone P2 (login flow)."
+e2e: ## Playwright end-to-end tests (API on :8100, next on :3100; once: cd webapp && npm run e2e:install)
+	cd webapp && npx playwright test
 
 stack-up: ## Bring up Neo4j, Redis and the API + dashboard container (webapp service arrives in P14)
 	docker compose --profile app up -d --build
