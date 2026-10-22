@@ -19,6 +19,7 @@ from fraudsim.api.openapi import openapi_dict
 from fraudsim.api.v1 import errors
 
 ROOT = Path(__file__).resolve().parents[1]
+HEAD = "0002"  # latest Alembic revision
 TABLES = {"users", "cases", "case_alerts", "notes", "labels", "rule_sets", "reports", "audit_refs"}
 
 
@@ -66,23 +67,11 @@ def test_wrong_method_is_an_enveloped_405(client: TestClient) -> None:
 
 
 @pytest.mark.parametrize(
-    "path",
-    [
-        "auth",
-        "alerts",
-        "cases",
-        "entities",
-        "graph",
-        "reports",
-        "experiments",
-        "rules",
-        "stream",
-        "admin",
-    ],
+    "path", ["alerts", "cases", "entities", "graph", "reports", "experiments", "rules", "stream"]
 )
-def test_planned_routers_answer_501_with_their_milestone(client: TestClient, path: str) -> None:
-    err = _assert_envelope(client.get(f"/api/v1/{path}"), 501, "not_implemented")
-    assert "milestone P" in err["message"]
+def test_planned_routers_require_sign_in(client: TestClient, path: str) -> None:
+    # Signed-in behaviour (501 naming the milestone) is covered in test_auth.py.
+    _assert_envelope(client.get(f"/api/v1/{path}"), 401, "unauthenticated")
 
 
 def test_validation_and_internal_errors_are_enveloped() -> None:
@@ -119,7 +108,7 @@ def test_migration_round_trip_on_sqlite(tmp_path: Path) -> None:
     appdb.upgrade(url)
     engine = create_engine(url)
     assert set(inspect(engine).get_table_names()) >= TABLES
-    assert appdb.current_revision(url) == "0001"
+    assert appdb.current_revision(url) == HEAD
     appdb.downgrade(url, "base")
     assert set(inspect(engine).get_table_names()) - {"alembic_version"} == set()
     appdb.upgrade(url)  # and back up again
@@ -153,7 +142,7 @@ def test_health_reports_a_migrated_store(tmp_path: Path, monkeypatch: pytest.Mon
     body = c.get("/api/v1/health").json()
     comps = {x["name"]: x["status"] for x in body["components"]}
     assert comps["app_db"] == "ok" and comps["api"] == "ok" and comps["redis"] == "not_configured"
-    assert body["db_revision"] == "0001" and body["status"] == "ok"
+    assert body["db_revision"] == HEAD and body["status"] == "ok"
 
 
 # ─── Contract ─────────────────────────────────────────────────────────

@@ -39,6 +39,9 @@ dependencies = [
     # Phase 2 app-state store (exact pins, docs/webapp.md)
     "sqlalchemy==2.0.35",
     "alembic==1.20.0",
+    # Phase 2 authentication
+    "pyjwt==2.15.1",
+    "argon2-cffi==25.1.0",
 ]
 
 [project.optional-dependencies]

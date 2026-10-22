@@ -72,6 +72,11 @@ def ping(url: str | None = None) -> bool:
         return False
 
 
+def open_session(url: str | None = None) -> Session:
+    """A session for scripts and start-up code; the caller closes it."""
+    return sessionmaker(bind=get_engine(url), expire_on_commit=False)()
+
+
 def session_scope(url: str | None = None) -> Iterator[Session]:
     """FastAPI dependency: one session per request."""
     factory = sessionmaker(bind=get_engine(url), expire_on_commit=False)

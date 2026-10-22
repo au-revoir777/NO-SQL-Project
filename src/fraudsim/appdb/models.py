@@ -74,6 +74,10 @@ class User(Base):
     password_hash: Mapped[str | None] = mapped_column(String(255), nullable=True)
     role: Mapped[Role] = mapped_column(_enum(Role, "role"), default=Role.ANALYST)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    # Bumped on logout, deactivation and role change: every token issued before
+    # carries the old value and is rejected from then on.
+    token_version: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+    last_login_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 
 

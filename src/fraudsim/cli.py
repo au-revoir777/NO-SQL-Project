@@ -379,6 +379,57 @@ def db_upgrade(url: str | None, revision: str) -> None:
     )
 
 
+@main.command("create-user")
+@click.option("--email", required=True, help="Login email")
+@click.option("--role", type=click.Choice(["analyst", "admin"]), default="analyst")
+@click.option("--display-name", default="", help="Shown in the web app")
+@click.option(
+    "--password-env",
+    default=None,
+    help="Read the password from this environment variable instead of prompting",
+)
+def create_user_cmd(email: str, role: str, display_name: str, password_env: str | None) -> None:
+    """Create a web-app user (password is prompted, never passed on the command line)."""
+    import os
+
+    from fraudsim import appdb
+    from fraudsim.api.v1.auth.users import UserError, create_user
+    from fraudsim.appdb.models import Role
+
+    if password_env:
+        password = os.environ.get(password_env, "")
+        if not password:
+            raise click.UsageError(f"environment variable {password_env} is empty or unset")
+    else:
+        password = click.prompt("Password", hide_input=True, confirmation_prompt=True)
+    if appdb.current_revision() is None:
+        raise click.ClickException("app DB is not migrated: run `fraudsim db-upgrade` first")
+    db = appdb.open_session()
+    try:
+        user = create_user(db, email, password, Role(role), display_name)
+    except UserError as exc:
+        raise click.ClickException(str(exc)) from exc
+    finally:
+        db.close()
+    click.echo(f"created {user.role.value} {user.email} (id {user.id})")
+
+
+@main.command("seed-users")
+def seed_users_cmd() -> None:
+    """Create the demo users named in DEMO_ADMIN_* / DEMO_ANALYST_* env vars (idempotent)."""
+    from fraudsim import appdb
+    from fraudsim.api.v1.auth.users import seed_demo_users
+
+    if appdb.current_revision() is None:
+        raise click.ClickException("app DB is not migrated: run `fraudsim db-upgrade` first")
+    db = appdb.open_session()
+    try:
+        created = seed_demo_users(db)
+    finally:
+        db.close()
+    click.echo(f"created: {', '.join(created) or 'none (already present or env vars unset)'}")
+
+
 @main.command("export-openapi")
 @click.option("--out", default="docs/api/openapi.json", help="Where to write the OpenAPI schema")
 def export_openapi(out: str) -> None:

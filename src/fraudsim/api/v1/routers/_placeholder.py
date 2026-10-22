@@ -7,18 +7,16 @@ from fastapi import APIRouter
 from fraudsim.api.v1.errors import ApiError
 from fraudsim.api.v1.schemas import ErrorEnvelope
 
-# (router prefix, OpenAPI tag, milestone that implements it)
+# (router prefix, OpenAPI tag, milestone that implements it, admin only)
 PLANNED = [
-    ("auth", "auth", "P2"),
-    ("alerts", "alerts", "P5"),
-    ("cases", "cases", "P5"),
-    ("entities", "entities", "P6"),
-    ("graph", "graph", "P6"),
-    ("reports", "reports", "P7"),
-    ("experiments", "experiments", "P8"),
-    ("rules", "rules", "P9"),
-    ("stream", "stream", "P3"),
-    ("admin", "admin", "P2"),
+    ("alerts", "alerts", "P5", False),
+    ("cases", "cases", "P5", False),
+    ("entities", "entities", "P6", False),
+    ("graph", "graph", "P6", False),
+    ("reports", "reports", "P7", False),
+    ("experiments", "experiments", "P8", False),
+    ("rules", "rules", "P9", True),
+    ("stream", "stream", "P3", False),
 ]
 
 

@@ -47,13 +47,19 @@ class ApiError(Exception):
     """Raise inside /api/v1 handlers for an enveloped error response."""
 
     def __init__(
-        self, status: int, code: str, message: str, details: list[dict[str, Any]] | None = None
+        self,
+        status: int,
+        code: str,
+        message: str,
+        details: list[dict[str, Any]] | None = None,
+        headers: dict[str, str] | None = None,
     ):
         super().__init__(message)
         self.status = status
         self.code = code
         self.message = message
         self.details = details
+        self.headers = headers
 
 
 class RequestIdMiddleware:
@@ -92,12 +98,17 @@ def request_id(request: Request) -> str:
 
 
 def _envelope(
-    request: Request, status: int, code: str, message: str, details: Any = None
+    request: Request,
+    status: int,
+    code: str,
+    message: str,
+    details: Any = None,
+    headers: dict[str, str] | None = None,
 ) -> JSONResponse:
     body: dict[str, Any] = {"code": code, "message": message, "request_id": request_id(request)}
     if details is not None:
         body["details"] = details
-    return JSONResponse(status_code=status, content={"error": body})
+    return JSONResponse(status_code=status, content={"error": body}, headers=headers)
 
 
 def _is_v1(request: Request) -> bool:
@@ -110,7 +121,7 @@ def install(app: FastAPI) -> None:
 
     @app.exception_handler(ApiError)
     async def _api_error(request: Request, exc: ApiError) -> JSONResponse:
-        return _envelope(request, exc.status, exc.code, exc.message, exc.details)
+        return _envelope(request, exc.status, exc.code, exc.message, exc.details, exc.headers)
 
     @app.exception_handler(StarletteHTTPException)
     async def _http_error(request: Request, exc: StarletteHTTPException) -> Any:
