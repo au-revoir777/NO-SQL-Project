@@ -48,8 +48,7 @@ def test_redis_hub_contract_with_fakeredis() -> None:
     import fakeredis
 
     async def go() -> None:
-        h = RedisStreams.__new__(RedisStreams)
-        h._client = fakeredis.FakeAsyncRedis(decode_responses=True)
+        h = RedisStreams("redis://unused", lambda: fakeredis.FakeAsyncRedis(decode_responses=True))
         await check_contract(h)
 
     run(go())
@@ -79,16 +78,31 @@ def test_memory_hub_is_bounded() -> None:
 # ─── SSE over HTTP ────────────────────────────────────────────────────────────
 
 
-@pytest.fixture(params=["memory", pytest.param("redis", marks=pytest.mark.integration)])
+@pytest.fixture(
+    params=["memory", "fakeredis", pytest.param("redis", marks=pytest.mark.integration)]
+)
 def streams(request: pytest.FixtureRequest) -> Iterator[object]:
     if request.param == "memory":
         h: object = MemoryStreams()
+    elif request.param == "fakeredis":
+        # The Redis code path, used from several event loops (as in CI's failure).
+        import fakeredis
+
+        server = fakeredis.FakeServer()
+        h = RedisStreams(
+            "redis://unused",
+            lambda: fakeredis.FakeAsyncRedis(server=server, decode_responses=True),
+        )
     else:
         url = os.environ.get("REDIS_URL")
         if not url:
             pytest.skip("REDIS_URL is not set")
         h = RedisStreams(url)
-        run(h._client.delete(ALERTS))  # type: ignore[attr-defined]
+
+        async def clear() -> None:
+            await h._client.delete(ALERTS)  # type: ignore[attr-defined]
+
+        run(clear())
     hub_mod.reset_hub(h)  # type: ignore[arg-type]
     yield h
     hub_mod.reset_hub(None)

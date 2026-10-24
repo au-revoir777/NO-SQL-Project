@@ -17,7 +17,9 @@ import json
 import os
 import threading
 import time
+import weakref
 from collections import deque
+from collections.abc import Callable
 from typing import Any, Protocol, cast
 
 ALERTS = "fraudsim:alerts"
@@ -114,14 +116,32 @@ class MemoryStreams:
 
 
 class RedisStreams:
-    """Redis Streams backend (redis.asyncio)."""
+    """
+    Redis Streams backend (redis.asyncio). A redis.asyncio client belongs to the
+    event loop it first ran on, so one client is kept per running loop (one in a
+    uvicorn worker; several in tests).
+    """
 
     backend = "redis"
 
-    def __init__(self, url: str) -> None:
-        import redis.asyncio as aioredis
+    def __init__(self, url: str, client_factory: Callable[[], Any] | None = None) -> None:
+        def from_url() -> Any:
+            import redis.asyncio as aioredis
 
-        self._client = cast(Any, aioredis.from_url(url, decode_responses=True))
+            return aioredis.from_url(url, decode_responses=True)
+
+        self._factory = client_factory or from_url
+        self._clients: weakref.WeakKeyDictionary[asyncio.AbstractEventLoop, Any] = (
+            weakref.WeakKeyDictionary()
+        )
+
+    @property
+    def _client(self) -> Any:
+        loop = asyncio.get_running_loop()
+        client = self._clients.get(loop)
+        if client is None:
+            client = self._clients[loop] = cast(Any, self._factory())
+        return client
 
     async def publish(self, stream: str, payload: dict[str, Any]) -> str:
         entry_id = await self._client.xadd(

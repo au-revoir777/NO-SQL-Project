@@ -101,9 +101,14 @@ tsc: no type errors
 - Vitest: first test of a file exceeded the 5 s default on a loaded machine (5.2 s, 6.8 s); testTimeout 15 s.
 
 ## Note: npm audit (webapp, production dependencies)
-next  16.0.0 - 16.4.0
-Severity: critical
-zod  <4.6.6
-Severity: high
-2 vulnerabilities (1 high, 1 critical)
-Pending the owner's decision: the fixes (next 16.4.1, zod 4.6.6) were released less than two weeks ago (pinning rule).
+Before: next 16.4.0 (2 critical, 1 high advisory), zod 4.6.5 (1 high).
+After the owner approved the upgrade (2026-10-24): next 16.4.1, eslint-config-next 16.4.1,
+zod 4.6.6 -> `npm audit --omit=dev`: found 0 vulnerabilities; eslint, tsc, Vitest 25/25,
+next build and Playwright 6/6 pass on the new versions.
+
+## CI (run 40103437779, commit 7168b12)
+All jobs passed except integration-tests: the two SSE tests against real Redis failed
+with "Event loop is closed" (a redis.asyncio client reused across event loops).
+Fixed: RedisStreams keeps one client per running loop. Reproduced locally with a new
+fakeredis variant shared across loops (fails before the fix, passes after).
+Full suite after the fix: 288 passed, 15 skipped.
