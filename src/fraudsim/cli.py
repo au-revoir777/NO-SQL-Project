@@ -194,15 +194,24 @@ def replay(run_dir: str, model_path: str | None) -> None:
 @main.command("audit-verify")
 @click.argument("run_dir")
 def audit_verify(run_dir: str) -> None:
-    """Verify the hash chain of a run's audit trail."""
+    """Verify the hash chain of an audit trail (a run directory, or runs/app_audit)."""
     import json
     import sys
     from pathlib import Path
 
     from fraudsim.logging.audit import AuditTrail
 
-    manifest = json.loads((Path(run_dir) / "manifest.json").read_text(encoding="utf-8"))
-    trail = AuditTrail(run_dir, manifest["run_id"])
+    if not (Path(run_dir) / "audit.jsonl").exists():
+        click.echo(f"no audit.jsonl in {run_dir}", err=True)
+        sys.exit(2)
+    # The run id is only needed to append; the app trail (runs/app_audit) has no manifest.
+    manifest_path = Path(run_dir) / "manifest.json"
+    run_id = (
+        json.loads(manifest_path.read_text(encoding="utf-8"))["run_id"]
+        if manifest_path.exists()
+        else "app"
+    )
+    trail = AuditTrail(run_dir, run_id)
     ok, problem = trail.verify()
     click.echo(json.dumps({"entries": len(trail.read_entries()), "ok": ok, "problem": problem}))
     sys.exit(0 if ok else 1)

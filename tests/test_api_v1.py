@@ -20,8 +20,19 @@ from fraudsim.api.openapi import openapi_dict
 from fraudsim.api.v1 import errors
 
 ROOT = Path(__file__).resolve().parents[1]
-HEAD = "0002"  # latest Alembic revision
-TABLES = {"users", "cases", "case_alerts", "notes", "labels", "rule_sets", "reports", "audit_refs"}
+HEAD = "0003"  # latest Alembic revision
+TABLES = {
+    "users",
+    "cases",
+    "case_alerts",
+    "notes",
+    "labels",
+    "rule_sets",
+    "reports",
+    "audit_refs",
+    "alerts",
+    "saved_views",
+}
 
 
 @pytest.fixture
@@ -67,9 +78,7 @@ def test_wrong_method_is_an_enveloped_405(client: TestClient) -> None:
     _assert_envelope(client.delete("/api/v1/health"), 405, "method_not_allowed")
 
 
-@pytest.mark.parametrize(
-    "path", ["alerts", "cases", "entities", "graph", "reports", "experiments", "rules"]
-)
+@pytest.mark.parametrize("path", ["entities", "graph", "reports", "experiments", "rules"])
 def test_planned_routers_require_sign_in(client: TestClient, path: str) -> None:
     # Signed-in behaviour (501 naming the milestone) is covered in test_auth.py.
     _assert_envelope(client.get(f"/api/v1/{path}"), 401, "unauthenticated")

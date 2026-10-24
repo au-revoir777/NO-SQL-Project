@@ -23,6 +23,9 @@ from collections import Counter
 from collections.abc import Awaitable, Callable
 from typing import Any
 
+from starlette.concurrency import run_in_threadpool
+
+from fraudsim.api.v1.cases.recorder import AlertRecorder
 from fraudsim.api.v1.stream.hub import ALERTS, EVENTS, METRICS, hub
 from fraudsim.metrics.evaluation import detect_ms, percentiles
 
@@ -119,6 +122,7 @@ class StreamPublisher:
         self._ws = ws_broadcast
         self._last_metrics = 0.0
         self._trailing: asyncio.TimerHandle | None = None
+        self.recorder = AlertRecorder(run_id)
 
     async def __call__(self, msg: dict[str, Any]) -> None:
         if self._ws is not None:
@@ -127,6 +131,9 @@ class StreamPublisher:
         if live is None:
             return
         kind = msg.get("type")
+        if kind == "RING_UPDATE":
+            # Persist alerts for triage (P5); awaited, so one ring's updates stay in order.
+            await run_in_threadpool(self.recorder.on_update, live, msg["update"])
         if kind == "RING_UPDATE" and msg["update"].get("change") in ALERT_CHANGES:
             await hub().publish(ALERTS, alert_payload(live, self.run_id, msg["update"]))
         elif kind == "BATCH":

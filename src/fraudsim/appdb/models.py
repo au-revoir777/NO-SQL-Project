@@ -54,6 +54,13 @@ class Priority(enum.StrEnum):
     CRITICAL = "critical"
 
 
+class AlertStatus(enum.StrEnum):
+    NEW = "new"
+    TRIAGED = "triaged"
+    ESCALATED = "escalated"
+    CLOSED = "closed"
+
+
 class LabelKind(enum.StrEnum):
     CONFIRMED_FRAUD = "confirmed_fraud"
     DISMISSED_BENIGN = "dismissed_benign"
@@ -118,6 +125,58 @@ class CaseAlert(Base):
     added_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 
     case: Mapped[Case] = relationship(back_populates="alerts")
+
+
+class Alert(Base):
+    """
+    An alert or early warning raised by a live run, persisted when it fires so
+    triage survives the run (P5). Identified by (run_id, alert_ref) where
+    alert_ref is the tracker's stable ring id. The latest explanation and
+    evidence of the ring are kept up to date while the ring changes; `history`
+    lists the ring updates seen since the alert.
+    """
+
+    __tablename__ = "alerts"
+    __table_args__ = (UniqueConstraint("run_id", "alert_ref"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    run_id: Mapped[str] = mapped_column(String(64), index=True)
+    alert_ref: Mapped[str] = mapped_column(String(64))
+    kind: Mapped[str] = mapped_column(String(20))  # alert | early_warning (first raised as)
+    status: Mapped[AlertStatus] = mapped_column(
+        _enum(AlertStatus, "alert_status"), default=AlertStatus.NEW, index=True
+    )
+    assignee_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"), nullable=True)
+    ring_type: Mapped[str] = mapped_column(String(40), index=True)
+    ring_status: Mapped[str] = mapped_column(String(20))  # tracker status: candidate | ...
+    risk: Mapped[float | None] = mapped_column(nullable=True, index=True)
+    threshold: Mapped[float | None] = mapped_column(nullable=True)
+    calibration_bucket: Mapped[str | None] = mapped_column(String(120), nullable=True)
+    members: Mapped[list[Any]] = mapped_column()
+    detectors: Mapped[list[Any]] = mapped_column()
+    reason: Mapped[str | None] = mapped_column(Text, nullable=True)
+    explanation: Mapped[dict[str, Any] | None] = mapped_column(nullable=True)
+    history: Mapped[list[Any]] = mapped_column()
+    first_seen_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))  # simulated time
+    last_seen_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    sim_time_s: Mapped[float] = mapped_column()  # simulated seconds when first raised
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow, onupdate=utcnow
+    )
+
+
+class SavedView(Base):
+    """A user's named alert filter."""
+
+    __tablename__ = "saved_views"
+    __table_args__ = (UniqueConstraint("user_id", "name"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), index=True)
+    name: Mapped[str] = mapped_column(String(80))
+    filters: Mapped[dict[str, Any]] = mapped_column()
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 
 
 class Note(Base):
