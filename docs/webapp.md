@@ -197,9 +197,20 @@ Exact versions (no `^`/`~`), each the newest release at least two weeks old on
 2026-10-22. Python additions are pinned in `pyproject.toml`; older Python
 dependencies keep their existing minimum versions.
 
+**Exception: security fixes.** A patch release that fixes a published advisory
+may be pinned before it is two weeks old, with the owner's approval. On
+2026-10-24, `npm audit` reported two critical (remote code execution) and one
+high advisory against next 16.4.0 ([GHSA-2464-fhr4-w9xw](https://github.com/advisories/GHSA-2464-fhr4-w9xw),
+[GHSA-673q-mjm6-r5xr](https://github.com/advisories/GHSA-673q-mjm6-r5xr),
+[GHSA-p3m5-59mp-jv5r](https://github.com/advisories/GHSA-p3m5-59mp-jv5r); fixed in 16.4.1, released
+2026-10-14), and one high advisory against zod 4.6.5
+([GHSA-mrhx-c7xc-m3w5](https://github.com/advisories/GHSA-mrhx-c7xc-m3w5); fixed in 4.6.6, released 2026-10-11).
+Both were upgraded with approval; `npm audit --omit=dev` now reports 0
+vulnerabilities.
+
 | Package | Version | Note |
 |---|---|---|
-| next, eslint-config-next | 16.4.0 | |
+| next, eslint-config-next | 16.4.1 | security exception (see above) |
 | react, react-dom, @types/react, @types/react-dom | 19.3.0 | |
 | typescript | 5.9.3 | 7.0 lacks the JS API typescript-eslint needs; 6.0 is outside openapi-typescript 7.13's peer range (`^5`) |
 | tailwindcss, @tailwindcss/postcss | 4.3.3 | |
@@ -223,7 +234,7 @@ dependencies keep their existing minimum versions.
 | pyjwt | 2.15.1 | Python |
 | argon2-cffi | 25.1.0 | Python |
 | react-hook-form, @hookform/resolvers | 7.89.0, 5.9.1 | |
-| zod | 4.6.5 | |
+| zod | 4.6.6 | security exception (see above) |
 | sonner | 2.0.8 | toasts (shadcn `sonner`) |
 | @playwright/test | 1.64.0 | Chromium is installed with `npm run e2e:install` |
 
