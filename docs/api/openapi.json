@@ -1532,7 +1532,7 @@
           "attributes": {
             "description": "Users: linked attributes with degree and hub weight",
             "items": {
-              "type": "object"
+              "$ref": "#/components/schemas/EntityLink"
             },
             "title": "Attributes",
             "type": "array"
@@ -1619,7 +1619,7 @@
           },
           "timeline": {
             "items": {
-              "type": "object"
+              "$ref": "#/components/schemas/TimelineItem"
             },
             "title": "Timeline",
             "type": "array"
@@ -1627,19 +1627,18 @@
           "transactions": {
             "anyOf": [
               {
-                "type": "object"
+                "$ref": "#/components/schemas/TxnSummary"
               },
               {
                 "type": "null"
               }
             ],
-            "description": "Users: counts, totals and the latest transfers in and out",
-            "title": "Transactions"
+            "description": "Users: counts, totals and the latest transfers in and out"
           },
           "users": {
             "description": "Attributes: active users linked, with link time",
             "items": {
-              "type": "object"
+              "$ref": "#/components/schemas/EntityUser"
             },
             "title": "Users",
             "type": "array"
@@ -1685,6 +1684,46 @@
         "title": "EntityHit",
         "type": "object"
       },
+      "EntityLink": {
+        "properties": {
+          "degree": {
+            "title": "Degree",
+            "type": "integer"
+          },
+          "hub_weight": {
+            "title": "Hub Weight",
+            "type": "number"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "user",
+              "device",
+              "card",
+              "ip"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "t": {
+            "description": "Last time the link was made (simulated epoch seconds)",
+            "title": "T",
+            "type": "number"
+          }
+        },
+        "required": [
+          "kind",
+          "id",
+          "t",
+          "degree",
+          "hub_weight"
+        ],
+        "title": "EntityLink",
+        "type": "object"
+      },
       "EntityRing": {
         "properties": {
           "members": {
@@ -1723,6 +1762,24 @@
           "risk"
         ],
         "title": "EntityRing",
+        "type": "object"
+      },
+      "EntityUser": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "t": {
+            "title": "T",
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "t"
+        ],
+        "title": "EntityUser",
         "type": "object"
       },
       "ErrorBody": {
@@ -1948,14 +2005,13 @@
           "stop": {
             "anyOf": [
               {
-                "type": "object"
+                "$ref": "#/components/schemas/StopOut"
               },
               {
                 "type": "null"
               }
             ],
-            "description": "Why the walk did not cross this attribute (hub cap or depth limit)",
-            "title": "Stop"
+            "description": "Why the walk did not cross this attribute (hub cap or depth limit)"
           }
         },
         "required": [
@@ -3497,7 +3553,7 @@
           "shared_attributes": {
             "description": "Attributes shared by at least two current members",
             "items": {
-              "type": "object"
+              "$ref": "#/components/schemas/SharedAttribute"
             },
             "title": "Shared Attributes",
             "type": "array"
@@ -4100,6 +4156,66 @@
         "title": "Session",
         "type": "object"
       },
+      "SharedAttribute": {
+        "properties": {
+          "degree": {
+            "title": "Degree",
+            "type": "integer"
+          },
+          "hub_weight": {
+            "title": "Hub Weight",
+            "type": "number"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "user",
+              "device",
+              "card",
+              "ip"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "members": {
+            "items": {
+              "$ref": "#/components/schemas/SharedHolder"
+            },
+            "title": "Members",
+            "type": "array"
+          }
+        },
+        "required": [
+          "kind",
+          "id",
+          "degree",
+          "hub_weight",
+          "members"
+        ],
+        "title": "SharedAttribute",
+        "type": "object"
+      },
+      "SharedHolder": {
+        "properties": {
+          "t": {
+            "title": "T",
+            "type": "number"
+          },
+          "user": {
+            "title": "User",
+            "type": "string"
+          }
+        },
+        "required": [
+          "user",
+          "t"
+        ],
+        "title": "SharedHolder",
+        "type": "object"
+      },
       "SimulationV1": {
         "additionalProperties": false,
         "properties": {
@@ -4460,6 +4576,200 @@
           }
         },
         "title": "StartRunV1",
+        "type": "object"
+      },
+      "StopOut": {
+        "properties": {
+          "cap": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The cap that stopped the walk; null for the depth limit",
+            "title": "Cap"
+          },
+          "degree": {
+            "title": "Degree",
+            "type": "integer"
+          },
+          "hop": {
+            "title": "Hop",
+            "type": "integer"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "hop",
+          "degree",
+          "cap",
+          "reason"
+        ],
+        "title": "StopOut",
+        "type": "object"
+      },
+      "TimelineItem": {
+        "properties": {
+          "amount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amount"
+          },
+          "counterparty": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Counterparty"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Kind"
+          },
+          "t": {
+            "title": "T",
+            "type": "number"
+          },
+          "txn_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Txn Id"
+          },
+          "type": {
+            "enum": [
+              "joined",
+              "linked",
+              "sent",
+              "received"
+            ],
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "t",
+          "type"
+        ],
+        "title": "TimelineItem",
+        "type": "object"
+      },
+      "TxnItem": {
+        "properties": {
+          "amount": {
+            "title": "Amount",
+            "type": "number"
+          },
+          "counterparty": {
+            "title": "Counterparty",
+            "type": "string"
+          },
+          "direction": {
+            "enum": [
+              "in",
+              "out"
+            ],
+            "title": "Direction",
+            "type": "string"
+          },
+          "t": {
+            "title": "T",
+            "type": "number"
+          },
+          "txn_id": {
+            "title": "Txn Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "txn_id",
+          "t",
+          "direction",
+          "counterparty",
+          "amount"
+        ],
+        "title": "TxnItem",
+        "type": "object"
+      },
+      "TxnSummary": {
+        "properties": {
+          "amount_received": {
+            "title": "Amount Received",
+            "type": "number"
+          },
+          "amount_sent": {
+            "title": "Amount Sent",
+            "type": "number"
+          },
+          "items": {
+            "description": "The latest transfers, oldest first",
+            "items": {
+              "$ref": "#/components/schemas/TxnItem"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "received": {
+            "title": "Received",
+            "type": "integer"
+          },
+          "sent": {
+            "title": "Sent",
+            "type": "integer"
+          },
+          "truncated": {
+            "title": "Truncated",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "sent",
+          "received",
+          "amount_sent",
+          "amount_received",
+          "items",
+          "truncated"
+        ],
+        "title": "TxnSummary",
         "type": "object"
       },
       "UpdateUserRequest": {

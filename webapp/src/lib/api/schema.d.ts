@@ -1850,7 +1850,7 @@ export interface components {
              * Attributes
              * @description Users: linked attributes with degree and hub weight
              */
-            attributes?: Record<string, never>[];
+            attributes?: components["schemas"]["EntityLink"][];
             /** Degree */
             degree: number;
             /**
@@ -1882,17 +1882,14 @@ export interface components {
              */
             source: "run" | "course" | "neo4j";
             /** Timeline */
-            timeline: Record<string, never>[];
-            /**
-             * Transactions
-             * @description Users: counts, totals and the latest transfers in and out
-             */
-            transactions?: Record<string, never> | null;
+            timeline: components["schemas"]["TimelineItem"][];
+            /** @description Users: counts, totals and the latest transfers in and out */
+            transactions?: components["schemas"]["TxnSummary"] | null;
             /**
              * Users
              * @description Attributes: active users linked, with link time
              */
-            users?: Record<string, never>[];
+            users?: components["schemas"]["EntityUser"][];
         };
         /** EntityHit */
         EntityHit: {
@@ -1909,6 +1906,25 @@ export interface components {
              */
             kind: "user" | "device" | "card" | "ip";
         };
+        /** EntityLink */
+        EntityLink: {
+            /** Degree */
+            degree: number;
+            /** Hub Weight */
+            hub_weight: number;
+            /** Id */
+            id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "user" | "device" | "card" | "ip";
+            /**
+             * T
+             * @description Last time the link was made (simulated epoch seconds)
+             */
+            t: number;
+        };
         /** EntityRing */
         EntityRing: {
             /** Members */
@@ -1921,6 +1937,13 @@ export interface components {
             risk: number | null;
             /** Status */
             status: string;
+        };
+        /** EntityUser */
+        EntityUser: {
+            /** Id */
+            id: string;
+            /** T */
+            t: number;
         };
         /** ErrorBody */
         ErrorBody: {
@@ -1999,11 +2022,8 @@ export interface components {
             kind: "user" | "device" | "card" | "ip";
             /** Seed */
             seed: boolean;
-            /**
-             * Stop
-             * @description Why the walk did not cross this attribute (hub cap or depth limit)
-             */
-            stop?: Record<string, never> | null;
+            /** @description Why the walk did not cross this attribute (hub cap or depth limit) */
+            stop?: components["schemas"]["StopOut"] | null;
         };
         /**
          * GraphSnapshotV1
@@ -2536,7 +2556,7 @@ export interface components {
              * Shared Attributes
              * @description Attributes shared by at least two current members
              */
-            shared_attributes: Record<string, never>[];
+            shared_attributes: components["schemas"]["SharedAttribute"][];
             /** Size History */
             size_history: [
                 number,
@@ -2759,6 +2779,29 @@ export interface components {
             access_expires_in_s: number;
             user: components["schemas"]["UserOut"];
         };
+        /** SharedAttribute */
+        SharedAttribute: {
+            /** Degree */
+            degree: number;
+            /** Hub Weight */
+            hub_weight: number;
+            /** Id */
+            id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "user" | "device" | "card" | "ip";
+            /** Members */
+            members: components["schemas"]["SharedHolder"][];
+        };
+        /** SharedHolder */
+        SharedHolder: {
+            /** T */
+            t: number;
+            /** User */
+            user: string;
+        };
         /** SimulationV1 */
         SimulationV1: {
             /** Amount Median */
@@ -2867,6 +2910,74 @@ export interface components {
              * @default 1
              */
             speed_multiplier: number;
+        };
+        /** StopOut */
+        StopOut: {
+            /**
+             * Cap
+             * @description The cap that stopped the walk; null for the depth limit
+             */
+            cap: number | null;
+            /** Degree */
+            degree: number;
+            /** Hop */
+            hop: number;
+            /** Reason */
+            reason: string;
+        };
+        /** TimelineItem */
+        TimelineItem: {
+            /** Amount */
+            amount?: number | null;
+            /** Counterparty */
+            counterparty?: string | null;
+            /** Id */
+            id?: string | null;
+            /** Kind */
+            kind?: string | null;
+            /** T */
+            t: number;
+            /** Txn Id */
+            txn_id?: string | null;
+            /**
+             * Type
+             * @enum {string}
+             */
+            type: "joined" | "linked" | "sent" | "received";
+        };
+        /** TxnItem */
+        TxnItem: {
+            /** Amount */
+            amount: number;
+            /** Counterparty */
+            counterparty: string;
+            /**
+             * Direction
+             * @enum {string}
+             */
+            direction: "in" | "out";
+            /** T */
+            t: number;
+            /** Txn Id */
+            txn_id: string;
+        };
+        /** TxnSummary */
+        TxnSummary: {
+            /** Amount Received */
+            amount_received: number;
+            /** Amount Sent */
+            amount_sent: number;
+            /**
+             * Items
+             * @description The latest transfers, oldest first
+             */
+            items: components["schemas"]["TxnItem"][];
+            /** Received */
+            received: number;
+            /** Sent */
+            sent: number;
+            /** Truncated */
+            truncated: boolean;
         };
         /**
          * UpdateUserRequest

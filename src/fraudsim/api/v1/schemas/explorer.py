@@ -33,6 +33,46 @@ class EntityRing(BaseModel):
     risk: float | None
 
 
+class EntityLink(BaseModel):
+    kind: Kind
+    id: str
+    t: float = Field(description="Last time the link was made (simulated epoch seconds)")
+    degree: int
+    hub_weight: float
+
+
+class EntityUser(BaseModel):
+    id: str
+    t: float
+
+
+class TxnItem(BaseModel):
+    txn_id: str
+    t: float
+    direction: Literal["in", "out"]
+    counterparty: str
+    amount: float
+
+
+class TxnSummary(BaseModel):
+    sent: int
+    received: int
+    amount_sent: float
+    amount_received: float
+    items: list[TxnItem] = Field(description="The latest transfers, oldest first")
+    truncated: bool
+
+
+class TimelineItem(BaseModel):
+    t: float
+    type: Literal["joined", "linked", "sent", "received"]
+    kind: str | None = None
+    id: str | None = None
+    amount: float | None = None
+    counterparty: str | None = None
+    txn_id: str | None = None
+
+
 class EntityDetail(BaseModel):
     source: Source
     kind: Kind
@@ -45,18 +85,25 @@ class EntityDetail(BaseModel):
     )
     hub_weight_method: str | None = None
     is_hub: bool | None = Field(None, description="Degree above the engine's far_fanout cap")
-    attributes: list[dict[str, Any]] = Field(
+    attributes: list[EntityLink] = Field(
         default_factory=list, description="Users: linked attributes with degree and hub weight"
     )
-    users: list[dict[str, Any]] = Field(
+    users: list[EntityUser] = Field(
         default_factory=list, description="Attributes: active users linked, with link time"
     )
-    transactions: dict[str, Any] | None = Field(
+    transactions: TxnSummary | None = Field(
         None, description="Users: counts, totals and the latest transfers in and out"
     )
-    timeline: list[dict[str, Any]]
+    timeline: list[TimelineItem]
     alerts: list[EntityAlert] = Field(default_factory=list)
     rings: list[EntityRing] = Field(default_factory=list)
+
+
+class StopOut(BaseModel):
+    hop: int
+    degree: int
+    cap: int | None = Field(description="The cap that stopped the walk; null for the depth limit")
+    reason: str
 
 
 class GraphNodeOut(BaseModel):
@@ -70,7 +117,7 @@ class GraphNodeOut(BaseModel):
     degree: int | None = None
     hub_weight: float | None = None
     hub: bool | None = None
-    stop: dict[str, Any] | None = Field(
+    stop: StopOut | None = Field(
         None, description="Why the walk did not cross this attribute (hub cap or depth limit)"
     )
 
@@ -103,6 +150,19 @@ class RingMembership(BaseModel):
     details: dict[str, Any] = Field(default_factory=dict)
 
 
+class SharedHolder(BaseModel):
+    user: str
+    t: float
+
+
+class SharedAttribute(BaseModel):
+    kind: Kind
+    id: str
+    degree: int
+    hub_weight: float
+    members: list[SharedHolder]
+
+
 class RingViewOut(BaseModel):
     ring_id: str
     run_id: str
@@ -118,6 +178,6 @@ class RingViewOut(BaseModel):
         description="Member set after each change (created, grew, shrank, merged, split, ...)"
     )
     size_history: list[tuple[float, int]]
-    shared_attributes: list[dict[str, Any]] = Field(
+    shared_attributes: list[SharedAttribute] = Field(
         description="Attributes shared by at least two current members"
     )

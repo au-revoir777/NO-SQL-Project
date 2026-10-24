@@ -38,6 +38,7 @@ from fraudsim.api.v1.schemas.explorer import (
     Rel,
     RingMembership,
     RingViewOut,
+    SharedAttribute,
     Source,
 )
 from fraudsim.appdb.models import Alert
@@ -275,13 +276,15 @@ async def ring_view(ring_id: str) -> RingViewOut:
         holders.setdefault((lk.kind, lk.attr), []).append({"user": lk.user, "t": lk.t})
     degree = ex.r.degree(set(holders))
     shared = [
-        {
-            "kind": kind,
-            "id": attr,
-            "degree": degree[(kind, attr)],
-            "hub_weight": ex.weight(degree[(kind, attr)]),
-            "members": sorted(hs, key=lambda h: (h["t"], h["user"])),
-        }
+        SharedAttribute.model_validate(
+            {
+                "kind": kind,
+                "id": attr,
+                "degree": degree[(kind, attr)],
+                "hub_weight": ex.weight(degree[(kind, attr)]),
+                "members": sorted(hs, key=lambda h: (h["t"], h["user"])),
+            }
+        )
         for (kind, attr), hs in sorted(holders.items())
         if len(hs) >= 2
     ]
