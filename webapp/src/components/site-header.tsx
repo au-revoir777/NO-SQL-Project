@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { ConnectionIndicator } from "@/components/connection-indicator";
+import { CommandPalette } from "@/components/explorer/command-palette";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { UserMenu } from "@/components/user-menu";
 import {
@@ -48,6 +49,7 @@ export function SiteHeader() {
         </BreadcrumbList>
       </Breadcrumb>
       <div className="ml-auto flex items-center gap-3">
+        <CommandPalette />
         <ConnectionIndicator />
         <ThemeToggle />
         <UserMenu />

@@ -1,10 +1,11 @@
 "use client";
 
-import { ArrowLeft, Info } from "lucide-react";
+import { ArrowLeft, Info, Network } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { EntityLink } from "@/components/explorer/common";
 import { useSessionUser } from "@/components/session-provider";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
@@ -98,7 +99,17 @@ function Overview({ a }: { a: AlertDetailT }) {
       </section>
       <section className="space-y-1">
         <h3 className="text-sm font-semibold">Members</h3>
-        <p className="font-mono text-xs break-words">{a.members.join(", ")}</p>
+        {a.live ? (
+          <ul className="flex flex-wrap gap-x-4 gap-y-1" aria-label="Members">
+            {a.members.map((m) => (
+              <li key={m}>
+                <EntityLink kind="user" id={m} source="run" />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="font-mono text-xs break-words">{a.members.join(", ")}</p>
+        )}
       </section>
     </div>
   );
@@ -319,6 +330,13 @@ function Triage({ a }: { a: AlertDetailT }) {
         defaultTitle={`${words(a.ring_type)} ring ${a.alert_ref}`}
       />
       <AddToCaseDialog alertIds={[a.id]} />
+      {a.live ? (
+        <Button variant="outline" asChild>
+          <Link href={`/explorer/rings/${a.alert_ref}`}>
+            <Network aria-hidden /> Ring in explorer
+          </Link>
+        </Button>
+      ) : null}
     </div>
   );
 }

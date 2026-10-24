@@ -41,7 +41,7 @@ export const NAV: NavGroup[] = [
   {
     label: "Investigate",
     items: [
-      { title: "Explorer", href: "/explorer", icon: Search, milestone: "P6" },
+      { title: "Explorer", href: "/explorer", icon: Search },
       { title: "Reports", href: "/reports", icon: FileText, milestone: "P7" },
     ],
   },

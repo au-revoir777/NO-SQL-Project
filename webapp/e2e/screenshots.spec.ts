@@ -125,3 +125,42 @@ test("P5: alert queue, alert evidence, case and audit view", async ({ page }) =>
   await expect(page.getByText("Hash chain intact")).toBeVisible();
   await page.screenshot({ path: `${OUT}/webapp_p5_audit.png`, fullPage: true });
 });
+
+test("P6: entity page, hub stop and ring view", async ({ page }) => {
+  test.setTimeout(180_000);
+  await signIn(page, "analyst");
+  await page.goto("/explorer/device/device_007?source=course");
+  await expect(page.getByRole("button", { name: /^Show the node table \([1-9]/ })).toBeVisible();
+  await page.waitForTimeout(1_500);
+  await page.screenshot({ path: `${OUT}/webapp_p6_entity.png`, fullPage: true });
+
+  await page.goto("/explorer/user/u13?source=course");
+  await page.getByLabel("Hops (k)").click();
+  await page.getByRole("option", { name: "2" }).click();
+  await page.getByLabel("First-hop cap").fill("10");
+  await page.getByLabel("First-hop cap").blur();
+  await expect(page.getByText(/hub: 12 active users > cap 10/).first()).toBeVisible();
+  await page.waitForTimeout(1_500);
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.screenshot({ path: `${OUT}/webapp_p6_hub_stop.png`, fullPage: true });
+
+  const csrf = (await page.context().cookies()).find((c) => c.name === "fraudsim_csrf")?.value;
+  await page.request.post("/api/v1/runs", {
+    data: { scenario: "baseline", seed: 7, speed_multiplier: 0 },
+    headers: { "x-csrf-token": csrf ?? "" },
+  });
+  await expect
+    .poll(
+      async () => (await (await page.request.get("/api/v1/runs/current")).json()).status as string,
+      { timeout: 90_000 },
+    )
+    .toBe("finished");
+  const alerts = (await (await page.request.get("/api/v1/alerts")).json()) as {
+    items: { alert_ref: string; members_count: number }[];
+  };
+  const ring = [...alerts.items].sort((a, b) => b.members_count - a.members_count)[0]!;
+  await page.goto(`/explorer/rings/${ring.alert_ref}`);
+  await expect(page.getByRole("region", { name: "Membership changes" })).toBeVisible();
+  await page.waitForTimeout(1_500);
+  await page.screenshot({ path: `${OUT}/webapp_p6_ring.png`, fullPage: true });
+});
