@@ -152,6 +152,14 @@ All matched files use Prettier code style!
 - The audit table scrolled sideways once it had long entries (axe scrollable-region-focusable);
   the details column now wraps.
 
+## Fixed after the first CI runs
+- CI e2e failed on the case page: axe measured the "Case moved to escalated." toast mid fade-in
+  (color-contrast), which the slower Linux runner exposed. The axe helper now waits for running
+  animations to finish. Found through the new GitHub annotations of Playwright failures (CI only).
+- Tables that scroll sideways on narrow screens (audit, alerts) are now labelled, focusable regions,
+  and loading skeletons carry role=status (axe scrollable-region-focusable, aria-prohibited-attr);
+  a Playwright test checks the audit and alert pages at 820 px.
+
 ## Observations (not changed in P5)
 - The queue shows a ring's latest risk, not its risk when it was raised. In the seed-7 baseline run
   one alert (raised as kind "alert") now reads 0.00 in bucket 0.0-0.1; the ring timeline on its page

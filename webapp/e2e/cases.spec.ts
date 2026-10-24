@@ -13,6 +13,11 @@ async function signIn(page: Page, who: keyof typeof E2E_USERS) {
 }
 
 async function noSeriousAxe(page: Page) {
+  // A toast measured mid fade-in has low contrast (seen on the CI runner): let
+  // running animations and transitions finish first.
+  await page.waitForFunction(() =>
+    document.getAnimations().every((a) => a.playState !== "running"),
+  );
   const { violations } = await new AxeBuilder({ page }).analyze();
   const bad = violations.filter((v) => v.impact === "serious" || v.impact === "critical");
   expect(
