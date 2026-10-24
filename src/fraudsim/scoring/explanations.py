@@ -136,6 +136,39 @@ def reason_text(
     return "; ".join(parts) + "." if parts else "Flagged by the ensemble."
 
 
+def model_counterfactuals(
+    scorer: RingScorer,
+    x: np.ndarray,
+    contributions: dict[str, float],
+    threshold: float,
+    limit: int = 2,
+    exact_crossing: bool = True,
+) -> list[tuple[str, float, float]]:
+    """
+    The single-feature model counterfactuals the product shows, as
+    (feature, current value, target value): actionable features with a positive
+    contribution, in contribution order, whose target is plausible (a busier
+    hub for hub_exposure, a smaller non-negative value otherwise). E12 measures
+    exactly these.
+    """
+    out: list[tuple[str, float, float]] = []
+    feats = dict(zip(FEATURE_NAMES, x.tolist(), strict=True))
+    for name, c in contributions.items():
+        if c <= 0 or name not in ACTIONABLE:
+            continue
+        target = scorer.counterfactual_value(x, name, threshold, exact_crossing)
+        if target is None:
+            continue
+        current = feats[name]
+        if (name == "hub_exposure" and target > current) or (
+            name != "hub_exposure" and 0 <= target < current
+        ):
+            out.append((name, current, target))
+        if len(out) >= limit:
+            break
+    return out
+
+
 def counterfactuals(
     scorer: RingScorer,
     x: np.ndarray,
@@ -145,28 +178,17 @@ def counterfactuals(
     evidence: dict[str, Any],
 ) -> list[str]:
     out: list[str] = []
-    feats = dict(zip(FEATURE_NAMES, x.tolist(), strict=True))
-    for name, c in contributions.items():
-        if c <= 0 or name not in ACTIONABLE:
-            continue
-        target = scorer.counterfactual_value(x, name, threshold)
-        if target is None:
-            continue
-        current = feats[name]
+    for name, current, target in model_counterfactuals(scorer, x, contributions, threshold):
         if name == "hub_exposure":
-            if target <= current:
-                continue
             out.append(
                 f"Would score below {threshold:.2f} if its busiest shared attribute were used by "
                 f"about {math.expm1(target):.0f} accounts instead of {math.expm1(current):.0f}."
             )
-        elif target < current and target >= 0:
+        else:
             out.append(
                 f"Would score below {threshold:.2f} if {FEATURE_LABELS[name]} were "
                 f"{target:.2f} instead of {current:.2f}."
             )
-        if len(out) >= 2:
-            break
     # Rule counterfactual for the hub-aware detector.
     hub_ev = (evidence.get("by_detector") or {}).get("hub_aware")
     if hub_ev:

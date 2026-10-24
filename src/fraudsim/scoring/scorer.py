@@ -140,22 +140,39 @@ class RingScorer:
         )
         return {k: round(v, 6) for k, v in pairs}
 
-    def raw_threshold_for(self, calibrated_threshold: float) -> float | None:
-        """Smallest raw probability whose calibrated score reaches the threshold."""
-        assert self.calibrator is not None
-        xs = self.calibrator.X_thresholds_
-        ys = self.calibrator.y_thresholds_
-        above = [x for x, y in zip(xs, ys, strict=True) if y >= calibrated_threshold]
-        return float(min(above)) if above else None
+    def raw_threshold_for(
+        self, calibrated_threshold: float, exact_crossing: bool = True
+    ) -> float | None:
+        """
+        Raw probability at which the calibrated score reaches the threshold.
 
-    def counterfactual_value(self, x: np.ndarray, feature: str, threshold: float) -> float | None:
+        The isotonic calibrator interpolates linearly between its breakpoints, so
+        the exact crossing usually lies between two breakpoints (exact_crossing,
+        the default). exact_crossing=False returns the first breakpoint at or
+        above the threshold, as versions before E12 did; a raw score just below
+        it can still calibrate above the threshold (E12 protocol, amendment 1).
+        """
+        assert self.calibrator is not None
+        xs = [float(v) for v in self.calibrator.X_thresholds_]
+        ys = [float(v) for v in self.calibrator.y_thresholds_]
+        idx = next((i for i, y in enumerate(ys) if y >= calibrated_threshold), None)
+        if idx is None:
+            return None
+        if not exact_crossing or idx == 0:
+            return xs[idx]
+        x0, y0, x1, y1 = xs[idx - 1], ys[idx - 1], xs[idx], ys[idx]
+        return x0 + (calibrated_threshold - y0) * (x1 - x0) / (y1 - y0)
+
+    def counterfactual_value(
+        self, x: np.ndarray, feature: str, threshold: float, exact_crossing: bool = True
+    ) -> float | None:
         """
         Value of `feature` (others fixed) at which the calibrated score would drop
         below `threshold`. Exact for logistic regression, None if no such value.
         """
         if self.model_type != "logistic_regression":
             return None
-        raw_t = self.raw_threshold_for(threshold)
+        raw_t = self.raw_threshold_for(threshold, exact_crossing)
         if raw_t is None:
             return None
         i = FEATURE_NAMES.index(feature)
