@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
+import { parseTime } from "@/components/cases/common";
 import { CreateUserDialog } from "@/components/create-user-dialog";
 import { EmptyState } from "@/components/empty-state";
 import { useSessionUser } from "@/components/session-provider";
@@ -51,7 +52,7 @@ import { useUpdateUser, useUsers } from "@/lib/api/queries";
 const dateFmt = new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" });
 
 function formatDate(iso: string | null | undefined): string {
-  return iso ? dateFmt.format(new Date(iso)) : "Never";
+  return iso ? dateFmt.format(parseTime(iso)) : "Never";
 }
 
 function errorText(e: unknown): string {

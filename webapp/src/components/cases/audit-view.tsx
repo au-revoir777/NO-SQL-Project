@@ -31,8 +31,10 @@ function Verify() {
       <ShieldCheck aria-hidden className="text-ok" />
       <AlertTitle>Hash chain intact</AlertTitle>
       <AlertDescription>
-        All {v.data.entries} entries verify (the same check as <code>fraudsim audit-verify</code>
-        ).
+        <p>
+          All {v.data.entries} entries verify (the same check as <code>fraudsim audit-verify</code>
+          ).
+        </p>
         <Button variant="outline" size="sm" className="mt-2 w-fit" onClick={() => void v.refetch()}>
           Verify again
         </Button>
@@ -123,7 +125,7 @@ export function AuditView() {
                     <TableCell className="font-mono text-xs">{e.action_type}</TableCell>
                     <TableCell className="text-xs">{e.actor}</TableCell>
                     <TableCell className="font-mono text-xs">{e.object}</TableCell>
-                    <TableCell className="max-w-md">
+                    <TableCell className="max-w-sm min-w-48 whitespace-normal">
                       <code className="line-clamp-2 text-xs break-all">
                         {JSON.stringify(e.details)}
                       </code>

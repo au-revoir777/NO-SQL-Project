@@ -365,7 +365,7 @@ export function AlertDetail({ id }: { id: number }) {
           <RiskBadge risk={a.risk ?? null} threshold={a.threshold} />
           {a.live ? (
             <Badge variant="outline" className="border-ok text-ok">
-              live evidence
+              current run: evidence from the engine
             </Badge>
           ) : null}
           {(a.case_ids ?? []).map((c) => (

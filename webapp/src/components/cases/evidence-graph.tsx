@@ -166,7 +166,7 @@ export function EvidenceGraph({ evidence }: { evidence: Evidence }) {
         </Button>
       </div>
       {asTable ? (
-        <div className="space-y-4">
+        <div key="table" className="space-y-4">
           <Table>
             <caption className="text-muted-foreground mb-2 text-left text-sm">
               Shared attributes (degree = accounts using it in the whole graph)
@@ -229,6 +229,7 @@ export function EvidenceGraph({ evidence }: { evidence: Evidence }) {
         </div>
       ) : (
         <div
+          key="graph"
           ref={box}
           className="bg-muted/30 h-[420px] w-full rounded-lg border"
           role="img"

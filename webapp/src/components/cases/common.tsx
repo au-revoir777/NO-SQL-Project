@@ -31,8 +31,13 @@ import { cn } from "@/lib/utils";
 
 const dateFmt = new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "medium" });
 
+/** Parse an API time; naive ISO strings (SQLite drops the offset) are UTC. */
+export function parseTime(iso: string): Date {
+  return new Date(/(?:[zZ]|[+-]\d\d:?\d\d)$/.test(iso) ? iso : `${iso}Z`);
+}
+
 export function fmtTime(iso: string | null | undefined): string {
-  return iso ? dateFmt.format(new Date(iso)) : "–";
+  return iso ? dateFmt.format(parseTime(iso)) : "–";
 }
 
 export function errorText(e: unknown, fallback = "The change could not be saved."): string {
@@ -367,6 +372,19 @@ function describe(details: Record<string, unknown>): string {
   const parts: string[] = [];
   for (const [k, v] of Object.entries(details)) {
     if (k === "ip" || v === null || v === undefined || v === "") continue;
+    if (k === "changes" && typeof v === "object") {
+      // CASE_UPDATED: {field: {from, to}} or {field: new value}
+      for (const [f, c] of Object.entries(v as Record<string, unknown>)) {
+        const fromTo =
+          c !== null && typeof c === "object" ? (c as { from?: unknown; to?: unknown }) : null;
+        parts.push(
+          fromTo
+            ? `${words(f)}: ${String(fromTo.from ?? "–")} → ${String(fromTo.to ?? "–")}`
+            : `${words(f)}: ${String(c ?? "none")}`,
+        );
+      }
+      continue;
+    }
     if (typeof v === "object") continue;
     parts.push(`${words(k)}: ${String(v)}`);
   }
@@ -386,7 +404,7 @@ export function ActivityList({ entries }: { entries: Record<string, unknown>[] }
               <span className="font-medium">{String(e.actor)}</span>{" "}
               {ACTION_TEXT[action] ?? words(action.toLowerCase())}
             </p>
-            <p className="text-muted-foreground text-xs">
+            <p className="text-muted-foreground text-xs break-all">
               <time dateTime={String(e.ts)}>{fmtTime(String(e.ts))}</time>
               {" · "}
               {describe((e.details as Record<string, unknown>) ?? {}) || `#${String(e.seq)}`}

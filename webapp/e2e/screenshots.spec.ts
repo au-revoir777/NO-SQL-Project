@@ -77,3 +77,51 @@ test("story replay", async ({ page }) => {
   await expect(page.getByRole("heading", { name: /Replay of run/ })).toBeVisible();
   await page.screenshot({ path: `${OUT}/webapp_p4_replay.png`, fullPage: true });
 });
+
+test("P5: alert queue, alert evidence, case and audit view", async ({ page }) => {
+  test.setTimeout(180_000);
+  await signIn(page, "analyst");
+  const csrf = (await page.context().cookies()).find((c) => c.name === "fraudsim_csrf")?.value;
+  await page.request.post("/api/v1/runs", {
+    data: { scenario: "baseline", seed: 7, speed_multiplier: 0 },
+    headers: { "x-csrf-token": csrf ?? "" },
+  });
+  await expect
+    .poll(
+      async () => (await (await page.request.get("/api/v1/runs/current")).json()).status as string,
+      { timeout: 90_000 },
+    )
+    .toBe("finished");
+  await page.goto("/alerts");
+  const first = page.getByRole("table").getByRole("link").first();
+  await expect(first).toBeVisible();
+  await page.screenshot({ path: `${OUT}/webapp_p5_alerts.png`, fullPage: true });
+
+  const ref = (await first.textContent())!.trim();
+  await first.click();
+  await page.getByRole("tab", { name: "Evidence" }).click();
+  await page.waitForTimeout(1_000);
+  await page.screenshot({ path: `${OUT}/webapp_p5_alert_evidence.png`, fullPage: true });
+
+  await page.getByRole("tab", { name: "Activity" }).click();
+  await page.getByLabel("Add a note").fill("Four accounts opened within a minute on one device.");
+  await page.getByRole("button", { name: "Add note" }).click();
+  await page.getByRole("button", { name: "Confirmed fraud" }).click();
+  await expect(page.getByText(/Threshold for .*→/)).toBeVisible();
+  await page.getByRole("button", { name: "Create case" }).click();
+  await page.getByLabel("Title").fill(`Ring ${ref}: shared attributes and transfers`);
+  await page.getByRole("dialog").getByRole("button", { name: "Create case" }).click();
+  await expect(page).toHaveURL(/\/cases\/\d+$/);
+  await page.getByRole("combobox", { name: "Move to" }).click();
+  await page.getByRole("option", { name: "escalated" }).click();
+  await page.getByRole("button", { name: "Update status" }).click();
+  await expect(page.getByText("Case moved to escalated.")).toBeVisible();
+  await page.waitForTimeout(4_500); // let the toast fade
+  await page.screenshot({ path: `${OUT}/webapp_p5_case.png`, fullPage: true });
+
+  await page.context().clearCookies();
+  await signIn(page, "admin");
+  await page.goto("/audit");
+  await expect(page.getByText("Hash chain intact")).toBeVisible();
+  await page.screenshot({ path: `${OUT}/webapp_p5_audit.png`, fullPage: true });
+});
