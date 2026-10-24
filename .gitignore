@@ -3,6 +3,9 @@ __pycache__/
 .env
 .DS_Store
 /runs/
+# The API writes its app DB and run logs to ./runs relative to where it starts,
+# so a server started inside webapp/ must not leak them into git.
+/webapp/runs/
 results/*
 !results/e[0-9]*_*/
 !results/tuning/
