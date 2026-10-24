@@ -58,7 +58,8 @@ describe("AppSidebar", () => {
     const alerts = screen.getByRole("link", { name: "Alerts" });
     expect(alerts).toHaveAttribute("aria-current", "page");
     expect(screen.getByRole("link", { name: "Dashboard" })).not.toHaveAttribute("aria-current");
-    // Alerts, Cases and Audit all arrive in P5.
-    expect(screen.getAllByTitle("Arrives in milestone P5")).toHaveLength(3);
+    // Alerts, Cases and Audit are built (P5); Explorer still arrives in P6.
+    expect(screen.queryAllByTitle("Arrives in milestone P5")).toHaveLength(0);
+    expect(screen.getAllByTitle("Arrives in milestone P6")).toHaveLength(1);
   });
 });

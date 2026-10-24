@@ -34,8 +34,8 @@ export const NAV: NavGroup[] = [
     label: "Monitor",
     items: [
       { title: "Dashboard", href: "/", icon: LayoutDashboard },
-      { title: "Alerts", href: "/alerts", icon: BellRing, milestone: "P5" },
-      { title: "Cases", href: "/cases", icon: Briefcase, milestone: "P5" },
+      { title: "Alerts", href: "/alerts", icon: BellRing },
+      { title: "Cases", href: "/cases", icon: Briefcase },
     ],
   },
   {
@@ -61,7 +61,7 @@ export const NAV: NavGroup[] = [
     items: [
       { title: "Rules", href: "/rules", icon: SlidersHorizontal, milestone: "P9", adminOnly: true },
       { title: "Users", href: "/users", icon: Users, adminOnly: true },
-      { title: "Audit", href: "/audit", icon: ShieldCheck, milestone: "P5", adminOnly: true },
+      { title: "Audit", href: "/audit", icon: ShieldCheck, adminOnly: true },
     ],
   },
 ];

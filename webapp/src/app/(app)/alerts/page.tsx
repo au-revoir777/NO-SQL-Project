@@ -1,9 +1,20 @@
 import type { Metadata } from "next";
 
-import { PlannedPage } from "@/components/planned-page";
+import { AlertQueue } from "@/components/cases/alert-queue";
 
 export const metadata: Metadata = { title: "Alerts" };
 
-export default function Page() {
-  return <PlannedPage href="/alerts" />;
+export default function AlertsPage() {
+  return (
+    <div className="space-y-6">
+      <div className="space-y-1">
+        <h1 className="text-2xl font-semibold tracking-tight">Alerts</h1>
+        <p className="text-muted-foreground">
+          Alerts and early warnings recorded from live runs. Triage them, label them, and group them
+          into cases.
+        </p>
+      </div>
+      <AlertQueue />
+    </div>
+  );
 }
