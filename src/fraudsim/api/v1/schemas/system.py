@@ -34,3 +34,7 @@ class RunStatusV1(BaseModel):
     rings_tracked: int
     sim_time_s: float
     speed_multiplier: float
+    scenario_hash: str | None = None
+    stream_digest: str | None = Field(
+        default=None, description="SHA-256 of the events generated so far (final once finished)"
+    )

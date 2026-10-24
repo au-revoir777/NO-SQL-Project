@@ -229,6 +229,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/replays": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Replays */
+        get: operations["replays_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/replays/{run_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Replay */
+        get: operations["replays_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/reports": {
         parameters: {
             query?: never;
@@ -300,6 +334,83 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/runs/current/detectors": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Detectors */
+        get: operations["runs_detectors"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/runs/current/detectors/{detector_type}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Toggle Detector
+         * @description Admin: switch a detector on or off for the live run.
+         */
+        patch: operations["runs_toggle_detector"];
+        trace?: never;
+    };
+    "/api/v1/runs/current/graph": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Graph
+         * @description Windowed graph of the live run, capped at `max_users` users.
+         */
+        get: operations["runs_graph"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/runs/current/inject": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Inject
+         * @description Spawn a fraud ring of the given type and evasion right now.
+         */
+        post: operations["runs_inject"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/runs/current/metrics": {
         parameters: {
             query?: never;
@@ -313,6 +424,205 @@ export interface paths {
          *     simulator ground-truth metrics (labelled as such).
          */
         get: operations["runs_current_metrics"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/runs/current/pause": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Pause */
+        post: operations["runs_pause"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/runs/current/rate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Rate */
+        post: operations["runs_rate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/runs/current/resume": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Resume */
+        post: operations["runs_resume"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/runs/current/speed": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Speed */
+        post: operations["runs_speed"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/runs/current/stop": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Stop */
+        post: operations["runs_stop"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/scenarios": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Scenarios */
+        get: operations["scenarios_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/scenarios/catalog": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Catalog
+         * @description Allowed values for the scenario builder's selects.
+         */
+        get: operations["scenarios_catalog"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/scenarios/custom/{name}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Save Custom
+         * @description Admin: save to configs/scenarios/custom/<name>.yaml (overwrites a custom one).
+         */
+        put: operations["scenarios_save_custom"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/scenarios/validate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Validate
+         * @description Validate a scenario as the simulator would; returns its config hash.
+         */
+        post: operations["scenarios_validate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/scenarios/yaml": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * To Yaml
+         * @description The scenario as a YAML file loadable by `fraudsim` (same config hash).
+         */
+        post: operations["scenarios_yaml"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/scenarios/{name}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Scenario */
+        get: operations["scenarios_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -764,6 +1074,17 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** AdaptiveAttackerV1 */
+        AdaptiveAttackerV1: {
+            /** Max Rings */
+            max_rings?: number | null;
+            /** Penalty */
+            penalty?: (number) | null;
+            /** Respawn Delay S */
+            respawn_delay_s?: (number) | null;
+            /** Strategies */
+            strategies?: components["schemas"]["EvasionMode"][] | null;
+        };
         /**
          * AlertV1
          * @description One alert or early warning as published to `fraudsim:alerts`.
@@ -813,6 +1134,17 @@ export interface components {
              * @default
              */
             note: string;
+        };
+        /** BenignMixV1 */
+        BenignMixV1: {
+            /** Card Link */
+            card_link?: (number) | null;
+            /** Device Link */
+            device_link?: (number) | null;
+            /** Ip Login */
+            ip_login?: (number) | null;
+            /** Transaction */
+            transaction?: (number) | null;
         };
         /** ComponentHealth */
         ComponentHealth: {
@@ -877,6 +1209,31 @@ export interface components {
             /** Enabled */
             enabled: boolean;
         };
+        /** DetectorToggleV1 */
+        DetectorToggleV1: {
+            /** Enabled */
+            enabled: boolean;
+        };
+        /** DetectorV1 */
+        DetectorV1: {
+            /** Enabled */
+            enabled: boolean;
+            /** Type */
+            type: string;
+        } & {
+            [key: string]: unknown;
+        };
+        /** DriftV1 */
+        DriftV1: {
+            /** New Hub Kind */
+            new_hub_kind?: ("device" | "card" | "ip") | null;
+            /** New Hub Size */
+            new_hub_size?: number | null;
+            /** Shift Multiplier */
+            shift_multiplier?: (number) | null;
+            /** Trigger Time S */
+            trigger_time_s: number;
+        };
         /** ErrorBody */
         ErrorBody: {
             /**
@@ -897,6 +1254,28 @@ export interface components {
         /** ErrorEnvelope */
         ErrorEnvelope: {
             error: components["schemas"]["ErrorBody"];
+        };
+        /**
+         * EvasionMode
+         * @description Evasion strategies used by simulated attackers.
+         * @enum {string}
+         */
+        EvasionMode: "none" | "hub_hiding" | "low_and_slow" | "identity_rotation" | "decoy_edges" | "adaptive";
+        /**
+         * GraphSnapshotV1
+         * @description Windowed live graph (nodes and edges as built for the dashboards).
+         */
+        GraphSnapshotV1: {
+            /** Edges */
+            edges: Record<string, never>[];
+            /** Nodes */
+            nodes: Record<string, never>[];
+            /** Shown Users */
+            shown_users: number;
+            /** Total Active Users */
+            total_active_users: number;
+        } & {
+            [key: string]: unknown;
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -945,6 +1324,51 @@ export interface components {
             /** Version */
             version: string;
         };
+        /** HubSizeDistributionV1 */
+        HubSizeDistributionV1: {
+            /**
+             * Alpha
+             * @default 1.5
+             */
+            alpha: number;
+            /** Categories */
+            categories?: string[] | null;
+            /**
+             * Count
+             * @default 0
+             */
+            count: number;
+            /**
+             * Max Size
+             * @default 40
+             */
+            max_size: number;
+            /**
+             * Min Size
+             * @default 3
+             */
+            min_size: number;
+        };
+        /**
+         * HubV1
+         * @description A named benign hub (under `simulation.hub_distribution` in YAML).
+         */
+        HubV1: {
+            /** Category */
+            category?: string | null;
+            /** Fill Time S */
+            fill_time_s?: (number) | null;
+            /** Size */
+            size: number;
+            /** Start Time S */
+            start_time_s?: (number) | null;
+            /**
+             * Type
+             * @default ip
+             * @enum {string}
+             */
+            type: "device" | "card" | "ip";
+        };
         /** InjectRingRequest */
         InjectRingRequest: {
             /**
@@ -962,6 +1386,24 @@ export interface components {
              * @default 4
              */
             size: number;
+        };
+        /** InjectV1 */
+        InjectV1: {
+            /** @default none */
+            evasion: components["schemas"]["EvasionMode"];
+            ring_type: components["schemas"]["RingType"];
+            /**
+             * Size
+             * @default 4
+             */
+            size: number;
+        };
+        /** InjectedV1 */
+        InjectedV1: {
+            /** Ring Id */
+            ring_id: string;
+            /** Sim Time S */
+            sim_time_s: number;
         };
         /** LoginRequest */
         LoginRequest: {
@@ -1062,10 +1504,65 @@ export interface components {
              */
             total?: number | null;
         };
+        /** RandomRingsV1 */
+        RandomRingsV1: {
+            /** Active Duration S */
+            active_duration_s?: [
+                number,
+                number
+            ] | null;
+            /** Evasion Weights */
+            evasion_weights?: {
+                [key: string]: number;
+            } | null;
+            /**
+             * Rate Per Min
+             * @default 0
+             */
+            rate_per_min: number;
+            /**
+             * Size Max
+             * @default 6
+             */
+            size_max: number;
+            /**
+             * Size Min
+             * @default 3
+             */
+            size_min: number;
+            /** Types */
+            types?: components["schemas"]["RingType"][] | null;
+        };
         /** RateRequest */
         RateRequest: {
             /** Events Per Second */
             events_per_second: number;
+        };
+        /** RateV1 */
+        RateV1: {
+            /** Events Per Second */
+            events_per_second: number;
+        };
+        /** ReplaySummary */
+        ReplaySummary: {
+            /** Duration S */
+            duration_s: number | null;
+            /** Events */
+            events: number | null;
+            /** Generated At */
+            generated_at: string | null;
+            /** Kind */
+            kind: string;
+            /** Replayable */
+            replayable: boolean;
+            /** Run Id */
+            run_id: string;
+            /** Scenario */
+            scenario: string | null;
+            /** Seed */
+            seed: number | null;
+            /** Source */
+            source: string;
         };
         /** RingDetailResponse */
         RingDetailResponse: {
@@ -1087,6 +1584,46 @@ export interface components {
             status: string;
             /** Updated At */
             updated_at: string;
+        };
+        /**
+         * RingType
+         * @description Types of fraud rings the system can detect.
+         * @enum {string}
+         */
+        RingType: "shared_device" | "shared_card" | "shared_ip" | "money_cycle" | "smurfing_fan_in" | "smurfing_fan_out" | "layered_chain" | "mixed_attribute";
+        /** RingV1 */
+        RingV1: {
+            /** Action Interval S */
+            action_interval_s?: (number) | null;
+            /** Active Duration S */
+            active_duration_s?: (number) | null;
+            /** @default none */
+            evasion: components["schemas"]["EvasionMode"];
+            /** Grow Interval S */
+            grow_interval_s?: (number) | null;
+            /** Id */
+            id: string;
+            /** Initial Members */
+            initial_members?: number | null;
+            /** Intensity */
+            intensity?: (number) | null;
+            /** Length */
+            length?: number | null;
+            /** Mutate Prob */
+            mutate_prob?: (number) | null;
+            /** Shared Attribute */
+            shared_attribute?: string | null;
+            /**
+             * Size
+             * @default 3
+             */
+            size: number;
+            /**
+             * Spawn Time S
+             * @default 0
+             */
+            spawn_time_s: number;
+            type: components["schemas"]["RingType"];
         };
         /** RingsByStatus */
         RingsByStatus: {
@@ -1192,6 +1729,8 @@ export interface components {
             run_id: string;
             /** Scenario */
             scenario: string;
+            /** Scenario Hash */
+            scenario_hash?: string | null;
             /** Seed */
             seed: number;
             /** Sim Time S */
@@ -1200,6 +1739,73 @@ export interface components {
             speed_multiplier: number;
             /** Status */
             status: string;
+            /**
+             * Stream Digest
+             * @description SHA-256 of the events generated so far (final once finished)
+             */
+            stream_digest?: string | null;
+        };
+        /** ScenarioCatalog */
+        ScenarioCatalog: {
+            /** Attribute Kinds */
+            attribute_kinds: string[];
+            /** Evasion Modes */
+            evasion_modes: string[];
+            /** Hub Categories */
+            hub_categories: {
+                [key: string]: string;
+            };
+            /** Ring Types */
+            ring_types: string[];
+        };
+        /** ScenarioSummary */
+        ScenarioSummary: {
+            /** Custom */
+            custom: boolean;
+            /** Description */
+            description: string | null;
+            /** Duration S */
+            duration_s: number;
+            /** Name */
+            name: string;
+            /** Rings */
+            rings: number;
+            /** Users */
+            users: number;
+        };
+        /** ScenarioV1 */
+        "ScenarioV1-Input": {
+            adaptive_attacker?: components["schemas"]["AdaptiveAttackerV1"] | null;
+            /** Description */
+            description?: string | null;
+            /**
+             * Name
+             * @description lower-case letters, digits, _
+             */
+            name: string;
+            random_rings?: components["schemas"]["RandomRingsV1"] | null;
+            /** Rings */
+            rings?: components["schemas"]["RingV1"][];
+            simulation: components["schemas"]["SimulationV1"];
+            /** Version */
+            version?: string | null;
+        };
+        /** ScenarioV1 */
+        "ScenarioV1-Output": {
+            adaptive_attacker?: components["schemas"]["AdaptiveAttackerV1"] | null;
+            /** Description */
+            description?: string | null;
+            /**
+             * Name
+             * @description lower-case letters, digits, _
+             */
+            name: string;
+            random_rings?: components["schemas"]["RandomRingsV1"] | null;
+            /** Rings */
+            rings?: components["schemas"]["RingV1"][];
+            simulation: components["schemas"]["SimulationV1"];
+            /** Version */
+            version?: string | null;
         };
         /** Session */
         Session: {
@@ -1207,8 +1813,53 @@ export interface components {
             access_expires_in_s: number;
             user: components["schemas"]["UserOut"];
         };
+        /** SimulationV1 */
+        SimulationV1: {
+            /** Amount Median */
+            amount_median?: (number) | null;
+            /** Amount Sigma */
+            amount_sigma?: (number) | null;
+            benign_mix?: components["schemas"]["BenignMixV1"] | null;
+            drift?: components["schemas"]["DriftV1"] | null;
+            /** Duration Seconds */
+            duration_seconds: number;
+            /** Heavy Tail Alpha */
+            heavy_tail_alpha?: (number) | null;
+            /**
+             * Hub Distribution
+             * @description Named benign hubs (YAML key kept for compatibility)
+             */
+            hub_distribution?: {
+                [key: string]: components["schemas"]["HubV1"];
+            } | null;
+            hub_size_distribution?: components["schemas"]["HubSizeDistributionV1"] | null;
+            /** Num Cards */
+            num_cards?: number | null;
+            /** Num Devices */
+            num_devices?: number | null;
+            /** Num Ips */
+            num_ips?: number | null;
+            /** Num Users */
+            num_users: number;
+            /** Start Ts */
+            start_ts?: string | null;
+            /** Target Event Rate */
+            target_event_rate: number;
+            /** User Join Rate */
+            user_join_rate?: (number) | null;
+            /** User Leave Rate */
+            user_leave_rate?: (number) | null;
+        };
         /** SpeedRequest */
         SpeedRequest: {
+            /**
+             * Speed Multiplier
+             * @description 0 = as fast as possible
+             */
+            speed_multiplier: number;
+        };
+        /** SpeedV1 */
+        SpeedV1: {
             /**
              * Speed Multiplier
              * @description 0 = as fast as possible
@@ -1242,8 +1893,11 @@ export interface components {
         };
         /** StartRunV1 */
         StartRunV1: {
+            /** @description An inline scenario from the builder (validated like a preset) */
+            config?: components["schemas"]["ScenarioV1-Input"] | null;
             /**
              * Scenario
+             * @description Preset name (ignored with config)
              * @default baseline
              */
             scenario: string;
@@ -1302,6 +1956,15 @@ export interface components {
             msg: string;
             /** Error Type */
             type: string;
+        };
+        /** ValidationResult */
+        ValidationResult: {
+            /** Config Hash */
+            config_hash: string;
+            /** Events Estimate */
+            events_estimate: number;
+            /** Valid */
+            valid: boolean;
         };
     };
     responses: never;
@@ -2148,6 +2811,129 @@ export interface operations {
             };
         };
     };
+    replays_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReplaySummary"][];
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Role or CSRF check failed */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    replays_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The story JSON written by `fraudsim demo-story`, unchanged */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Role or CSRF check failed */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description No story replay for this run */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
     reports_index: {
         parameters: {
             query?: never;
@@ -2327,7 +3113,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorEnvelope"];
                 };
             };
-            /** @description Validation error */
+            /** @description Invalid inline scenario */
             422: {
                 headers: {
                     [name: string]: unknown;
@@ -2403,6 +3189,290 @@ export interface operations {
             };
         };
     };
+    runs_detectors: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DetectorV1"][];
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Role or CSRF check failed */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description No run in progress */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    runs_toggle_detector: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                detector_type: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DetectorToggleV1"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DetectorV1"][];
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Role or CSRF check failed */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unknown detector */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description No run in progress */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    runs_graph: {
+        parameters: {
+            query?: {
+                max_users?: number;
+                window_s?: number;
+                /** @description Add the answer key (simulator ground truth) */
+                oracle?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GraphSnapshotV1"];
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Role or CSRF check failed */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description No run in progress */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    runs_inject: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InjectV1"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InjectedV1"];
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Role or CSRF check failed */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description No run in progress */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
     runs_current_metrics: {
         parameters: {
             query?: {
@@ -2442,6 +3512,709 @@ export interface operations {
                 };
             };
             /** @description No run has been started */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    runs_pause: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RunStatusV1"];
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Role or CSRF check failed */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description No run in progress */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    runs_rate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RateV1"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RunStatusV1"];
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Role or CSRF check failed */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description No run in progress */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    runs_resume: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RunStatusV1"];
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Role or CSRF check failed */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description No run in progress */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    runs_speed: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SpeedV1"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RunStatusV1"];
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Role or CSRF check failed */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description No run in progress */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    runs_stop: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RunStatusV1"];
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Role or CSRF check failed */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description No run in progress */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    scenarios_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScenarioSummary"][];
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Role or CSRF check failed */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    scenarios_catalog: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScenarioCatalog"];
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Role or CSRF check failed */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    scenarios_save_custom: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ScenarioV1-Input"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScenarioSummary"];
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Admin only */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description A preset has this name */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Invalid scenario or name */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    scenarios_validate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ScenarioV1-Input"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationResult"];
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Role or CSRF check failed */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Field-level or semantic errors */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    scenarios_yaml: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ScenarioV1-Input"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/x-yaml": string;
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Role or CSRF check failed */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Invalid scenario */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    scenarios_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScenarioV1-Output"];
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Role or CSRF check failed */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unknown scenario */
             404: {
                 headers: {
                     [name: string]: unknown;

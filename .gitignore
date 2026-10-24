@@ -8,6 +8,8 @@ results/*
 !results/tuning/
 !results/public/
 !results/public/runs/
+# Reference story replay (P4 e2e and README screenshots cite run 00434da7845b)
+!results/demo_story/
 .pytest_cache/
 .ruff_cache/
 /demo/

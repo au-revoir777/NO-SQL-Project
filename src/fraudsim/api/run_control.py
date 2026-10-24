@@ -9,6 +9,7 @@ from __future__ import annotations
 import asyncio
 import os
 from pathlib import Path
+from typing import Any
 
 from fraudsim.api.live import LiveRun
 from fraudsim.api.state import state
@@ -23,9 +24,14 @@ class UnknownScenarioError(LookupError):
     pass
 
 
-async def start_live_run(scenario: str, seed: int, speed: float) -> str:
-    """Stop the current run (if any) and start a new one; return its run id."""
-    if scenario not in list_scenarios():
+async def start_live_run(
+    scenario: str, seed: int, speed: float, config: dict[str, Any] | None = None
+) -> str:
+    """
+    Stop the current run (if any) and start a new one; return its run id. With
+    `config` (a validated scenario dict) the preset name is not required.
+    """
+    if config is None and scenario not in list_scenarios():
         raise UnknownScenarioError(scenario)
     async with run_lock:
         if state.live is not None:
@@ -45,6 +51,7 @@ async def start_live_run(scenario: str, seed: int, speed: float) -> str:
             # WebSocket fan-out as before, plus the P3 streams (alerts, KPIs, events).
             broadcast=StreamPublisher(state.run_id, lambda: state.live, state.broadcast_ws),
             log_dir=Path(os.environ.get("FRAUDSIM_RUNS_DIR", "runs")) / "live" / state.run_id,
+            config=config,
         )
         await state.live.start()
         await state.broadcast_ws(

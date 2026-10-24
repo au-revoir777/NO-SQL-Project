@@ -1,0 +1,6185 @@
+{
+  "meta": {
+    "run_id": "00434da7845b",
+    "scenario": "demo_story",
+    "seed": 7,
+    "config_hash": "b83a2cc642389eb4",
+    "scenario_hash": "3bd19c5330560dea",
+    "stream_digest": "3d5a92463cf052f8f9972f1bbe5eafe5713b09a207af53c87fd0b77697ad2727",
+    "events": 2512,
+    "duration_s": 90.0,
+    "generated_at": "2026-10-20T16:10:48+00:00",
+    "python": "3.11.9",
+    "match_rule": "a true ring counts as caught when a flagged group has Jaccard >= 0.5 with its members",
+    "model": {
+      "path": "ring_scorer_lr.joblib",
+      "type": "logistic_regression",
+      "training_id": "dd98f740ea8c",
+      "train_seeds": [
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110
+      ],
+      "test_seeds": [
+        201,
+        202,
+        203,
+        204,
+        205
+      ],
+      "test_metrics": {
+        "n": 4516,
+        "positives": 984,
+        "brier": 0.046133,
+        "roc_auc": 0.981661,
+        "pr_auc": 0.907582,
+        "ece": 0.029343
+      }
+    },
+    "alert_threshold": 0.5,
+    "command": "fraudsim demo-story --seed 7",
+    "batch_size": 25,
+    "full_interval_s": 5.0
+  },
+  "truth": [
+    {
+      "ring_id": "hidden_office_ring",
+      "type": "shared_ip",
+      "evasion": "hub_hiding",
+      "members": [
+        "u000122",
+        "u000123",
+        "u000127",
+        "u000128"
+      ],
+      "shared": {
+        "ip": "ip_00061"
+      },
+      "spawn_s": 10.0,
+      "activate_s": 15.7
+    },
+    {
+      "ring_id": "plain_device_ring",
+      "type": "shared_device",
+      "evasion": "none",
+      "members": [
+        "u000130",
+        "u000131",
+        "u000132",
+        "u000134"
+      ],
+      "shared": {
+        "device": "device_00118"
+      },
+      "spawn_s": 25.0,
+      "activate_s": 29.91
+    },
+    {
+      "ring_id": "cycle_ring",
+      "type": "money_cycle",
+      "evasion": "none",
+      "members": [
+        "u000136",
+        "u000137",
+        "u000138",
+        "u000139"
+      ],
+      "shared": {},
+      "spawn_s": 40.0,
+      "activate_s": 44.0
+    }
+  ],
+  "approaches": [
+    {
+      "key": "cap10",
+      "title": "Degree-capped Cypher (cap = 10)",
+      "subtitle": "Original Q1/Q2/Q3/Q4b: shared device/card \u2265 3, 3-cycles, shared IP \u2265 3 and < 10",
+      "flag_rule": "confirmed (found on 2 consecutive runs)",
+      "caught": [
+        {
+          "true_ring": "hidden_office_ring",
+          "ring_id": "R000004",
+          "jaccard": 1.0,
+          "flagged_s": 32.3
+        },
+        {
+          "true_ring": "plain_device_ring",
+          "ring_id": "R000005",
+          "jaccard": 1.0,
+          "flagged_s": 32.3
+        }
+      ],
+      "missed": [
+        "cycle_ring"
+      ],
+      "false_rings": 23,
+      "benign_users_flagged": 52,
+      "flagged": [
+        {
+          "ring_id": "R000001",
+          "members": [
+            "u000022",
+            "u000027",
+            "u000063",
+            "u000076"
+          ],
+          "size": 4,
+          "flagged_s": 10.59,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 4,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000002",
+          "members": [
+            "u000061",
+            "u000098",
+            "u000116"
+          ],
+          "size": 3,
+          "flagged_s": 10.59,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000003",
+          "members": [
+            "u000002",
+            "u000013",
+            "u000116"
+          ],
+          "size": 3,
+          "flagged_s": 16.05,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000004",
+          "members": [
+            "u000122",
+            "u000123",
+            "u000127",
+            "u000128"
+          ],
+          "size": 4,
+          "flagged_s": 32.3,
+          "true_ring": "hidden_office_ring",
+          "jaccard": 1.0,
+          "benign_members": 0,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000005",
+          "members": [
+            "u000130",
+            "u000131",
+            "u000132",
+            "u000134"
+          ],
+          "size": 4,
+          "flagged_s": 32.3,
+          "true_ring": "plain_device_ring",
+          "jaccard": 1.0,
+          "benign_members": 0,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000006",
+          "members": [
+            "u000002",
+            "u000056",
+            "u000064"
+          ],
+          "size": 3,
+          "flagged_s": 37.48,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000007",
+          "members": [
+            "u000034",
+            "u000063",
+            "u000101",
+            "u000126"
+          ],
+          "size": 4,
+          "flagged_s": 37.48,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 4,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000008",
+          "members": [
+            "u000025",
+            "u000034",
+            "u000062",
+            "u000080"
+          ],
+          "size": 4,
+          "flagged_s": 43.06,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 4,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000009",
+          "members": [
+            "u000056",
+            "u000071",
+            "u000108"
+          ],
+          "size": 3,
+          "flagged_s": 48.71,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000010",
+          "members": [
+            "u000002",
+            "u000038",
+            "u000048",
+            "u000063",
+            "u000076"
+          ],
+          "size": 5,
+          "flagged_s": 54.14,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 5,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000011",
+          "members": [
+            "u000034",
+            "u000121",
+            "u000124"
+          ],
+          "size": 3,
+          "flagged_s": 54.14,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000012",
+          "members": [
+            "u000015",
+            "u000051",
+            "u000056"
+          ],
+          "size": 3,
+          "flagged_s": 60.24,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000013",
+          "members": [
+            "u000021",
+            "u000026",
+            "u000038",
+            "u000085",
+            "u000088"
+          ],
+          "size": 5,
+          "flagged_s": 60.24,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 5,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000014",
+          "members": [
+            "u000042",
+            "u000061",
+            "u000073"
+          ],
+          "size": 3,
+          "flagged_s": 66.39,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000015",
+          "members": [
+            "u000071",
+            "u000076",
+            "u000089"
+          ],
+          "size": 3,
+          "flagged_s": 66.39,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000016",
+          "members": [
+            "u000017",
+            "u000052",
+            "u000057"
+          ],
+          "size": 3,
+          "flagged_s": 71.67,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000017",
+          "members": [
+            "u000045",
+            "u000087",
+            "u000095"
+          ],
+          "size": 3,
+          "flagged_s": 71.67,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000018",
+          "members": [
+            "u000062",
+            "u000071",
+            "u000091"
+          ],
+          "size": 3,
+          "flagged_s": 71.67,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000019",
+          "members": [
+            "u000022",
+            "u000055",
+            "u000056",
+            "u000097"
+          ],
+          "size": 4,
+          "flagged_s": 77.48,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 4,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000020",
+          "members": [
+            "u000077",
+            "u000079",
+            "u000093"
+          ],
+          "size": 3,
+          "flagged_s": 77.48,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000021",
+          "members": [
+            "u000025",
+            "u000097",
+            "u000116"
+          ],
+          "size": 3,
+          "flagged_s": 82.58,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000023",
+          "members": [
+            "u000027",
+            "u000029",
+            "u000079"
+          ],
+          "size": 3,
+          "flagged_s": 87.98,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000024",
+          "members": [
+            "u000044",
+            "u000056",
+            "u000133"
+          ],
+          "size": 3,
+          "flagged_s": 87.98,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000025",
+          "members": [
+            "u000061",
+            "u000069",
+            "u000094"
+          ],
+          "size": 3,
+          "flagged_s": 87.98,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000026",
+          "members": [
+            "u000072",
+            "u000107",
+            "u000118"
+          ],
+          "size": 3,
+          "flagged_s": 87.98,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        }
+      ],
+      "flagged_users": [
+        "u000002",
+        "u000013",
+        "u000015",
+        "u000017",
+        "u000021",
+        "u000022",
+        "u000025",
+        "u000026",
+        "u000027",
+        "u000029",
+        "u000034",
+        "u000038",
+        "u000042",
+        "u000044",
+        "u000045",
+        "u000048",
+        "u000051",
+        "u000052",
+        "u000055",
+        "u000056",
+        "u000057",
+        "u000061",
+        "u000062",
+        "u000063",
+        "u000064",
+        "u000069",
+        "u000071",
+        "u000072",
+        "u000073",
+        "u000076",
+        "u000077",
+        "u000079",
+        "u000080",
+        "u000085",
+        "u000087",
+        "u000088",
+        "u000089",
+        "u000091",
+        "u000093",
+        "u000094",
+        "u000095",
+        "u000097",
+        "u000098",
+        "u000101",
+        "u000107",
+        "u000108",
+        "u000116",
+        "u000118",
+        "u000121",
+        "u000122",
+        "u000123",
+        "u000124",
+        "u000126",
+        "u000127",
+        "u000128",
+        "u000130",
+        "u000131",
+        "u000132",
+        "u000133",
+        "u000134"
+      ],
+      "log": [
+        {
+          "t_s": 10.59,
+          "batch": 31,
+          "last_seq": 775,
+          "ring_id": "R000001",
+          "kind": "flag",
+          "members": [
+            "u000022",
+            "u000027",
+            "u000063",
+            "u000076"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 10.59,
+          "batch": 31,
+          "last_seq": 775,
+          "ring_id": "R000002",
+          "kind": "flag",
+          "members": [
+            "u000061",
+            "u000098",
+            "u000116"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 16.05,
+          "batch": 37,
+          "last_seq": 925,
+          "ring_id": "R000003",
+          "kind": "flag",
+          "members": [
+            "u000002",
+            "u000013",
+            "u000116"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 32.3,
+          "batch": 50,
+          "last_seq": 1250,
+          "ring_id": "R000004",
+          "kind": "flag",
+          "members": [
+            "u000122",
+            "u000123",
+            "u000127",
+            "u000128"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": "hidden_office_ring",
+          "jaccard": 1.0
+        },
+        {
+          "t_s": 32.3,
+          "batch": 50,
+          "last_seq": 1250,
+          "ring_id": "R000005",
+          "kind": "flag",
+          "members": [
+            "u000130",
+            "u000131",
+            "u000132",
+            "u000134"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": "plain_device_ring",
+          "jaccard": 1.0
+        },
+        {
+          "t_s": 37.48,
+          "batch": 55,
+          "last_seq": 1375,
+          "ring_id": "R000006",
+          "kind": "flag",
+          "members": [
+            "u000002",
+            "u000056",
+            "u000064"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 37.48,
+          "batch": 55,
+          "last_seq": 1375,
+          "ring_id": "R000007",
+          "kind": "flag",
+          "members": [
+            "u000034",
+            "u000101",
+            "u000126"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 43.06,
+          "batch": 60,
+          "last_seq": 1500,
+          "ring_id": "R000008",
+          "kind": "flag",
+          "members": [
+            "u000025",
+            "u000034",
+            "u000080"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 48.71,
+          "batch": 65,
+          "last_seq": 1625,
+          "ring_id": "R000009",
+          "kind": "flag",
+          "members": [
+            "u000056",
+            "u000071",
+            "u000108"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 54.14,
+          "batch": 69,
+          "last_seq": 1725,
+          "ring_id": "R000010",
+          "kind": "flag",
+          "members": [
+            "u000002",
+            "u000038",
+            "u000063"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 54.14,
+          "batch": 69,
+          "last_seq": 1725,
+          "ring_id": "R000011",
+          "kind": "flag",
+          "members": [
+            "u000034",
+            "u000121",
+            "u000124"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 60.24,
+          "batch": 74,
+          "last_seq": 1850,
+          "ring_id": "R000012",
+          "kind": "flag",
+          "members": [
+            "u000015",
+            "u000051",
+            "u000056"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 60.24,
+          "batch": 74,
+          "last_seq": 1850,
+          "ring_id": "R000013",
+          "kind": "flag",
+          "members": [
+            "u000021",
+            "u000026",
+            "u000038",
+            "u000085"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 66.39,
+          "batch": 79,
+          "last_seq": 1975,
+          "ring_id": "R000014",
+          "kind": "flag",
+          "members": [
+            "u000042",
+            "u000061",
+            "u000073"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 66.39,
+          "batch": 79,
+          "last_seq": 1975,
+          "ring_id": "R000015",
+          "kind": "flag",
+          "members": [
+            "u000071",
+            "u000076",
+            "u000089"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 71.67,
+          "batch": 84,
+          "last_seq": 2100,
+          "ring_id": "R000016",
+          "kind": "flag",
+          "members": [
+            "u000017",
+            "u000052",
+            "u000057"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 71.67,
+          "batch": 84,
+          "last_seq": 2100,
+          "ring_id": "R000017",
+          "kind": "flag",
+          "members": [
+            "u000045",
+            "u000087",
+            "u000095"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 71.67,
+          "batch": 84,
+          "last_seq": 2100,
+          "ring_id": "R000018",
+          "kind": "flag",
+          "members": [
+            "u000062",
+            "u000071",
+            "u000091"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 77.48,
+          "batch": 89,
+          "last_seq": 2225,
+          "ring_id": "R000019",
+          "kind": "flag",
+          "members": [
+            "u000022",
+            "u000055",
+            "u000056",
+            "u000097"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 77.48,
+          "batch": 89,
+          "last_seq": 2225,
+          "ring_id": "R000020",
+          "kind": "flag",
+          "members": [
+            "u000077",
+            "u000079",
+            "u000093"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 82.58,
+          "batch": 94,
+          "last_seq": 2350,
+          "ring_id": "R000021",
+          "kind": "flag",
+          "members": [
+            "u000025",
+            "u000097",
+            "u000116"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 87.98,
+          "batch": 99,
+          "last_seq": 2475,
+          "ring_id": "R000023",
+          "kind": "flag",
+          "members": [
+            "u000027",
+            "u000029",
+            "u000079"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 87.98,
+          "batch": 99,
+          "last_seq": 2475,
+          "ring_id": "R000024",
+          "kind": "flag",
+          "members": [
+            "u000044",
+            "u000056",
+            "u000133"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 87.98,
+          "batch": 99,
+          "last_seq": 2475,
+          "ring_id": "R000025",
+          "kind": "flag",
+          "members": [
+            "u000061",
+            "u000069",
+            "u000094"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 87.98,
+          "batch": 99,
+          "last_seq": 2475,
+          "ring_id": "R000026",
+          "kind": "flag",
+          "members": [
+            "u000072",
+            "u000107",
+            "u000118"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        }
+      ]
+    },
+    {
+      "key": "cap100",
+      "title": "Same rules, cap = 100",
+      "subtitle": "Q4a: the cap raised so busy IPs are no longer skipped",
+      "flag_rule": "confirmed (found on 2 consecutive runs)",
+      "caught": [
+        {
+          "true_ring": "hidden_office_ring",
+          "ring_id": "R000005",
+          "jaccard": 1.0,
+          "flagged_s": 32.3
+        },
+        {
+          "true_ring": "plain_device_ring",
+          "ring_id": "R000006",
+          "jaccard": 1.0,
+          "flagged_s": 32.3
+        }
+      ],
+      "missed": [
+        "cycle_ring"
+      ],
+      "false_rings": 24,
+      "benign_users_flagged": 74,
+      "flagged": [
+        {
+          "ring_id": "R000001",
+          "members": [
+            "u000005",
+            "u000013",
+            "u000016",
+            "u000017",
+            "u000018",
+            "u000019",
+            "u000020",
+            "u000022",
+            "u000023",
+            "u000024",
+            "u000036",
+            "u000038",
+            "u000039",
+            "u000042",
+            "u000049",
+            "u000051",
+            "u000058",
+            "u000059",
+            "u000064",
+            "u000067",
+            "u000068",
+            "u000070",
+            "u000071",
+            "u000073",
+            "u000077",
+            "u000078",
+            "u000083",
+            "u000085",
+            "u000088",
+            "u000089",
+            "u000093",
+            "u000094",
+            "u000096",
+            "u000102",
+            "u000103",
+            "u000105",
+            "u000107",
+            "u000108",
+            "u000111",
+            "u000116",
+            "u000122",
+            "u000123",
+            "u000127",
+            "u000128"
+          ],
+          "size": 44,
+          "flagged_s": 10.59,
+          "true_ring": null,
+          "jaccard": 0.091,
+          "benign_members": 40,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000002",
+          "members": [
+            "u000022",
+            "u000027",
+            "u000063",
+            "u000076"
+          ],
+          "size": 4,
+          "flagged_s": 10.59,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 4,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000003",
+          "members": [
+            "u000061",
+            "u000098",
+            "u000116"
+          ],
+          "size": 3,
+          "flagged_s": 10.59,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000004",
+          "members": [
+            "u000002",
+            "u000013",
+            "u000116"
+          ],
+          "size": 3,
+          "flagged_s": 16.05,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000005",
+          "members": [
+            "u000122",
+            "u000123",
+            "u000127",
+            "u000128"
+          ],
+          "size": 4,
+          "flagged_s": 32.3,
+          "true_ring": "hidden_office_ring",
+          "jaccard": 1.0,
+          "benign_members": 0,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000006",
+          "members": [
+            "u000130",
+            "u000131",
+            "u000132",
+            "u000134"
+          ],
+          "size": 4,
+          "flagged_s": 32.3,
+          "true_ring": "plain_device_ring",
+          "jaccard": 1.0,
+          "benign_members": 0,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000007",
+          "members": [
+            "u000002",
+            "u000056",
+            "u000064"
+          ],
+          "size": 3,
+          "flagged_s": 37.48,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000008",
+          "members": [
+            "u000034",
+            "u000063",
+            "u000101",
+            "u000126"
+          ],
+          "size": 4,
+          "flagged_s": 37.48,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 4,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000009",
+          "members": [
+            "u000025",
+            "u000034",
+            "u000062",
+            "u000080"
+          ],
+          "size": 4,
+          "flagged_s": 43.06,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 4,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000010",
+          "members": [
+            "u000056",
+            "u000071",
+            "u000108"
+          ],
+          "size": 3,
+          "flagged_s": 48.71,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000011",
+          "members": [
+            "u000002",
+            "u000038",
+            "u000048",
+            "u000063",
+            "u000076"
+          ],
+          "size": 5,
+          "flagged_s": 54.14,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 5,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000012",
+          "members": [
+            "u000034",
+            "u000121",
+            "u000124"
+          ],
+          "size": 3,
+          "flagged_s": 54.14,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000013",
+          "members": [
+            "u000015",
+            "u000051",
+            "u000056"
+          ],
+          "size": 3,
+          "flagged_s": 60.24,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000014",
+          "members": [
+            "u000021",
+            "u000026",
+            "u000038",
+            "u000085",
+            "u000088"
+          ],
+          "size": 5,
+          "flagged_s": 60.24,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 5,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000015",
+          "members": [
+            "u000042",
+            "u000061",
+            "u000073"
+          ],
+          "size": 3,
+          "flagged_s": 66.39,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000016",
+          "members": [
+            "u000071",
+            "u000076",
+            "u000089"
+          ],
+          "size": 3,
+          "flagged_s": 66.39,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000017",
+          "members": [
+            "u000017",
+            "u000052",
+            "u000057"
+          ],
+          "size": 3,
+          "flagged_s": 71.67,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000018",
+          "members": [
+            "u000045",
+            "u000087",
+            "u000095"
+          ],
+          "size": 3,
+          "flagged_s": 71.67,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000019",
+          "members": [
+            "u000062",
+            "u000071",
+            "u000091"
+          ],
+          "size": 3,
+          "flagged_s": 71.67,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000020",
+          "members": [
+            "u000022",
+            "u000055",
+            "u000056",
+            "u000097"
+          ],
+          "size": 4,
+          "flagged_s": 77.48,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 4,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000021",
+          "members": [
+            "u000077",
+            "u000079",
+            "u000093"
+          ],
+          "size": 3,
+          "flagged_s": 77.48,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000022",
+          "members": [
+            "u000025",
+            "u000097",
+            "u000116"
+          ],
+          "size": 3,
+          "flagged_s": 82.58,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000024",
+          "members": [
+            "u000027",
+            "u000029",
+            "u000079"
+          ],
+          "size": 3,
+          "flagged_s": 87.98,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000025",
+          "members": [
+            "u000044",
+            "u000056",
+            "u000133"
+          ],
+          "size": 3,
+          "flagged_s": 87.98,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000026",
+          "members": [
+            "u000061",
+            "u000069",
+            "u000094"
+          ],
+          "size": 3,
+          "flagged_s": 87.98,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000027",
+          "members": [
+            "u000072",
+            "u000107",
+            "u000118"
+          ],
+          "size": 3,
+          "flagged_s": 87.98,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 3,
+          "risk": null,
+          "still_live": true
+        }
+      ],
+      "flagged_users": [
+        "u000002",
+        "u000005",
+        "u000013",
+        "u000015",
+        "u000016",
+        "u000017",
+        "u000018",
+        "u000019",
+        "u000020",
+        "u000021",
+        "u000022",
+        "u000023",
+        "u000024",
+        "u000025",
+        "u000026",
+        "u000027",
+        "u000029",
+        "u000034",
+        "u000036",
+        "u000038",
+        "u000039",
+        "u000042",
+        "u000044",
+        "u000045",
+        "u000048",
+        "u000049",
+        "u000051",
+        "u000052",
+        "u000055",
+        "u000056",
+        "u000057",
+        "u000058",
+        "u000059",
+        "u000061",
+        "u000062",
+        "u000063",
+        "u000064",
+        "u000067",
+        "u000068",
+        "u000069",
+        "u000070",
+        "u000071",
+        "u000072",
+        "u000073",
+        "u000076",
+        "u000077",
+        "u000078",
+        "u000079",
+        "u000080",
+        "u000083",
+        "u000085",
+        "u000087",
+        "u000088",
+        "u000089",
+        "u000091",
+        "u000093",
+        "u000094",
+        "u000095",
+        "u000096",
+        "u000097",
+        "u000098",
+        "u000101",
+        "u000102",
+        "u000103",
+        "u000105",
+        "u000107",
+        "u000108",
+        "u000111",
+        "u000116",
+        "u000118",
+        "u000121",
+        "u000122",
+        "u000123",
+        "u000124",
+        "u000126",
+        "u000127",
+        "u000128",
+        "u000130",
+        "u000131",
+        "u000132",
+        "u000133",
+        "u000134"
+      ],
+      "log": [
+        {
+          "t_s": 10.59,
+          "batch": 31,
+          "last_seq": 775,
+          "ring_id": "R000001",
+          "kind": "flag",
+          "members": [
+            "u000005",
+            "u000013",
+            "u000016",
+            "u000017",
+            "u000018",
+            "u000019",
+            "u000020",
+            "u000022",
+            "u000023",
+            "u000024",
+            "u000036",
+            "u000038",
+            "u000039",
+            "u000042",
+            "u000049",
+            "u000051",
+            "u000058",
+            "u000059",
+            "u000064",
+            "u000067",
+            "u000068",
+            "u000070",
+            "u000071",
+            "u000073",
+            "u000077",
+            "u000078",
+            "u000083",
+            "u000085",
+            "u000088",
+            "u000089",
+            "u000093",
+            "u000094",
+            "u000096",
+            "u000102",
+            "u000103",
+            "u000105",
+            "u000107",
+            "u000108",
+            "u000111",
+            "u000116",
+            "u000122",
+            "u000123"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.045
+        },
+        {
+          "t_s": 10.59,
+          "batch": 31,
+          "last_seq": 775,
+          "ring_id": "R000002",
+          "kind": "flag",
+          "members": [
+            "u000022",
+            "u000027",
+            "u000063",
+            "u000076"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 10.59,
+          "batch": 31,
+          "last_seq": 775,
+          "ring_id": "R000003",
+          "kind": "flag",
+          "members": [
+            "u000061",
+            "u000098",
+            "u000116"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 16.05,
+          "batch": 37,
+          "last_seq": 925,
+          "ring_id": "R000004",
+          "kind": "flag",
+          "members": [
+            "u000002",
+            "u000013",
+            "u000116"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 32.3,
+          "batch": 50,
+          "last_seq": 1250,
+          "ring_id": "R000005",
+          "kind": "flag",
+          "members": [
+            "u000122",
+            "u000123",
+            "u000127",
+            "u000128"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": "hidden_office_ring",
+          "jaccard": 1.0
+        },
+        {
+          "t_s": 32.3,
+          "batch": 50,
+          "last_seq": 1250,
+          "ring_id": "R000006",
+          "kind": "flag",
+          "members": [
+            "u000130",
+            "u000131",
+            "u000132",
+            "u000134"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": "plain_device_ring",
+          "jaccard": 1.0
+        },
+        {
+          "t_s": 37.48,
+          "batch": 55,
+          "last_seq": 1375,
+          "ring_id": "R000007",
+          "kind": "flag",
+          "members": [
+            "u000002",
+            "u000056",
+            "u000064"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 37.48,
+          "batch": 55,
+          "last_seq": 1375,
+          "ring_id": "R000008",
+          "kind": "flag",
+          "members": [
+            "u000034",
+            "u000101",
+            "u000126"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 43.06,
+          "batch": 60,
+          "last_seq": 1500,
+          "ring_id": "R000009",
+          "kind": "flag",
+          "members": [
+            "u000025",
+            "u000034",
+            "u000080"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 48.71,
+          "batch": 65,
+          "last_seq": 1625,
+          "ring_id": "R000010",
+          "kind": "flag",
+          "members": [
+            "u000056",
+            "u000071",
+            "u000108"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 54.14,
+          "batch": 69,
+          "last_seq": 1725,
+          "ring_id": "R000011",
+          "kind": "flag",
+          "members": [
+            "u000002",
+            "u000038",
+            "u000063"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 54.14,
+          "batch": 69,
+          "last_seq": 1725,
+          "ring_id": "R000012",
+          "kind": "flag",
+          "members": [
+            "u000034",
+            "u000121",
+            "u000124"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 60.24,
+          "batch": 74,
+          "last_seq": 1850,
+          "ring_id": "R000013",
+          "kind": "flag",
+          "members": [
+            "u000015",
+            "u000051",
+            "u000056"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 60.24,
+          "batch": 74,
+          "last_seq": 1850,
+          "ring_id": "R000014",
+          "kind": "flag",
+          "members": [
+            "u000021",
+            "u000026",
+            "u000038",
+            "u000085"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 66.39,
+          "batch": 79,
+          "last_seq": 1975,
+          "ring_id": "R000015",
+          "kind": "flag",
+          "members": [
+            "u000042",
+            "u000061",
+            "u000073"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 66.39,
+          "batch": 79,
+          "last_seq": 1975,
+          "ring_id": "R000016",
+          "kind": "flag",
+          "members": [
+            "u000071",
+            "u000076",
+            "u000089"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 71.67,
+          "batch": 84,
+          "last_seq": 2100,
+          "ring_id": "R000017",
+          "kind": "flag",
+          "members": [
+            "u000017",
+            "u000052",
+            "u000057"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 71.67,
+          "batch": 84,
+          "last_seq": 2100,
+          "ring_id": "R000018",
+          "kind": "flag",
+          "members": [
+            "u000045",
+            "u000087",
+            "u000095"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 71.67,
+          "batch": 84,
+          "last_seq": 2100,
+          "ring_id": "R000019",
+          "kind": "flag",
+          "members": [
+            "u000062",
+            "u000071",
+            "u000091"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 77.48,
+          "batch": 89,
+          "last_seq": 2225,
+          "ring_id": "R000020",
+          "kind": "flag",
+          "members": [
+            "u000022",
+            "u000055",
+            "u000056",
+            "u000097"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 77.48,
+          "batch": 89,
+          "last_seq": 2225,
+          "ring_id": "R000021",
+          "kind": "flag",
+          "members": [
+            "u000077",
+            "u000079",
+            "u000093"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 82.58,
+          "batch": 94,
+          "last_seq": 2350,
+          "ring_id": "R000022",
+          "kind": "flag",
+          "members": [
+            "u000025",
+            "u000097",
+            "u000116"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 87.98,
+          "batch": 99,
+          "last_seq": 2475,
+          "ring_id": "R000024",
+          "kind": "flag",
+          "members": [
+            "u000027",
+            "u000029",
+            "u000079"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 87.98,
+          "batch": 99,
+          "last_seq": 2475,
+          "ring_id": "R000025",
+          "kind": "flag",
+          "members": [
+            "u000044",
+            "u000056",
+            "u000133"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 87.98,
+          "batch": 99,
+          "last_seq": 2475,
+          "ring_id": "R000026",
+          "kind": "flag",
+          "members": [
+            "u000061",
+            "u000069",
+            "u000094"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        },
+        {
+          "t_s": 87.98,
+          "batch": 99,
+          "last_seq": 2475,
+          "ring_id": "R000027",
+          "kind": "flag",
+          "members": [
+            "u000072",
+            "u000107",
+            "u000118"
+          ],
+          "detectors": [
+            "static_cypher"
+          ],
+          "risk": null,
+          "true_ring": null,
+          "jaccard": 0.0
+        }
+      ]
+    },
+    {
+      "key": "system",
+      "title": "Hub-aware incremental system",
+      "subtitle": "Hub-weighted projection + temporal cycles + smurfing, ensemble tracking, calibrated risk model",
+      "flag_rule": "alerted (confirmed and risk \u2265 threshold)",
+      "caught": [
+        {
+          "true_ring": "cycle_ring",
+          "ring_id": "R000005",
+          "jaccard": 1.0,
+          "flagged_s": 52.8
+        },
+        {
+          "true_ring": "hidden_office_ring",
+          "ring_id": "R000007",
+          "jaccard": 1.0,
+          "flagged_s": 64.22
+        },
+        {
+          "true_ring": "plain_device_ring",
+          "ring_id": "R000004",
+          "jaccard": 1.0,
+          "flagged_s": 31.37
+        }
+      ],
+      "missed": [],
+      "false_rings": 2,
+      "benign_users_flagged": 8,
+      "flagged": [
+        {
+          "ring_id": "R000003",
+          "members": [
+            "u000022",
+            "u000027",
+            "u000063",
+            "u000076"
+          ],
+          "size": 4,
+          "flagged_s": 1.26,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 4,
+          "risk": 0.2895,
+          "still_live": false
+        },
+        {
+          "ring_id": "R000004",
+          "members": [
+            "u000130",
+            "u000131",
+            "u000132",
+            "u000134"
+          ],
+          "size": 4,
+          "flagged_s": 31.37,
+          "true_ring": "plain_device_ring",
+          "jaccard": 1.0,
+          "benign_members": 0,
+          "risk": 0.8923,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000005",
+          "members": [
+            "u000136",
+            "u000137",
+            "u000138",
+            "u000139"
+          ],
+          "size": 4,
+          "flagged_s": 52.8,
+          "true_ring": "cycle_ring",
+          "jaccard": 1.0,
+          "benign_members": 0,
+          "risk": 0.9185,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000007",
+          "members": [
+            "u000122",
+            "u000123",
+            "u000127",
+            "u000128"
+          ],
+          "size": 4,
+          "flagged_s": 64.22,
+          "true_ring": "hidden_office_ring",
+          "jaccard": 1.0,
+          "benign_members": 0,
+          "risk": 0.8923,
+          "still_live": true
+        },
+        {
+          "ring_id": "R000013",
+          "members": [
+            "u000023",
+            "u000034",
+            "u000121",
+            "u000141"
+          ],
+          "size": 4,
+          "flagged_s": 73.96,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "benign_members": 4,
+          "risk": 0.9138,
+          "still_live": true
+        }
+      ],
+      "flagged_users": [
+        "u000022",
+        "u000023",
+        "u000027",
+        "u000034",
+        "u000063",
+        "u000076",
+        "u000121",
+        "u000122",
+        "u000123",
+        "u000127",
+        "u000128",
+        "u000130",
+        "u000131",
+        "u000132",
+        "u000134",
+        "u000136",
+        "u000137",
+        "u000138",
+        "u000139",
+        "u000141"
+      ],
+      "log": [
+        {
+          "t_s": 0.0,
+          "batch": 21,
+          "last_seq": 525,
+          "ring_id": "R000003",
+          "kind": "early_warning",
+          "members": [
+            "u000022",
+            "u000027",
+            "u000063",
+            "u000076"
+          ],
+          "detectors": [
+            "hub_aware"
+          ],
+          "risk": 0.642857,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "explanation": {
+            "reason": "4 users share device device_00061 (used by 4 accounts), hub weight 0.62; 4 accounts created within 0 seconds; found by hub_aware.",
+            "counterfactual": "Would score below 0.50 if hub-adjusted sharing weight per pair were 0.55 instead of 0.62. Would score below 0.50 if share of member pairs directly linked were 0.33 instead of 1.00. The hub-aware rule would stop linking these members if device_00061 were shared by more than 7 accounts (now 4).",
+            "calibration": "0.6-0.7 (observed fraud rate 0.54 on held-out runs)",
+            "threshold": 0.5,
+            "contributions": [
+              {
+                "feature": "amount_mean_log",
+                "label": "typical transfer size (log)",
+                "value": -2.831881
+              },
+              {
+                "feature": "account_age_min",
+                "label": "age of the oldest member account (minutes, log scale)",
+                "value": 2.402962
+              },
+              {
+                "feature": "amount_cv",
+                "label": "variation of transfer amounts",
+                "value": 2.224507
+              },
+              {
+                "feature": "share_ip",
+                "label": "share of members on one IP",
+                "value": 1.897418
+              },
+              {
+                "feature": "share_device",
+                "label": "share of members on one device",
+                "value": 0.940899
+              },
+              {
+                "feature": "risk_signal_fraction",
+                "label": "share of members also in another flagged group",
+                "value": 0.747775
+              }
+            ]
+          }
+        },
+        {
+          "t_s": 1.26,
+          "batch": 22,
+          "last_seq": 550,
+          "ring_id": "R000003",
+          "kind": "flag",
+          "members": [
+            "u000009",
+            "u000022",
+            "u000027",
+            "u000063",
+            "u000076"
+          ],
+          "detectors": [
+            "hub_aware"
+          ],
+          "risk": 0.892308,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "explanation": {
+            "reason": "4 users share device device_00061 (used by 4 accounts), hub weight 0.62; 2 users share card card_00029 (used by 2 accounts), hub weight 0.91; 5 accounts created within 0 seconds; found by hub_aware.",
+            "counterfactual": "The hub-aware rule would stop linking these members if device_00061 were shared by more than 10 accounts (now 4).",
+            "calibration": "0.8-0.9 (observed fraud rate 0.67 on held-out runs)",
+            "threshold": 0.5,
+            "contributions": [
+              {
+                "feature": "amount_mean_log",
+                "label": "typical transfer size (log)",
+                "value": -2.831881
+              },
+              {
+                "feature": "account_age_min",
+                "label": "age of the oldest member account (minutes, log scale)",
+                "value": 2.265151
+              },
+              {
+                "feature": "amount_cv",
+                "label": "variation of transfer amounts",
+                "value": 2.224507
+              },
+              {
+                "feature": "share_ip",
+                "label": "share of members on one IP",
+                "value": 1.897418
+              },
+              {
+                "feature": "risk_signal_fraction",
+                "label": "share of members also in another flagged group",
+                "value": 0.747775
+              },
+              {
+                "feature": "internal_txns_per_member",
+                "label": "transfers between members, per member",
+                "value": -0.678301
+              }
+            ]
+          }
+        },
+        {
+          "t_s": 29.97,
+          "batch": 48,
+          "last_seq": 1200,
+          "ring_id": "R000004",
+          "kind": "early_warning",
+          "members": [
+            "u000130",
+            "u000131",
+            "u000132",
+            "u000134"
+          ],
+          "detectors": [
+            "hub_aware"
+          ],
+          "risk": 0.892308,
+          "true_ring": "plain_device_ring",
+          "jaccard": 1.0,
+          "explanation": {
+            "reason": "4 users share device device_00081 (used by 4 accounts), hub weight 0.62; 2 users share card card_00076 (used by 2 accounts), hub weight 0.91; 4 accounts created within 5 seconds; found by hub_aware.",
+            "counterfactual": "Would score below 0.50 if hub-adjusted sharing weight per pair were 0.82 instead of 1.08. The hub-aware rule would stop linking these members if device_00081 were shared by more than 44261854 accounts (now 4).",
+            "calibration": "0.8-0.9 (observed fraud rate 0.67 on held-out runs)",
+            "threshold": 0.5,
+            "contributions": [
+              {
+                "feature": "amount_mean_log",
+                "label": "typical transfer size (log)",
+                "value": -2.831881
+              },
+              {
+                "feature": "amount_cv",
+                "label": "variation of transfer amounts",
+                "value": 2.224507
+              },
+              {
+                "feature": "account_age_min",
+                "label": "age of the oldest member account (minutes, log scale)",
+                "value": 1.874502
+              },
+              {
+                "feature": "hub_adjusted_weight",
+                "label": "hub-adjusted sharing weight per pair",
+                "value": 1.684968
+              },
+              {
+                "feature": "share_device",
+                "label": "share of members on one device",
+                "value": 0.940899
+              },
+              {
+                "feature": "risk_signal_fraction",
+                "label": "share of members also in another flagged group",
+                "value": 0.747775
+              }
+            ]
+          }
+        },
+        {
+          "t_s": 31.37,
+          "batch": 49,
+          "last_seq": 1225,
+          "ring_id": "R000004",
+          "kind": "flag",
+          "members": [
+            "u000130",
+            "u000131",
+            "u000132",
+            "u000134"
+          ],
+          "detectors": [
+            "hub_aware"
+          ],
+          "risk": 0.892308,
+          "true_ring": "plain_device_ring",
+          "jaccard": 1.0,
+          "explanation": {
+            "reason": "4 users share device device_00081 (used by 4 accounts), hub weight 0.62; 2 users share card card_00076 (used by 2 accounts), hub weight 0.91; 4 accounts created within 5 seconds; found by hub_aware.",
+            "counterfactual": "Would score below 0.50 if hub-adjusted sharing weight per pair were 0.86 instead of 1.08. The hub-aware rule would stop linking these members if device_00081 were shared by more than 15930529 accounts (now 4).",
+            "calibration": "0.8-0.9 (observed fraud rate 0.67 on held-out runs)",
+            "threshold": 0.5,
+            "contributions": [
+              {
+                "feature": "amount_mean_log",
+                "label": "typical transfer size (log)",
+                "value": -2.831881
+              },
+              {
+                "feature": "amount_cv",
+                "label": "variation of transfer amounts",
+                "value": 2.224507
+              },
+              {
+                "feature": "account_age_min",
+                "label": "age of the oldest member account (minutes, log scale)",
+                "value": 1.732922
+              },
+              {
+                "feature": "hub_adjusted_weight",
+                "label": "hub-adjusted sharing weight per pair",
+                "value": 1.684968
+              },
+              {
+                "feature": "share_device",
+                "label": "share of members on one device",
+                "value": 0.940899
+              },
+              {
+                "feature": "risk_signal_fraction",
+                "label": "share of members also in another flagged group",
+                "value": 0.747775
+              }
+            ]
+          }
+        },
+        {
+          "t_s": 51.66,
+          "batch": 67,
+          "last_seq": 1675,
+          "ring_id": "R000005",
+          "kind": "early_warning",
+          "members": [
+            "u000136",
+            "u000137",
+            "u000138",
+            "u000139"
+          ],
+          "detectors": [
+            "temporal_cycle"
+          ],
+          "risk": 0.918455,
+          "true_ring": "cycle_ring",
+          "jaccard": 1.0,
+          "explanation": {
+            "reason": "2 users share card card_00084 (used by 2 accounts), hub weight 0.91; 2 users share device device_00095 (used by 2 accounts), hub weight 0.91; 4 transfers between members within 6 seconds; money returns to its origin in 4 hops; 4 accounts created within 4 seconds; found by temporal_cycle.",
+            "counterfactual": "",
+            "calibration": "0.9-1.0 (observed fraud rate 0.93 on held-out runs)",
+            "threshold": 0.5,
+            "contributions": [
+              {
+                "feature": "amount_mean_log",
+                "label": "typical transfer size (log)",
+                "value": 4.824866
+              },
+              {
+                "feature": "cycle_length",
+                "label": "money-cycle length",
+                "value": 3.426735
+              },
+              {
+                "feature": "cycle_present",
+                "label": "money returns to its origin",
+                "value": -2.420187
+              },
+              {
+                "feature": "amount_cv",
+                "label": "variation of transfer amounts",
+                "value": 2.010918
+              },
+              {
+                "feature": "share_ip",
+                "label": "share of members on one IP",
+                "value": 1.897418
+              },
+              {
+                "feature": "account_age_min",
+                "label": "age of the oldest member account (minutes, log scale)",
+                "value": 1.223176
+              }
+            ]
+          }
+        },
+        {
+          "t_s": 52.8,
+          "batch": 68,
+          "last_seq": 1700,
+          "ring_id": "R000005",
+          "kind": "flag",
+          "members": [
+            "u000136",
+            "u000137",
+            "u000138",
+            "u000139"
+          ],
+          "detectors": [
+            "temporal_cycle"
+          ],
+          "risk": 0.918455,
+          "true_ring": "cycle_ring",
+          "jaccard": 1.0,
+          "explanation": {
+            "reason": "2 users share card card_00084 (used by 2 accounts), hub weight 0.91; 2 users share device device_00095 (used by 2 accounts), hub weight 0.91; 5 transfers between members within 7 seconds; money returns to its origin in 4 hops; 4 accounts created within 4 seconds; found by temporal_cycle.",
+            "counterfactual": "",
+            "calibration": "0.9-1.0 (observed fraud rate 0.93 on held-out runs)",
+            "threshold": 0.5,
+            "contributions": [
+              {
+                "feature": "amount_mean_log",
+                "label": "typical transfer size (log)",
+                "value": 4.969477
+              },
+              {
+                "feature": "cycle_length",
+                "label": "money-cycle length",
+                "value": 3.426735
+              },
+              {
+                "feature": "cycle_present",
+                "label": "money returns to its origin",
+                "value": -2.420187
+              },
+              {
+                "feature": "share_ip",
+                "label": "share of members on one IP",
+                "value": 1.897418
+              },
+              {
+                "feature": "account_age_min",
+                "label": "age of the oldest member account (minutes, log scale)",
+                "value": 1.118243
+              },
+              {
+                "feature": "hub_adjusted_weight",
+                "label": "hub-adjusted sharing weight per pair",
+                "value": -0.876859
+              }
+            ]
+          }
+        },
+        {
+          "t_s": 60.24,
+          "batch": 74,
+          "last_seq": 1850,
+          "ring_id": "R000008",
+          "kind": "early_warning",
+          "members": [
+            "u000034",
+            "u000121",
+            "u000141"
+          ],
+          "detectors": [
+            "hub_aware"
+          ],
+          "risk": 0.918455,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "explanation": {
+            "reason": "2 users share card card_00062 (used by 2 accounts), hub weight 0.91; 2 users share device device_00108 (used by 2 accounts), hub weight 0.91; 1 transfer between members; 3 accounts created within 59 seconds; found by hub_aware.",
+            "counterfactual": "The hub-aware rule would stop linking these members if card_00062 were shared by more than 7 accounts (now 2).",
+            "calibration": "0.9-1.0 (observed fraud rate 0.93 on held-out runs)",
+            "threshold": 0.5,
+            "contributions": [
+              {
+                "feature": "account_age_similarity",
+                "label": "similarity of member account ages",
+                "value": 4.679048
+              },
+              {
+                "feature": "amount_cv",
+                "label": "variation of transfer amounts",
+                "value": 2.224507
+              },
+              {
+                "feature": "account_age_min",
+                "label": "age of the oldest member account (minutes, log scale)",
+                "value": -2.215739
+              },
+              {
+                "feature": "amount_mean_log",
+                "label": "typical transfer size (log)",
+                "value": 1.541427
+              },
+              {
+                "feature": "hub_adjusted_weight",
+                "label": "hub-adjusted sharing weight per pair",
+                "value": 1.134137
+              },
+              {
+                "feature": "size",
+                "label": "ring size (members)",
+                "value": 0.825541
+              }
+            ]
+          }
+        },
+        {
+          "t_s": 64.22,
+          "batch": 77,
+          "last_seq": 1925,
+          "ring_id": "R000007",
+          "kind": "flag",
+          "members": [
+            "u000121",
+            "u000122",
+            "u000123",
+            "u000127",
+            "u000128"
+          ],
+          "detectors": [
+            "hub_aware"
+          ],
+          "risk": 0.892308,
+          "true_ring": "hidden_office_ring",
+          "jaccard": 0.8,
+          "explanation": {
+            "reason": "4 members share a busy ip used by 44 accounts in total (ip_00061, hub weight 0.26), so sharing it alone is weak evidence; 2 users share card card_00069 (used by 2 accounts), hub weight 0.91; 23 transfers between members within 42 seconds; 5 accounts created within 13 seconds; found by hub_aware.",
+            "counterfactual": "Would score below 0.50 if transfers between members, per member were 3.21 instead of 4.60. The hub-aware rule would link these members even through an arbitrarily busy hub: their transfers to each other alone carry enough weight.",
+            "calibration": "0.8-0.9 (observed fraud rate 0.67 on held-out runs)",
+            "threshold": 0.5,
+            "contributions": [
+              {
+                "feature": "amount_mean_log",
+                "label": "typical transfer size (log)",
+                "value": 3.534194
+              },
+              {
+                "feature": "account_age_min",
+                "label": "age of the oldest member account (minutes, log scale)",
+                "value": -2.263102
+              },
+              {
+                "feature": "internal_txns_per_member",
+                "label": "transfers between members, per member",
+                "value": 1.823545
+              },
+              {
+                "feature": "risk_signal_fraction",
+                "label": "share of members also in another flagged group",
+                "value": 0.747775
+              },
+              {
+                "feature": "growth_rate",
+                "label": "members added per minute",
+                "value": 0.621204
+              },
+              {
+                "feature": "share_ip",
+                "label": "share of members on one IP",
+                "value": -0.535147
+              }
+            ]
+          }
+        },
+        {
+          "t_s": 73.96,
+          "batch": 86,
+          "last_seq": 2150,
+          "ring_id": "R000013",
+          "kind": "flag",
+          "members": [
+            "u000023",
+            "u000034",
+            "u000121",
+            "u000141"
+          ],
+          "detectors": [
+            "hub_aware"
+          ],
+          "risk": 0.918455,
+          "true_ring": null,
+          "jaccard": 0.0,
+          "explanation": {
+            "reason": "2 users share card card_00062 (used by 2 accounts), hub weight 0.91; 2 users share device device_00107 (used by 2 accounts), hub weight 0.91; 1 transfer between members; 4 accounts created within 59 seconds; found by hub_aware.",
+            "counterfactual": "The hub-aware rule would stop linking these members if card_00062 were shared by more than 7 accounts (now 2).",
+            "calibration": "0.9-1.0 (observed fraud rate 0.93 on held-out runs)",
+            "threshold": 0.5,
+            "contributions": [
+              {
+                "feature": "account_age_similarity",
+                "label": "similarity of member account ages",
+                "value": 3.591437
+              },
+              {
+                "feature": "account_age_min",
+                "label": "age of the oldest member account (minutes, log scale)",
+                "value": -2.93398
+              },
+              {
+                "feature": "amount_cv",
+                "label": "variation of transfer amounts",
+                "value": 2.224507
+              },
+              {
+                "feature": "amount_mean_log",
+                "label": "typical transfer size (log)",
+                "value": 1.541427
+              },
+              {
+                "feature": "risk_signal_fraction",
+                "label": "share of members also in another flagged group",
+                "value": 0.747775
+              },
+              {
+                "feature": "hub_adjusted_weight",
+                "label": "hub-adjusted sharing weight per pair",
+                "value": 0.631388
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "spotlight": {
+    "true_ring": "hidden_office_ring",
+    "found": true,
+    "ring_id": "R000007",
+    "jaccard": 1.0,
+    "members": [
+      "u000122",
+      "u000123",
+      "u000127",
+      "u000128"
+    ],
+    "status": "confirmed",
+    "risk": 0.8923076923076924,
+    "threshold": 0.5,
+    "reason": "4 members share a busy ip used by 44 accounts in total (ip_00061, hub weight 0.26), so sharing it alone is weak evidence; 2 users share device device_00068 (used by 2 accounts), hub weight 0.91; 30 transfers between members within 53 seconds; money returns to its origin in 3 hops; 4 accounts created within 6 seconds; found by hub_aware, temporal_cycle.",
+    "counterfactual": "Would score below 0.50 if transfers between members, per member were 5.50 instead of 7.50. The hub-aware rule would link these members even through an arbitrarily busy hub: their transfers to each other alone carry enough weight.",
+    "calibration": "0.8-0.9 (observed fraud rate 0.67 on held-out runs)",
+    "contributions": [
+      {
+        "feature": "amount_mean_log",
+        "label": "typical transfer size (log)",
+        "value": 3.526807
+      },
+      {
+        "feature": "internal_txns_per_member",
+        "label": "transfers between members, per member",
+        "value": 3.400795
+      },
+      {
+        "feature": "account_age_min",
+        "label": "age of the oldest member account (minutes, log scale)",
+        "value": -3.023523
+      },
+      {
+        "feature": "cycle_length",
+        "label": "money-cycle length",
+        "value": 2.534593
+      },
+      {
+        "feature": "cycle_present",
+        "label": "money returns to its origin",
+        "value": -2.420187
+      },
+      {
+        "feature": "n_detectors",
+        "label": "number of detectors that found it",
+        "value": 1.35119
+      },
+      {
+        "feature": "share_ip",
+        "label": "share of members on one IP",
+        "value": -1.143288
+      },
+      {
+        "feature": "risk_signal_fraction",
+        "label": "share of members also in another flagged group",
+        "value": 0.747775
+      }
+    ],
+    "features": {
+      "size": 4.0,
+      "density": 1.0,
+      "share_device": 0.5,
+      "share_card": 0.0,
+      "share_ip": 1.0,
+      "hub_adjusted_weight": 0.41440384878500264,
+      "cycle_present": 1.0,
+      "cycle_length": 3.0,
+      "temporal_burstiness": 0.7963923104604085,
+      "account_age_similarity": 0.9815625649539431,
+      "account_age_min": 0.8167066480804016,
+      "internal_txns_per_member": 7.5,
+      "amount_mean_log": 6.858637861271106,
+      "amount_cv": 0.31746829846631597,
+      "near_threshold_frac": 0.0,
+      "growth_rate": 0.0,
+      "risk_signal_fraction": 0.0,
+      "hub_exposure": 3.8066624897703196,
+      "n_detectors": 2.0
+    },
+    "evidence": {
+      "nodes": [
+        {
+          "id": "u000122",
+          "type": "user",
+          "joined_t": 1767225610.0
+        },
+        {
+          "id": "u000123",
+          "type": "user",
+          "joined_t": 1767225610.0
+        },
+        {
+          "id": "u000127",
+          "type": "user",
+          "joined_t": 1767225613.736282
+        },
+        {
+          "id": "u000128",
+          "type": "user",
+          "joined_t": 1767225615.702512
+        },
+        {
+          "id": "device_00068",
+          "type": "device",
+          "degree": 2,
+          "hub_weight": 0.9102
+        },
+        {
+          "id": "ip_00061",
+          "type": "ip",
+          "degree": 44,
+          "hub_weight": 0.2627
+        }
+      ],
+      "edges": [
+        {
+          "source": "u000122",
+          "target": "device_00068",
+          "type": "link",
+          "t": 1767225610.0
+        },
+        {
+          "source": "u000123",
+          "target": "device_00068",
+          "type": "link",
+          "t": 1767225610.0
+        },
+        {
+          "source": "u000122",
+          "target": "ip_00061",
+          "type": "link",
+          "t": 1767225624.282289
+        },
+        {
+          "source": "u000123",
+          "target": "ip_00061",
+          "type": "link",
+          "t": 1767225651.564817
+        },
+        {
+          "source": "u000127",
+          "target": "ip_00061",
+          "type": "link",
+          "t": 1767225613.736282
+        },
+        {
+          "source": "u000128",
+          "target": "ip_00061",
+          "type": "link",
+          "t": 1767225674.818589
+        },
+        {
+          "source": "u000123",
+          "target": "u000122",
+          "type": "transfer",
+          "amount": 1296.67,
+          "t": 1767225621.499309,
+          "txn_id": "t000000372"
+        },
+        {
+          "source": "u000122",
+          "target": "u000123",
+          "type": "transfer",
+          "amount": 854.55,
+          "t": 1767225621.738622,
+          "txn_id": "t000000377"
+        },
+        {
+          "source": "u000122",
+          "target": "u000128",
+          "type": "transfer",
+          "amount": 1144.13,
+          "t": 1767225623.931913,
+          "txn_id": "t000000417"
+        },
+        {
+          "source": "u000123",
+          "target": "u000127",
+          "type": "transfer",
+          "amount": 1025.13,
+          "t": 1767225624.282289,
+          "txn_id": "t000000421"
+        },
+        {
+          "source": "u000127",
+          "target": "u000122",
+          "type": "transfer",
+          "amount": 645.63,
+          "t": 1767225626.342417,
+          "txn_id": "t000000446"
+        },
+        {
+          "source": "u000122",
+          "target": "u000128",
+          "type": "transfer",
+          "amount": 991.09,
+          "t": 1767225630.511663,
+          "txn_id": "t000000515"
+        },
+        {
+          "source": "u000122",
+          "target": "u000128",
+          "type": "transfer",
+          "amount": 1303.08,
+          "t": 1767225631.662497,
+          "txn_id": "t000000528"
+        },
+        {
+          "source": "u000128",
+          "target": "u000123",
+          "type": "transfer",
+          "amount": 677.72,
+          "t": 1767225631.89836,
+          "txn_id": "t000000534"
+        },
+        {
+          "source": "u000123",
+          "target": "u000127",
+          "type": "transfer",
+          "amount": 1986.67,
+          "t": 1767225633.702872,
+          "txn_id": "t000000567"
+        },
+        {
+          "source": "u000127",
+          "target": "u000123",
+          "type": "transfer",
+          "amount": 796.32,
+          "t": 1767225636.849356,
+          "txn_id": "t000000635"
+        },
+        {
+          "source": "u000127",
+          "target": "u000128",
+          "type": "transfer",
+          "amount": 746.14,
+          "t": 1767225636.934319,
+          "txn_id": "t000000636"
+        },
+        {
+          "source": "u000122",
+          "target": "u000123",
+          "type": "transfer",
+          "amount": 1402.09,
+          "t": 1767225641.780078,
+          "txn_id": "t000000718"
+        },
+        {
+          "source": "u000122",
+          "target": "u000123",
+          "type": "transfer",
+          "amount": 942.07,
+          "t": 1767225647.531864,
+          "txn_id": "t000000819"
+        },
+        {
+          "source": "u000123",
+          "target": "u000128",
+          "type": "transfer",
+          "amount": 748.81,
+          "t": 1767225650.834676,
+          "txn_id": "t000000871"
+        },
+        {
+          "source": "u000123",
+          "target": "u000128",
+          "type": "transfer",
+          "amount": 890.01,
+          "t": 1767225651.564817,
+          "txn_id": "t000000879"
+        },
+        {
+          "source": "u000123",
+          "target": "u000122",
+          "type": "transfer",
+          "amount": 1061.72,
+          "t": 1767225653.0543,
+          "txn_id": "t000000904"
+        },
+        {
+          "source": "u000128",
+          "target": "u000123",
+          "type": "transfer",
+          "amount": 598.27,
+          "t": 1767225655.003226,
+          "txn_id": "t000000945"
+        },
+        {
+          "source": "u000122",
+          "target": "u000127",
+          "type": "transfer",
+          "amount": 833.65,
+          "t": 1767225656.171369,
+          "txn_id": "t000000965"
+        },
+        {
+          "source": "u000123",
+          "target": "u000128",
+          "type": "transfer",
+          "amount": 548.49,
+          "t": 1767225657.320077,
+          "txn_id": "t000000982"
+        },
+        {
+          "source": "u000127",
+          "target": "u000123",
+          "type": "transfer",
+          "amount": 762.88,
+          "t": 1767225661.421703,
+          "txn_id": "t000001052"
+        },
+        {
+          "source": "u000128",
+          "target": "u000122",
+          "type": "transfer",
+          "amount": 910.77,
+          "t": 1767225661.839877,
+          "txn_id": "t000001056"
+        },
+        {
+          "source": "u000127",
+          "target": "u000128",
+          "type": "transfer",
+          "amount": 870.88,
+          "t": 1767225663.362323,
+          "txn_id": "t000001081"
+        },
+        {
+          "source": "u000122",
+          "target": "u000128",
+          "type": "transfer",
+          "amount": 1013.01,
+          "t": 1767225663.734473,
+          "txn_id": "t000001089"
+        },
+        {
+          "source": "u000122",
+          "target": "u000127",
+          "type": "transfer",
+          "amount": 724.16,
+          "t": 1767225664.96096,
+          "txn_id": "t000001114"
+        },
+        {
+          "source": "u000122",
+          "target": "u000127",
+          "type": "transfer",
+          "amount": 1319.59,
+          "t": 1767225667.459849,
+          "txn_id": "t000001169"
+        },
+        {
+          "source": "u000123",
+          "target": "u000122",
+          "type": "transfer",
+          "amount": 759.09,
+          "t": 1767225667.905923,
+          "txn_id": "t000001181"
+        },
+        {
+          "source": "u000128",
+          "target": "u000122",
+          "type": "transfer",
+          "amount": 830.93,
+          "t": 1767225668.133297,
+          "txn_id": "t000001183"
+        },
+        {
+          "source": "u000128",
+          "target": "u000127",
+          "type": "transfer",
+          "amount": 580.09,
+          "t": 1767225669.701485,
+          "txn_id": "t000001212"
+        },
+        {
+          "source": "u000127",
+          "target": "u000122",
+          "type": "transfer",
+          "amount": 1334.43,
+          "t": 1767225672.587278,
+          "txn_id": "t000001262"
+        },
+        {
+          "source": "u000127",
+          "target": "u000128",
+          "type": "transfer",
+          "amount": 934.01,
+          "t": 1767225674.818589,
+          "txn_id": "t000001300"
+        }
+      ]
+    },
+    "detectors": [
+      "hub_aware",
+      "temporal_cycle"
+    ],
+    "first_seen_s": 56.52,
+    "early_warning_s": null,
+    "confirmed_s": 57.83,
+    "alert_s": 64.22,
+    "history": [
+      {
+        "ts": "2026-01-01T00:00:56.517997+00:00",
+        "change": "created"
+      },
+      {
+        "ts": "2026-01-01T00:00:57.834724+00:00",
+        "change": "confirmed"
+      },
+      {
+        "ts": "2026-01-01T00:01:04.221382+00:00",
+        "change": "grew",
+        "added": [
+          "u000121"
+        ]
+      },
+      {
+        "ts": "2026-01-01T00:01:04.221382+00:00",
+        "change": "alert",
+        "risk": 0.892308
+      },
+      {
+        "ts": "2026-01-01T00:01:13.964476+00:00",
+        "change": "shrank",
+        "removed": [
+          "u000121"
+        ]
+      },
+      {
+        "ts": "2026-01-01T00:01:24.583205+00:00",
+        "change": "grew",
+        "added": [
+          "u000121"
+        ]
+      },
+      {
+        "ts": "2026-01-01T00:01:25.782075+00:00",
+        "change": "shrank",
+        "removed": [
+          "u000121"
+        ]
+      }
+    ]
+  },
+  "graph": {
+    "nodes": [
+      {
+        "id": "u000005",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000013",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000016",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000017",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000018",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000019",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000020",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000022",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": true
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000023",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": true,
+          "system": true
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000024",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000027",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": true
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000036",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000038",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000039",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000042",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000049",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000051",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000058",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000059",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000061",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000063",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": true
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000064",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000067",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000068",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000070",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000071",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000073",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000076",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": true
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000077",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000078",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000083",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000085",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000088",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000089",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000093",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000094",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000096",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000098",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000102",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000103",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000105",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000107",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000108",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000111",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000116",
+        "kind": "user",
+        "truth": "benign",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": false
+        },
+        "appear_s": 0.0
+      },
+      {
+        "id": "u000122",
+        "kind": "user",
+        "truth": "hidden_office_ring",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": true
+        },
+        "appear_s": 10.0
+      },
+      {
+        "id": "u000123",
+        "kind": "user",
+        "truth": "hidden_office_ring",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": true
+        },
+        "appear_s": 10.0
+      },
+      {
+        "id": "u000127",
+        "kind": "user",
+        "truth": "hidden_office_ring",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": true
+        },
+        "appear_s": 13.736
+      },
+      {
+        "id": "u000128",
+        "kind": "user",
+        "truth": "hidden_office_ring",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": true
+        },
+        "appear_s": 15.703
+      },
+      {
+        "id": "u000130",
+        "kind": "user",
+        "truth": "plain_device_ring",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": true
+        },
+        "appear_s": 25.0
+      },
+      {
+        "id": "u000131",
+        "kind": "user",
+        "truth": "plain_device_ring",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": true
+        },
+        "appear_s": 25.0
+      },
+      {
+        "id": "u000132",
+        "kind": "user",
+        "truth": "plain_device_ring",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": true
+        },
+        "appear_s": 26.253
+      },
+      {
+        "id": "u000134",
+        "kind": "user",
+        "truth": "plain_device_ring",
+        "active": true,
+        "flagged": {
+          "cap10": true,
+          "cap100": true,
+          "system": true
+        },
+        "appear_s": 29.906
+      },
+      {
+        "id": "u000136",
+        "kind": "user",
+        "truth": "cycle_ring",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": false,
+          "system": true
+        },
+        "appear_s": 40.0
+      },
+      {
+        "id": "u000137",
+        "kind": "user",
+        "truth": "cycle_ring",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": false,
+          "system": true
+        },
+        "appear_s": 40.0
+      },
+      {
+        "id": "u000138",
+        "kind": "user",
+        "truth": "cycle_ring",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": false,
+          "system": true
+        },
+        "appear_s": 40.673
+      },
+      {
+        "id": "u000139",
+        "kind": "user",
+        "truth": "cycle_ring",
+        "active": true,
+        "flagged": {
+          "cap10": false,
+          "cap100": false,
+          "system": true
+        },
+        "appear_s": 43.999
+      },
+      {
+        "id": "card_00061",
+        "kind": "card",
+        "degree": 3,
+        "hub": "shared_household_card",
+        "hub_category": "corporate_card",
+        "appear_s": 0.0
+      },
+      {
+        "id": "card_00076",
+        "kind": "card",
+        "degree": 2,
+        "hub": null,
+        "hub_category": null,
+        "appear_s": 25.0
+      },
+      {
+        "id": "card_00084",
+        "kind": "card",
+        "degree": 2,
+        "hub": null,
+        "hub_category": null,
+        "appear_s": 40.0
+      },
+      {
+        "id": "card_00085",
+        "kind": "card",
+        "degree": 2,
+        "hub": null,
+        "hub_category": null,
+        "appear_s": 40.673
+      },
+      {
+        "id": "device_00061",
+        "kind": "device",
+        "degree": 4,
+        "hub": "family_tablet",
+        "hub_category": "family_device",
+        "appear_s": 0.0
+      },
+      {
+        "id": "device_00068",
+        "kind": "device",
+        "degree": 2,
+        "hub": null,
+        "hub_category": null,
+        "appear_s": 10.0
+      },
+      {
+        "id": "device_00082",
+        "kind": "device",
+        "degree": 2,
+        "hub": null,
+        "hub_category": null,
+        "appear_s": 25.0
+      },
+      {
+        "id": "device_00095",
+        "kind": "device",
+        "degree": 2,
+        "hub": null,
+        "hub_category": null,
+        "appear_s": 40.0
+      },
+      {
+        "id": "device_00118",
+        "kind": "device",
+        "degree": 4,
+        "hub": null,
+        "hub_category": null,
+        "appear_s": 79.213
+      },
+      {
+        "id": "ip_00061",
+        "kind": "ip",
+        "degree": 44,
+        "hub": "office_wifi",
+        "hub_category": "office",
+        "appear_s": 0.0
+      },
+      {
+        "id": "ip_00074",
+        "kind": "ip",
+        "degree": 2,
+        "hub": null,
+        "hub_category": null,
+        "appear_s": 25.0
+      },
+      {
+        "id": "ip_00077",
+        "kind": "ip",
+        "degree": 2,
+        "hub": null,
+        "hub_category": null,
+        "appear_s": 29.906
+      },
+      {
+        "id": "ip_00080",
+        "kind": "ip",
+        "degree": 2,
+        "hub": null,
+        "hub_category": null,
+        "appear_s": 39.451
+      }
+    ],
+    "edges": [
+      {
+        "s": "u000061",
+        "t": "card_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000098",
+        "t": "card_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000116",
+        "t": "card_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000130",
+        "t": "card_00076",
+        "type": "link",
+        "appear_s": 25.0
+      },
+      {
+        "s": "u000131",
+        "t": "card_00076",
+        "type": "link",
+        "appear_s": 25.0
+      },
+      {
+        "s": "u000136",
+        "t": "card_00084",
+        "type": "link",
+        "appear_s": 40.0
+      },
+      {
+        "s": "u000137",
+        "t": "card_00084",
+        "type": "link",
+        "appear_s": 40.0
+      },
+      {
+        "s": "u000071",
+        "t": "card_00085",
+        "type": "link",
+        "appear_s": 43.9
+      },
+      {
+        "s": "u000138",
+        "t": "card_00085",
+        "type": "link",
+        "appear_s": 40.673
+      },
+      {
+        "s": "u000022",
+        "t": "device_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000027",
+        "t": "device_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000063",
+        "t": "device_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000076",
+        "t": "device_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000122",
+        "t": "device_00068",
+        "type": "link",
+        "appear_s": 10.0
+      },
+      {
+        "s": "u000123",
+        "t": "device_00068",
+        "type": "link",
+        "appear_s": 10.0
+      },
+      {
+        "s": "u000130",
+        "t": "device_00082",
+        "type": "link",
+        "appear_s": 25.0
+      },
+      {
+        "s": "u000131",
+        "t": "device_00082",
+        "type": "link",
+        "appear_s": 25.0
+      },
+      {
+        "s": "u000136",
+        "t": "device_00095",
+        "type": "link",
+        "appear_s": 40.0
+      },
+      {
+        "s": "u000137",
+        "t": "device_00095",
+        "type": "link",
+        "appear_s": 40.0
+      },
+      {
+        "s": "u000130",
+        "t": "device_00118",
+        "type": "link",
+        "appear_s": 79.213
+      },
+      {
+        "s": "u000131",
+        "t": "device_00118",
+        "type": "link",
+        "appear_s": 79.413
+      },
+      {
+        "s": "u000132",
+        "t": "device_00118",
+        "type": "link",
+        "appear_s": 79.613
+      },
+      {
+        "s": "u000134",
+        "t": "device_00118",
+        "type": "link",
+        "appear_s": 79.813
+      },
+      {
+        "s": "u000005",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000013",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000016",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000017",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000018",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000019",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000020",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000022",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000023",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000024",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000036",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000038",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000039",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000042",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000049",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000051",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000058",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000059",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000064",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000067",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000068",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000070",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000071",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000073",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000077",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000078",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000083",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000085",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000088",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000089",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000093",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000094",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000096",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000102",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000103",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000105",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000107",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000108",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000111",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000116",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 0.0
+      },
+      {
+        "s": "u000122",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 10.0
+      },
+      {
+        "s": "u000123",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 10.0
+      },
+      {
+        "s": "u000127",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 13.736
+      },
+      {
+        "s": "u000128",
+        "t": "ip_00061",
+        "type": "link",
+        "appear_s": 15.703
+      },
+      {
+        "s": "u000130",
+        "t": "ip_00074",
+        "type": "link",
+        "appear_s": 25.0
+      },
+      {
+        "s": "u000131",
+        "t": "ip_00074",
+        "type": "link",
+        "appear_s": 25.0
+      },
+      {
+        "s": "u000116",
+        "t": "ip_00077",
+        "type": "link",
+        "appear_s": 32.607
+      },
+      {
+        "s": "u000134",
+        "t": "ip_00077",
+        "type": "link",
+        "appear_s": 29.906
+      },
+      {
+        "s": "u000019",
+        "t": "ip_00080",
+        "type": "link",
+        "appear_s": 39.451
+      },
+      {
+        "s": "u000136",
+        "t": "ip_00080",
+        "type": "link",
+        "appear_s": 40.0
+      }
+    ],
+    "transfers": [
+      {
+        "s": "u000042",
+        "t": "u000073",
+        "at": 0.155,
+        "amount": 155.19
+      },
+      {
+        "s": "u000078",
+        "t": "u000088",
+        "at": 0.542,
+        "amount": 257.95
+      },
+      {
+        "s": "u000022",
+        "t": "u000077",
+        "at": 0.734,
+        "amount": 122.72
+      },
+      {
+        "s": "u000027",
+        "t": "u000076",
+        "at": 1.665,
+        "amount": 2861.51
+      },
+      {
+        "s": "u000039",
+        "t": "u000061",
+        "at": 1.795,
+        "amount": 179.11
+      },
+      {
+        "s": "u000005",
+        "t": "u000022",
+        "at": 1.833,
+        "amount": 95.32
+      },
+      {
+        "s": "u000022",
+        "t": "u000077",
+        "at": 2.001,
+        "amount": 317.37
+      },
+      {
+        "s": "u000061",
+        "t": "u000096",
+        "at": 2.413,
+        "amount": 572.16
+      },
+      {
+        "s": "u000093",
+        "t": "u000077",
+        "at": 2.624,
+        "amount": 50.02
+      },
+      {
+        "s": "u000093",
+        "t": "u000077",
+        "at": 2.635,
+        "amount": 22.65
+      },
+      {
+        "s": "u000108",
+        "t": "u000071",
+        "at": 2.712,
+        "amount": 86.01
+      },
+      {
+        "s": "u000093",
+        "t": "u000077",
+        "at": 2.749,
+        "amount": 54.39
+      },
+      {
+        "s": "u000023",
+        "t": "u000061",
+        "at": 2.901,
+        "amount": 166.17
+      },
+      {
+        "s": "u000085",
+        "t": "u000108",
+        "at": 3.346,
+        "amount": 868.02
+      },
+      {
+        "s": "u000076",
+        "t": "u000089",
+        "at": 4.013,
+        "amount": 38.99
+      },
+      {
+        "s": "u000071",
+        "t": "u000076",
+        "at": 4.347,
+        "amount": 34.86
+      },
+      {
+        "s": "u000013",
+        "t": "u000116",
+        "at": 4.864,
+        "amount": 1491.61
+      },
+      {
+        "s": "u000085",
+        "t": "u000108",
+        "at": 5.593,
+        "amount": 4119.75
+      },
+      {
+        "s": "u000085",
+        "t": "u000108",
+        "at": 6.109,
+        "amount": 855.95
+      },
+      {
+        "s": "u000076",
+        "t": "u000089",
+        "at": 6.303,
+        "amount": 238.57
+      },
+      {
+        "s": "u000063",
+        "t": "u000038",
+        "at": 6.353,
+        "amount": 661.95
+      },
+      {
+        "s": "u000103",
+        "t": "u000022",
+        "at": 6.499,
+        "amount": 135.49
+      },
+      {
+        "s": "u000061",
+        "t": "u000096",
+        "at": 7.134,
+        "amount": 115.44
+      },
+      {
+        "s": "u000093",
+        "t": "u000077",
+        "at": 7.26,
+        "amount": 19.97
+      },
+      {
+        "s": "u000076",
+        "t": "u000089",
+        "at": 7.348,
+        "amount": 85.05
+      },
+      {
+        "s": "u000085",
+        "t": "u000108",
+        "at": 7.369,
+        "amount": 24.51
+      },
+      {
+        "s": "u000108",
+        "t": "u000071",
+        "at": 7.766,
+        "amount": 84.74
+      },
+      {
+        "s": "u000019",
+        "t": "u000017",
+        "at": 8.283,
+        "amount": 29.25
+      },
+      {
+        "s": "u000078",
+        "t": "u000088",
+        "at": 8.367,
+        "amount": 149.03
+      },
+      {
+        "s": "u000039",
+        "t": "u000061",
+        "at": 8.617,
+        "amount": 96.17
+      },
+      {
+        "s": "u000103",
+        "t": "u000038",
+        "at": 8.705,
+        "amount": 595.8
+      },
+      {
+        "s": "u000005",
+        "t": "u000022",
+        "at": 8.887,
+        "amount": 85.76
+      },
+      {
+        "s": "u000093",
+        "t": "u000077",
+        "at": 8.951,
+        "amount": 88.17
+      },
+      {
+        "s": "u000061",
+        "t": "u000096",
+        "at": 9.172,
+        "amount": 19.66
+      },
+      {
+        "s": "u000036",
+        "t": "u000093",
+        "at": 9.56,
+        "amount": 295.29
+      },
+      {
+        "s": "u000027",
+        "t": "u000076",
+        "at": 9.739,
+        "amount": 159.76
+      },
+      {
+        "s": "u000093",
+        "t": "u000039",
+        "at": 10.458,
+        "amount": 78.83
+      },
+      {
+        "s": "u000005",
+        "t": "u000022",
+        "at": 10.76,
+        "amount": 29.8
+      },
+      {
+        "s": "u000078",
+        "t": "u000088",
+        "at": 10.926,
+        "amount": 555.83
+      },
+      {
+        "s": "u000105",
+        "t": "u000093",
+        "at": 11.258,
+        "amount": 133.51
+      },
+      {
+        "s": "u000076",
+        "t": "u000089",
+        "at": 11.521,
+        "amount": 47.54
+      },
+      {
+        "s": "u000108",
+        "t": "u000071",
+        "at": 11.556,
+        "amount": 146.96
+      },
+      {
+        "s": "u000093",
+        "t": "u000027",
+        "at": 11.592,
+        "amount": 676.98
+      },
+      {
+        "s": "u000076",
+        "t": "u000089",
+        "at": 11.684,
+        "amount": 185.74
+      },
+      {
+        "s": "u000023",
+        "t": "u000061",
+        "at": 11.73,
+        "amount": 333.06
+      },
+      {
+        "s": "u000024",
+        "t": "u000023",
+        "at": 11.813,
+        "amount": 366.23
+      },
+      {
+        "s": "u000013",
+        "t": "u000116",
+        "at": 12.164,
+        "amount": 723.85
+      },
+      {
+        "s": "u000102",
+        "t": "u000036",
+        "at": 12.198,
+        "amount": 39.05
+      },
+      {
+        "s": "u000108",
+        "t": "u000071",
+        "at": 12.278,
+        "amount": 28.97
+      },
+      {
+        "s": "u000061",
+        "t": "u000058",
+        "at": 12.772,
+        "amount": 106.41
+      },
+      {
+        "s": "u000058",
+        "t": "u000102",
+        "at": 13.191,
+        "amount": 25.78
+      },
+      {
+        "s": "u000027",
+        "t": "u000049",
+        "at": 13.352,
+        "amount": 166.45
+      },
+      {
+        "s": "u000108",
+        "t": "u000071",
+        "at": 14.143,
+        "amount": 199.52
+      },
+      {
+        "s": "u000063",
+        "t": "u000038",
+        "at": 14.177,
+        "amount": 369.4
+      },
+      {
+        "s": "u000102",
+        "t": "u000036",
+        "at": 14.272,
+        "amount": 164.71
+      },
+      {
+        "s": "u000061",
+        "t": "u000096",
+        "at": 14.362,
+        "amount": 219.83
+      },
+      {
+        "s": "u000105",
+        "t": "u000093",
+        "at": 14.629,
+        "amount": 94.42
+      },
+      {
+        "s": "u000078",
+        "t": "u000088",
+        "at": 14.676,
+        "amount": 48.79
+      },
+      {
+        "s": "u000085",
+        "t": "u000108",
+        "at": 14.728,
+        "amount": 51.37
+      },
+      {
+        "s": "u000023",
+        "t": "u000061",
+        "at": 14.86,
+        "amount": 481.66
+      },
+      {
+        "s": "u000061",
+        "t": "u000096",
+        "at": 15.467,
+        "amount": 68.12
+      },
+      {
+        "s": "u000061",
+        "t": "u000058",
+        "at": 16.951,
+        "amount": 28.51
+      },
+      {
+        "s": "u000016",
+        "t": "u000061",
+        "at": 16.98,
+        "amount": 122.66
+      },
+      {
+        "s": "u000063",
+        "t": "u000039",
+        "at": 18.435,
+        "amount": 37.08
+      },
+      {
+        "s": "u000102",
+        "t": "u000036",
+        "at": 18.961,
+        "amount": 111.67
+      },
+      {
+        "s": "u000061",
+        "t": "u000096",
+        "at": 20.355,
+        "amount": 570.21
+      },
+      {
+        "s": "u000085",
+        "t": "u000108",
+        "at": 21.168,
+        "amount": 499.03
+      },
+      {
+        "s": "u000123",
+        "t": "u000122",
+        "at": 21.499,
+        "amount": 1296.67
+      },
+      {
+        "s": "u000108",
+        "t": "u000071",
+        "at": 21.616,
+        "amount": 109.66
+      },
+      {
+        "s": "u000122",
+        "t": "u000123",
+        "at": 21.739,
+        "amount": 854.55
+      },
+      {
+        "s": "u000063",
+        "t": "u000038",
+        "at": 21.774,
+        "amount": 133.26
+      },
+      {
+        "s": "u000058",
+        "t": "u000102",
+        "at": 21.831,
+        "amount": 38.91
+      },
+      {
+        "s": "u000076",
+        "t": "u000089",
+        "at": 22.011,
+        "amount": 18.33
+      },
+      {
+        "s": "u000042",
+        "t": "u000073",
+        "at": 22.05,
+        "amount": 72.08
+      },
+      {
+        "s": "u000020",
+        "t": "u000059",
+        "at": 22.527,
+        "amount": 68.17
+      },
+      {
+        "s": "u000027",
+        "t": "u000085",
+        "at": 22.864,
+        "amount": 143.87
+      },
+      {
+        "s": "u000020",
+        "t": "u000068",
+        "at": 22.934,
+        "amount": 354.31
+      },
+      {
+        "s": "u000122",
+        "t": "u000128",
+        "at": 23.932,
+        "amount": 1144.13
+      },
+      {
+        "s": "u000123",
+        "t": "u000127",
+        "at": 24.282,
+        "amount": 1025.13
+      },
+      {
+        "s": "u000022",
+        "t": "u000077",
+        "at": 24.512,
+        "amount": 35.12
+      },
+      {
+        "s": "u000019",
+        "t": "u000017",
+        "at": 24.614,
+        "amount": 2074.52
+      },
+      {
+        "s": "u000023",
+        "t": "u000061",
+        "at": 25.514,
+        "amount": 137.47
+      },
+      {
+        "s": "u000105",
+        "t": "u000093",
+        "at": 25.618,
+        "amount": 1845.96
+      },
+      {
+        "s": "u000127",
+        "t": "u000122",
+        "at": 26.342,
+        "amount": 645.63
+      },
+      {
+        "s": "u000077",
+        "t": "u000059",
+        "at": 27.04,
+        "amount": 35.73
+      },
+      {
+        "s": "u000042",
+        "t": "u000073",
+        "at": 27.698,
+        "amount": 60.88
+      },
+      {
+        "s": "u000023",
+        "t": "u000061",
+        "at": 29.032,
+        "amount": 21.29
+      },
+      {
+        "s": "u000102",
+        "t": "u000036",
+        "at": 29.728,
+        "amount": 189.98
+      },
+      {
+        "s": "u000070",
+        "t": "u000085",
+        "at": 29.796,
+        "amount": 64.94
+      },
+      {
+        "s": "u000088",
+        "t": "u000016",
+        "at": 30.266,
+        "amount": 54.16
+      },
+      {
+        "s": "u000085",
+        "t": "u000108",
+        "at": 30.288,
+        "amount": 275.47
+      },
+      {
+        "s": "u000103",
+        "t": "u000038",
+        "at": 30.395,
+        "amount": 175.09
+      },
+      {
+        "s": "u000071",
+        "t": "u000027",
+        "at": 30.463,
+        "amount": 50.55
+      },
+      {
+        "s": "u000122",
+        "t": "u000128",
+        "at": 30.512,
+        "amount": 991.09
+      },
+      {
+        "s": "u000085",
+        "t": "u000108",
+        "at": 31.177,
+        "amount": 38.78
+      },
+      {
+        "s": "u000076",
+        "t": "u000089",
+        "at": 31.618,
+        "amount": 157.13
+      },
+      {
+        "s": "u000122",
+        "t": "u000128",
+        "at": 31.662,
+        "amount": 1303.08
+      },
+      {
+        "s": "u000128",
+        "t": "u000123",
+        "at": 31.898,
+        "amount": 677.72
+      },
+      {
+        "s": "u000042",
+        "t": "u000073",
+        "at": 32.058,
+        "amount": 384.08
+      },
+      {
+        "s": "u000093",
+        "t": "u000039",
+        "at": 32.782,
+        "amount": 75.99
+      },
+      {
+        "s": "u000134",
+        "t": "u000131",
+        "at": 33.049,
+        "amount": 957.68
+      },
+      {
+        "s": "u000023",
+        "t": "u000061",
+        "at": 33.061,
+        "amount": 292.33
+      },
+      {
+        "s": "u000105",
+        "t": "u000070",
+        "at": 33.478,
+        "amount": 43.95
+      },
+      {
+        "s": "u000130",
+        "t": "u000134",
+        "at": 33.528,
+        "amount": 1164.52
+      },
+      {
+        "s": "u000024",
+        "t": "u000023",
+        "at": 33.702,
+        "amount": 59.28
+      },
+      {
+        "s": "u000123",
+        "t": "u000127",
+        "at": 33.703,
+        "amount": 1986.67
+      },
+      {
+        "s": "u000093",
+        "t": "u000064",
+        "at": 33.743,
+        "amount": 136.36
+      },
+      {
+        "s": "u000105",
+        "t": "u000070",
+        "at": 34.472,
+        "amount": 11.09
+      },
+      {
+        "s": "u000102",
+        "t": "u000036",
+        "at": 34.804,
+        "amount": 103.12
+      },
+      {
+        "s": "u000042",
+        "t": "u000073",
+        "at": 34.874,
+        "amount": 279.92
+      },
+      {
+        "s": "u000131",
+        "t": "u000130",
+        "at": 35.338,
+        "amount": 543.06
+      },
+      {
+        "s": "u000042",
+        "t": "u000073",
+        "at": 35.617,
+        "amount": 398.71
+      },
+      {
+        "s": "u000022",
+        "t": "u000077",
+        "at": 35.853,
+        "amount": 74.23
+      },
+      {
+        "s": "u000013",
+        "t": "u000116",
+        "at": 35.863,
+        "amount": 241.0
+      },
+      {
+        "s": "u000058",
+        "t": "u000102",
+        "at": 36.443,
+        "amount": 400.9
+      },
+      {
+        "s": "u000093",
+        "t": "u000077",
+        "at": 36.52,
+        "amount": 627.01
+      },
+      {
+        "s": "u000022",
+        "t": "u000077",
+        "at": 36.626,
+        "amount": 14.91
+      },
+      {
+        "s": "u000024",
+        "t": "u000023",
+        "at": 36.795,
+        "amount": 9.56
+      },
+      {
+        "s": "u000127",
+        "t": "u000123",
+        "at": 36.849,
+        "amount": 796.32
+      },
+      {
+        "s": "u000127",
+        "t": "u000128",
+        "at": 36.934,
+        "amount": 746.14
+      },
+      {
+        "s": "u000038",
+        "t": "u000051",
+        "at": 37.029,
+        "amount": 42.03
+      },
+      {
+        "s": "u000089",
+        "t": "u000073",
+        "at": 37.495,
+        "amount": 57.36
+      },
+      {
+        "s": "u000131",
+        "t": "u000130",
+        "at": 38.183,
+        "amount": 1021.41
+      },
+      {
+        "s": "u000132",
+        "t": "u000130",
+        "at": 38.332,
+        "amount": 778.68
+      },
+      {
+        "s": "u000071",
+        "t": "u000076",
+        "at": 38.362,
+        "amount": 61.45
+      },
+      {
+        "s": "u000038",
+        "t": "u000051",
+        "at": 38.5,
+        "amount": 220.31
+      },
+      {
+        "s": "u000061",
+        "t": "u000096",
+        "at": 39.009,
+        "amount": 452.99
+      },
+      {
+        "s": "u000093",
+        "t": "u000064",
+        "at": 39.115,
+        "amount": 90.6
+      },
+      {
+        "s": "u000085",
+        "t": "u000038",
+        "at": 39.452,
+        "amount": 70.12
+      },
+      {
+        "s": "u000071",
+        "t": "u000076",
+        "at": 39.636,
+        "amount": 54.54
+      },
+      {
+        "s": "u000020",
+        "t": "u000068",
+        "at": 40.073,
+        "amount": 510.4
+      },
+      {
+        "s": "u000005",
+        "t": "u000022",
+        "at": 40.241,
+        "amount": 81.45
+      },
+      {
+        "s": "u000022",
+        "t": "u000077",
+        "at": 40.32,
+        "amount": 46.82
+      },
+      {
+        "s": "u000085",
+        "t": "u000038",
+        "at": 40.656,
+        "amount": 138.68
+      },
+      {
+        "s": "u000061",
+        "t": "u000058",
+        "at": 40.661,
+        "amount": 11.3
+      },
+      {
+        "s": "u000108",
+        "t": "u000071",
+        "at": 40.859,
+        "amount": 23.07
+      },
+      {
+        "s": "u000122",
+        "t": "u000123",
+        "at": 41.78,
+        "amount": 1402.09
+      },
+      {
+        "s": "u000063",
+        "t": "u000039",
+        "at": 41.792,
+        "amount": 117.32
+      },
+      {
+        "s": "u000063",
+        "t": "u000039",
+        "at": 41.965,
+        "amount": 295.03
+      },
+      {
+        "s": "u000102",
+        "t": "u000036",
+        "at": 42.003,
+        "amount": 34.62
+      },
+      {
+        "s": "u000134",
+        "t": "u000130",
+        "at": 42.366,
+        "amount": 757.68
+      },
+      {
+        "s": "u000098",
+        "t": "u000093",
+        "at": 42.953,
+        "amount": 94.63
+      },
+      {
+        "s": "u000051",
+        "t": "u000058",
+        "at": 43.153,
+        "amount": 105.09
+      },
+      {
+        "s": "u000085",
+        "t": "u000036",
+        "at": 43.333,
+        "amount": 815.6
+      },
+      {
+        "s": "u000132",
+        "t": "u000130",
+        "at": 43.554,
+        "amount": 929.8
+      },
+      {
+        "s": "u000073",
+        "t": "u000042",
+        "at": 43.738,
+        "amount": 309.55
+      },
+      {
+        "s": "u000102",
+        "t": "u000036",
+        "at": 44.101,
+        "amount": 314.66
+      },
+      {
+        "s": "u000131",
+        "t": "u000132",
+        "at": 44.483,
+        "amount": 703.42
+      },
+      {
+        "s": "u000136",
+        "t": "u000137",
+        "at": 44.563,
+        "amount": 4061.54
+      },
+      {
+        "s": "u000039",
+        "t": "u000061",
+        "at": 44.584,
+        "amount": 595.12
+      },
+      {
+        "s": "u000130",
+        "t": "u000131",
+        "at": 45.096,
+        "amount": 981.83
+      },
+      {
+        "s": "u000102",
+        "t": "u000036",
+        "at": 45.162,
+        "amount": 167.73
+      },
+      {
+        "s": "u000132",
+        "t": "u000131",
+        "at": 45.932,
+        "amount": 1174.25
+      },
+      {
+        "s": "u000137",
+        "t": "u000138",
+        "at": 46.409,
+        "amount": 3933.27
+      },
+      {
+        "s": "u000132",
+        "t": "u000134",
+        "at": 47.044,
+        "amount": 850.49
+      },
+      {
+        "s": "u000023",
+        "t": "u000061",
+        "at": 47.267,
+        "amount": 45.8
+      },
+      {
+        "s": "u000122",
+        "t": "u000123",
+        "at": 47.532,
+        "amount": 942.07
+      },
+      {
+        "s": "u000058",
+        "t": "u000102",
+        "at": 47.975,
+        "amount": 170.07
+      },
+      {
+        "s": "u000138",
+        "t": "u000139",
+        "at": 48.138,
+        "amount": 3775.03
+      },
+      {
+        "s": "u000108",
+        "t": "u000071",
+        "at": 48.295,
+        "amount": 228.08
+      },
+      {
+        "s": "u000038",
+        "t": "u000022",
+        "at": 48.705,
+        "amount": 63.28
+      },
+      {
+        "s": "u000085",
+        "t": "u000108",
+        "at": 48.918,
+        "amount": 189.52
+      },
+      {
+        "s": "u000061",
+        "t": "u000073",
+        "at": 49.759,
+        "amount": 131.25
+      },
+      {
+        "s": "u000016",
+        "t": "u000061",
+        "at": 50.179,
+        "amount": 472.3
+      },
+      {
+        "s": "u000132",
+        "t": "u000134",
+        "at": 50.219,
+        "amount": 1539.66
+      },
+      {
+        "s": "u000139",
+        "t": "u000136",
+        "at": 50.313,
+        "amount": 3671.33
+      },
+      {
+        "s": "u000027",
+        "t": "u000049",
+        "at": 50.737,
+        "amount": 41.06
+      },
+      {
+        "s": "u000108",
+        "t": "u000071",
+        "at": 50.793,
+        "amount": 40.98
+      },
+      {
+        "s": "u000123",
+        "t": "u000128",
+        "at": 50.835,
+        "amount": 748.81
+      },
+      {
+        "s": "u000132",
+        "t": "u000131",
+        "at": 51.194,
+        "amount": 492.71
+      },
+      {
+        "s": "u000103",
+        "t": "u000038",
+        "at": 51.229,
+        "amount": 501.66
+      },
+      {
+        "s": "u000123",
+        "t": "u000128",
+        "at": 51.565,
+        "amount": 890.01
+      },
+      {
+        "s": "u000136",
+        "t": "u000137",
+        "at": 51.715,
+        "amount": 7119.3
+      },
+      {
+        "s": "u000108",
+        "t": "u000071",
+        "at": 51.98,
+        "amount": 35.88
+      },
+      {
+        "s": "u000076",
+        "t": "u000089",
+        "at": 52.369,
+        "amount": 333.7
+      },
+      {
+        "s": "u000076",
+        "t": "u000089",
+        "at": 52.766,
+        "amount": 92.73
+      },
+      {
+        "s": "u000123",
+        "t": "u000122",
+        "at": 53.054,
+        "amount": 1061.72
+      },
+      {
+        "s": "u000098",
+        "t": "u000093",
+        "at": 53.082,
+        "amount": 486.69
+      },
+      {
+        "s": "u000024",
+        "t": "u000023",
+        "at": 53.128,
+        "amount": 58.98
+      },
+      {
+        "s": "u000061",
+        "t": "u000073",
+        "at": 53.147,
+        "amount": 389.66
+      },
+      {
+        "s": "u000137",
+        "t": "u000138",
+        "at": 53.489,
+        "amount": 6778.15
+      },
+      {
+        "s": "u000130",
+        "t": "u000132",
+        "at": 53.52,
+        "amount": 921.25
+      },
+      {
+        "s": "u000134",
+        "t": "u000132",
+        "at": 54.217,
+        "amount": 760.53
+      },
+      {
+        "s": "u000019",
+        "t": "u000017",
+        "at": 54.303,
+        "amount": 202.0
+      },
+      {
+        "s": "u000049",
+        "t": "u000013",
+        "at": 54.642,
+        "amount": 103.17
+      },
+      {
+        "s": "u000089",
+        "t": "u000071",
+        "at": 54.693,
+        "amount": 188.31
+      },
+      {
+        "s": "u000019",
+        "t": "u000017",
+        "at": 54.88,
+        "amount": 148.78
+      },
+      {
+        "s": "u000027",
+        "t": "u000085",
+        "at": 54.987,
+        "amount": 32.9
+      },
+      {
+        "s": "u000128",
+        "t": "u000123",
+        "at": 55.003,
+        "amount": 598.27
+      },
+      {
+        "s": "u000027",
+        "t": "u000085",
+        "at": 55.245,
+        "amount": 9.33
+      },
+      {
+        "s": "u000042",
+        "t": "u000013",
+        "at": 55.827,
+        "amount": 120.33
+      },
+      {
+        "s": "u000122",
+        "t": "u000127",
+        "at": 56.171,
+        "amount": 833.65
+      },
+      {
+        "s": "u000131",
+        "t": "u000130",
+        "at": 56.41,
+        "amount": 503.04
+      },
+      {
+        "s": "u000132",
+        "t": "u000131",
+        "at": 56.657,
+        "amount": 478.18
+      },
+      {
+        "s": "u000138",
+        "t": "u000139",
+        "at": 56.842,
+        "amount": 6495.82
+      },
+      {
+        "s": "u000123",
+        "t": "u000128",
+        "at": 57.32,
+        "amount": 548.49
+      },
+      {
+        "s": "u000051",
+        "t": "u000058",
+        "at": 57.835,
+        "amount": 243.4
+      },
+      {
+        "s": "u000042",
+        "t": "u000061",
+        "at": 58.828,
+        "amount": 209.7
+      },
+      {
+        "s": "u000088",
+        "t": "u000016",
+        "at": 58.905,
+        "amount": 50.92
+      },
+      {
+        "s": "u000093",
+        "t": "u000064",
+        "at": 59.573,
+        "amount": 113.8
+      },
+      {
+        "s": "u000139",
+        "t": "u000136",
+        "at": 59.909,
+        "amount": 6361.31
+      },
+      {
+        "s": "u000108",
+        "t": "u000071",
+        "at": 60.333,
+        "amount": 389.33
+      },
+      {
+        "s": "u000108",
+        "t": "u000071",
+        "at": 60.439,
+        "amount": 138.27
+      },
+      {
+        "s": "u000036",
+        "t": "u000093",
+        "at": 60.723,
+        "amount": 723.96
+      },
+      {
+        "s": "u000042",
+        "t": "u000061",
+        "at": 60.875,
+        "amount": 77.77
+      },
+      {
+        "s": "u000085",
+        "t": "u000036",
+        "at": 61.348,
+        "amount": 267.07
+      },
+      {
+        "s": "u000036",
+        "t": "u000093",
+        "at": 61.399,
+        "amount": 184.48
+      },
+      {
+        "s": "u000038",
+        "t": "u000089",
+        "at": 61.414,
+        "amount": 57.98
+      },
+      {
+        "s": "u000127",
+        "t": "u000123",
+        "at": 61.422,
+        "amount": 762.88
+      },
+      {
+        "s": "u000076",
+        "t": "u000089",
+        "at": 61.567,
+        "amount": 171.33
+      },
+      {
+        "s": "u000085",
+        "t": "u000036",
+        "at": 61.657,
+        "amount": 31.4
+      },
+      {
+        "s": "u000128",
+        "t": "u000122",
+        "at": 61.84,
+        "amount": 910.77
+      },
+      {
+        "s": "u000132",
+        "t": "u000131",
+        "at": 62.158,
+        "amount": 362.36
+      },
+      {
+        "s": "u000108",
+        "t": "u000071",
+        "at": 62.273,
+        "amount": 229.31
+      },
+      {
+        "s": "u000061",
+        "t": "u000076",
+        "at": 62.904,
+        "amount": 109.33
+      },
+      {
+        "s": "u000093",
+        "t": "u000027",
+        "at": 63.236,
+        "amount": 37.45
+      },
+      {
+        "s": "u000127",
+        "t": "u000128",
+        "at": 63.362,
+        "amount": 870.88
+      },
+      {
+        "s": "u000042",
+        "t": "u000061",
+        "at": 63.603,
+        "amount": 1020.0
+      },
+      {
+        "s": "u000122",
+        "t": "u000128",
+        "at": 63.734,
+        "amount": 1013.01
+      },
+      {
+        "s": "u000130",
+        "t": "u000134",
+        "at": 64.082,
+        "amount": 824.17
+      },
+      {
+        "s": "u000058",
+        "t": "u000102",
+        "at": 64.265,
+        "amount": 152.86
+      },
+      {
+        "s": "u000076",
+        "t": "u000089",
+        "at": 64.337,
+        "amount": 74.75
+      },
+      {
+        "s": "u000122",
+        "t": "u000127",
+        "at": 64.961,
+        "amount": 724.16
+      },
+      {
+        "s": "u000042",
+        "t": "u000073",
+        "at": 65.063,
+        "amount": 54.25
+      },
+      {
+        "s": "u000051",
+        "t": "u000058",
+        "at": 65.583,
+        "amount": 870.49
+      },
+      {
+        "s": "u000027",
+        "t": "u000085",
+        "at": 65.588,
+        "amount": 215.22
+      },
+      {
+        "s": "u000020",
+        "t": "u000059",
+        "at": 66.058,
+        "amount": 129.2
+      },
+      {
+        "s": "u000023",
+        "t": "u000061",
+        "at": 66.065,
+        "amount": 86.42
+      },
+      {
+        "s": "u000130",
+        "t": "u000131",
+        "at": 66.396,
+        "amount": 1668.83
+      },
+      {
+        "s": "u000063",
+        "t": "u000023",
+        "at": 66.81,
+        "amount": 49.62
+      },
+      {
+        "s": "u000088",
+        "t": "u000038",
+        "at": 66.94,
+        "amount": 11.3
+      },
+      {
+        "s": "u000027",
+        "t": "u000023",
+        "at": 67.228,
+        "amount": 201.2
+      },
+      {
+        "s": "u000085",
+        "t": "u000038",
+        "at": 67.247,
+        "amount": 162.9
+      },
+      {
+        "s": "u000122",
+        "t": "u000127",
+        "at": 67.46,
+        "amount": 1319.59
+      },
+      {
+        "s": "u000123",
+        "t": "u000122",
+        "at": 67.906,
+        "amount": 759.09
+      },
+      {
+        "s": "u000128",
+        "t": "u000122",
+        "at": 68.133,
+        "amount": 830.93
+      },
+      {
+        "s": "u000136",
+        "t": "u000137",
+        "at": 68.164,
+        "amount": 7979.76
+      },
+      {
+        "s": "u000130",
+        "t": "u000134",
+        "at": 68.515,
+        "amount": 1664.65
+      },
+      {
+        "s": "u000020",
+        "t": "u000068",
+        "at": 69.337,
+        "amount": 45.33
+      },
+      {
+        "s": "u000128",
+        "t": "u000127",
+        "at": 69.701,
+        "amount": 580.09
+      },
+      {
+        "s": "u000077",
+        "t": "u000068",
+        "at": 69.851,
+        "amount": 102.0
+      },
+      {
+        "s": "u000137",
+        "t": "u000138",
+        "at": 70.253,
+        "amount": 7799.1
+      },
+      {
+        "s": "u000134",
+        "t": "u000131",
+        "at": 70.653,
+        "amount": 778.87
+      },
+      {
+        "s": "u000059",
+        "t": "u000105",
+        "at": 71.674,
+        "amount": 424.57
+      },
+      {
+        "s": "u000138",
+        "t": "u000139",
+        "at": 72.317,
+        "amount": 7576.65
+      },
+      {
+        "s": "u000098",
+        "t": "u000093",
+        "at": 72.378,
+        "amount": 39.75
+      },
+      {
+        "s": "u000089",
+        "t": "u000073",
+        "at": 72.473,
+        "amount": 79.29
+      },
+      {
+        "s": "u000127",
+        "t": "u000122",
+        "at": 72.587,
+        "amount": 1334.43
+      },
+      {
+        "s": "u000130",
+        "t": "u000134",
+        "at": 72.743,
+        "amount": 918.85
+      },
+      {
+        "s": "u000093",
+        "t": "u000038",
+        "at": 72.841,
+        "amount": 111.03
+      },
+      {
+        "s": "u000038",
+        "t": "u000089",
+        "at": 72.912,
+        "amount": 353.24
+      },
+      {
+        "s": "u000108",
+        "t": "u000071",
+        "at": 72.929,
+        "amount": 31.89
+      },
+      {
+        "s": "u000103",
+        "t": "u000022",
+        "at": 73.05,
+        "amount": 54.23
+      },
+      {
+        "s": "u000023",
+        "t": "u000061",
+        "at": 73.11,
+        "amount": 398.12
+      },
+      {
+        "s": "u000139",
+        "t": "u000136",
+        "at": 74.449,
+        "amount": 7265.86
+      },
+      {
+        "s": "u000039",
+        "t": "u000061",
+        "at": 74.553,
+        "amount": 85.94
+      },
+      {
+        "s": "u000127",
+        "t": "u000128",
+        "at": 74.819,
+        "amount": 934.01
+      },
+      {
+        "s": "u000078",
+        "t": "u000088",
+        "at": 75.441,
+        "amount": 138.51
+      },
+      {
+        "s": "u000038",
+        "t": "u000051",
+        "at": 76.17,
+        "amount": 49.0
+      },
+      {
+        "s": "u000013",
+        "t": "u000116",
+        "at": 76.375,
+        "amount": 160.79
+      },
+      {
+        "s": "u000078",
+        "t": "u000088",
+        "at": 76.42,
+        "amount": 99.92
+      },
+      {
+        "s": "u000131",
+        "t": "u000130",
+        "at": 77.932,
+        "amount": 821.68
+      },
+      {
+        "s": "u000093",
+        "t": "u000027",
+        "at": 78.19,
+        "amount": 1603.75
+      },
+      {
+        "s": "u000093",
+        "t": "u000077",
+        "at": 78.772,
+        "amount": 119.75
+      },
+      {
+        "s": "u000093",
+        "t": "u000064",
+        "at": 78.82,
+        "amount": 103.54
+      },
+      {
+        "s": "u000094",
+        "t": "u000061",
+        "at": 79.142,
+        "amount": 29.44
+      },
+      {
+        "s": "u000131",
+        "t": "u000132",
+        "at": 79.213,
+        "amount": 681.11
+      },
+      {
+        "s": "u000038",
+        "t": "u000049",
+        "at": 79.262,
+        "amount": 1884.53
+      },
+      {
+        "s": "u000042",
+        "t": "u000005",
+        "at": 80.338,
+        "amount": 514.79
+      },
+      {
+        "s": "u000131",
+        "t": "u000132",
+        "at": 81.028,
+        "amount": 1336.13
+      },
+      {
+        "s": "u000103",
+        "t": "u000063",
+        "at": 81.084,
+        "amount": 188.6
+      },
+      {
+        "s": "u000132",
+        "t": "u000131",
+        "at": 81.774,
+        "amount": 1204.39
+      },
+      {
+        "s": "u000038",
+        "t": "u000076",
+        "at": 81.932,
+        "amount": 40.59
+      },
+      {
+        "s": "u000105",
+        "t": "u000093",
+        "at": 82.579,
+        "amount": 123.75
+      },
+      {
+        "s": "u000017",
+        "t": "u000022",
+        "at": 82.747,
+        "amount": 270.12
+      },
+      {
+        "s": "u000023",
+        "t": "u000061",
+        "at": 84.37,
+        "amount": 94.87
+      },
+      {
+        "s": "u000077",
+        "t": "u000068",
+        "at": 84.513,
+        "amount": 539.25
+      },
+      {
+        "s": "u000136",
+        "t": "u000137",
+        "at": 84.583,
+        "amount": 4730.02
+      },
+      {
+        "s": "u000085",
+        "t": "u000036",
+        "at": 85.019,
+        "amount": 361.82
+      },
+      {
+        "s": "u000103",
+        "t": "u000022",
+        "at": 85.825,
+        "amount": 295.09
+      },
+      {
+        "s": "u000137",
+        "t": "u000138",
+        "at": 86.138,
+        "amount": 4577.62
+      },
+      {
+        "s": "u000039",
+        "t": "u000061",
+        "at": 86.248,
+        "amount": 29.93
+      },
+      {
+        "s": "u000134",
+        "t": "u000132",
+        "at": 86.257,
+        "amount": 1146.65
+      },
+      {
+        "s": "u000013",
+        "t": "u000116",
+        "at": 86.685,
+        "amount": 90.67
+      },
+      {
+        "s": "u000122",
+        "t": "u000123",
+        "at": 87.348,
+        "amount": 580.88
+      },
+      {
+        "s": "u000027",
+        "t": "u000049",
+        "at": 87.422,
+        "amount": 340.86
+      },
+      {
+        "s": "u000088",
+        "t": "u000016",
+        "at": 87.485,
+        "amount": 471.68
+      },
+      {
+        "s": "u000076",
+        "t": "u000038",
+        "at": 87.758,
+        "amount": 245.87
+      },
+      {
+        "s": "u000059",
+        "t": "u000105",
+        "at": 88.254,
+        "amount": 591.37
+      },
+      {
+        "s": "u000049",
+        "t": "u000013",
+        "at": 88.571,
+        "amount": 819.45
+      },
+      {
+        "s": "u000076",
+        "t": "u000089",
+        "at": 88.836,
+        "amount": 533.58
+      },
+      {
+        "s": "u000138",
+        "t": "u000139",
+        "at": 88.901,
+        "amount": 4421.68
+      },
+      {
+        "s": "u000013",
+        "t": "u000116",
+        "at": 89.395,
+        "amount": 33.7
+      }
+    ]
+  }
+}

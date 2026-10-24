@@ -1,6 +1,79 @@
 {
   "components": {
     "schemas": {
+      "AdaptiveAttackerV1": {
+        "additionalProperties": false,
+        "properties": {
+          "max_rings": {
+            "anyOf": [
+              {
+                "maximum": 100.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Rings"
+          },
+          "penalty": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "gt": 0,
+                "le": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Penalty"
+          },
+          "respawn_delay_s": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "gt": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Respawn Delay S"
+          },
+          "strategies": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/EvasionMode"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Strategies"
+          }
+        },
+        "title": "AdaptiveAttackerV1",
+        "type": "object"
+      },
       "AlertV1": {
         "description": "One alert or early warning as published to `fraudsim:alerts`.",
         "properties": {
@@ -138,6 +211,89 @@
           "action"
         ],
         "title": "AnalystFeedbackRequest",
+        "type": "object"
+      },
+      "BenignMixV1": {
+        "additionalProperties": false,
+        "properties": {
+          "card_link": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "ge": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Card Link"
+          },
+          "device_link": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "ge": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Device Link"
+          },
+          "ip_login": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "ge": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ip Login"
+          },
+          "transaction": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "ge": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Transaction"
+          }
+        },
+        "title": "BenignMixV1",
         "type": "object"
       },
       "ComponentHealth": {
@@ -331,6 +487,107 @@
         "title": "DetectorToggleRequest",
         "type": "object"
       },
+      "DetectorToggleV1": {
+        "properties": {
+          "enabled": {
+            "title": "Enabled",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "enabled"
+        ],
+        "title": "DetectorToggleV1",
+        "type": "object"
+      },
+      "DetectorV1": {
+        "additionalProperties": true,
+        "properties": {
+          "enabled": {
+            "title": "Enabled",
+            "type": "boolean"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "enabled"
+        ],
+        "title": "DetectorV1",
+        "type": "object"
+      },
+      "DriftV1": {
+        "additionalProperties": false,
+        "properties": {
+          "new_hub_kind": {
+            "anyOf": [
+              {
+                "enum": [
+                  "device",
+                  "card",
+                  "ip"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "New Hub Kind"
+          },
+          "new_hub_size": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "New Hub Size"
+          },
+          "shift_multiplier": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "gt": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Shift Multiplier"
+          },
+          "trigger_time_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "ge": 0,
+            "title": "Trigger Time S"
+          }
+        },
+        "required": [
+          "trigger_time_s"
+        ],
+        "title": "DriftV1",
+        "type": "object"
+      },
       "ErrorBody": {
         "properties": {
           "code": {
@@ -380,6 +637,55 @@
           "error"
         ],
         "title": "ErrorEnvelope",
+        "type": "object"
+      },
+      "EvasionMode": {
+        "description": "Evasion strategies used by simulated attackers.",
+        "enum": [
+          "none",
+          "hub_hiding",
+          "low_and_slow",
+          "identity_rotation",
+          "decoy_edges",
+          "adaptive"
+        ],
+        "title": "EvasionMode",
+        "type": "string"
+      },
+      "GraphSnapshotV1": {
+        "additionalProperties": true,
+        "description": "Windowed live graph (nodes and edges as built for the dashboards).",
+        "properties": {
+          "edges": {
+            "items": {
+              "type": "object"
+            },
+            "title": "Edges",
+            "type": "array"
+          },
+          "nodes": {
+            "items": {
+              "type": "object"
+            },
+            "title": "Nodes",
+            "type": "array"
+          },
+          "shown_users": {
+            "title": "Shown Users",
+            "type": "integer"
+          },
+          "total_active_users": {
+            "title": "Total Active Users",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "nodes",
+          "edges",
+          "shown_users",
+          "total_active_users"
+        ],
+        "title": "GraphSnapshotV1",
         "type": "object"
       },
       "HTTPValidationError": {
@@ -467,6 +773,136 @@
         "title": "HealthV1",
         "type": "object"
       },
+      "HubSizeDistributionV1": {
+        "additionalProperties": false,
+        "properties": {
+          "alpha": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "default": 1.5,
+            "gt": 0,
+            "title": "Alpha"
+          },
+          "categories": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Categories"
+          },
+          "count": {
+            "default": 0,
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "title": "Count",
+            "type": "integer"
+          },
+          "max_size": {
+            "default": 40,
+            "maximum": 100000.0,
+            "minimum": 2.0,
+            "title": "Max Size",
+            "type": "integer"
+          },
+          "min_size": {
+            "default": 3,
+            "minimum": 2.0,
+            "title": "Min Size",
+            "type": "integer"
+          }
+        },
+        "title": "HubSizeDistributionV1",
+        "type": "object"
+      },
+      "HubV1": {
+        "additionalProperties": false,
+        "description": "A named benign hub (under `simulation.hub_distribution` in YAML).",
+        "properties": {
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "fill_time_s": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "ge": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fill Time S"
+          },
+          "size": {
+            "maximum": 100000.0,
+            "minimum": 2.0,
+            "title": "Size",
+            "type": "integer"
+          },
+          "start_time_s": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "ge": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Time S"
+          },
+          "type": {
+            "default": "ip",
+            "enum": [
+              "device",
+              "card",
+              "ip"
+            ],
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "size"
+        ],
+        "title": "HubV1",
+        "type": "object"
+      },
       "InjectRingRequest": {
         "properties": {
           "evasion": {
@@ -488,6 +924,47 @@
           }
         },
         "title": "InjectRingRequest",
+        "type": "object"
+      },
+      "InjectV1": {
+        "properties": {
+          "evasion": {
+            "$ref": "#/components/schemas/EvasionMode",
+            "default": "none"
+          },
+          "ring_type": {
+            "$ref": "#/components/schemas/RingType"
+          },
+          "size": {
+            "default": 4,
+            "maximum": 50.0,
+            "minimum": 2.0,
+            "title": "Size",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "ring_type"
+        ],
+        "title": "InjectV1",
+        "type": "object"
+      },
+      "InjectedV1": {
+        "properties": {
+          "ring_id": {
+            "title": "Ring Id",
+            "type": "string"
+          },
+          "sim_time_s": {
+            "title": "Sim Time S",
+            "type": "number"
+          }
+        },
+        "required": [
+          "ring_id",
+          "sim_time_s"
+        ],
+        "title": "InjectedV1",
         "type": "object"
       },
       "LoginRequest": {
@@ -805,6 +1282,109 @@
         "title": "Page[UserOut]",
         "type": "object"
       },
+      "RandomRingsV1": {
+        "additionalProperties": false,
+        "properties": {
+          "active_duration_s": {
+            "anyOf": [
+              {
+                "maxItems": 2,
+                "minItems": 2,
+                "prefixItems": [
+                  {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "integer"
+                      }
+                    ]
+                  }
+                ],
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Active Duration S"
+          },
+          "evasion_weights": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "integer"
+                    }
+                  ]
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evasion Weights"
+          },
+          "rate_per_min": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "default": 0.0,
+            "ge": 0,
+            "le": 600,
+            "title": "Rate Per Min"
+          },
+          "size_max": {
+            "default": 6,
+            "minimum": 2.0,
+            "title": "Size Max",
+            "type": "integer"
+          },
+          "size_min": {
+            "default": 3,
+            "minimum": 2.0,
+            "title": "Size Min",
+            "type": "integer"
+          },
+          "types": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/RingType"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Types"
+          }
+        },
+        "title": "RandomRingsV1",
+        "type": "object"
+      },
       "RateRequest": {
         "properties": {
           "events_per_second": {
@@ -817,6 +1397,109 @@
           "events_per_second"
         ],
         "title": "RateRequest",
+        "type": "object"
+      },
+      "RateV1": {
+        "properties": {
+          "events_per_second": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 10000.0,
+            "title": "Events Per Second",
+            "type": "number"
+          }
+        },
+        "required": [
+          "events_per_second"
+        ],
+        "title": "RateV1",
+        "type": "object"
+      },
+      "ReplaySummary": {
+        "properties": {
+          "duration_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration S"
+          },
+          "events": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Events"
+          },
+          "generated_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Generated At"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "replayable": {
+            "title": "Replayable",
+            "type": "boolean"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "scenario": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenario"
+          },
+          "seed": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Seed"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "kind",
+          "replayable",
+          "scenario",
+          "seed",
+          "events",
+          "duration_s",
+          "generated_at",
+          "source"
+        ],
+        "title": "ReplaySummary",
         "type": "object"
       },
       "RingDetailResponse": {
@@ -871,6 +1554,198 @@
           "updated_at"
         ],
         "title": "RingDetailResponse",
+        "type": "object"
+      },
+      "RingType": {
+        "description": "Types of fraud rings the system can detect.",
+        "enum": [
+          "shared_device",
+          "shared_card",
+          "shared_ip",
+          "money_cycle",
+          "smurfing_fan_in",
+          "smurfing_fan_out",
+          "layered_chain",
+          "mixed_attribute"
+        ],
+        "title": "RingType",
+        "type": "string"
+      },
+      "RingV1": {
+        "additionalProperties": false,
+        "properties": {
+          "action_interval_s": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "gt": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Action Interval S"
+          },
+          "active_duration_s": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "gt": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Active Duration S"
+          },
+          "evasion": {
+            "$ref": "#/components/schemas/EvasionMode",
+            "default": "none"
+          },
+          "grow_interval_s": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "gt": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grow Interval S"
+          },
+          "id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Id",
+            "type": "string"
+          },
+          "initial_members": {
+            "anyOf": [
+              {
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Initial Members"
+          },
+          "intensity": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "gt": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Intensity"
+          },
+          "length": {
+            "anyOf": [
+              {
+                "maximum": 6.0,
+                "minimum": 3.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Length"
+          },
+          "mutate_prob": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "ge": 0,
+                "le": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mutate Prob"
+          },
+          "shared_attribute": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Shared Attribute"
+          },
+          "size": {
+            "default": 3,
+            "maximum": 1000.0,
+            "minimum": 2.0,
+            "title": "Size",
+            "type": "integer"
+          },
+          "spawn_time_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "default": 0.0,
+            "ge": 0,
+            "title": "Spawn Time S"
+          },
+          "type": {
+            "$ref": "#/components/schemas/RingType"
+          }
+        },
+        "required": [
+          "id",
+          "type"
+        ],
+        "title": "RingV1",
         "type": "object"
       },
       "RingsByStatus": {
@@ -1073,6 +1948,17 @@
             "title": "Scenario",
             "type": "string"
           },
+          "scenario_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenario Hash"
+          },
           "seed": {
             "title": "Seed",
             "type": "integer"
@@ -1088,6 +1974,18 @@
           "status": {
             "title": "Status",
             "type": "string"
+          },
+          "stream_digest": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "SHA-256 of the events generated so far (final once finished)",
+            "title": "Stream Digest"
           }
         },
         "required": [
@@ -1101,6 +1999,235 @@
           "speed_multiplier"
         ],
         "title": "RunStatusV1",
+        "type": "object"
+      },
+      "ScenarioCatalog": {
+        "properties": {
+          "attribute_kinds": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Attribute Kinds",
+            "type": "array"
+          },
+          "evasion_modes": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evasion Modes",
+            "type": "array"
+          },
+          "hub_categories": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Hub Categories",
+            "type": "object"
+          },
+          "ring_types": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Ring Types",
+            "type": "array"
+          }
+        },
+        "required": [
+          "ring_types",
+          "evasion_modes",
+          "attribute_kinds",
+          "hub_categories"
+        ],
+        "title": "ScenarioCatalog",
+        "type": "object"
+      },
+      "ScenarioSummary": {
+        "properties": {
+          "custom": {
+            "title": "Custom",
+            "type": "boolean"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "duration_s": {
+            "title": "Duration S",
+            "type": "number"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "rings": {
+            "title": "Rings",
+            "type": "integer"
+          },
+          "users": {
+            "title": "Users",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "custom",
+          "duration_s",
+          "users",
+          "rings"
+        ],
+        "title": "ScenarioSummary",
+        "type": "object"
+      },
+      "ScenarioV1-Input": {
+        "additionalProperties": false,
+        "properties": {
+          "adaptive_attacker": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AdaptiveAttackerV1"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "description": {
+            "anyOf": [
+              {
+                "maxLength": 500,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "name": {
+            "description": "lower-case letters, digits, _",
+            "pattern": "^[a-z0-9][a-z0-9_]{0,63}$",
+            "title": "Name",
+            "type": "string"
+          },
+          "random_rings": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RandomRingsV1"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "rings": {
+            "items": {
+              "$ref": "#/components/schemas/RingV1"
+            },
+            "maxItems": 200,
+            "title": "Rings",
+            "type": "array"
+          },
+          "simulation": {
+            "$ref": "#/components/schemas/SimulationV1"
+          },
+          "version": {
+            "anyOf": [
+              {
+                "maxLength": 20,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Version"
+          }
+        },
+        "required": [
+          "name",
+          "simulation"
+        ],
+        "title": "ScenarioV1",
+        "type": "object"
+      },
+      "ScenarioV1-Output": {
+        "additionalProperties": false,
+        "properties": {
+          "adaptive_attacker": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AdaptiveAttackerV1"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "description": {
+            "anyOf": [
+              {
+                "maxLength": 500,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "name": {
+            "description": "lower-case letters, digits, _",
+            "pattern": "^[a-z0-9][a-z0-9_]{0,63}$",
+            "title": "Name",
+            "type": "string"
+          },
+          "random_rings": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RandomRingsV1"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "rings": {
+            "items": {
+              "$ref": "#/components/schemas/RingV1"
+            },
+            "maxItems": 200,
+            "title": "Rings",
+            "type": "array"
+          },
+          "simulation": {
+            "$ref": "#/components/schemas/SimulationV1"
+          },
+          "version": {
+            "anyOf": [
+              {
+                "maxLength": 20,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Version"
+          }
+        },
+        "required": [
+          "name",
+          "simulation"
+        ],
+        "title": "ScenarioV1",
         "type": "object"
       },
       "Session": {
@@ -1120,6 +2247,237 @@
         "title": "Session",
         "type": "object"
       },
+      "SimulationV1": {
+        "additionalProperties": false,
+        "properties": {
+          "amount_median": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "gt": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amount Median"
+          },
+          "amount_sigma": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "gt": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amount Sigma"
+          },
+          "benign_mix": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BenignMixV1"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "drift": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DriftV1"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "duration_seconds": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "gt": 0,
+            "le": 86400,
+            "title": "Duration Seconds"
+          },
+          "heavy_tail_alpha": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "gt": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Heavy Tail Alpha"
+          },
+          "hub_distribution": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/HubV1"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Named benign hubs (YAML key kept for compatibility)",
+            "title": "Hub Distribution"
+          },
+          "hub_size_distribution": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/HubSizeDistributionV1"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "num_cards": {
+            "anyOf": [
+              {
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Num Cards"
+          },
+          "num_devices": {
+            "anyOf": [
+              {
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Num Devices"
+          },
+          "num_ips": {
+            "anyOf": [
+              {
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Num Ips"
+          },
+          "num_users": {
+            "maximum": 1000000.0,
+            "minimum": 2.0,
+            "title": "Num Users",
+            "type": "integer"
+          },
+          "start_ts": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Ts"
+          },
+          "target_event_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "gt": 0,
+            "le": 10000,
+            "title": "Target Event Rate"
+          },
+          "user_join_rate": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "ge": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User Join Rate"
+          },
+          "user_leave_rate": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "ge": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User Leave Rate"
+          }
+        },
+        "required": [
+          "duration_seconds",
+          "target_event_rate",
+          "num_users"
+        ],
+        "title": "SimulationV1",
+        "type": "object"
+      },
       "SpeedRequest": {
         "properties": {
           "speed_multiplier": {
@@ -1133,6 +2491,22 @@
           "speed_multiplier"
         ],
         "title": "SpeedRequest",
+        "type": "object"
+      },
+      "SpeedV1": {
+        "properties": {
+          "speed_multiplier": {
+            "description": "0 = as fast as possible",
+            "maximum": 1000.0,
+            "minimum": 0.0,
+            "title": "Speed Multiplier",
+            "type": "number"
+          }
+        },
+        "required": [
+          "speed_multiplier"
+        ],
+        "title": "SpeedV1",
         "type": "object"
       },
       "StartRunRequest": {
@@ -1175,8 +2549,20 @@
       },
       "StartRunV1": {
         "properties": {
+          "config": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ScenarioV1-Input"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "An inline scenario from the builder (validated like a preset)"
+          },
           "scenario": {
             "default": "baseline",
+            "description": "Preset name (ignored with config)",
             "maxLength": 64,
             "title": "Scenario",
             "type": "string"
@@ -1331,6 +2717,29 @@
           "type"
         ],
         "title": "ValidationError",
+        "type": "object"
+      },
+      "ValidationResult": {
+        "properties": {
+          "config_hash": {
+            "title": "Config Hash",
+            "type": "string"
+          },
+          "events_estimate": {
+            "title": "Events Estimate",
+            "type": "integer"
+          },
+          "valid": {
+            "title": "Valid",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "valid",
+          "config_hash",
+          "events_estimate"
+        ],
+        "title": "ValidationResult",
         "type": "object"
       }
     }
@@ -2301,6 +3710,155 @@
         ]
       }
     },
+    "/api/v1/replays": {
+      "get": {
+        "operationId": "replays_list",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ReplaySummary"
+                  },
+                  "title": "Response Replays List",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Role or CSRF check failed"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
+          }
+        },
+        "summary": "Replays",
+        "tags": [
+          "replays"
+        ]
+      }
+    },
+    "/api/v1/replays/{run_id}": {
+      "get": {
+        "operationId": "replays_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "pattern": "^[0-9a-f]{6,32}$",
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Replays Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The story JSON written by `fraudsim demo-story`, unchanged"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Role or CSRF check failed"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "No story replay for this run"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
+          }
+        },
+        "summary": "Replay",
+        "tags": [
+          "replays"
+        ]
+      }
+    },
     "/api/v1/reports": {
       "get": {
         "operationId": "reports_index",
@@ -2508,7 +4066,7 @@
                 }
               }
             },
-            "description": "Validation error"
+            "description": "Invalid inline scenario"
           },
           "500": {
             "content": {
@@ -2583,6 +4141,380 @@
           }
         },
         "summary": "Current Run",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/v1/runs/current/detectors": {
+      "get": {
+        "operationId": "runs_detectors",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/DetectorV1"
+                  },
+                  "title": "Response Runs Detectors",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Role or CSRF check failed"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "No run in progress"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
+          }
+        },
+        "summary": "Detectors",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/v1/runs/current/detectors/{detector_type}": {
+      "patch": {
+        "description": "Admin: switch a detector on or off for the live run.",
+        "operationId": "runs_toggle_detector",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "detector_type",
+            "required": true,
+            "schema": {
+              "title": "Detector Type",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DetectorToggleV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/DetectorV1"
+                  },
+                  "title": "Response Runs Toggle Detector",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Role or CSRF check failed"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unknown detector"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "No run in progress"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
+          }
+        },
+        "summary": "Toggle Detector",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/v1/runs/current/graph": {
+      "get": {
+        "description": "Windowed graph of the live run, capped at `max_users` users.",
+        "operationId": "runs_graph",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "max_users",
+            "required": false,
+            "schema": {
+              "default": 400,
+              "maximum": 3000,
+              "minimum": 10,
+              "title": "Max Users",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "window_s",
+            "required": false,
+            "schema": {
+              "default": 60.0,
+              "exclusiveMinimum": 0.0,
+              "maximum": 86400.0,
+              "title": "Window S",
+              "type": "number"
+            }
+          },
+          {
+            "description": "Add the answer key (simulator ground truth)",
+            "in": "query",
+            "name": "oracle",
+            "required": false,
+            "schema": {
+              "default": false,
+              "description": "Add the answer key (simulator ground truth)",
+              "title": "Oracle",
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GraphSnapshotV1"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Role or CSRF check failed"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "No run in progress"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
+          }
+        },
+        "summary": "Graph",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/v1/runs/current/inject": {
+      "post": {
+        "description": "Spawn a fraud ring of the given type and evasion right now.",
+        "operationId": "runs_inject",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InjectV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InjectedV1"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Role or CSRF check failed"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "No run in progress"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
+          }
+        },
+        "summary": "Inject",
         "tags": [
           "runs"
         ]
@@ -2669,6 +4601,827 @@
         "summary": "Current Run Metrics",
         "tags": [
           "runs"
+        ]
+      }
+    },
+    "/api/v1/runs/current/pause": {
+      "post": {
+        "operationId": "runs_pause",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunStatusV1"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Role or CSRF check failed"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "No run in progress"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
+          }
+        },
+        "summary": "Pause",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/v1/runs/current/rate": {
+      "post": {
+        "operationId": "runs_rate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RateV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunStatusV1"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Role or CSRF check failed"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "No run in progress"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
+          }
+        },
+        "summary": "Rate",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/v1/runs/current/resume": {
+      "post": {
+        "operationId": "runs_resume",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunStatusV1"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Role or CSRF check failed"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "No run in progress"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
+          }
+        },
+        "summary": "Resume",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/v1/runs/current/speed": {
+      "post": {
+        "operationId": "runs_speed",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpeedV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunStatusV1"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Role or CSRF check failed"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "No run in progress"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
+          }
+        },
+        "summary": "Speed",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/v1/runs/current/stop": {
+      "post": {
+        "operationId": "runs_stop",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunStatusV1"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Role or CSRF check failed"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "No run in progress"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
+          }
+        },
+        "summary": "Stop",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/v1/scenarios": {
+      "get": {
+        "operationId": "scenarios_list",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ScenarioSummary"
+                  },
+                  "title": "Response Scenarios List",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Role or CSRF check failed"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
+          }
+        },
+        "summary": "Scenarios",
+        "tags": [
+          "scenarios"
+        ]
+      }
+    },
+    "/api/v1/scenarios/catalog": {
+      "get": {
+        "description": "Allowed values for the scenario builder's selects.",
+        "operationId": "scenarios_catalog",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScenarioCatalog"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Role or CSRF check failed"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
+          }
+        },
+        "summary": "Catalog",
+        "tags": [
+          "scenarios"
+        ]
+      }
+    },
+    "/api/v1/scenarios/custom/{name}": {
+      "put": {
+        "description": "Admin: save to configs/scenarios/custom/<name>.yaml (overwrites a custom one).",
+        "operationId": "scenarios_save_custom",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "title": "Name",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScenarioV1-Input"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScenarioSummary"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Admin only"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "A preset has this name"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Invalid scenario or name"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
+          }
+        },
+        "summary": "Save Custom",
+        "tags": [
+          "scenarios"
+        ]
+      }
+    },
+    "/api/v1/scenarios/validate": {
+      "post": {
+        "description": "Validate a scenario as the simulator would; returns its config hash.",
+        "operationId": "scenarios_validate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScenarioV1-Input"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationResult"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Role or CSRF check failed"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Field-level or semantic errors"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
+          }
+        },
+        "summary": "Validate",
+        "tags": [
+          "scenarios"
+        ]
+      }
+    },
+    "/api/v1/scenarios/yaml": {
+      "post": {
+        "description": "The scenario as a YAML file loadable by `fraudsim` (same config hash).",
+        "operationId": "scenarios_yaml",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScenarioV1-Input"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/x-yaml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Role or CSRF check failed"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Invalid scenario"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
+          }
+        },
+        "summary": "To Yaml",
+        "tags": [
+          "scenarios"
+        ]
+      }
+    },
+    "/api/v1/scenarios/{name}": {
+      "get": {
+        "operationId": "scenarios_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "title": "Name",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScenarioV1-Output"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Role or CSRF check failed"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unknown scenario"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
+          }
+        },
+        "summary": "Scenario",
+        "tags": [
+          "scenarios"
         ]
       }
     },

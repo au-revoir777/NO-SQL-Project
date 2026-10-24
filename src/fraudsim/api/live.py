@@ -31,7 +31,7 @@ from fraudsim.simulator.event_generator import EventGenerator
 from fraudsim.simulator.player import StreamPlayer
 from fraudsim.simulator.scenario_loader import load_scenario
 from fraudsim.stream.event_bus import AsyncQueueBus, EventBus
-from fraudsim.types import Event
+from fraudsim.types import Event, config_hash
 
 RECENT_EVENTS = 200
 # Process a partial batch when no event arrived for this long (wall clock).
@@ -55,11 +55,15 @@ class LiveRun:
         bus: EventBus | None = None,
         engine_config: EngineConfig | None = None,
         log_dir: Path | None = None,
+        config: dict[str, Any] | None = None,
     ) -> None:
         self.scenario = scenario
+        # A scenario built in the web app arrives inline; presets load from YAML.
+        self.inline_config = config
+        self.scenario_config = config if config is not None else load_scenario(scenario)
         self.seed = seed
         self.run_id = run_id
-        self.generator = EventGenerator(seed=seed, run_id=run_id, config=load_scenario(scenario))
+        self.generator = EventGenerator(seed=seed, run_id=run_id, config=self.scenario_config)
         self.bus = bus or AsyncQueueBus(maxsize=10_000)
         self.player = StreamPlayer(self.generator, self.bus, speed=speed)
         self._broadcast = broadcast
@@ -98,6 +102,9 @@ class LiveRun:
         manifest = {
             "run_id": self.run_id,
             "scenario": self.scenario,
+            "scenario_hash": config_hash(self.scenario_config),
+            # Inline (unsaved) scenarios are recorded in full, so the run can be reproduced.
+            **({"scenario_config": self.inline_config} if self.inline_config is not None else {}),
             "seed": self.seed,
             "backend": "memory",
             "mode": "live",
