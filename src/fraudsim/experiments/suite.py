@@ -430,6 +430,13 @@ def e10_ring_alerts(out: Path, seeds: int, log: Log) -> Path:
     return run_e10(out, test_seeds(seeds), log)
 
 
+def e11_early_warning(out: Path, seeds: int, log: Log) -> Path:
+    """Early-warning lead time without look-ahead (docs/research/e11_protocol.md)."""
+    from fraudsim.experiments.early_warning_eval import run_e11
+
+    return run_e11(out, test_seeds(seeds), log)
+
+
 SUITES = {
     "baselines": e1_baselines,
     "ablations": e2_ablations,
@@ -439,6 +446,7 @@ SUITES = {
     "sweeps": e6_sweeps,
     "adaptivity": e7_adaptivity,
     "ring_alerts": e10_ring_alerts,
+    "early_warning": e11_early_warning,
 }
 
 

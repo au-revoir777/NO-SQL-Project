@@ -98,24 +98,32 @@ def label_units(
     return out
 
 
-def run_units(
-    stream: Stream, method: Method, scorer: RingScorer, batch_size: int = 50
-) -> tuple[list[dict[str, Any]], dict[str, Any]]:
-    """Run the method on one stream; return unit rows and one run summary row."""
+def run_scored(
+    stream: Stream, method: Method, scorer: RingScorer, record: bool, batch_size: int = 50
+) -> tuple[DetectionEngine, ScoringStage]:
+    """Run a scored method on one stream exactly as run_method does (E1 settings)."""
     store = InMemoryGraphStore()
     engine_cfg = EngineConfig(batch_size=batch_size, **({"full_interval_s": 5.0} | method.engine))
-    stage = ScoringStage(scorer=scorer, record=True)
+    stage = ScoringStage(scorer=scorer, record=record)
     if method.alert_threshold is not None:
         stage.policy.default_threshold = method.alert_threshold
-    tracker = RingTracker(EnsembleConfig(**method.ensemble))
     engine = DetectionEngine(
         store,
         build_detectors(store, method.overrides),
-        tracker=tracker,
+        tracker=RingTracker(EnsembleConfig(**method.ensemble)),
         config=engine_cfg,
         scorer=stage,
     )
     engine.run(stream.events)
+    return engine, stage
+
+
+def run_units(
+    stream: Stream, method: Method, scorer: RingScorer, batch_size: int = 50
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Run the method on one stream; return unit rows and one run summary row."""
+    engine, stage = run_scored(stream, method, scorer, record=True, batch_size=batch_size)
+    tracker = engine.tracker
     gen = stream.generator
     start_t, end_t = gen.ts(0.0).timestamp(), gen.ts().timestamp()
     truth_rings = true_rings(gen.ledger)

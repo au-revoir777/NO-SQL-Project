@@ -288,7 +288,8 @@ def train_scorer_cmd(
     "--suite",
     default=None,
     help="Paper experiment: tune | baselines | ablations | frontier | scale | hub_size | "
-    "sweeps | adaptivity | ring_alerts | all (writes results/<experiment>/results.csv)",
+    "sweeps | adaptivity | ring_alerts | early_warning | all "
+    "(writes results/<experiment>/results.csv)",
 )
 @click.option("--scenario", default="baseline", help="Scenario name (simulation-only run)")
 @click.option("--seeds", default=5, help="Number of test seeds (1001, 1002, ...)")
