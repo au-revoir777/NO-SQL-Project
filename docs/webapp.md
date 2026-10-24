@@ -297,6 +297,81 @@ times without an offset; the web app reads them as UTC (`parseTime`).
   verifies. axe reports no serious or critical violations on the queue, alert,
   case, cases list and audit pages.
 
+## Entity and graph explorer (P6)
+
+**One walk, two backends.** `fraudsim.graph.explore.Explorer` implements
+search, entity details and the k-hop neighbourhood once, on top of a few read
+primitives (`MemoryReads` for the in-memory store, `Neo4jReads` in Cypher).
+The neighbourhood is the detector's dirty-region expansion
+(`GraphStore.expand`) made visible:
+- one hop is a shared device, card or IP, or a transfer in either direction;
+- the first hop crosses attributes with at most `max_fanout` active users,
+  later hops at most `far_fanout` (defaults: the run's `EngineConfig`, 250 and
+  20);
+- an attribute over the cap is shown but not crossed. Its `stop` says why,
+  for example `hub: 12 active users > cap 10 at hop 1`. Attributes beyond k
+  are marked `depth limit`;
+- edges carry the hub weight the hub-aware detector uses
+  (`inverse_log_degree`);
+- relationship-type and time-window filters (simulated time), and a node
+  limit (`max_nodes`, at most 1000, with `truncated` set when reached).
+  Nothing unbounded is sent to the browser.
+
+With no filter, the users returned equal `GraphStore.expand` for the same
+seeds and caps. pytest checks this for every user of the course graph, k = 1–3
+and four cap settings. In CI, the integration job checks that Neo4j and the
+in-memory store give identical search, entity and neighbourhood answers on
+the course graph, filters included.
+
+**Sources** (`?source=`):
+- `run`: the current run's store;
+- `course`: the course seed graph, which `seed.py` builds and the existing
+  event-generator bridge replays into memory (built once per process);
+- `neo4j`: the configured database, for example the graph `seed.py` loads.
+  The Cypher tolerates that graph's missing `active` and `t` properties.
+
+**Endpoints.**
+- `GET /api/v1/entities/search?q=&kind=&source=`: id-prefix search.
+  Neo4j uses `STARTS WITH` on the uniqueness-constraint indexes.
+- `GET /api/v1/entities/{kind}/{id}`: attributes or users, degree, hub
+  weight, transfers, a timeline, and (current run) linked alerts and tracked
+  rings.
+- `GET /api/v1/graph/neighbourhood?seed=kind:id&k=&rel=&since_t=&until_t=&max_fanout=&far_fanout=&max_nodes=`
+- `GET /api/v1/graph/rings/{ring_id}`: a tracked ring of the current run. It
+  gives the member set after every tracker change (rebuilt backwards from the
+  current members and the `added`/`removed` of each change), the size history,
+  and the attributes two or more members share.
+
+In-memory handlers are async: they run on the event loop between engine
+batches, so they never read the store while the engine writes it. Neo4j reads
+go to the threadpool.
+
+**Pages.**
+- `/explorer`: search with type filters. Ctrl+K (Cmd+K) opens the same search
+  from any page.
+- `/explorer/[kind]/[id]`: the entity page and its neighbourhood graph
+  (Cytoscape). Controls cover k, relationship types, the UTC time window, both
+  caps and the node limit. Click a node (or Expand in the node table) to add
+  its one-hop neighbourhood. "Pin to compare" keeps an entity, and another
+  entity's page can then overlay both and count the users reached from each
+  and from both. Exports: PNG, SVG and JSON.
+- `/explorer/rings/[ringId]`: membership over time, size chart, shared
+  attributes and the neighbourhood. Alert pages of the current run link their
+  members and ring here.
+
+**Tests.** pytest `tests/test_explorer.py` (micro-graphs with exact nodes,
+edges and stop reasons; filters; node cap; entity details; the expand
+equivalence; the API) and `tests/test_integration_explorer.py` (Neo4j). Vitest
+covers merging, comparison and the UTC window. Playwright
+`e2e/explorer.spec.ts`:
+- searching `device_007` on the course graph lists the four Ring A users,
+  read from the README table;
+- the walk from u13 stops at `ip_001` with a first-hop cap of 10;
+- expand, pin and compare, and Ctrl+K;
+- an alert opens its ring over time;
+- the graph canvas is drawn;
+- axe reports no serious or critical violations.
+
 ## Running it
 
 ```bash

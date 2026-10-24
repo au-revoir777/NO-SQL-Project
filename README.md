@@ -116,7 +116,20 @@ P5 adds alert triage and case management:
 |---|---|
 | ![Case](docs/images/webapp_p5_case.png) | ![Audit](docs/images/webapp_p5_audit.png) |
 
-The P2–P5 screenshots are taken by `webapp/e2e/screenshots.spec.ts` against the
+P6 adds the entity and graph explorer:
+- search, with Ctrl+K from any page;
+- entity pages for users, devices, cards and IPs;
+- a k-hop neighbourhood graph that walks like the detector and shows where it
+  stopped at a hub and why;
+- pin and compare, and a ring view of membership over time.
+
+It explores the current run, the course seed graph or a Neo4j database.
+
+| Entity (course graph, `device_007`) | Walk stopped at the office-wifi hub | Ring over time |
+|---|---|---|
+| ![Entity](docs/images/webapp_p6_entity.png) | ![Hub stop](docs/images/webapp_p6_hub_stop.png) | ![Ring](docs/images/webapp_p6_ring.png) |
+
+The P2–P6 screenshots are taken by `webapp/e2e/screenshots.spec.ts` against the
 real API, with the e2e fixture accounts (`SCREENSHOTS=1 npx playwright test screenshots`).
 
 | Dashboard (dark) | A page of a later milestone (light) |
@@ -357,8 +370,9 @@ Phase 2 (web app and research extensions, [plan](docs/phase2/phase2_prompt.md)):
 | P3 Live dashboard (KPIs and alert feed over SSE) | done |
 | P4 Simulator and replays | done |
 | P5 Alerts and case management | done |
-| P6 Entity and graph explorer | next |
-| P7–P16 | planned |
+| P6 Entity and graph explorer | done |
+| P7 Report generator | next |
+| P8–P16 | planned |
 
 Known open items:
 - Paper: check the bibliography entries against the publishers' pages before submission.
