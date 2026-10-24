@@ -75,7 +75,7 @@ class MemoryReads:
         p = prefix.lower()
         out: list[tuple[str, str]] = []
         if "user" in kinds:
-            out += [("user", u) for u in self.s.active if u.lower().startswith(p)]
+            out += [("user", u) for u, a in self.s.active.items() if a and u.lower().startswith(p)]
         out += [
             (k, a)
             for (k, a), users in self.s.attr_users.items()
@@ -193,10 +193,16 @@ class Neo4jReads:
 
     def txns_of(self, users: set[str]) -> list[Txn]:
         rows = self._q(
-            "UNWIND $ids AS uid MATCH (u:User {user_id: uid}) "
-            "MATCH (s:User)-[:PERFORMED]->(t:Transaction)-[:SENT_TO]->(r:User) "
-            "WHERE (s = u OR r = u) AND coalesce(s.active, true) AND coalesce(r.active, true) "
-            "RETURN DISTINCT t.txn_id AS id, s.user_id AS s, r.user_id AS r, "
+            "UNWIND $ids AS uid "
+            "CALL (uid) { "
+            "  MATCH (s:User {user_id: uid})-[:PERFORMED]->(t:Transaction)-[:SENT_TO]->(r:User) "
+            "  RETURN s, t, r "
+            "  UNION "
+            "  MATCH (s:User)-[:PERFORMED]->(t:Transaction)-[:SENT_TO]->(r:User {user_id: uid}) "
+            "  RETURN s, t, r "
+            "} "
+            "WITH DISTINCT s, t, r WHERE coalesce(s.active, true) AND coalesce(r.active, true) "
+            "RETURN t.txn_id AS id, s.user_id AS s, r.user_id AS r, "
             "t.amount AS amount, coalesce(t.t, 0.0) AS t",
             ids=sorted(users),
         )
@@ -207,7 +213,11 @@ class Neo4jReads:
 
     def exists(self, kind: str, entity_id: str) -> bool:
         label, key = _NEO4J_LABEL[kind], _NEO4J_KEY[kind]
-        rows = self._q(f"MATCH (n:{label} {{{key}: $id}}) RETURN count(n) AS n", id=entity_id)
+        # An attribute exists while some user links to it (as in the memory store).
+        linked = "" if kind == "user" else " WHERE EXISTS { (n)<--(:User) }"
+        rows = self._q(
+            f"MATCH (n:{label} {{{key}: $id}}){linked} RETURN count(n) AS n", id=entity_id
+        )
         return bool(rows and int(rows[0]["n"]))
 
 
