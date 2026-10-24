@@ -241,7 +241,6 @@ def test_anonymous_requests_are_rejected(client: TestClient, method: str, path: 
 def test_planned_routers_answer_501_when_signed_in(client: TestClient) -> None:
     login(client, *ADMIN)
     for name in (
-        "reports",
         "experiments",
         "rules",
     ):

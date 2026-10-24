@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Baseline, seed 7</title>
+<style>
+@page {
+  size: A4;
+  margin: 18mm 16mm 20mm;
+  @bottom-left { content: "Generated from simulated data for research/demo purposes. Not a regulatory filing."; font: 7.5pt Arial, Helvetica, sans-serif; color: #444; }
+  @bottom-right { content: "Page " counter(page) " of " counter(pages); font: 7.5pt Arial, Helvetica, sans-serif; color: #444; }
+}
+* { box-sizing: border-box; }
+body { font: 9.5pt/1.45 Arial, Helvetica, sans-serif; color: #111; margin: 0 auto; max-width: 180mm; padding: 8mm 0; background: #fff; }
+h1 { font-size: 17pt; margin: 0 0 2mm; }
+h2 { font-size: 12pt; margin: 7mm 0 2mm; border-bottom: 0.5pt solid #999; padding-bottom: 1mm; break-after: avoid; }
+h3 { font-size: 10pt; margin: 4mm 0 1.5mm; break-after: avoid; }
+p { margin: 1.5mm 0; }
+table { border-collapse: collapse; width: 100%; margin: 2mm 0; font-size: 8.5pt; }
+th, td { border-bottom: 0.4pt solid #bbb; padding: 1mm 1.5mm; text-align: left; vertical-align: top; }
+th { background: #f0f0f0; font-weight: 600; }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+code { font-family: "Courier New", monospace; font-size: 8pt; word-break: break-all; }
+td code { white-space: nowrap; word-break: normal; }
+.meta { color: #333; font-size: 8.5pt; }
+.box { border: 0.6pt solid #888; padding: 2.5mm 3mm; margin: 2mm 0; break-inside: avoid; }
+.warn { border-color: #8f5f08; background: #fff8e6; }
+.ring { break-before: page; }
+.figs { display: flex; gap: 4mm; flex-wrap: wrap; align-items: flex-start; }
+.figs svg { max-width: 100%; height: auto; }
+figure { margin: 0; }
+.oracle { border: 0.8pt dashed #8f5f08; padding: 2.5mm 3mm; }
+.disclaimer { font-weight: 600; }
+ul { margin: 1mm 0 1mm 5mm; padding: 0; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Baseline, seed 7</h1>
+  <p class="meta">Investigation report · FraudSim 0.1.0 · generated <span id="generated-at">*</span></p>
+  <p class="meta">Runs: <code>golden-seed7</code>  · scenario config hashes: <code>8c6300432edfabdb</code></p>
+  <p class="box disclaimer">Generated from simulated data for research/demo purposes. Not a regulatory filing.</p>
+</header>
+
+<section id="executive-summary">
+<h2>Executive summary</h2>
+<p>This report covers 9 flagged ring(s) (1 alert(s), 8 early warning(s))
+involving 27 account(s), from 1 run(s).
+The highest risk score is 0.918.0 of the rings carry an analyst label.</p>
+<p>Ring types: mixed attribute (4), money cycle (2), shared card (1), shared ip (2).</p></section>
+
+<section id="alert-table">
+<h2>Alerts</h2>
+<table>
+<thead><tr><th>Ring</th><th>Run</th><th>Kind</th><th>Type</th><th class="n">Risk</th><th class="n">Threshold</th><th>Bucket</th><th class="n">Members</th><th>Detectors</th><th>Status</th><th>First seen (sim)</th></tr></thead>
+<tbody>
+<tr><td><code>R000006</code></td><td><code>golden-seed7</code></td><td>early warning</td><td>money cycle</td>
+<td class="n">0.918</td><td class="n">0.500</td><td>0.9-1.0</td>
+<td class="n">4</td><td>hub aware</td><td>not triaged</td><td>2026-01-01T00:00:12</td></tr>
+<tr><td><code>R000008</code></td><td><code>golden-seed7</code></td><td>early warning</td><td>mixed attribute</td>
+<td class="n">0.918</td><td class="n">0.500</td><td>0.9-1.0</td>
+<td class="n">3</td><td>hub aware</td><td>not triaged</td><td>2026-01-01T00:00:19</td></tr>
+<tr><td><code>R000009</code></td><td><code>golden-seed7</code></td><td>early warning</td><td>shared card</td>
+<td class="n">0.918</td><td class="n">0.500</td><td>0.9-1.0</td>
+<td class="n">4</td><td>hub aware</td><td>not triaged</td><td>2026-01-01T00:00:22</td></tr>
+<tr><td><code>R000011</code></td><td><code>golden-seed7</code></td><td>early warning</td><td>shared ip</td>
+<td class="n">0.918</td><td class="n">0.500</td><td>0.9-1.0</td>
+<td class="n">3</td><td>hub aware</td><td>not triaged</td><td>2026-01-01T00:00:29</td></tr>
+<tr><td><code>R000025</code></td><td><code>golden-seed7</code></td><td>early warning</td><td>money cycle</td>
+<td class="n">0.918</td><td class="n">0.500</td><td>0.9-1.0</td>
+<td class="n">3</td><td>temporal cycle</td><td>not triaged</td><td>2026-01-01T00:00:45</td></tr>
+<tr><td><code>R000005</code></td><td><code>golden-seed7</code></td><td>alert</td><td>shared ip</td>
+<td class="n">0.914</td><td class="n">0.500</td><td>0.9-1.0</td>
+<td class="n">5</td><td>hub aware</td><td>not triaged</td><td>2026-01-01T00:00:05</td></tr>
+<tr><td><code>R000007</code></td><td><code>golden-seed7</code></td><td>early warning</td><td>mixed attribute</td>
+<td class="n">0.914</td><td class="n">0.500</td><td>0.9-1.0</td>
+<td class="n">3</td><td>hub aware</td><td>not triaged</td><td>2026-01-01T00:00:19</td></tr>
+<tr><td><code>R000010</code></td><td><code>golden-seed7</code></td><td>early warning</td><td>mixed attribute</td>
+<td class="n">0.898</td><td class="n">0.500</td><td>0.8-0.9</td>
+<td class="n">4</td><td>hub aware</td><td>not triaged</td><td>2026-01-01T00:00:26</td></tr>
+<tr><td><code>R000004</code></td><td><code>golden-seed7</code></td><td>early warning</td><td>mixed attribute</td>
+<td class="n">0.643</td><td class="n">0.500</td><td>0.6-0.7</td>
+<td class="n">3</td><td>hub aware</td><td>not triaged</td><td>2026-01-01T00:00:00</td></tr>
+</tbody>
+</table>
+</section>
+
+<section id="sar-summary">
+<h2>SAR-style summary</h2>
+<p class="box warn">Structured like a suspicious-activity summary for research and teaching. Generated from simulated data for research/demo purposes. Not a regulatory filing.</p>
+<h3>Subject entities</h3>
+<p>27 account(s): <code>u000001</code>, <code>u000007</code>, <code>u000008</code>, <code>u000013</code>, <code>u000014</code>, <code>u000016</code>, <code>u000017</code>, <code>u000021</code>, <code>u000022</code>, <code>u000024</code>, <code>u000025</code>, <code>u000027</code>, <code>u000028</code>, <code>u000030</code>, <code>u000031</code>, <code>u000032</code>, <code>u000033</code>, <code>u000034</code>, <code>u000035</code>, <code>u000036</code>, <code>u000037</code>, <code>u000038</code>, <code>u000039</code>, <code>u000040</code>, <code>u000044</code>, <code>u000045</code>, <code>u000046</code></p>
+<p>Shared attributes: <code>card:card_00008</code>, <code>card:card_00015</code>, <code>card:card_00016</code>, <code>card:card_00019</code>, <code>card:card_00020</code>, <code>card:card_00021</code>, <code>card:card_00022</code>, <code>card:card_00023</code>, <code>card:card_00026</code>, <code>card:card_00027</code>, <code>card:card_00032</code>, <code>device:device_00002</code>, <code>device:device_00008</code>, <code>device:device_00015</code>, <code>device:device_00017</code>, <code>device:device_00023</code>, <code>device:device_00024</code>, <code>device:device_00025</code>, <code>device:device_00027</code>, <code>device:device_00031</code>, <code>device:device_00038</code>, <code>ip:ip_00002</code>, <code>ip:ip_00003</code>, <code>ip:ip_00006</code>, <code>ip:ip_00019</code>, <code>ip:ip_00021</code>, <code>ip:ip_00022</code>, <code>ip:ip_00023</code>, <code>ip:ip_00024</code>, <code>ip:ip_00027</code></p>
+<h3>Activity summary</h3>
+<p>10 transfer(s) among subjects in the evidence, totalling 20,661.07 (simulated currency).
+Activity window (simulated time): 2026-01-01T00:00:00 to 2026-01-01T00:00:45.</p>
+<h3>Typology</h3>
+<p>mixed attribute, money cycle, shared card, shared ip; detected by hub aware, temporal cycle.</p>
+<h3>Evidence references</h3>
+<ul><li>run <code>golden-seed7</code> ring <code>R000006</code></li><li>run <code>golden-seed7</code> ring <code>R000008</code></li><li>run <code>golden-seed7</code> ring <code>R000009</code></li><li>run <code>golden-seed7</code> ring <code>R000011</code></li><li>run <code>golden-seed7</code> ring <code>R000025</code></li><li>run <code>golden-seed7</code> ring <code>R000005</code></li><li>run <code>golden-seed7</code> ring <code>R000007</code></li><li>run <code>golden-seed7</code> ring <code>R000010</code></li><li>run <code>golden-seed7</code> ring <code>R000004</code></li></ul>
+<h3>Analyst narrative</h3>
+<p>No analyst notes.</p></section>
+
+<section id="run-metrics">
+<h2>Runs</h2>
+<h3>Run <code>golden-seed7</code></h3>
+<table>
+<tbody>
+<tr><th>Scenario / seed</th><td>baseline / 7</td></tr>
+<tr><th>Scenario config hash</th><td><code>8c6300432edfabdb</code></td></tr>
+<tr><th>Event stream digest</th><td><code>3fd9a5e89eb920e097de6309a5d1c0994bbf04749d9734d3f776452ccb9ac5fd</code></td></tr>
+<tr><th>Scoring model</th><td>ring_scorer_lr.joblib · SHA-256 <code>0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537</code></td></tr>
+<tr><th>Events</th><td class="n" data-metric="events">911</td></tr>
+<tr><th>Transactions (amount)</th><td class="n" data-metric="transactions">557 (193,204.85)</td></tr>
+<tr><th>Simulated time</th><td>2026-01-01T00:00:00 to 2026-01-01T00:00:59</td></tr>
+<tr><th>Rings tracked / ring updates</th><td class="n" data-metric="rings">27 / 86</td></tr>
+<tr><th>Alerts / early warnings raised</th><td class="n" data-metric="raised">7 / 8</td></tr>
+</tbody>
+</table>
+<p class="meta">Events by type: attribute unlink 12 · card link 78 · device link 99 · ip link 119 · transaction 557 · user join 46.
+Ring changes: alert 7 · confirmed 9 · created 27 · dissolved 5 · early warning 8 · grew 10 · shrank 11 · split from 9.</p>
+<div class="oracle">
+<h3>Oracle (simulator ground truth)</h3>
+<p>4 of 9 raised rings match one of the 4 simulated rings
+(precision 0.444, recall 1.000; Jaccard &gt;= 0.5 on members, one-to-one, best first).
+Missed simulated rings: 0. Raised rings with no match: 5.</p>
+</div>
+</section>
+
+<section id="limitations">
+<h2>Limitations and uncertainty</h2>
+<ul>
+<li>All data is simulated (or from public research datasets). Generated from simulated data for research/demo purposes. Not a regulatory filing.</li>
+<li>Risk scores come from the run's scoring model (SHA-256 above). Experiment E10 found that its calibration does not transfer to ring-level alerts: ring-level expected calibration error 0.10, and rings scored 0.8–0.9 were true rings 29% of the time (0.9–1.0: 74%). Read risk as a ranking, not a probability.</li>
+<li>Risk, members and evidence shown for a ring are its latest values in the app database, the frozen copy when the ring is attached to a case (hash given), or the run log's record when it was raised.</li>
+<li>Ground-truth comparisons appear only in sections labelled "Oracle (simulator ground truth)", and only when requested.</li>
+<li>Counterfactuals describe the scoring model, not the world: they say what would have to change for the model not to flag the ring.</li>
+</ul>
+</section>
+
+<section class="ring" id="ring-golden-seed7-R000006">
+<h2>Ring <code>R000006</code> (money cycle)</h2>
+<p class="meta">Run <code>golden-seed7</code> · risk 0.918 (threshold 0.500) · 4 members · detectors hub aware
+</p>
+<p>4 users share device device_00023 (used by 4 accounts), hub weight 0.62; 1 transfer between members; 4 accounts created within 4 seconds; found by hub_aware.</p>
+<p>Members: <code>u000031</code>, <code>u000032</code>, <code>u000033</code>, <code>u000034</code></p>
+<table><thead><tr><th>Shared attribute</th><th>Kind</th><th class="n">Active users</th><th class="n">Hub weight</th></tr></thead><tbody>
+<tr><td><code>device_00023</code></td><td>device</td><td class="n">4</td><td class="n">0.6213</td></tr></tbody></table>
+<div class="figs">
+<figure><figcaption class="meta">Evidence subgraph: members (circles), the devices, cards and IPs they share, and transfers among members (arrows).</figcaption><svg/>
+</figure><figure><figcaption class="meta">Feature contributions to the score (log-odds).</figcaption><svg/>
+</figure></div>
+<h3>Counterfactuals</h3>
+<ul><li>The hub-aware rule would stop linking these members if device_00023 were shared by more than 8 accounts (now 4).</li></ul><h3>Analyst actions</h3>
+<p>None.</p></section>
+<section class="ring" id="ring-golden-seed7-R000008">
+<h2>Ring <code>R000008</code> (mixed attribute)</h2>
+<p class="meta">Run <code>golden-seed7</code> · risk 0.918 (threshold 0.500) · 3 members · detectors hub aware
+</p>
+<p>2 users share card card_00019 (used by 2 accounts), hub weight 0.91; 2 users share device device_00002 (used by 2 accounts), hub weight 0.91; 1 transfer between members; 3 accounts created within 0 seconds; found by hub_aware.</p>
+<p>Members: <code>u000008</code>, <code>u000025</code>, <code>u000030</code></p>
+<table><thead><tr><th>Shared attribute</th><th>Kind</th><th class="n">Active users</th><th class="n">Hub weight</th></tr></thead><tbody>
+<tr><td><code>card_00019</code></td><td>card</td><td class="n">2</td><td class="n">0.9102</td></tr><tr><td><code>device_00002</code></td><td>device</td><td class="n">2</td><td class="n">0.9102</td></tr><tr><td><code>device_00015</code></td><td>device</td><td class="n">2</td><td class="n">0.9102</td></tr><tr><td><code>device_00025</code></td><td>device</td><td class="n">2</td><td class="n">0.9102</td></tr></tbody></table>
+<div class="figs">
+<figure><figcaption class="meta">Evidence subgraph: members (circles), the devices, cards and IPs they share, and transfers among members (arrows).</figcaption><svg/>
+</figure><figure><figcaption class="meta">Feature contributions to the score (log-odds).</figcaption><svg/>
+</figure></div>
+<h3>Counterfactuals</h3>
+<ul><li>The hub-aware rule would stop linking these members if card_00019 were shared by more than 251 accounts (now 2).</li></ul><h3>Analyst actions</h3>
+<p>None.</p></section>
+<section class="ring" id="ring-golden-seed7-R000009">
+<h2>Ring <code>R000009</code> (shared card)</h2>
+<p class="meta">Run <code>golden-seed7</code> · risk 0.918 (threshold 0.500) · 4 members · detectors hub aware
+</p>
+<p>3 users share card card_00020 (used by 3 accounts), hub weight 0.72; 2 users share card card_00021 (used by 2 accounts), hub weight 0.91; 1 transfer between members; 4 accounts created within 21 seconds; found by hub_aware.</p>
+<p>Members: <code>u000030</code>, <code>u000035</code>, <code>u000036</code>, <code>u000037</code></p>
+<table><thead><tr><th>Shared attribute</th><th>Kind</th><th class="n">Active users</th><th class="n">Hub weight</th></tr></thead><tbody>
+<tr><td><code>card_00020</code></td><td>card</td><td class="n">3</td><td class="n">0.7213</td></tr><tr><td><code>card_00021</code></td><td>card</td><td class="n">2</td><td class="n">0.9102</td></tr><tr><td><code>card_00023</code></td><td>card</td><td class="n">2</td><td class="n">0.9102</td></tr><tr><td><code>device_00027</code></td><td>device</td><td class="n">2</td><td class="n">0.9102</td></tr><tr><td><code>ip_00003</code></td><td>ip</td><td class="n">2</td><td class="n">0.9102</td></tr></tbody></table>
+<div class="figs">
+<figure><figcaption class="meta">Evidence subgraph: members (circles), the devices, cards and IPs they share, and transfers among members (arrows).</figcaption><svg/>
+</figure><figure><figcaption class="meta">Feature contributions to the score (log-odds).</figcaption><svg/>
+</figure></div>
+<h3>Counterfactuals</h3>
+<ul><li>The hub-aware rule would stop linking these members if card_00020 were shared by more than 66853754 accounts (now 3).</li></ul><h3>Analyst actions</h3>
+<p>None.</p></section>
+<section class="ring" id="ring-golden-seed7-R000011">
+<h2>Ring <code>R000011</code> (shared ip)</h2>
+<p class="meta">Run <code>golden-seed7</code> · risk 0.918 (threshold 0.500) · 3 members · detectors hub aware
+</p>
+<p>3 users share ip ip_00023 (used by 3 accounts), hub weight 0.72; 2 users share card card_00026 (used by 2 accounts), hub weight 0.91; 1 transfer between members; 3 accounts created within 2 seconds; found by hub_aware.</p>
+<p>Members: <code>u000038</code>, <code>u000039</code>, <code>u000040</code></p>
+<table><thead><tr><th>Shared attribute</th><th>Kind</th><th class="n">Active users</th><th class="n">Hub weight</th></tr></thead><tbody>
+<tr><td><code>card_00026</code></td><td>card</td><td class="n">2</td><td class="n">0.9102</td></tr><tr><td><code>device_00031</code></td><td>device</td><td class="n">2</td><td class="n">0.9102</td></tr><tr><td><code>ip_00023</code></td><td>ip</td><td class="n">3</td><td class="n">0.7213</td></tr><tr><td><code>ip_00024</code></td><td>ip</td><td class="n">2</td><td class="n">0.9102</td></tr></tbody></table>
+<div class="figs">
+<figure><figcaption class="meta">Evidence subgraph: members (circles), the devices, cards and IPs they share, and transfers among members (arrows).</figcaption><svg/>
+</figure><figure><figcaption class="meta">Feature contributions to the score (log-odds).</figcaption><svg/>
+</figure></div>
+<h3>Counterfactuals</h3>
+<ul><li>The hub-aware rule would link these members even through an arbitrarily busy hub: their transfers to each other alone carry enough weight.</li></ul><h3>Analyst actions</h3>
+<p>None.</p></section>
+<section class="ring" id="ring-golden-seed7-R000025">
+<h2>Ring <code>R000025</code> (money cycle)</h2>
+<p class="meta">Run <code>golden-seed7</code> · risk 0.918 (threshold 0.500) · 3 members · detectors temporal cycle
+</p>
+<p>2 users share card card_00032 (used by 2 accounts), hub weight 0.91; 2 users share device device_00038 (used by 2 accounts), hub weight 0.91; 3 transfers between members within 6 seconds; money returns to its origin in 3 hops; 3 accounts created within 1 seconds; found by temporal_cycle.</p>
+<p>Members: <code>u000044</code>, <code>u000045</code>, <code>u000046</code></p>
+<table><thead><tr><th>Shared attribute</th><th>Kind</th><th class="n">Active users</th><th class="n">Hub weight</th></tr></thead><tbody>
+<tr><td><code>card_00032</code></td><td>card</td><td class="n">2</td><td class="n">0.9102</td></tr><tr><td><code>device_00038</code></td><td>device</td><td class="n">2</td><td class="n">0.9102</td></tr><tr><td><code>ip_00027</code></td><td>ip</td><td class="n">2</td><td class="n">0.9102</td></tr></tbody></table>
+<div class="figs">
+<figure><figcaption class="meta">Evidence subgraph: members (circles), the devices, cards and IPs they share, and transfers among members (arrows).</figcaption><svg/>
+</figure><figure><figcaption class="meta">Feature contributions to the score (log-odds).</figcaption><svg/>
+</figure></div>
+<h3>Counterfactuals</h3>
+<p>None computed.</p><h3>Analyst actions</h3>
+<p>None.</p></section>
+<section class="ring" id="ring-golden-seed7-R000005">
+<h2>Ring <code>R000005</code> (shared ip)</h2>
+<p class="meta">Run <code>golden-seed7</code> · risk 0.914 (threshold 0.500) · 5 members · detectors hub aware
+</p>
+<p>5 users share ip ip_00022 (used by 8 accounts), hub weight 0.46; 4 members share a busy ip used by 12 accounts in total (ip_00021, hub weight 0.39), so sharing it alone is weak evidence; 1 transfer between members; 5 accounts created within 0 seconds; found by hub_aware.</p>
+<p>Members: <code>u000013</code>, <code>u000017</code>, <code>u000021</code>, <code>u000022</code>, <code>u000028</code></p>
+<table><thead><tr><th>Shared attribute</th><th>Kind</th><th class="n">Active users</th><th class="n">Hub weight</th></tr></thead><tbody>
+<tr><td><code>card_00008</code></td><td>card</td><td class="n">2</td><td class="n">0.9102</td></tr><tr><td><code>device_00008</code></td><td>device</td><td class="n">2</td><td class="n">0.9102</td></tr><tr><td><code>ip_00006</code></td><td>ip</td><td class="n">2</td><td class="n">0.9102</td></tr><tr><td><code>ip_00021</code></td><td>ip</td><td class="n">12</td><td class="n">0.3899</td></tr><tr><td><code>ip_00022</code></td><td>ip</td><td class="n">8</td><td class="n">0.4551</td></tr></tbody></table>
+<div class="figs">
+<figure><figcaption class="meta">Evidence subgraph: members (circles), the devices, cards and IPs they share, and transfers among members (arrows).</figcaption><svg/>
+</figure><figure><figcaption class="meta">Feature contributions to the score (log-odds).</figcaption><svg/>
+</figure></div>
+<h3>Counterfactuals</h3>
+<ul><li>Would score below 0.50 if hub-adjusted sharing weight per pair were 0.23 instead of 0.96.</li><li>The hub-aware rule would link these members even through an arbitrarily busy hub: their transfers to each other alone carry enough weight.</li></ul><h3>Analyst actions</h3>
+<p>None.</p></section>
+<section class="ring" id="ring-golden-seed7-R000007">
+<h2>Ring <code>R000007</code> (mixed attribute)</h2>
+<p class="meta">Run <code>golden-seed7</code> · risk 0.914 (threshold 0.500) · 3 members · detectors hub aware
+</p>
+<p>2 users share card card_00015 (used by 2 accounts), hub weight 0.91; 2 users share card card_00022 (used by 2 accounts), hub weight 0.91; 1 transfer between members; 3 accounts created within 0 seconds; found by hub_aware.</p>
+<p>Members: <code>u000007</code>, <code>u000014</code>, <code>u000024</code></p>
+<table><thead><tr><th>Shared attribute</th><th>Kind</th><th class="n">Active users</th><th class="n">Hub weight</th></tr></thead><tbody>
+<tr><td><code>card_00015</code></td><td>card</td><td class="n">2</td><td class="n">0.9102</td></tr><tr><td><code>card_00022</code></td><td>card</td><td class="n">2</td><td class="n">0.9102</td></tr><tr><td><code>device_00024</code></td><td>device</td><td class="n">2</td><td class="n">0.9102</td></tr><tr><td><code>ip_00022</code></td><td>ip</td><td class="n">12</td><td class="n">0.3899</td></tr></tbody></table>
+<div class="figs">
+<figure><figcaption class="meta">Evidence subgraph: members (circles), the devices, cards and IPs they share, and transfers among members (arrows).</figcaption><svg/>
+</figure><figure><figcaption class="meta">Feature contributions to the score (log-odds).</figcaption><svg/>
+</figure></div>
+<h3>Counterfactuals</h3>
+<ul><li>Would score below 0.50 if hub-adjusted sharing weight per pair were 0.38 instead of 1.04.</li><li>The hub-aware rule would link these members even through an arbitrarily busy hub: their transfers to each other alone carry enough weight.</li></ul><h3>Analyst actions</h3>
+<p>None.</p></section>
+<section class="ring" id="ring-golden-seed7-R000010">
+<h2>Ring <code>R000010</code> (mixed attribute)</h2>
+<p class="meta">Run <code>golden-seed7</code> · risk 0.898 (threshold 0.500) · 4 members · detectors hub aware
+</p>
+<p>2 users share card card_00016 (used by 2 accounts), hub weight 0.91; 2 users share card card_00027 (used by 2 accounts), hub weight 0.91; 1 transfer between members; 4 accounts created within 0 seconds; found by hub_aware.</p>
+<p>Members: <code>u000001</code>, <code>u000014</code>, <code>u000016</code>, <code>u000027</code></p>
+<table><thead><tr><th>Shared attribute</th><th>Kind</th><th class="n">Active users</th><th class="n">Hub weight</th></tr></thead><tbody>
+<tr><td><code>card_00016</code></td><td>card</td><td class="n">2</td><td class="n">0.9102</td></tr><tr><td><code>card_00027</code></td><td>card</td><td class="n">2</td><td class="n">0.9102</td></tr><tr><td><code>device_00017</code></td><td>device</td><td class="n">2</td><td class="n">0.9102</td></tr><tr><td><code>ip_00002</code></td><td>ip</td><td class="n">2</td><td class="n">0.9102</td></tr><tr><td><code>ip_00019</code></td><td>ip</td><td class="n">2</td><td class="n">0.9102</td></tr><tr><td><code>ip_00021</code></td><td>ip</td><td class="n">12</td><td class="n">0.3899</td></tr></tbody></table>
+<div class="figs">
+<figure><figcaption class="meta">Evidence subgraph: members (circles), the devices, cards and IPs they share, and transfers among members (arrows).</figcaption><svg/>
+</figure><figure><figcaption class="meta">Feature contributions to the score (log-odds).</figcaption><svg/>
+</figure></div>
+<h3>Counterfactuals</h3>
+<ul><li>Would score below 0.50 if hub-adjusted sharing weight per pair were 0.24 instead of 0.82.</li><li>The hub-aware rule would link these members even through an arbitrarily busy hub: their transfers to each other alone carry enough weight.</li></ul><h3>Analyst actions</h3>
+<p>None.</p></section>
+<section class="ring" id="ring-golden-seed7-R000004">
+<h2>Ring <code>R000004</code> (mixed attribute)</h2>
+<p class="meta">Run <code>golden-seed7</code> · risk 0.643 (threshold 0.500) · 3 members · detectors hub aware
+</p>
+<p>2 users share card card_00016 (used by 2 accounts), hub weight 0.91; 2 users share device device_00017 (used by 2 accounts), hub weight 0.91; 3 accounts created within 0 seconds; found by hub_aware.</p>
+<p>Members: <code>u000001</code>, <code>u000016</code>, <code>u000027</code></p>
+<table><thead><tr><th>Shared attribute</th><th>Kind</th><th class="n">Active users</th><th class="n">Hub weight</th></tr></thead><tbody>
+<tr><td><code>card_00016</code></td><td>card</td><td class="n">2</td><td class="n">0.9102</td></tr><tr><td><code>device_00017</code></td><td>device</td><td class="n">2</td><td class="n">0.9102</td></tr><tr><td><code>ip_00019</code></td><td>ip</td><td class="n">2</td><td class="n">0.9102</td></tr><tr><td><code>ip_00021</code></td><td>ip</td><td class="n">12</td><td class="n">0.3899</td></tr></tbody></table>
+<div class="figs">
+<figure><figcaption class="meta">Evidence subgraph: members (circles), the devices, cards and IPs they share, and transfers among members (arrows).</figcaption><svg/>
+</figure><figure><figcaption class="meta">Feature contributions to the score (log-odds).</figcaption><svg/>
+</figure></div>
+<h3>Counterfactuals</h3>
+<ul><li>Would score below 0.50 if hub-adjusted sharing weight per pair were 0.98 instead of 1.04.</li><li>Would score below 0.50 if share of member pairs directly linked were 0.44 instead of 1.00.</li><li>The hub-aware rule would link these members even through an arbitrarily busy hub: their transfers to each other alone carry enough weight.</li></ul><h3>Analyst actions</h3>
+<p>None.</p></section>
+
+<footer><p class="meta disclaimer">Generated from simulated data for research/demo purposes. Not a regulatory filing.</p></footer>
+</body>
+</html>

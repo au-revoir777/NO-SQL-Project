@@ -80,7 +80,13 @@ def test_wrong_method_is_an_enveloped_405(client: TestClient) -> None:
 
 @pytest.mark.parametrize(
     "path",
-    ["entities/search?q=u", "graph/neighbourhood?seed=user:u01", "reports", "experiments", "rules"],
+    [
+        "entities/search?q=u",
+        "graph/neighbourhood?seed=user:u01",
+        "reports?limit=1",
+        "experiments",
+        "rules",
+    ],
 )
 def test_routers_require_sign_in(client: TestClient, path: str) -> None:
     # Signed-in behaviour (501 naming the milestone) is covered in test_auth.py.

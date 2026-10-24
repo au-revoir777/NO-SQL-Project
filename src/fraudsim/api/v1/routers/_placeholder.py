@@ -9,7 +9,6 @@ from fraudsim.api.v1.schemas import ErrorEnvelope
 
 # (router prefix, OpenAPI tag, milestone that implements it, admin only)
 PLANNED = [
-    ("reports", "reports", "P7", False),
     ("experiments", "experiments", "P8", False),
     ("rules", "rules", "P9", True),
 ]

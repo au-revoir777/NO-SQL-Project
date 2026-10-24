@@ -2933,6 +2933,45 @@
         "title": "Page[CaseSummary]",
         "type": "object"
       },
+      "Page_ReportOut_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ReportOut"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Total matching items, when cheap to count",
+            "title": "Total"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "Page[ReportOut]",
+        "type": "object"
+      },
       "Page_UserOut_": {
         "properties": {
           "items": {
@@ -3200,6 +3239,188 @@
           "source"
         ],
         "title": "ReplaySummary",
+        "type": "object"
+      },
+      "ReportCreate": {
+        "properties": {
+          "alert_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "maxItems": 500,
+            "title": "Alert Ids",
+            "type": "array"
+          },
+          "case_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "maxItems": 50,
+            "title": "Case Ids",
+            "type": "array"
+          },
+          "format": {
+            "default": "html",
+            "enum": [
+              "html",
+              "pdf"
+            ],
+            "title": "Format",
+            "type": "string"
+          },
+          "oracle": {
+            "default": false,
+            "description": "Add the \"Oracle (simulator ground truth)\" comparison per run",
+            "title": "Oracle",
+            "type": "boolean"
+          },
+          "run_ids": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 20,
+            "title": "Run Ids",
+            "type": "array"
+          },
+          "sections": {
+            "items": {
+              "enum": [
+                "executive_summary",
+                "alert_table",
+                "ring_detail",
+                "contributions",
+                "counterfactuals",
+                "timeline",
+                "notes",
+                "sar_summary",
+                "run_metrics",
+                "limitations"
+              ],
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Sections",
+            "type": "array"
+          },
+          "since": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Rings first seen at or after (simulated time)",
+            "title": "Since"
+          },
+          "title": {
+            "maxLength": 300,
+            "minLength": 3,
+            "title": "Title",
+            "type": "string"
+          },
+          "until": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Rings first seen at or before (simulated time)",
+            "title": "Until"
+          }
+        },
+        "required": [
+          "title"
+        ],
+        "title": "ReportCreate",
+        "type": "object"
+      },
+      "ReportOut": {
+        "properties": {
+          "config_hashes": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Config Hashes",
+            "type": "array"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "created_by": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UserRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "format": {
+            "enum": [
+              "html",
+              "pdf"
+            ],
+            "title": "Format",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "rings": {
+            "description": "Rings in the report",
+            "title": "Rings",
+            "type": "integer"
+          },
+          "run_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Run Ids",
+            "type": "array"
+          },
+          "scope": {
+            "title": "Scope",
+            "type": "object"
+          },
+          "sha256": {
+            "description": "SHA-256 of the report file",
+            "title": "Sha256",
+            "type": "string"
+          },
+          "size_bytes": {
+            "title": "Size Bytes",
+            "type": "integer"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "format",
+          "scope",
+          "run_ids",
+          "config_hashes",
+          "sha256",
+          "size_bytes",
+          "created_by",
+          "created_at",
+          "rings"
+        ],
+        "title": "ReportOut",
         "type": "object"
       },
       "RingDetailResponse": {
@@ -8271,14 +8492,43 @@
     },
     "/api/v1/reports": {
       "get": {
-        "operationId": "reports_index",
+        "operationId": "reports_list",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Cursor"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Reports Index",
-                  "type": "null"
+                  "$ref": "#/components/schemas/Page_ReportOut_"
                 }
               }
             },
@@ -8323,8 +8573,37 @@
               }
             },
             "description": "Internal error"
+          }
+        },
+        "summary": "Reports",
+        "tags": [
+          "reports"
+        ]
+      },
+      "post": {
+        "operationId": "reports_create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReportCreate"
+              }
+            }
           },
-          "501": {
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
             "content": {
               "application/json": {
                 "schema": {
@@ -8332,10 +8611,241 @@
                 }
               }
             },
-            "description": "Arrives in milestone P7"
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Role or CSRF check failed"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unknown report, case or alert"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "PDF rendering is not available"
           }
         },
-        "summary": "reports: not implemented yet (P7)",
+        "summary": "Create",
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/api/v1/reports/{report_id}": {
+      "get": {
+        "operationId": "reports_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "report_id",
+            "required": true,
+            "schema": {
+              "title": "Report Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Role or CSRF check failed"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unknown report, case or alert"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "PDF rendering is not available"
+          }
+        },
+        "summary": "Report",
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/api/v1/reports/{report_id}/download": {
+      "get": {
+        "operationId": "reports_download",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "report_id",
+            "required": true,
+            "schema": {
+              "title": "Report Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/pdf": {},
+              "text/html": {}
+            },
+            "description": "The report file, as generated (its SHA-256 is in the report record)"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Role or CSRF check failed"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unknown report, case or alert"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "PDF rendering is not available"
+          }
+        },
+        "summary": "Download",
         "tags": [
           "reports"
         ]

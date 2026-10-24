@@ -558,8 +558,43 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** reports: not implemented yet (P7) */
-        get: operations["reports_index"];
+        /** Reports */
+        get: operations["reports_list"];
+        put?: never;
+        /** Create */
+        post: operations["reports_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/reports/{report_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Report */
+        get: operations["reports_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/reports/{report_id}/download": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Download */
+        get: operations["reports_download"];
         put?: never;
         post?: never;
         delete?: never;
@@ -2379,6 +2414,18 @@ export interface components {
              */
             total?: number | null;
         };
+        /** Page[ReportOut] */
+        Page_ReportOut_: {
+            /** Items */
+            items: components["schemas"]["ReportOut"][];
+            /** Next Cursor */
+            next_cursor?: string | null;
+            /**
+             * Total
+             * @description Total matching items, when cheap to count
+             */
+            total?: number | null;
+        };
         /** Page[UserOut] */
         Page_UserOut_: {
             /** Items */
@@ -2455,6 +2502,77 @@ export interface components {
             seed: number | null;
             /** Source */
             source: string;
+        };
+        /** ReportCreate */
+        ReportCreate: {
+            /** Alert Ids */
+            alert_ids?: number[];
+            /** Case Ids */
+            case_ids?: number[];
+            /**
+             * Format
+             * @default html
+             * @enum {string}
+             */
+            format: "html" | "pdf";
+            /**
+             * Oracle
+             * @description Add the "Oracle (simulator ground truth)" comparison per run
+             * @default false
+             */
+            oracle: boolean;
+            /** Run Ids */
+            run_ids?: string[];
+            /** Sections */
+            sections?: ("executive_summary" | "alert_table" | "ring_detail" | "contributions" | "counterfactuals" | "timeline" | "notes" | "sar_summary" | "run_metrics" | "limitations")[];
+            /**
+             * Since
+             * @description Rings first seen at or after (simulated time)
+             */
+            since?: string | null;
+            /** Title */
+            title: string;
+            /**
+             * Until
+             * @description Rings first seen at or before (simulated time)
+             */
+            until?: string | null;
+        };
+        /** ReportOut */
+        ReportOut: {
+            /** Config Hashes */
+            config_hashes: string[];
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            created_by: components["schemas"]["UserRef"] | null;
+            /**
+             * Format
+             * @enum {string}
+             */
+            format: "html" | "pdf";
+            /** Id */
+            id: string;
+            /**
+             * Rings
+             * @description Rings in the report
+             */
+            rings: number;
+            /** Run Ids */
+            run_ids: string[];
+            /** Scope */
+            scope: Record<string, never>;
+            /**
+             * Sha256
+             * @description SHA-256 of the report file
+             */
+            sha256: string;
+            /** Size Bytes */
+            size_bytes: number;
+            /** Title */
+            title: string;
         };
         /** RingDetailResponse */
         RingDetailResponse: {
@@ -5329,9 +5447,12 @@ export interface operations {
             };
         };
     };
-    reports_index: {
+    reports_list: {
         parameters: {
-            query?: never;
+            query?: {
+                limit?: number;
+                cursor?: string | null;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -5344,7 +5465,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": null;
+                    "application/json": components["schemas"]["Page_ReportOut_"];
                 };
             };
             /** @description Not signed in or session invalid */
@@ -5383,8 +5504,230 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorEnvelope"];
                 };
             };
-            /** @description Arrives in milestone P7 */
-            501: {
+        };
+    };
+    reports_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReportCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReportOut"];
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Role or CSRF check failed */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unknown report, case or alert */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description PDF rendering is not available */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    reports_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                report_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReportOut"];
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Role or CSRF check failed */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unknown report, case or alert */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description PDF rendering is not available */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    reports_download: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                report_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The report file, as generated (its SHA-256 is in the report record) */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/pdf": unknown;
+                    "text/html": unknown;
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Role or CSRF check failed */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unknown report, case or alert */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description PDF rendering is not available */
+            503: {
                 headers: {
                     [name: string]: unknown;
                 };

@@ -508,6 +508,26 @@ class LiveRun:
                     await task
         self.close_logs()
 
+    def sync_logs(self) -> None:
+        """
+        Make the run's log directory readable as it stands now (for reports):
+        flush the streams, rewrite the manifest and export the ground-truth
+        ledger (evaluation only; used in Oracle mode).
+        """
+        if self.log_dir is None:
+            return
+        if self.log is not None:
+            self.log.flush()
+            self._batches_file.flush()
+            self._write_manifest()
+        self.generator.ledger.export_jsonl(self.log_dir / "ground_truth.jsonl")
+        self.generator.ledger.export_log(self.log_dir / "ground_truth_log.jsonl")
+        from fraudsim.detectors.runner import _ring_dict
+
+        with open(self.log_dir / "rings.jsonl", "w", encoding="utf-8") as f:
+            for ring in self.engine.tracker.rings.values():
+                f.write(json.dumps(_ring_dict(ring), default=str) + "\n")
+
     def close_logs(self) -> None:
         if self.log is not None:
             self._write_manifest()

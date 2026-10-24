@@ -70,6 +70,10 @@ class RunLogger:
             handle = self._handles[path] = open(path, "a", encoding="utf-8")  # noqa: SIM115
         handle.write(json.dumps(record, default=str, separators=(",", ":")) + "\n")
 
+    def flush(self) -> None:
+        for handle in self._handles.values():
+            handle.flush()
+
     def close(self) -> None:
         for handle in self._handles.values():
             handle.close()
