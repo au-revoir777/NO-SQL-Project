@@ -66,6 +66,10 @@ class AlertDetail(AlertSummary):
     labels: list[LabelOut]
     notes: list[NoteOut]
     live: bool = Field(description="The run is still live; evidence is refreshed from the engine")
+    activity: list[dict[str, Any]] = Field(
+        default_factory=list,
+        description="Audit entries of this alert (status, assignment, labels, notes), oldest first",
+    )
 
 
 class AlertUpdate(BaseModel):

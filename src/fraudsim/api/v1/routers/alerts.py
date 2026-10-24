@@ -241,6 +241,7 @@ def alert(alert_id: int, db: DB) -> AlertDetail:
         ],
         notes=svc.notes_for(db, run_id=a.run_id, alert_ref=a.alert_ref),
         live=ring is not None,
+        activity=svc.history_of("alert", str(a.id)),
     )
 
 

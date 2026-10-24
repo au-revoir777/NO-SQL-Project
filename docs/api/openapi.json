@@ -76,6 +76,14 @@
       },
       "AlertDetail": {
         "properties": {
+          "activity": {
+            "description": "Audit entries of this alert (status, assignment, labels, notes), oldest first",
+            "items": {
+              "type": "object"
+            },
+            "title": "Activity",
+            "type": "array"
+          },
           "alert_ref": {
             "title": "Alert Ref",
             "type": "string"

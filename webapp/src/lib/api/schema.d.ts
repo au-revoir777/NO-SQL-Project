@@ -1354,6 +1354,11 @@ export interface components {
         };
         /** AlertDetail */
         AlertDetail: {
+            /**
+             * Activity
+             * @description Audit entries of this alert (status, assignment, labels, notes), oldest first
+             */
+            activity?: Record<string, never>[];
             /** Alert Ref */
             alert_ref: string;
             assignee: components["schemas"]["UserRef"] | null;
