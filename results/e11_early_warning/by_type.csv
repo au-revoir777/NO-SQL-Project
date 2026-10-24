@@ -1,0 +1,9 @@
+type,eligible_rings,warned_before_activation,reported,share_warned,lead_median_s
+layered_chain,12,0,True,0.0,
+mixed_attribute,24,15,True,0.625,3.103
+money_cycle,38,1,True,0.02631578947368421,1.02
+shared_card,26,1,True,0.038461538461538464,3.205
+shared_device,57,13,True,0.22807017543859648,1.999
+shared_ip,47,0,True,0.0,
+smurfing_fan_in,13,0,True,0.0,
+smurfing_fan_out,10,0,True,0.0,
