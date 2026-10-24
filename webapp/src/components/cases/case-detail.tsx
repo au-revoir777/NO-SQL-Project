@@ -199,7 +199,7 @@ export function CaseDetail({ id }: { id: number }) {
 
   if (q.isPending)
     return (
-      <div className="space-y-3" aria-busy="true" aria-label="Loading case">
+      <div className="space-y-3" role="status" aria-busy="true" aria-label="Loading case">
         <Skeleton className="h-8 w-64" />
         <Skeleton className="h-40 w-full" />
       </div>
@@ -298,7 +298,7 @@ export function CaseDetail({ id }: { id: number }) {
           </CardDescription>
         </CardHeader>
         <CardContent className="px-0">
-          <Table>
+          <Table label="Attached alerts">
             <TableHeader>
               <TableRow>
                 <TableHead>Alert</TableHead>

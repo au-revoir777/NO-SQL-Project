@@ -83,7 +83,12 @@ export function CaseList() {
       <Card className="overflow-hidden py-0">
         <CardContent className="px-0">
           {q.isPending ? (
-            <div className="space-y-2 p-4" aria-busy="true" aria-label="Loading cases">
+            <div
+              className="space-y-2 p-4"
+              role="status"
+              aria-busy="true"
+              aria-label="Loading cases"
+            >
               {[0, 1, 2].map((i) => (
                 <Skeleton key={i} className="h-10 w-full" />
               ))}
@@ -103,7 +108,7 @@ export function CaseList() {
               </EmptyState>
             </div>
           ) : (
-            <Table>
+            <Table label="Cases">
               <TableHeader>
                 <TableRow>
                   <TableHead>Case</TableHead>

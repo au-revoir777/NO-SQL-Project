@@ -602,7 +602,12 @@ export function AlertQueue() {
       <Card className="overflow-hidden py-0">
         <CardContent className="px-0">
           {q.isPending ? (
-            <div className="space-y-2 p-4" aria-busy="true" aria-label="Loading alerts">
+            <div
+              className="space-y-2 p-4"
+              role="status"
+              aria-busy="true"
+              aria-label="Loading alerts"
+            >
               {[0, 1, 2, 3].map((i) => (
                 <Skeleton key={i} className="h-10 w-full" />
               ))}
@@ -623,7 +628,7 @@ export function AlertQueue() {
               </EmptyState>
             </div>
           ) : (
-            <Table aria-describedby="queue-help">
+            <Table label="Alerts" aria-describedby="queue-help">
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-10">

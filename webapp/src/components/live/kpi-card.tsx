@@ -36,7 +36,12 @@ export function KpiCard({
       </CardHeader>
       <CardContent className="flex items-end justify-between gap-3">
         {state.kind === "loading" ? (
-          <div className="w-full space-y-2" aria-busy="true" aria-label={`Loading ${title}`}>
+          <div
+            className="w-full space-y-2"
+            role="status"
+            aria-busy="true"
+            aria-label={`Loading ${title}`}
+          >
             <Skeleton className="h-7 w-24" />
             <Skeleton className="h-4 w-32" />
           </div>

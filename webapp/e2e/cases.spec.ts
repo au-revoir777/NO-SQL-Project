@@ -108,6 +108,19 @@ test("analyst triages an alert into an escalated case; admin sees it in the audi
   await noSeriousAxe(page);
 });
 
+test("audit and alert tables stay accessible when they scroll sideways (narrow window)", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 820, height: 900 });
+  await signIn(page, "admin");
+  await page.goto("/audit");
+  await expect(page.getByText("Hash chain intact")).toBeVisible();
+  await noSeriousAxe(page);
+  await page.goto("/alerts");
+  await expect(page.getByRole("heading", { name: "Alerts", level: 1 })).toBeVisible();
+  await noSeriousAxe(page);
+});
+
 test("the cases list has no serious axe violations", async ({ page }) => {
   await signIn(page, "analyst");
   await page.goto("/cases");

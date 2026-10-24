@@ -52,7 +52,12 @@ export function SystemStatusCard() {
       </CardHeader>
       <CardContent>
         {isPending ? (
-          <div className="space-y-3" aria-busy="true" aria-label="Loading system status">
+          <div
+            className="space-y-3"
+            role="status"
+            aria-busy="true"
+            aria-label="Loading system status"
+          >
             {[0, 1, 2, 3].map((i) => (
               <div key={i} className="flex items-center justify-between">
                 <Skeleton className="h-4 w-28" />

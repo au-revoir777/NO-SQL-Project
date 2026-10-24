@@ -330,7 +330,7 @@ export function AlertDetail({ id }: { id: number }) {
 
   if (q.isPending)
     return (
-      <div className="space-y-3" aria-busy="true" aria-label="Loading alert">
+      <div className="space-y-3" role="status" aria-busy="true" aria-label="Loading alert">
         <Skeleton className="h-8 w-64" />
         <Skeleton className="h-40 w-full" />
       </div>

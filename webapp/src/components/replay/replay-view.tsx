@@ -55,7 +55,7 @@ export function ReplayView({ runId }: { runId: string }) {
   const placed = useMemo(() => (data ? layout(data) : null), [data]);
   if (isPending)
     return (
-      <div className="space-y-4" aria-busy="true" aria-label="Loading the replay">
+      <div className="space-y-4" role="status" aria-busy="true" aria-label="Loading the replay">
         <Skeleton className="h-8 w-80" />
         <Skeleton className="h-96 w-full" />
       </div>

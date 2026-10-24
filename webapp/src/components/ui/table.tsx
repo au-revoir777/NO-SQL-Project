@@ -3,9 +3,17 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-function Table({ className, ...props }: React.ComponentProps<"table">) {
+/**
+ * `label` names the scroll container and makes it keyboard-focusable, so a
+ * table that scrolls sideways on a narrow screen can be scrolled without a mouse.
+ */
+function Table({ className, label, ...props }: React.ComponentProps<"table"> & { label?: string }) {
   return (
-    <div data-slot="table-container" className="relative w-full overflow-x-auto">
+    <div
+      data-slot="table-container"
+      className="focus-visible:ring-ring/50 relative w-full overflow-x-auto rounded-md outline-none focus-visible:ring-[3px]"
+      {...(label ? { role: "region", "aria-label": label, tabIndex: 0 } : {})}
+    >
       <table
         data-slot="table"
         className={cn("w-full caption-bottom text-sm", className)}

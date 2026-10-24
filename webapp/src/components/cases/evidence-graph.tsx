@@ -167,7 +167,7 @@ export function EvidenceGraph({ evidence }: { evidence: Evidence }) {
       </div>
       {asTable ? (
         <div key="table" className="space-y-4">
-          <Table>
+          <Table label="Shared attributes">
             <caption className="text-muted-foreground mb-2 text-left text-sm">
               Shared attributes (degree = accounts using it in the whole graph)
             </caption>
@@ -195,7 +195,7 @@ export function EvidenceGraph({ evidence }: { evidence: Evidence }) {
               ))}
             </TableBody>
           </Table>
-          <Table>
+          <Table label="Transfers among members">
             <caption className="text-muted-foreground mb-2 text-left text-sm">
               Transfers among members (simulated time in seconds)
             </caption>

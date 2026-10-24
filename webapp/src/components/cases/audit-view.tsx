@@ -89,7 +89,12 @@ export function AuditView() {
       <Card className="overflow-hidden py-0">
         <CardContent className="px-0">
           {q.isPending ? (
-            <div className="space-y-2 p-4" aria-busy="true" aria-label="Loading audit entries">
+            <div
+              className="space-y-2 p-4"
+              role="status"
+              aria-busy="true"
+              aria-label="Loading audit entries"
+            >
               {[0, 1, 2].map((i) => (
                 <Skeleton key={i} className="h-10 w-full" />
               ))}
@@ -105,7 +110,7 @@ export function AuditView() {
           ) : items.length === 0 ? (
             <p className="text-muted-foreground p-4 text-sm">No entries match.</p>
           ) : (
-            <Table>
+            <Table label="Audit entries">
               <TableHeader>
                 <TableRow>
                   <TableHead className="text-right">#</TableHead>
