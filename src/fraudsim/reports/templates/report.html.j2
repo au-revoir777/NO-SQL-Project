@@ -49,7 +49,7 @@ ul { margin: 1mm 0 1mm 5mm; padding: 0; }
 {% set s = m.summary %}
 <p>This report covers {{ s.rings | fmt }} flagged ring(s) ({{ s.alerts | fmt }} alert(s), {{ s.early_warnings | fmt }} early warning(s))
 involving {{ s.members | fmt }} account(s), from {{ s.runs | fmt }} run(s){% if s.cases %} and {{ s.cases | fmt }} case(s){% endif %}.
-{% if s.max_risk is not none %}The highest risk score is {{ s.max_risk | fmt(3) }}.{% endif %}
+{% if s.max_risk is not none %}The highest risk score is {{ s.max_risk | fmt(3) }}. {% endif %}
 {{ s.labelled | fmt }} of the rings carry an analyst label.</p>
 {% if s.ring_types %}<p>Ring types: {% for t, n in s.ring_types.items() %}{{ t | words }} ({{ n }}){% if not loop.last %}, {% endif %}{% endfor %}.</p>{% endif %}
 {% for c in m.cases %}

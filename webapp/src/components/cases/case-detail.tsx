@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, FileLock2 } from "lucide-react";
+import { ArrowLeft, FileLock2, FileText } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
@@ -228,6 +228,12 @@ export function CaseDetail({ id }: { id: number }) {
           </h1>
           <CaseStatusBadge status={c.status} />
           <PriorityBadge priority={c.priority} />
+          <span className="flex-1" />
+          <Button variant="outline" asChild>
+            <Link href={`/reports?case=${c.id}`}>
+              <FileText aria-hidden /> Report
+            </Link>
+          </Button>
         </div>
         <p className="text-muted-foreground text-sm">
           Opened by {userName(c.created_by)} on {fmtTime(c.created_at)} · updated{" "}

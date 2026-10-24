@@ -125,6 +125,8 @@ def evidence_svg(evidence: dict[str, Any], max_nodes: int = 80) -> str | None:
             font_size=5,
             ax=ax,
         )
-        ax.legend(loc="lower left", fontsize=6, frameon=False, markerscale=0.6)
+        ax.legend(
+            loc="upper left", bbox_to_anchor=(1.0, 1.0), fontsize=6, frameon=False, markerscale=0.6
+        )
         ax.set_axis_off()
         return _svg(fig)

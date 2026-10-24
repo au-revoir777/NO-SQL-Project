@@ -58,8 +58,8 @@ describe("AppSidebar", () => {
     const alerts = screen.getByRole("link", { name: "Alerts" });
     expect(alerts).toHaveAttribute("aria-current", "page");
     expect(screen.getByRole("link", { name: "Dashboard" })).not.toHaveAttribute("aria-current");
-    // P5 and P6 pages are built; Reports still arrives in P7.
-    expect(screen.queryAllByTitle(/Arrives in milestone P[56]$/)).toHaveLength(0);
-    expect(screen.getAllByTitle("Arrives in milestone P7")).toHaveLength(1);
+    // P5–P7 pages are built; Experiments still arrives in P8.
+    expect(screen.queryAllByTitle(/Arrives in milestone P[5-7]$/)).toHaveLength(0);
+    expect(screen.getAllByTitle("Arrives in milestone P8")).toHaveLength(1);
   });
 });

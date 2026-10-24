@@ -1,3 +1,5 @@
+import { writeFileSync } from "node:fs";
+
 import { expect, type Page, test } from "@playwright/test";
 
 import { E2E_USERS } from "../playwright.config";
@@ -163,4 +165,47 @@ test("P6: entity page, hub stop and ring view", async ({ page }) => {
   await expect(page.getByRole("region", { name: "Membership changes" })).toBeVisible();
   await page.waitForTimeout(1_500);
   await page.screenshot({ path: `${OUT}/webapp_p6_ring.png`, fullPage: true });
+});
+
+test("P7: report builder and a generated case report", async ({ page }) => {
+  test.setTimeout(180_000);
+  await signIn(page, "analyst");
+  const csrf = async () =>
+    (await page.context().cookies()).find((c) => c.name === "fraudsim_csrf")?.value ?? "";
+  await page.request.post("/api/v1/runs", {
+    data: { scenario: "baseline", seed: 7, speed_multiplier: 0 },
+    headers: { "x-csrf-token": await csrf() },
+  });
+  await expect
+    .poll(
+      async () => (await (await page.request.get("/api/v1/runs/current")).json()).status as string,
+      { timeout: 90_000 },
+    )
+    .toBe("finished");
+  const alerts = (await (await page.request.get("/api/v1/alerts")).json()) as {
+    items: { id: number }[];
+  };
+  const created = await page.request.post("/api/v1/cases", {
+    data: { title: "Top alert of the baseline run", alert_ids: [alerts.items[0]!.id] },
+    headers: { "x-csrf-token": await csrf() },
+  });
+  const caseId = ((await created.json()) as { id: number }).id;
+  await page.request.post(`/api/v1/cases/${caseId}/notes`, {
+    data: {
+      body: "Members opened their accounts within a minute; transfers between them form a loop.",
+    },
+    headers: { "x-csrf-token": await csrf() },
+  });
+  await page.goto(`/reports?case=${caseId}`);
+  await page
+    .getByRole("checkbox", { name: "Add the Oracle (simulator ground truth) comparison" })
+    .check();
+  await page.getByRole("button", { name: "Generate report" }).click();
+  const link = page.getByRole("link", { name: /^Download “/ });
+  await expect(link).toBeVisible({ timeout: 60_000 });
+  await page.waitForTimeout(4_500); // let the toast fade
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.screenshot({ path: `${OUT}/webapp_p7_reports.png`, fullPage: true });
+  const pdf = await page.request.get((await link.getAttribute("href"))!);
+  writeFileSync(`${OUT}/../../.screenshots_p7_report.pdf`, await pdf.body());
 });

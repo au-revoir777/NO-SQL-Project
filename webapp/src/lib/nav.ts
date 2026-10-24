@@ -42,7 +42,7 @@ export const NAV: NavGroup[] = [
     label: "Investigate",
     items: [
       { title: "Explorer", href: "/explorer", icon: Search },
-      { title: "Reports", href: "/reports", icon: FileText, milestone: "P7" },
+      { title: "Reports", href: "/reports", icon: FileText },
     ],
   },
   {
