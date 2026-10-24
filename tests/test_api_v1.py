@@ -78,8 +78,11 @@ def test_wrong_method_is_an_enveloped_405(client: TestClient) -> None:
     _assert_envelope(client.delete("/api/v1/health"), 405, "method_not_allowed")
 
 
-@pytest.mark.parametrize("path", ["entities", "graph", "reports", "experiments", "rules"])
-def test_planned_routers_require_sign_in(client: TestClient, path: str) -> None:
+@pytest.mark.parametrize(
+    "path",
+    ["entities/search?q=u", "graph/neighbourhood?seed=user:u01", "reports", "experiments", "rules"],
+)
+def test_routers_require_sign_in(client: TestClient, path: str) -> None:
     # Signed-in behaviour (501 naming the milestone) is covered in test_auth.py.
     _assert_envelope(client.get(f"/api/v1/{path}"), 401, "unauthenticated")
 

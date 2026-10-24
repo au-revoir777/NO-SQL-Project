@@ -1469,6 +1469,262 @@
         "title": "DriftV1",
         "type": "object"
       },
+      "EntityAlert": {
+        "properties": {
+          "alert_ref": {
+            "title": "Alert Ref",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "ring_type": {
+            "title": "Ring Type",
+            "type": "string"
+          },
+          "risk": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Risk"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "alert_ref",
+          "status",
+          "risk",
+          "ring_type"
+        ],
+        "title": "EntityAlert",
+        "type": "object"
+      },
+      "EntityDetail": {
+        "properties": {
+          "active": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Active"
+          },
+          "alerts": {
+            "items": {
+              "$ref": "#/components/schemas/EntityAlert"
+            },
+            "title": "Alerts",
+            "type": "array"
+          },
+          "attributes": {
+            "description": "Users: linked attributes with degree and hub weight",
+            "items": {
+              "type": "object"
+            },
+            "title": "Attributes",
+            "type": "array"
+          },
+          "degree": {
+            "title": "Degree",
+            "type": "integer"
+          },
+          "hub_weight": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Attributes: weight the hub-aware detector gives",
+            "title": "Hub Weight"
+          },
+          "hub_weight_method": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hub Weight Method"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "is_hub": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Degree above the engine's far_fanout cap",
+            "title": "Is Hub"
+          },
+          "joined_t": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Joined T"
+          },
+          "kind": {
+            "enum": [
+              "user",
+              "device",
+              "card",
+              "ip"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "rings": {
+            "items": {
+              "$ref": "#/components/schemas/EntityRing"
+            },
+            "title": "Rings",
+            "type": "array"
+          },
+          "source": {
+            "enum": [
+              "run",
+              "course",
+              "neo4j"
+            ],
+            "title": "Source",
+            "type": "string"
+          },
+          "timeline": {
+            "items": {
+              "type": "object"
+            },
+            "title": "Timeline",
+            "type": "array"
+          },
+          "transactions": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Users: counts, totals and the latest transfers in and out",
+            "title": "Transactions"
+          },
+          "users": {
+            "description": "Attributes: active users linked, with link time",
+            "items": {
+              "type": "object"
+            },
+            "title": "Users",
+            "type": "array"
+          }
+        },
+        "required": [
+          "source",
+          "kind",
+          "id",
+          "degree",
+          "timeline"
+        ],
+        "title": "EntityDetail",
+        "type": "object"
+      },
+      "EntityHit": {
+        "properties": {
+          "degree": {
+            "description": "Users: attributes linked; attributes: active users",
+            "title": "Degree",
+            "type": "integer"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "user",
+              "device",
+              "card",
+              "ip"
+            ],
+            "title": "Kind",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "id",
+          "degree"
+        ],
+        "title": "EntityHit",
+        "type": "object"
+      },
+      "EntityRing": {
+        "properties": {
+          "members": {
+            "title": "Members",
+            "type": "integer"
+          },
+          "ring_id": {
+            "title": "Ring Id",
+            "type": "string"
+          },
+          "ring_type": {
+            "title": "Ring Type",
+            "type": "string"
+          },
+          "risk": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Risk"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ring_id",
+          "status",
+          "ring_type",
+          "members",
+          "risk"
+        ],
+        "title": "EntityRing",
+        "type": "object"
+      },
       "ErrorBody": {
         "properties": {
           "code": {
@@ -1532,6 +1788,185 @@
         ],
         "title": "EvasionMode",
         "type": "string"
+      },
+      "GraphEdgeOut": {
+        "properties": {
+          "amount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amount"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "device",
+              "card",
+              "ip",
+              "transfer"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "t": {
+            "title": "T",
+            "type": "number"
+          },
+          "target": {
+            "title": "Target",
+            "type": "string"
+          },
+          "txn_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Txn Id"
+          },
+          "weight": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Hub weight of the shared attribute",
+            "title": "Weight"
+          }
+        },
+        "required": [
+          "id",
+          "source",
+          "target",
+          "kind",
+          "t"
+        ],
+        "title": "GraphEdgeOut",
+        "type": "object"
+      },
+      "GraphNodeOut": {
+        "properties": {
+          "active": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Active"
+          },
+          "degree": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Degree"
+          },
+          "hop": {
+            "title": "Hop",
+            "type": "integer"
+          },
+          "hub": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hub"
+          },
+          "hub_weight": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hub Weight"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "joined_t": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Joined T"
+          },
+          "key": {
+            "title": "Key",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "user",
+              "device",
+              "card",
+              "ip"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "seed": {
+            "title": "Seed",
+            "type": "boolean"
+          },
+          "stop": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Why the walk did not cross this attribute (hub cap or depth limit)",
+            "title": "Stop"
+          }
+        },
+        "required": [
+          "key",
+          "kind",
+          "id",
+          "hop",
+          "seed"
+        ],
+        "title": "GraphNodeOut",
+        "type": "object"
       },
       "GraphSnapshotV1": {
         "additionalProperties": true,
@@ -2129,6 +2564,51 @@
         "title": "MetricsResponse",
         "type": "object"
       },
+      "NeighbourhoodOut": {
+        "properties": {
+          "edges": {
+            "items": {
+              "$ref": "#/components/schemas/GraphEdgeOut"
+            },
+            "title": "Edges",
+            "type": "array"
+          },
+          "nodes": {
+            "items": {
+              "$ref": "#/components/schemas/GraphNodeOut"
+            },
+            "title": "Nodes",
+            "type": "array"
+          },
+          "params": {
+            "title": "Params",
+            "type": "object"
+          },
+          "source": {
+            "enum": [
+              "run",
+              "course",
+              "neo4j"
+            ],
+            "title": "Source",
+            "type": "string"
+          },
+          "truncated": {
+            "description": "The walk stopped at max_nodes",
+            "title": "Truncated",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "source",
+          "params",
+          "nodes",
+          "edges",
+          "truncated"
+        ],
+        "title": "NeighbourhoodOut",
+        "type": "object"
+      },
       "NoteIn": {
         "properties": {
           "body": {
@@ -2720,6 +3200,50 @@
         "title": "RingDetailResponse",
         "type": "object"
       },
+      "RingMembership": {
+        "properties": {
+          "added": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Added",
+            "type": "array"
+          },
+          "change": {
+            "title": "Change",
+            "type": "string"
+          },
+          "details": {
+            "title": "Details",
+            "type": "object"
+          },
+          "members": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Members",
+            "type": "array"
+          },
+          "removed": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Removed",
+            "type": "array"
+          },
+          "ts": {
+            "title": "Ts",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ts",
+          "change",
+          "members"
+        ],
+        "title": "RingMembership",
+        "type": "object"
+      },
       "RingType": {
         "description": "Types of fraud rings the system can detect.",
         "enum": [
@@ -2910,6 +3434,120 @@
           "type"
         ],
         "title": "RingV1",
+        "type": "object"
+      },
+      "RingViewOut": {
+        "properties": {
+          "detectors": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Detectors",
+            "type": "array"
+          },
+          "first_seen": {
+            "title": "First Seen",
+            "type": "string"
+          },
+          "last_seen": {
+            "title": "Last Seen",
+            "type": "string"
+          },
+          "members": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Members",
+            "type": "array"
+          },
+          "parent": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent"
+          },
+          "ring_id": {
+            "title": "Ring Id",
+            "type": "string"
+          },
+          "ring_type": {
+            "title": "Ring Type",
+            "type": "string"
+          },
+          "risk": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Risk"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "shared_attributes": {
+            "description": "Attributes shared by at least two current members",
+            "items": {
+              "type": "object"
+            },
+            "title": "Shared Attributes",
+            "type": "array"
+          },
+          "size_history": {
+            "items": {
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "integer"
+                }
+              ],
+              "type": "array"
+            },
+            "title": "Size History",
+            "type": "array"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "timeline": {
+            "description": "Member set after each change (created, grew, shrank, merged, split, ...)",
+            "items": {
+              "$ref": "#/components/schemas/RingMembership"
+            },
+            "title": "Timeline",
+            "type": "array"
+          }
+        },
+        "required": [
+          "ring_id",
+          "run_id",
+          "status",
+          "ring_type",
+          "risk",
+          "detectors",
+          "members",
+          "first_seen",
+          "last_seen",
+          "parent",
+          "timeline",
+          "size_history",
+          "shared_attributes"
+        ],
+        "title": "RingViewOut",
         "type": "object"
       },
       "RingsByStatus": {
@@ -6381,16 +7019,88 @@
         ]
       }
     },
-    "/api/v1/entities": {
+    "/api/v1/entities/search": {
       "get": {
-        "operationId": "entities_index",
+        "operationId": "entities_search",
+        "parameters": [
+          {
+            "description": "Id prefix",
+            "in": "query",
+            "name": "q",
+            "required": true,
+            "schema": {
+              "description": "Id prefix",
+              "maxLength": 64,
+              "minLength": 1,
+              "title": "Q",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Limit to these kinds",
+            "in": "query",
+            "name": "kind",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "items": {
+                    "enum": [
+                      "user",
+                      "device",
+                      "card",
+                      "ip"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Limit to these kinds",
+              "title": "Kind"
+            }
+          },
+          {
+            "in": "query",
+            "name": "source",
+            "required": false,
+            "schema": {
+              "default": "run",
+              "enum": [
+                "run",
+                "course",
+                "neo4j"
+              ],
+              "title": "Source",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Entities Index",
-                  "type": "null"
+                  "items": {
+                    "$ref": "#/components/schemas/EntityHit"
+                  },
+                  "title": "Response Entities Search",
+                  "type": "array"
                 }
               }
             },
@@ -6435,8 +7145,70 @@
               }
             },
             "description": "Internal error"
+          }
+        },
+        "summary": "Search",
+        "tags": [
+          "entities"
+        ]
+      }
+    },
+    "/api/v1/entities/{kind}/{entity_id}": {
+      "get": {
+        "operationId": "entities_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "kind",
+            "required": true,
+            "schema": {
+              "enum": [
+                "user",
+                "device",
+                "card",
+                "ip"
+              ],
+              "title": "Kind",
+              "type": "string"
+            }
           },
-          "501": {
+          {
+            "in": "path",
+            "name": "entity_id",
+            "required": true,
+            "schema": {
+              "title": "Entity Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "source",
+            "required": false,
+            "schema": {
+              "default": "run",
+              "enum": [
+                "run",
+                "course",
+                "neo4j"
+              ],
+              "title": "Source",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
             "content": {
               "application/json": {
                 "schema": {
@@ -6444,10 +7216,60 @@
                 }
               }
             },
-            "description": "Arrives in milestone P6"
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Role or CSRF check failed"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unknown entity or ring"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "The source is not available"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
           }
         },
-        "summary": "entities: not implemented yet (P6)",
+        "summary": "Entity",
         "tags": [
           "entities"
         ]
@@ -6525,16 +7347,170 @@
         ]
       }
     },
-    "/api/v1/graph": {
+    "/api/v1/graph/neighbourhood": {
       "get": {
-        "operationId": "graph_index",
+        "description": "Users within k hops of the seeds, with the detector's hub caps (defaults:\nthe run's engine config). Attributes over the cap are shown but not crossed.",
+        "operationId": "graph_neighbourhood",
+        "parameters": [
+          {
+            "description": "kind:id, e.g. device:device_007",
+            "in": "query",
+            "name": "seed",
+            "required": true,
+            "schema": {
+              "description": "kind:id, e.g. device:device_007",
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 2,
+              "minItems": 1,
+              "title": "Seed",
+              "type": "array"
+            }
+          },
+          {
+            "description": "User hops",
+            "in": "query",
+            "name": "k",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "description": "User hops",
+              "maximum": 3,
+              "minimum": 0,
+              "title": "K",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "source",
+            "required": false,
+            "schema": {
+              "default": "run",
+              "enum": [
+                "run",
+                "course",
+                "neo4j"
+              ],
+              "title": "Source",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Relationship types to follow",
+            "in": "query",
+            "name": "rel",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "items": {
+                    "enum": [
+                      "device",
+                      "card",
+                      "ip",
+                      "transfer"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Relationship types to follow",
+              "title": "Rel"
+            }
+          },
+          {
+            "in": "query",
+            "name": "since_t",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Since T"
+            }
+          },
+          {
+            "in": "query",
+            "name": "until_t",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Until T"
+            }
+          },
+          {
+            "in": "query",
+            "name": "max_fanout",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maximum": 10000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Max Fanout"
+            }
+          },
+          {
+            "in": "query",
+            "name": "far_fanout",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maximum": 10000,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Far Fanout"
+            }
+          },
+          {
+            "in": "query",
+            "name": "max_nodes",
+            "required": false,
+            "schema": {
+              "default": 400,
+              "maximum": 1000,
+              "minimum": 10,
+              "title": "Max Nodes",
+              "type": "integer"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Graph Index",
-                  "type": "null"
+                  "$ref": "#/components/schemas/NeighbourhoodOut"
                 }
               }
             },
@@ -6560,6 +7536,26 @@
             },
             "description": "Role or CSRF check failed"
           },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unknown entity or ring"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "The source is not available"
+          },
           "422": {
             "content": {
               "application/json": {
@@ -6579,8 +7575,41 @@
               }
             },
             "description": "Internal error"
+          }
+        },
+        "summary": "Neighbourhood",
+        "tags": [
+          "graph"
+        ]
+      }
+    },
+    "/api/v1/graph/rings/{ring_id}": {
+      "get": {
+        "description": "A tracked ring of the current run: members and shared attributes over time.",
+        "operationId": "graph_ring",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ring_id",
+            "required": true,
+            "schema": {
+              "title": "Ring Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RingViewOut"
+                }
+              }
+            },
+            "description": "Successful Response"
           },
-          "501": {
+          "401": {
             "content": {
               "application/json": {
                 "schema": {
@@ -6588,10 +7617,60 @@
                 }
               }
             },
-            "description": "Arrives in milestone P6"
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Role or CSRF check failed"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unknown entity or ring"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "The source is not available"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
           }
         },
-        "summary": "graph: not implemented yet (P6)",
+        "summary": "Ring View",
         "tags": [
           "graph"
         ]

@@ -26,6 +26,7 @@ from fraudsim.api.v1.routers import (
     alerts,
     auth,
     cases,
+    explorer,
     replays,
     runs,
     scenarios,
@@ -59,6 +60,8 @@ def build_router() -> APIRouter:
     router.include_router(replays.router, dependencies=ANALYST, responses=AUTH_RESPONSES)
     router.include_router(alerts.router, dependencies=ANALYST, responses=AUTH_RESPONSES)
     router.include_router(cases.router, dependencies=ANALYST, responses=AUTH_RESPONSES)
+    router.include_router(explorer.entities, dependencies=ANALYST, responses=AUTH_RESPONSES)
+    router.include_router(explorer.graph, dependencies=ANALYST, responses=AUTH_RESPONSES)
     router.include_router(admin.router, dependencies=ADMIN, responses=AUTH_RESPONSES)
     for prefix, tag, milestone, admin_only in PLANNED:
         router.include_router(

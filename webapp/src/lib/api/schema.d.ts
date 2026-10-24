@@ -388,15 +388,32 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/entities": {
+    "/api/v1/entities/search": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** entities: not implemented yet (P6) */
-        get: operations["entities_index"];
+        /** Search */
+        get: operations["entities_search"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/entities/{kind}/{entity_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Entity */
+        get: operations["entities_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -422,15 +439,39 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/graph": {
+    "/api/v1/graph/neighbourhood": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** graph: not implemented yet (P6) */
-        get: operations["graph_index"];
+        /**
+         * Neighbourhood
+         * @description Users within k hops of the seeds, with the detector's hub caps (defaults:
+         *     the run's engine config). Attributes over the cap are shown but not crossed.
+         */
+        get: operations["graph_neighbourhood"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/graph/rings/{ring_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Ring View
+         * @description A tracked ring of the current run: members and shared attributes over time.
+         */
+        get: operations["graph_ring"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1786,6 +1827,101 @@ export interface components {
             /** Trigger Time S */
             trigger_time_s: number;
         };
+        /** EntityAlert */
+        EntityAlert: {
+            /** Alert Ref */
+            alert_ref: string;
+            /** Id */
+            id: number;
+            /** Ring Type */
+            ring_type: string;
+            /** Risk */
+            risk: number | null;
+            /** Status */
+            status: string;
+        };
+        /** EntityDetail */
+        EntityDetail: {
+            /** Active */
+            active?: boolean | null;
+            /** Alerts */
+            alerts?: components["schemas"]["EntityAlert"][];
+            /**
+             * Attributes
+             * @description Users: linked attributes with degree and hub weight
+             */
+            attributes?: Record<string, never>[];
+            /** Degree */
+            degree: number;
+            /**
+             * Hub Weight
+             * @description Attributes: weight the hub-aware detector gives
+             */
+            hub_weight?: number | null;
+            /** Hub Weight Method */
+            hub_weight_method?: string | null;
+            /** Id */
+            id: string;
+            /**
+             * Is Hub
+             * @description Degree above the engine's far_fanout cap
+             */
+            is_hub?: boolean | null;
+            /** Joined T */
+            joined_t?: number | null;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "user" | "device" | "card" | "ip";
+            /** Rings */
+            rings?: components["schemas"]["EntityRing"][];
+            /**
+             * Source
+             * @enum {string}
+             */
+            source: "run" | "course" | "neo4j";
+            /** Timeline */
+            timeline: Record<string, never>[];
+            /**
+             * Transactions
+             * @description Users: counts, totals and the latest transfers in and out
+             */
+            transactions?: Record<string, never> | null;
+            /**
+             * Users
+             * @description Attributes: active users linked, with link time
+             */
+            users?: Record<string, never>[];
+        };
+        /** EntityHit */
+        EntityHit: {
+            /**
+             * Degree
+             * @description Users: attributes linked; attributes: active users
+             */
+            degree: number;
+            /** Id */
+            id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "user" | "device" | "card" | "ip";
+        };
+        /** EntityRing */
+        EntityRing: {
+            /** Members */
+            members: number;
+            /** Ring Id */
+            ring_id: string;
+            /** Ring Type */
+            ring_type: string;
+            /** Risk */
+            risk: number | null;
+            /** Status */
+            status: string;
+        };
         /** ErrorBody */
         ErrorBody: {
             /**
@@ -1813,6 +1949,62 @@ export interface components {
          * @enum {string}
          */
         EvasionMode: "none" | "hub_hiding" | "low_and_slow" | "identity_rotation" | "decoy_edges" | "adaptive";
+        /** GraphEdgeOut */
+        GraphEdgeOut: {
+            /** Amount */
+            amount?: number | null;
+            /** Id */
+            id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "device" | "card" | "ip" | "transfer";
+            /** Source */
+            source: string;
+            /** T */
+            t: number;
+            /** Target */
+            target: string;
+            /** Txn Id */
+            txn_id?: string | null;
+            /**
+             * Weight
+             * @description Hub weight of the shared attribute
+             */
+            weight?: number | null;
+        };
+        /** GraphNodeOut */
+        GraphNodeOut: {
+            /** Active */
+            active?: boolean | null;
+            /** Degree */
+            degree?: number | null;
+            /** Hop */
+            hop: number;
+            /** Hub */
+            hub?: boolean | null;
+            /** Hub Weight */
+            hub_weight?: number | null;
+            /** Id */
+            id: string;
+            /** Joined T */
+            joined_t?: number | null;
+            /** Key */
+            key: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "user" | "device" | "card" | "ip";
+            /** Seed */
+            seed: boolean;
+            /**
+             * Stop
+             * @description Why the walk did not cross this attribute (hub cap or depth limit)
+             */
+            stop?: Record<string, never> | null;
+        };
         /**
          * GraphSnapshotV1
          * @description Windowed live graph (nodes and edges as built for the dashboards).
@@ -2058,6 +2250,25 @@ export interface components {
             /** User Recall */
             user_recall?: number | null;
         };
+        /** NeighbourhoodOut */
+        NeighbourhoodOut: {
+            /** Edges */
+            edges: components["schemas"]["GraphEdgeOut"][];
+            /** Nodes */
+            nodes: components["schemas"]["GraphNodeOut"][];
+            /** Params */
+            params: Record<string, never>;
+            /**
+             * Source
+             * @enum {string}
+             */
+            source: "run" | "course" | "neo4j";
+            /**
+             * Truncated
+             * @description The walk stopped at max_nodes
+             */
+            truncated: boolean;
+        };
         /** NoteIn */
         NoteIn: {
             /**
@@ -2246,6 +2457,21 @@ export interface components {
             /** Updated At */
             updated_at: string;
         };
+        /** RingMembership */
+        RingMembership: {
+            /** Added */
+            added?: string[];
+            /** Change */
+            change: string;
+            /** Details */
+            details?: Record<string, never>;
+            /** Members */
+            members: string[];
+            /** Removed */
+            removed?: string[];
+            /** Ts */
+            ts: string;
+        };
         /**
          * RingType
          * @description Types of fraud rings the system can detect.
@@ -2285,6 +2511,44 @@ export interface components {
              */
             spawn_time_s: number;
             type: components["schemas"]["RingType"];
+        };
+        /** RingViewOut */
+        RingViewOut: {
+            /** Detectors */
+            detectors: string[];
+            /** First Seen */
+            first_seen: string;
+            /** Last Seen */
+            last_seen: string;
+            /** Members */
+            members: string[];
+            /** Parent */
+            parent: string | null;
+            /** Ring Id */
+            ring_id: string;
+            /** Ring Type */
+            ring_type: string;
+            /** Risk */
+            risk: number | null;
+            /** Run Id */
+            run_id: string;
+            /**
+             * Shared Attributes
+             * @description Attributes shared by at least two current members
+             */
+            shared_attributes: Record<string, never>[];
+            /** Size History */
+            size_history: [
+                number,
+                number
+            ][];
+            /** Status */
+            status: string;
+            /**
+             * Timeline
+             * @description Member set after each change (created, grew, shrank, merged, split, ...)
+             */
+            timeline: components["schemas"]["RingMembership"][];
         };
         /** RingsByStatus */
         RingsByStatus: {
@@ -4352,9 +4616,16 @@ export interface operations {
             };
         };
     };
-    entities_index: {
+    entities_search: {
         parameters: {
-            query?: never;
+            query: {
+                /** @description Id prefix */
+                q: string;
+                /** @description Limit to these kinds */
+                kind?: ("user" | "device" | "card" | "ip")[] | null;
+                source?: "run" | "course" | "neo4j";
+                limit?: number;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -4367,7 +4638,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": null;
+                    "application/json": components["schemas"]["EntityHit"][];
                 };
             };
             /** @description Not signed in or session invalid */
@@ -4406,8 +4677,78 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorEnvelope"];
                 };
             };
-            /** @description Arrives in milestone P6 */
-            501: {
+        };
+    };
+    entities_get: {
+        parameters: {
+            query?: {
+                source?: "run" | "course" | "neo4j";
+            };
+            header?: never;
+            path: {
+                kind: "user" | "device" | "card" | "ip";
+                entity_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EntityDetail"];
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Role or CSRF check failed */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unknown entity or ring */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description The source is not available */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -4482,9 +4823,22 @@ export interface operations {
             };
         };
     };
-    graph_index: {
+    graph_neighbourhood: {
         parameters: {
-            query?: never;
+            query: {
+                /** @description kind:id, e.g. device:device_007 */
+                seed: string[];
+                /** @description User hops */
+                k?: number;
+                source?: "run" | "course" | "neo4j";
+                /** @description Relationship types to follow */
+                rel?: ("device" | "card" | "ip" | "transfer")[] | null;
+                since_t?: number | null;
+                until_t?: number | null;
+                max_fanout?: number | null;
+                far_fanout?: number | null;
+                max_nodes?: number;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -4497,7 +4851,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": null;
+                    "application/json": components["schemas"]["NeighbourhoodOut"];
                 };
             };
             /** @description Not signed in or session invalid */
@@ -4511,6 +4865,24 @@ export interface operations {
             };
             /** @description Role or CSRF check failed */
             403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unknown entity or ring */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description The source is not available */
+            409: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -4536,8 +4908,75 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorEnvelope"];
                 };
             };
-            /** @description Arrives in milestone P6 */
-            501: {
+        };
+    };
+    graph_ring: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                ring_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RingViewOut"];
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Role or CSRF check failed */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unknown entity or ring */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description The source is not available */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
                 headers: {
                     [name: string]: unknown;
                 };
