@@ -50,7 +50,7 @@ export function UserMenu() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-9 gap-2 px-2" aria-label={`Account: ${user.email}`}>
           <Avatar className="size-7">
-            <AvatarFallback className="text-xs">
+            <AvatarFallback className="text-foreground text-xs">
               {initials(user.display_name || user.email)}
             </AvatarFallback>
           </Avatar>

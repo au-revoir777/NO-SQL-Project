@@ -49,7 +49,7 @@ export const NAV: NavGroup[] = [
     label: "Simulate",
     items: [
       { title: "Simulator", href: "/simulator", icon: PlayCircle, milestone: "P4" },
-      { title: "Replays", href: "/replays", icon: History, milestone: "P4" },
+      { title: "Replays", href: "/replays", icon: History },
     ],
   },
   {

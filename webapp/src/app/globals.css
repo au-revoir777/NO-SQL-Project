@@ -42,8 +42,9 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 
-  /* Domain tokens (light) */
-  --risk-alert: #d1453b;
+  /* Domain tokens (light). ok, warn and risk-alert are also text colours: each meets
+     WCAG AA (>= 4.5:1) on the white and #fafafa surfaces (checked with axe in e2e). */
+  --risk-alert: #b93a31;
   --risk-confirmed: #e07b16;
   --risk-candidate: #c9a215;
   --benign: #b3b7bd;
@@ -51,8 +52,8 @@
   --node-card: #1f9a92;
   --node-ip: #3d6fd6;
   --node-hub: #2850a8;
-  --ok: #2f8f5b;
-  --warn: #c98a12;
+  --ok: #267a4d;
+  --warn: #8f5f08;
 }
 
 .dark {
