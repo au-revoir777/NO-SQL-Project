@@ -93,6 +93,8 @@ implemented · **B** blocked by environment or data.
 | R5 | Resampling unit documented; Holm correction applied | P10/P16 |
 | R6 | Every number in the paper text from a generated macro | P16 |
 
+**Progress after the audit:** R1 and R3 fixed (see above). Workstream C (ring-level calibration, precision/lift@k, alert burden) is done as E10 ([results](../research/e10_results.md), [protocol](../research/e10_protocol.md)).
+
 ## 4. Order of work (combined Phase 2 plan + master_prompt2)
 
 1. **M0 audit** (this report) and **R1**: authenticate the legacy routes and the WebSocket, and restrict CORS.
