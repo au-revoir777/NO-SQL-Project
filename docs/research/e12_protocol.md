@@ -112,4 +112,25 @@ the model counterfactuals, and the evidence subgraph.
 
 ## Amendments
 
-None yet.
+**1 (before any E12 result was computed).** Writing the unit test for metric 1
+(a hand-built logistic regression with a known closed-form counterfactual)
+showed that the shipped `RingScorer.counterfactual_value` aims just below the
+raw score of the first isotonic breakpoint whose calibrated value reaches the
+threshold. `predict` interpolates linearly between breakpoints, so a raw score
+just below that breakpoint can still calibrate above the threshold. In the
+test, the counterfactual left the calibrated score at 0.820 instead of below
+0.8. The shipped calibrator has the same shape around 0.8: breakpoints at raw
+0.72445 (calibrated 0.778) and 0.72485 (0.892).
+
+Metric 1 is therefore reported twice on the same alerts:
+
+- **as shipped:** counterfactuals computed exactly as the product computed
+  them when this protocol was written (`exact_crossing=False`). This is the
+  pre-registered measurement of the product's explanations;
+- **corrected:** counterfactuals aimed just below the raw score at which the
+  interpolated calibrated score equals the threshold (`exact_crossing=True`,
+  the product's behaviour after this fix).
+
+Metrics 2, 3, 5 and 6 use the corrected computation (the product's behaviour
+from now on). The fix changes only which target value is proposed; detection,
+scores and alerts are unchanged.
