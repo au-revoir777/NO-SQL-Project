@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
-import { PlannedPage } from "@/components/planned-page";
+import { Simulator } from "@/components/simulator/simulator";
 
 export const metadata: Metadata = { title: "Simulator" };
 
-export default function Page() {
-  return <PlannedPage href="/simulator" />;
+export default function SimulatorPage() {
+  return <Simulator />;
 }

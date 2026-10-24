@@ -1,0 +1,514 @@
+{
+  "adversarial": {
+    "name": "adversarial",
+    "description": "Adversarial evasion evaluation with adaptive attacker, hub-hiding, low-and-slow, and decoy edges",
+    "version": "2.0",
+    "simulation": {
+      "duration_seconds": 90,
+      "target_event_rate": 30.0,
+      "num_users": 120,
+      "num_devices": 60,
+      "num_cards": 60,
+      "num_ips": 50,
+      "heavy_tail_alpha": 2.2,
+      "user_join_rate": 0.3,
+      "user_leave_rate": 0.2,
+      "hub_distribution": {
+        "shared_nat_gateway": {
+          "size": 30,
+          "type": "ip",
+          "category": "carrier_nat"
+        },
+        "public_kiosk": {
+          "size": 15,
+          "type": "device",
+          "category": "kiosk"
+        }
+      }
+    },
+    "rings": [
+      {
+        "id": "adv_hub_hiding",
+        "type": "shared_ip",
+        "size": 4,
+        "spawn_time_s": 10,
+        "evasion": "hub_hiding",
+        "shared_attribute": "shared_nat_gateway"
+      },
+      {
+        "id": "adv_low_slow",
+        "type": "money_cycle",
+        "size": 5,
+        "spawn_time_s": 20,
+        "evasion": "low_and_slow",
+        "length": 5
+      },
+      {
+        "id": "adv_mixed",
+        "type": "mixed_attribute",
+        "size": 4,
+        "spawn_time_s": 35,
+        "evasion": "identity_rotation"
+      },
+      {
+        "id": "adv_decoy",
+        "type": "smurfing_fan_in",
+        "size": 6,
+        "spawn_time_s": 40,
+        "evasion": "decoy_edges"
+      },
+      {
+        "id": "adv_adaptive",
+        "type": "shared_device",
+        "size": 4,
+        "spawn_time_s": 50,
+        "evasion": "adaptive",
+        "shared_attribute": "dev_adv_adaptive"
+      }
+    ],
+    "random_rings": {
+      "rate_per_min": 1.5,
+      "types": [
+        "shared_device",
+        "shared_card",
+        "shared_ip",
+        "money_cycle",
+        "layered_chain",
+        "mixed_attribute"
+      ],
+      "size_min": 3,
+      "size_max": 6,
+      "evasion_weights": {
+        "none": 1.0,
+        "hub_hiding": 1.0,
+        "low_and_slow": 1.0,
+        "identity_rotation": 1.0,
+        "decoy_edges": 1.0,
+        "adaptive": 1.0
+      },
+      "active_duration_s": [20, 50]
+    },
+    "adaptive_attacker": {
+      "penalty": 0.5,
+      "respawn_delay_s": 5,
+      "max_rings": 6,
+      "strategies": ["hub_hiding", "low_and_slow", "identity_rotation", "decoy_edges"]
+    }
+  },
+  "baseline": {
+    "name": "baseline",
+    "description": "Standard balanced scenario replicating seed.py ground truth plus streaming transactions",
+    "version": "2.0",
+    "simulation": {
+      "duration_seconds": 60,
+      "target_event_rate": 10.0,
+      "num_users": 30,
+      "num_devices": 18,
+      "num_cards": 18,
+      "num_ips": 20,
+      "heavy_tail_alpha": 2.5,
+      "user_join_rate": 0.05,
+      "user_leave_rate": 0.0,
+      "hub_distribution": {
+        "office_wifi": {
+          "size": 12,
+          "type": "ip",
+          "category": "office"
+        },
+        "carrier_nat": {
+          "size": 8,
+          "type": "ip",
+          "category": "carrier_nat"
+        }
+      }
+    },
+    "rings": [
+      {
+        "id": "ring_a",
+        "type": "shared_device",
+        "size": 4,
+        "spawn_time_s": 5,
+        "evasion": "none",
+        "shared_attribute": "device_007"
+      },
+      {
+        "id": "ring_b",
+        "type": "shared_card",
+        "size": 3,
+        "spawn_time_s": 15,
+        "evasion": "none",
+        "shared_attribute": "card_005"
+      },
+      {
+        "id": "ring_c",
+        "type": "shared_ip",
+        "size": 3,
+        "spawn_time_s": 25,
+        "evasion": "none",
+        "shared_attribute": "ip_004"
+      },
+      {
+        "id": "ring_cycle",
+        "type": "money_cycle",
+        "size": 3,
+        "spawn_time_s": 35,
+        "evasion": "none",
+        "length": 3
+      }
+    ]
+  },
+  "demo_story": {
+    "name": "demo_story",
+    "description": "Demo: a fraud ring hides behind a busy office network; a normal ring and family devices provide contrast",
+    "version": "1.0",
+    "simulation": {
+      "duration_seconds": 90,
+      "target_event_rate": 20.0,
+      "num_users": 120,
+      "num_devices": 60,
+      "num_cards": 60,
+      "num_ips": 50,
+      "heavy_tail_alpha": 2.2,
+      "user_join_rate": 0.1,
+      "user_leave_rate": 0.05,
+      "hub_distribution": {
+        "office_wifi": {
+          "size": 40,
+          "type": "ip",
+          "category": "office"
+        },
+        "family_tablet": {
+          "size": 4,
+          "type": "device",
+          "category": "family_device"
+        },
+        "shared_household_card": {
+          "size": 3,
+          "type": "card",
+          "category": "corporate_card"
+        }
+      }
+    },
+    "rings": [
+      {
+        "id": "hidden_office_ring",
+        "type": "shared_ip",
+        "size": 4,
+        "spawn_time_s": 10,
+        "evasion": "hub_hiding",
+        "shared_attribute": "office_wifi",
+        "grow_interval_s": 3,
+        "action_interval_s": 2.5
+      },
+      {
+        "id": "plain_device_ring",
+        "type": "shared_device",
+        "size": 4,
+        "spawn_time_s": 25,
+        "evasion": "none",
+        "grow_interval_s": 3
+      },
+      {
+        "id": "cycle_ring",
+        "type": "money_cycle",
+        "size": 4,
+        "spawn_time_s": 40,
+        "evasion": "none",
+        "length": 4,
+        "grow_interval_s": 2
+      }
+    ]
+  },
+  "drift": {
+    "name": "drift",
+    "description": "Concept drift scenario where benign hub-size distribution and transaction bursts shift mid-run",
+    "version": "2.0",
+    "simulation": {
+      "duration_seconds": 90,
+      "target_event_rate": 40.0,
+      "num_users": 200,
+      "num_devices": 100,
+      "num_cards": 100,
+      "num_ips": 80,
+      "heavy_tail_alpha": 2.3,
+      "user_join_rate": 0.3,
+      "user_leave_rate": 0.2,
+      "hub_distribution": {
+        "initial_hub": {
+          "size": 20,
+          "type": "ip",
+          "category": "office"
+        }
+      },
+      "drift": {
+        "trigger_time_s": 45,
+        "new_hub_size": 70,
+        "new_hub_kind": "ip",
+        "shift_multiplier": 2.5
+      }
+    },
+    "rings": [
+      {
+        "id": "pre_drift_ring",
+        "type": "shared_device",
+        "size": 4,
+        "spawn_time_s": 15,
+        "evasion": "none",
+        "active_duration_s": 40
+      },
+      {
+        "id": "post_drift_ring",
+        "type": "shared_ip",
+        "size": 5,
+        "spawn_time_s": 60,
+        "evasion": "hub_hiding"
+      }
+    ],
+    "random_rings": {
+      "rate_per_min": 1.0,
+      "types": ["shared_device", "shared_card", "money_cycle"],
+      "size_min": 3,
+      "size_max": 5,
+      "evasion_weights": {
+        "none": 1.0
+      },
+      "active_duration_s": [20, 40]
+    }
+  },
+  "high_noise": {
+    "name": "high_noise",
+    "description": "High noise transaction environment with heavy benign activity to test false positive resistance",
+    "version": "2.0",
+    "simulation": {
+      "duration_seconds": 60,
+      "target_event_rate": 50.0,
+      "num_users": 150,
+      "num_devices": 80,
+      "num_cards": 90,
+      "num_ips": 100,
+      "heavy_tail_alpha": 2.1,
+      "benign_mix": {
+        "transaction": 0.8,
+        "ip_login": 0.12,
+        "device_link": 0.05,
+        "card_link": 0.03
+      },
+      "user_join_rate": 0.5,
+      "user_leave_rate": 0.3,
+      "hub_distribution": {
+        "large_campus_wifi": {
+          "size": 45,
+          "type": "ip",
+          "category": "public_wifi"
+        },
+        "family_device": {
+          "size": 6,
+          "type": "device",
+          "category": "family_device"
+        }
+      },
+      "hub_size_distribution": {
+        "count": 10,
+        "min_size": 3,
+        "max_size": 30,
+        "alpha": 1.5,
+        "categories": ["office", "public_wifi", "family_device"]
+      }
+    },
+    "rings": [
+      {
+        "id": "noise_ring_1",
+        "type": "shared_device",
+        "size": 4,
+        "spawn_time_s": 10,
+        "evasion": "decoy_edges",
+        "shared_attribute": "device_noise_01"
+      },
+      {
+        "id": "noise_ring_2",
+        "type": "money_cycle",
+        "size": 4,
+        "spawn_time_s": 20,
+        "evasion": "none",
+        "length": 4
+      },
+      {
+        "id": "noise_chain",
+        "type": "layered_chain",
+        "size": 5,
+        "spawn_time_s": 30,
+        "evasion": "none"
+      },
+      {
+        "id": "noise_fan_out",
+        "type": "smurfing_fan_out",
+        "size": 6,
+        "spawn_time_s": 35,
+        "evasion": "none"
+      }
+    ],
+    "random_rings": {
+      "rate_per_min": 2.0,
+      "types": ["shared_device", "shared_card", "shared_ip", "money_cycle", "smurfing_fan_in"],
+      "size_min": 3,
+      "size_max": 6,
+      "evasion_weights": {
+        "none": 2.0,
+        "decoy_edges": 1.0
+      },
+      "active_duration_s": [15, 40]
+    }
+  },
+  "hub_heavy": {
+    "name": "hub_heavy",
+    "description": "Dense benign hubs scenario testing whether rings hiding behind dense hubs can be recovered",
+    "version": "2.0",
+    "simulation": {
+      "duration_seconds": 60,
+      "target_event_rate": 25.0,
+      "num_users": 100,
+      "num_devices": 40,
+      "num_cards": 50,
+      "num_ips": 30,
+      "heavy_tail_alpha": 2.0,
+      "user_join_rate": 0.2,
+      "user_leave_rate": 0.1,
+      "hub_distribution": {
+        "mega_office_gateway": {
+          "size": 50,
+          "type": "ip",
+          "category": "office"
+        },
+        "public_vpn_endpoint": {
+          "size": 35,
+          "type": "ip",
+          "category": "carrier_nat"
+        },
+        "store_kiosk": {
+          "size": 20,
+          "type": "device",
+          "category": "kiosk"
+        }
+      },
+      "hub_size_distribution": {
+        "count": 6,
+        "min_size": 5,
+        "max_size": 40,
+        "alpha": 1.2,
+        "categories": ["office", "carrier_nat", "family_device"]
+      }
+    },
+    "rings": [
+      {
+        "id": "ring_in_hub",
+        "type": "shared_ip",
+        "size": 4,
+        "spawn_time_s": 12,
+        "evasion": "hub_hiding",
+        "shared_attribute": "mega_office_gateway"
+      },
+      {
+        "id": "ring_behind_kiosk",
+        "type": "shared_device",
+        "size": 4,
+        "spawn_time_s": 18,
+        "evasion": "hub_hiding",
+        "shared_attribute": "store_kiosk"
+      },
+      {
+        "id": "standard_ring",
+        "type": "shared_card",
+        "size": 3,
+        "spawn_time_s": 25,
+        "evasion": "none",
+        "shared_attribute": "card_hub_sec"
+      },
+      {
+        "id": "mixed_behind_hub",
+        "type": "mixed_attribute",
+        "size": 5,
+        "spawn_time_s": 32,
+        "evasion": "hub_hiding"
+      }
+    ]
+  },
+  "scale_sweep": {
+    "name": "scale_sweep",
+    "description": "Large scale sweep scenario for benchmarking latency and throughput against increasing graph sizes",
+    "version": "2.0",
+    "simulation": {
+      "duration_seconds": 120,
+      "target_event_rate": 100.0,
+      "num_users": 1000,
+      "num_devices": 400,
+      "num_cards": 400,
+      "num_ips": 300,
+      "heavy_tail_alpha": 2.1,
+      "user_join_rate": 1.0,
+      "user_leave_rate": 0.5,
+      "hub_distribution": {
+        "cloud_proxy": {
+          "size": 150,
+          "type": "ip",
+          "category": "carrier_nat"
+        },
+        "workplace_network": {
+          "size": 80,
+          "type": "ip",
+          "category": "office"
+        }
+      },
+      "hub_size_distribution": {
+        "count": 30,
+        "min_size": 3,
+        "max_size": 100,
+        "alpha": 1.3
+      }
+    },
+    "rings": [
+      {
+        "id": "sweep_ring_1",
+        "type": "shared_device",
+        "size": 6,
+        "spawn_time_s": 15,
+        "evasion": "none"
+      },
+      {
+        "id": "sweep_ring_2",
+        "type": "money_cycle",
+        "size": 4,
+        "spawn_time_s": 40,
+        "evasion": "none",
+        "length": 4
+      },
+      {
+        "id": "sweep_ring_3",
+        "type": "smurfing_fan_in",
+        "size": 8,
+        "spawn_time_s": 70,
+        "evasion": "none"
+      }
+    ],
+    "random_rings": {
+      "rate_per_min": 3.0,
+      "types": [
+        "shared_device",
+        "shared_card",
+        "shared_ip",
+        "money_cycle",
+        "smurfing_fan_in",
+        "smurfing_fan_out",
+        "layered_chain",
+        "mixed_attribute"
+      ],
+      "size_min": 3,
+      "size_max": 8,
+      "evasion_weights": {
+        "none": 3.0,
+        "hub_hiding": 1.0,
+        "decoy_edges": 1.0
+      },
+      "active_duration_s": [20, 60]
+    }
+  }
+}

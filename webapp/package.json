@@ -24,6 +24,8 @@
     "@tanstack/react-query": "5.104.1",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
+    "cytoscape": "3.34.3",
+    "cytoscape-svg": "0.4.0",
     "geist": "1.7.2",
     "lucide-react": "1.52.0",
     "next": "16.4.1",

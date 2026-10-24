@@ -1,0 +1,111 @@
+# Milestone P4 test report (2026-10-24, Windows 11, Python 3.11.9, Node 22.14.0)
+# Local runs on branch feat/p4-simulator; CI recorded below once pushed.
+
+## ruff / format / mypy strict / contract / evidence snapshot
+All checks passed!
+152 files already formatted
+Success: no issues found in 34 source files
+contract: identical
+28 files in snapshot; 0 changed, 0 missing, 14 new; 0 stale tables
+
+## pytest tests/test_simulator_api.py -v
+tests/test_simulator_api.py::test_invalid_configs_are_rejected_with_field_level_errors PASSED
+tests/test_simulator_api.py::test_cross_field_rules_come_from_the_simulator_parser PASSED
+tests/test_simulator_api.py::test_presets_round_trip_through_the_api_and_yaml[adversarial] PASSED
+tests/test_simulator_api.py::test_presets_round_trip_through_the_api_and_yaml[baseline] PASSED
+tests/test_simulator_api.py::test_presets_round_trip_through_the_api_and_yaml[demo_story] PASSED
+tests/test_simulator_api.py::test_presets_round_trip_through_the_api_and_yaml[drift] PASSED
+tests/test_simulator_api.py::test_presets_round_trip_through_the_api_and_yaml[high_noise] PASSED
+tests/test_simulator_api.py::test_presets_round_trip_through_the_api_and_yaml[hub_heavy] PASSED
+tests/test_simulator_api.py::test_presets_round_trip_through_the_api_and_yaml[scale_sweep] PASSED
+tests/test_simulator_api.py::test_a_form_built_scenario_loads_with_the_scenario_loader PASSED
+tests/test_simulator_api.py::test_only_admins_save_custom_scenarios PASSED
+tests/test_simulator_api.py::test_demo_story_from_the_web_app_matches_the_cli_stream_digest PASSED
+tests/test_simulator_api.py::test_run_controls PASSED
+tests/test_simulator_api.py::test_admin_toggles_detectors PASSED
+tests/test_simulator_api.py::test_replays_list_and_serve_the_demo_story_json PASSED
+============================= 15 passed in 13.73s =============================
+
+## pytest (full suite; skipped = Neo4j/Redis integration tests, run in CI)
+320 passed, 15 skipped, 54 warnings in 154.54s (0:02:34)
+
+## webapp: eslint, tsc, prettier
+eslint: no problems
+tsc: no type errors
+All matched files use Prettier code style!
+
+## webapp: vitest run
+ ✓ src/components/live/kpi-card.test.tsx > KpiCard > shows a skeleton while loading 102ms
+ ✓ src/components/live/kpi-card.test.tsx > KpiCard > says why there is no value instead of showing a number 15ms
+ ✓ src/components/live/kpi-card.test.tsx > KpiCard > shows errors as an alert with an icon and text 98ms
+ ✓ src/components/live/kpi-card.test.tsx > KpiCard > shows the value, its detail and a labelled trend 25ms
+ ✓ src/components/live/kpi-card.test.tsx > AlertFeed > has an empty state 7ms
+ ✓ src/components/live/kpi-card.test.tsx > AlertFeed > lists risk, type, size, reason and simulated age; a click opens the detail 236ms
+ ✓ src/components/app-sidebar.test.tsx > AppSidebar > shows every navigation group and page to an admin 485ms
+ ✓ src/components/app-sidebar.test.tsx > AppSidebar > hides the admin pages from an analyst 150ms
+ ✓ src/components/app-sidebar.test.tsx > AppSidebar > marks the current page and labels unbuilt pages with their milestone 121ms
+ ✓ src/components/login-form.test.tsx > LoginForm > validates the fields before calling the API 679ms
+ ✓ src/components/login-form.test.tsx > LoginForm > sends the CSRF header and goes to the requested page on success 637ms
+ ✓ src/components/login-form.test.tsx > LoginForm > explains a lockout with the wait time from Retry-After 492ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > adversarial round-trips through the form unchanged 20ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > baseline round-trips through the form unchanged 3ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > demo_story round-trips through the form unchanged 2ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > drift round-trips through the form unchanged 2ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > high_noise round-trips through the form unchanged 3ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > hub_heavy round-trips through the form unchanged 1ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > scale_sweep round-trips through the form unchanged 1ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > leaves empty optional fields out instead of sending 0 1ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > rejects bad numbers with field messages 5ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > maps server error locations to form fields 1ms
+ ✓ src/components/system-status-card.test.tsx > SystemStatusCard > shows a skeleton while loading 106ms
+ ✓ src/components/system-status-card.test.tsx > SystemStatusCard > lists each component with an icon-and-text status 87ms
+ ✓ src/components/system-status-card.test.tsx > SystemStatusCard > shows the error envelope's message and request id, and retries 248ms
+ ✓ src/lib/schemas.test.ts > form schemas > rejects malformed login input 8ms
+ ✓ src/lib/schemas.test.ts > form schemas > requires a 12-character password and a known role for new users 2ms
+ ✓ src/lib/schemas.test.ts > safeNext > /cases -> /cases 1ms
+ ✓ src/lib/schemas.test.ts > safeNext > /users?x=1 -> /users?x=1 1ms
+ ✓ src/lib/schemas.test.ts > safeNext > null -> / 2ms
+ ✓ src/lib/schemas.test.ts > safeNext > https://evil.example -> / 1ms
+ ✓ src/lib/schemas.test.ts > safeNext > //evil.example -> / 0ms
+ ✓ src/lib/schemas.test.ts > safeNext > /\evil.example -> / 0ms
+ ✓ src/lib/schemas.test.ts > safeNext > /login?next=/x -> / 1ms
+ ✓ src/lib/replay/story.test.ts > stateAt > counts only flags up to t; early warnings are listed but not counted 6ms
+ ✓ src/lib/replay/story.test.ts > stateAt > does not double count a true ring 1ms
+ ✓ src/lib/replay/story.test.ts > parseDeepLink > reads the query string and the old hash form, clamping t 2ms
+ ✓ src/lib/live/use-live-run.test.ts > windowedRate > is the event rate between consecutive samples 2ms
+ Test Files  8 passed (8)
+      Tests  38 passed (38)
+
+## webapp: playwright test --repeat-each=2 (screenshot specs skipped)
+  ok 15 [chromium] › e2e\simulator.spec.ts:14:1 › demo_story seed 7 started from the UI gives the CLI's stream digest (7.1s)
+  ok 16 [chromium] › e2e\simulator.spec.ts:43:1 › the builder shows field errors and the page has no serious axe violations (6.0s)
+  ok 17 [chromium] › e2e\auth.spec.ts:16:1 › anonymous visitors are sent to the login page (736ms)
+  ok 18 [chromium] › e2e\auth.spec.ts:22:1 › a wrong password is refused with a clear message (976ms)
+  ok 19 [chromium] › e2e\auth.spec.ts:31:1 › analyst: admin pages are hidden and a direct URL returns the 403 page (2.6s)
+  ok 20 [chromium] › e2e\auth.spec.ts:45:1 › admin: the rules page is visible and users can be managed (3.1s)
+  ok 21 [chromium] › e2e\auth.spec.ts:64:1 › signing out ends the session (2.1s)
+  ok 22 [chromium] › e2e\dashboard.spec.ts:16:1 › a baseline run streams alerts and the KPIs equal the run-metrics endpoint (3.0s)
+  ok 23 [chromium] › e2e\replay.spec.ts:35:1 › replay at ?t=90&det=cap10&key=1 shows the same counts as the end of story.html (2.3s)
+  ok 24 [chromium] › e2e\replay.spec.ts:69:1 › replays list and replay page have no serious or critical axe violations (8.5s)
+  ok 31 [chromium] › e2e\simulator.spec.ts:14:1 › demo_story seed 7 started from the UI gives the CLI's stream digest (5.7s)
+  ok 32 [chromium] › e2e\simulator.spec.ts:43:1 › the builder shows field errors and the page has no serious axe violations (5.3s)
+  12 skipped
+  20 passed (1.7m)
+
+## Acceptance criteria
+- Invalid configs rejected with field-level errors: test_invalid_configs_are_rejected_with_field_level_errors
+  (locs body.simulation.num_users, .heavy_tail_alpha, .typo_field, body.rings.0.type, .size); cross-field
+  rules from parse_simulation_config: test_cross_field_rules_come_from_the_simulator_parser.
+- Round trip to the same config hash: every preset through GET -> POST /yaml -> yaml.safe_load, and a
+  form-built scenario through YAML -> load_scenario (pytest); every preset through the form state (Vitest).
+- Determinism: demo_story seed 7 from the web app (by name and inline) has the stream digest of
+  `fraudsim demo-story --seed 7` (results/demo_story/story_00434da7845b.json): pytest and Playwright (UI).
+- Replay ?t=90&det=cap10&key=1: counts equal story.html's stateAt on the same JSON (Playwright, read
+  from the API, not hard-coded); the old #t= form works.
+- axe: no serious/critical violations on /simulator, /replays, /replays/00434da7845b.
+
+## Fixed while testing
+- Light-mode ok/warn/risk-alert text and the avatar initials were below WCAG AA contrast; rich-colour
+  toasts too (now plain).
+- The builder re-validated on blur, which moved the Validate button under the pointer on mousedown, so
+  the first click after fixing a field was lost; errors now clear while typing.

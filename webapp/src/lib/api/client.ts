@@ -84,6 +84,8 @@ export class ApiRequestError extends Error {
     readonly code: string,
     readonly requestId: string | null,
     readonly retryAfter: number | null = null,
+    /** Field-level errors of a 422: [{ loc, msg, type }]. */
+    readonly details: unknown = null,
   ) {
     super(message);
     this.name = "ApiRequestError";
@@ -100,5 +102,6 @@ export function toApiError(error: unknown, response: Response): ApiRequestError 
     env?.error?.code ?? "http_error",
     requestId,
     retryAfter,
+    env?.error?.details ?? null,
   );
 }

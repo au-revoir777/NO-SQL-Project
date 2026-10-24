@@ -56,3 +56,24 @@ test("live dashboard after a baseline run", async ({ page }) => {
   await page.waitForTimeout(500);
   await page.screenshot({ path: `${OUT}/webapp_p3_dashboard.png`, fullPage: true });
 });
+
+test("simulator during a demo_story run", async ({ page }) => {
+  test.setTimeout(120_000);
+  await signIn(page, "analyst");
+  await page.goto("/simulator");
+  await page.getByLabel("Preset").selectOption("demo_story");
+  await expect(page.getByLabel("Name", { exact: true })).toHaveValue("demo_story");
+  await page.getByLabel("Seed").fill("7");
+  await page.getByLabel(/^Speed \(simulated/).fill("3");
+  await page.getByRole("button", { name: "Start run" }).click();
+  await expect(page.getByText(/active users shown/)).toBeVisible({ timeout: 30_000 });
+  await page.waitForTimeout(12_000);
+  await page.screenshot({ path: `${OUT}/webapp_p4_simulator.png`, fullPage: true });
+});
+
+test("story replay", async ({ page }) => {
+  await signIn(page, "analyst");
+  await page.goto("/replays/00434da7845b?t=60&det=system&key=1");
+  await expect(page.getByRole("heading", { name: /Replay of run/ })).toBeVisible();
+  await page.screenshot({ path: `${OUT}/webapp_p4_replay.png`, fullPage: true });
+});

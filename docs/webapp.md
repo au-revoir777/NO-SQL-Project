@@ -58,6 +58,9 @@ Routes so far:
 | `POST /api/v1/runs` | start a run (scenario, seed, speed); stops the current one; serialised by a lock |
 | `GET /api/v1/runs/current/metrics` | KPI sample of the live run (`?oracle=true` adds labelled ground truth) |
 | `GET /api/v1/stream/alerts`, `/stream/metrics` | Server-Sent Events (see Live dashboard) |
+| `GET /api/v1/scenarios`, `/scenarios/catalog`, `/scenarios/{name}`; `POST /scenarios/validate`, `/scenarios/yaml`; `PUT /scenarios/custom/{name}` (admin) | scenario builder (see Simulator) |
+| `POST /api/v1/runs/current/{pause,resume,stop,speed,rate,inject}`; `GET /runs/current/detectors`, `PATCH /runs/current/detectors/{type}` (admin); `GET /runs/current/graph` | run controls and the live graph |
+| `GET /api/v1/replays`, `/replays/{run_id}` | story replays and recorded runs |
 | `GET, POST /api/v1/admin/users`; `PATCH /api/v1/admin/users/{id}` | user administration (admin) |
 | `/api/v1/{alerts,cases,entities,graph,reports,experiments,rules}` | `501` until their milestone (P5 to P9), behind the role checks below |
 
@@ -163,6 +166,63 @@ streams: Redis Streams (XADD MAXLEN~, XREAD BLOCK) if REDIS_URL is set, else in-
 ASSUMPTION: the alert detail is a dialog with the streamed fields; triage and
 the full explanation belong to the Alerts page (P5).
 
+## Simulator and replays (P4)
+
+**Scenario builder.** `ScenarioV1` (`api/v1/schemas/scenario.py`) mirrors the
+YAML dialect of `configs/scenarios/*.yaml` key for key:
+- unknown keys are rejected, so a typo is an error;
+- integers stay integers, so a preset round-trips to the same JSON and the
+  same `config_hash`.
+
+The page loads a preset into a form covering every `SimulationConfig` section:
+population, benign mix, named hubs, random hubs, drift, rings, random rings
+and the adaptive attacker.
+- A zod mirror of the constraints gives instant field messages.
+- The server validates twice: pydantic gives field-level 422s, which the page
+  shows on the matching fields; then `parse_simulation_config` checks the
+  cross-field rules.
+- "Save as YAML" downloads a file the CLI loads with the same hash.
+- Admins can save to `configs/scenarios/custom/` (audited as `SCENARIO_SAVED`;
+  `SCENARIOS_CUSTOM_DIR` overrides the folder).
+
+An unedited preset is started by name, so its run is identical to
+`fraudsim … --scenario <name>`. An edited one is sent inline and recorded in
+full in the run's manifest. Tests check that demo_story seed 7 started from
+the UI gives the same stream digest as `fraudsim demo-story --seed 7`, in both
+pytest and Playwright.
+
+**Controls and graph.**
+- Controls: pause, resume, stop, speed, rate and ring injection for analysts;
+  detector toggles for admins (the server returns 403 to an analyst).
+  `run_control.start_live_run` serialises run management with a lock.
+- Graph: the windowed, capped snapshot of the live store in Cytoscape. Users
+  are coloured by detection status. Devices, cards and IPs are shown by kind
+  and shape, and hubs are sized by degree. The Oracle overlay (true positive,
+  false positive, missed) is labelled as simulator ground truth and is off by
+  default. The graph exports to PNG and SVG.
+
+**Replays.** `GET /api/v1/replays/{run_id}` serves the JSON `fraudsim
+demo-story` writes, unchanged, from `results/demo_story/` (committed: run
+`00434da7845b`, the run behind the README screenshots) or `demo/`.
+`/replays/[runId]` ports `story.html`; `lib/replay/story.ts` holds the same
+state-at-time rule, seeded layout and deep links. The page has:
+- play and pause, speed, a scrubber, a detector switch, and the answer key
+  (off by default);
+- running scores, and flags at their batch;
+- end-of-run cards and the provenance footer;
+- deep links `?t=&det=&key=` (the old `#t=` form works too).
+
+`demo/story.html` is unchanged. Playwright checks that `?t=90&det=cap10&key=1`
+shows the counts story.html computes from the same JSON.
+
+**Accessibility.** axe (`@axe-core/playwright`) runs on the simulator, replays
+and replay pages and reports no serious or critical violations. It found, and
+P4 fixed:
+- light-mode `--ok`, `--warn` and `--risk-alert` text below 4.5:1;
+- the avatar initials;
+- the rich-colour toasts;
+- a form that re-validated on blur and moved the button under the pointer.
+
 ## Running it
 
 ```bash
@@ -237,6 +297,8 @@ vulnerabilities.
 | zod | 4.6.6 | security exception (see above) |
 | sonner | 2.0.8 | toasts (shadcn `sonner`) |
 | @playwright/test | 1.64.0 | Chromium is installed with `npm run e2e:install` |
+| @axe-core/playwright | 4.13.0 | 4.14.0 was under two weeks old |
+| cytoscape, cytoscape-svg | 3.34.3, 0.4.0 | 3.34.4 was under two weeks old; cytoscape ships its types |
 
 `webapp/.npmrc` sets `legacy-peer-deps=true`: npm 10.9's resolver crashes
 (`Cannot read properties of null (reading 'edgesOut')`) on vitest 5's optional
