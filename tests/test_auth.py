@@ -248,7 +248,6 @@ def test_planned_routers_answer_501_when_signed_in(client: TestClient) -> None:
         "reports",
         "experiments",
         "rules",
-        "stream",
     ):
         resp = client.get(f"/api/v1/{name}")
         assert resp.status_code == 501 and "milestone P" in resp.json()["error"]["message"]

@@ -433,9 +433,10 @@ def _miss_reason(
     return "blind_spot"
 
 
-def _batch_row(rep: Any, start_t: float) -> dict[str, Any]:
+def detect_ms(rep: Any) -> float:
+    """Detection latency of one batch: dirty region + view + detectors + tracking + scoring."""
     tm = rep.timings_ms
-    detect = (
+    return (
         tm.get("dirty", 0.0)
         + tm.get("view", 0.0)
         + tm.get("full_view", 0.0)
@@ -443,6 +444,11 @@ def _batch_row(rep: Any, start_t: float) -> dict[str, Any]:
         + tm.get("track", 0.0)
         + tm.get("score", 0.0)
     )
+
+
+def _batch_row(rep: Any, start_t: float) -> dict[str, Any]:
+    tm = rep.timings_ms
+    detect = detect_ms(rep)
     return {
         "batch": rep.batch,
         "t_s": round(rep.now.timestamp() - start_t, 3),

@@ -280,15 +280,53 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/stream": {
+    "/api/v1/runs/current/metrics": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** stream: not implemented yet (P3) */
-        get: operations["stream_index"];
+        /**
+         * Current Run Metrics
+         * @description The same KPI sample the dashboard receives over SSE. `oracle=true` adds the
+         *     simulator ground-truth metrics (labelled as such).
+         */
+        get: operations["runs_current_metrics"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/stream/alerts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** SSE of alerts and early warnings (event `alert`, data: AlertV1) */
+        get: operations["stream_alerts"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/stream/metrics": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** SSE of KPI samples (event `metrics`, data: RunMetricsV1) */
+        get: operations["stream_metrics"];
         put?: never;
         post?: never;
         delete?: never;
@@ -768,6 +806,17 @@ export interface components {
             /** Csrf Token */
             csrf_token: string;
         };
+        /** DetectLatency */
+        DetectLatency: {
+            /** Count */
+            count: number;
+            /** P50 */
+            p50: number | null;
+            /** P95 */
+            p95: number | null;
+            /** P99 */
+            p99: number | null;
+        };
         /** DetectorToggleRequest */
         DetectorToggleRequest: {
             /** Enabled */
@@ -923,6 +972,29 @@ export interface components {
             /** User Recall */
             user_recall?: number | null;
         };
+        /**
+         * OracleMetrics
+         * @description Simulator ground truth; only shown behind the Oracle toggle.
+         */
+        OracleMetrics: {
+            /**
+             * Label
+             * @default Oracle (simulator ground truth)
+             */
+            label: string;
+            /** Missed Rings */
+            missed_rings: number | null;
+            /** Ring F1 */
+            ring_f1: number | null;
+            /** Ring Precision */
+            ring_precision: number | null;
+            /** Ring Recall */
+            ring_recall: number | null;
+            /** Rings Detected */
+            rings_detected: number | null;
+            /** True Rings */
+            true_rings: number | null;
+        };
         /** Page[UserOut] */
         Page_UserOut_: {
             /** Items */
@@ -960,6 +1032,56 @@ export interface components {
             status: string;
             /** Updated At */
             updated_at: string;
+        };
+        /** RingsByStatus */
+        RingsByStatus: {
+            /** Candidate */
+            candidate: number;
+            /** Confirmed */
+            confirmed: number;
+            /** Dissolved */
+            dissolved: number;
+        };
+        /**
+         * RunMetricsV1
+         * @description KPIs of the live run, read from the running engine (no stored or sample data).
+         */
+        RunMetricsV1: {
+            /**
+             * Alerts Per Sim Hour
+             * @description Alerts per simulated hour; scenarios run compressed, not an operational rate
+             */
+            alerts_per_sim_hour: number | null;
+            /** Alerts Total */
+            alerts_total: number;
+            /** Batches */
+            batches: number;
+            detect_ms: components["schemas"]["DetectLatency"];
+            /**
+             * Events Per S
+             * @description Achieved event rate, events per wall-clock second
+             */
+            events_per_s: number;
+            /** Events Total */
+            events_total: number;
+            /** Graph */
+            graph: {
+                [key: string]: number;
+            };
+            /** Open Alerts */
+            open_alerts: number;
+            oracle?: components["schemas"]["OracleMetrics"] | null;
+            rings_by_status: components["schemas"]["RingsByStatus"];
+            /** Run Id */
+            run_id: string;
+            /** Scenario */
+            scenario: string;
+            /** Seed */
+            seed: number;
+            /** Sim Time S */
+            sim_time_s: number;
+            /** Status */
+            status: string;
         };
         /** RunStatusResponse */
         RunStatusResponse: {
@@ -2133,9 +2255,11 @@ export interface operations {
             };
         };
     };
-    stream_index: {
+    runs_current_metrics: {
         parameters: {
-            query?: never;
+            query?: {
+                oracle?: boolean;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -2148,7 +2272,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": null;
+                    "application/json": components["schemas"]["RunMetricsV1"];
                 };
             };
             /** @description Not signed in or session invalid */
@@ -2162,6 +2286,15 @@ export interface operations {
             };
             /** @description Role or CSRF check failed */
             403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description No run has been started */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -2187,8 +2320,121 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorEnvelope"];
                 };
             };
-            /** @description Arrives in milestone P3 */
-            501: {
+        };
+    };
+    stream_alerts: {
+        parameters: {
+            query?: {
+                /** @description Start after this id; $ = new only */
+                since?: string;
+                run_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description event-stream; each `data:` line is one JSON object */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                    "text/event-stream": string;
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Role or CSRF check failed */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Invalid id */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    stream_metrics: {
+        parameters: {
+            query?: {
+                /** @description Start after this id; $ = new only */
+                since?: string;
+                run_id?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description event-stream; each `data:` line is one JSON object */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                    "text/event-stream": string;
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Role or CSRF check failed */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Invalid id */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
                 headers: {
                     [name: string]: unknown;
                 };

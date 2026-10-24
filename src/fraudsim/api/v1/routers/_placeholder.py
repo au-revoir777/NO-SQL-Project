@@ -16,7 +16,6 @@ PLANNED = [
     ("reports", "reports", "P7", False),
     ("experiments", "experiments", "P8", False),
     ("rules", "rules", "P9", True),
-    ("stream", "stream", "P3", False),
 ]
 
 

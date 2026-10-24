@@ -21,7 +21,7 @@ from fastapi import APIRouter, Depends, FastAPI
 from fraudsim import appdb
 from fraudsim.api.v1 import errors
 from fraudsim.api.v1.auth.deps import csrf_protect, require_admin, require_user
-from fraudsim.api.v1.routers import admin, auth, runs, system
+from fraudsim.api.v1.routers import admin, auth, runs, stream, system
 from fraudsim.api.v1.routers._placeholder import PLANNED, planned_router
 from fraudsim.api.v1.schemas import ErrorEnvelope
 
@@ -44,6 +44,7 @@ def build_router() -> APIRouter:
     router.include_router(system.router)
     router.include_router(auth.router)
     router.include_router(runs.router, dependencies=ANALYST, responses=AUTH_RESPONSES)
+    router.include_router(stream.router, dependencies=ANALYST, responses=AUTH_RESPONSES)
     router.include_router(admin.router, dependencies=ADMIN, responses=AUTH_RESPONSES)
     for prefix, tag, milestone, admin_only in PLANNED:
         router.include_router(

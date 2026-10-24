@@ -36,6 +36,7 @@ from fraudsim.api.v1.auth.websocket import (
     authenticate_websocket,
     cors_origins,
 )
+from fraudsim.api.v1.stream.publisher import StreamPublisher
 from fraudsim.metrics.exporters import prometheus_text
 from fraudsim.simulator.scenario_loader import list_scenarios, load_scenario
 from fraudsim.types import EvasionMode, RingType, new_run_id
@@ -117,7 +118,8 @@ async def start_run(req: StartRunRequest) -> RunStatusResponse:
         seed=req.seed,
         run_id=state.run_id,
         speed=req.speed_multiplier,
-        broadcast=state.broadcast_ws,
+        # WebSocket fan-out as before, plus the P3 streams (alerts, KPIs, events).
+        broadcast=StreamPublisher(state.run_id, lambda: state.live, state.broadcast_ws),
         log_dir=Path(os.environ.get("FRAUDSIM_RUNS_DIR", "runs")) / "live" / state.run_id,
     )
     await state.live.start()

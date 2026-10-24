@@ -153,6 +153,55 @@
         "title": "CsrfToken",
         "type": "object"
       },
+      "DetectLatency": {
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "p50": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "P50"
+          },
+          "p95": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "P95"
+          },
+          "p99": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "P99"
+          }
+        },
+        "required": [
+          "count",
+          "p50",
+          "p95",
+          "p99"
+        ],
+        "title": "DetectLatency",
+        "type": "object"
+      },
       "DetectorToggleRequest": {
         "properties": {
           "enabled": {
@@ -515,6 +564,92 @@
         "title": "MetricsResponse",
         "type": "object"
       },
+      "OracleMetrics": {
+        "description": "Simulator ground truth; only shown behind the Oracle toggle.",
+        "properties": {
+          "label": {
+            "default": "Oracle (simulator ground truth)",
+            "title": "Label",
+            "type": "string"
+          },
+          "missed_rings": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Missed Rings"
+          },
+          "ring_f1": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ring F1"
+          },
+          "ring_precision": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ring Precision"
+          },
+          "ring_recall": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ring Recall"
+          },
+          "rings_detected": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rings Detected"
+          },
+          "true_rings": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "True Rings"
+          }
+        },
+        "required": [
+          "ring_precision",
+          "ring_recall",
+          "ring_f1",
+          "true_rings",
+          "rings_detected",
+          "missed_rings"
+        ],
+        "title": "OracleMetrics",
+        "type": "object"
+      },
       "Page_UserOut_": {
         "properties": {
           "items": {
@@ -620,6 +755,128 @@
           "updated_at"
         ],
         "title": "RingDetailResponse",
+        "type": "object"
+      },
+      "RingsByStatus": {
+        "properties": {
+          "candidate": {
+            "title": "Candidate",
+            "type": "integer"
+          },
+          "confirmed": {
+            "title": "Confirmed",
+            "type": "integer"
+          },
+          "dissolved": {
+            "title": "Dissolved",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "candidate",
+          "confirmed",
+          "dissolved"
+        ],
+        "title": "RingsByStatus",
+        "type": "object"
+      },
+      "RunMetricsV1": {
+        "description": "KPIs of the live run, read from the running engine (no stored or sample data).",
+        "properties": {
+          "alerts_per_sim_hour": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Alerts per simulated hour; scenarios run compressed, not an operational rate",
+            "title": "Alerts Per Sim Hour"
+          },
+          "alerts_total": {
+            "title": "Alerts Total",
+            "type": "integer"
+          },
+          "batches": {
+            "title": "Batches",
+            "type": "integer"
+          },
+          "detect_ms": {
+            "$ref": "#/components/schemas/DetectLatency"
+          },
+          "events_per_s": {
+            "description": "Achieved event rate, events per wall-clock second",
+            "title": "Events Per S",
+            "type": "number"
+          },
+          "events_total": {
+            "title": "Events Total",
+            "type": "integer"
+          },
+          "graph": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Graph",
+            "type": "object"
+          },
+          "open_alerts": {
+            "title": "Open Alerts",
+            "type": "integer"
+          },
+          "oracle": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OracleMetrics"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "rings_by_status": {
+            "$ref": "#/components/schemas/RingsByStatus"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "scenario": {
+            "title": "Scenario",
+            "type": "string"
+          },
+          "seed": {
+            "title": "Seed",
+            "type": "integer"
+          },
+          "sim_time_s": {
+            "title": "Sim Time S",
+            "type": "number"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "status",
+          "scenario",
+          "seed",
+          "sim_time_s",
+          "events_total",
+          "events_per_s",
+          "batches",
+          "graph",
+          "rings_by_status",
+          "alerts_total",
+          "open_alerts",
+          "alerts_per_sim_hour",
+          "detect_ms"
+        ],
+        "title": "RunMetricsV1",
         "type": "object"
       },
       "RunStatusResponse": {
@@ -2100,20 +2357,138 @@
         ]
       }
     },
-    "/api/v1/stream": {
+    "/api/v1/runs/current/metrics": {
       "get": {
-        "operationId": "stream_index",
+        "description": "The same KPI sample the dashboard receives over SSE. `oracle=true` adds the\nsimulator ground-truth metrics (labelled as such).",
+        "operationId": "runs_current_metrics",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "oracle",
+            "required": false,
+            "schema": {
+              "default": false,
+              "title": "Oracle",
+              "type": "boolean"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Stream Index",
-                  "type": "null"
+                  "$ref": "#/components/schemas/RunMetricsV1"
                 }
               }
             },
             "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Role or CSRF check failed"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "No run has been started"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
+          }
+        },
+        "summary": "Current Run Metrics",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/v1/stream/alerts": {
+      "get": {
+        "operationId": "stream_alerts",
+        "parameters": [
+          {
+            "description": "Start after this id; $ = new only",
+            "in": "query",
+            "name": "since",
+            "required": false,
+            "schema": {
+              "default": "$",
+              "description": "Start after this id; $ = new only",
+              "pattern": "^(\\$|\\d+-\\d+)$",
+              "title": "Since",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "run_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 64,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              },
+              "text/event-stream": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "event-stream; each `data:` line is one JSON object"
           },
           "401": {
             "content": {
@@ -2143,7 +2518,7 @@
                 }
               }
             },
-            "description": "Validation error"
+            "description": "Invalid id"
           },
           "500": {
             "content": {
@@ -2154,8 +2529,64 @@
               }
             },
             "description": "Internal error"
+          }
+        },
+        "summary": "SSE of alerts and early warnings (event `alert`, data: AlertV1)",
+        "tags": [
+          "stream"
+        ]
+      }
+    },
+    "/api/v1/stream/metrics": {
+      "get": {
+        "operationId": "stream_metrics",
+        "parameters": [
+          {
+            "description": "Start after this id; $ = new only",
+            "in": "query",
+            "name": "since",
+            "required": false,
+            "schema": {
+              "default": "$",
+              "description": "Start after this id; $ = new only",
+              "pattern": "^(\\$|\\d+-\\d+)$",
+              "title": "Since",
+              "type": "string"
+            }
           },
-          "501": {
+          {
+            "in": "query",
+            "name": "run_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 64,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              },
+              "text/event-stream": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "event-stream; each `data:` line is one JSON object"
+          },
+          "401": {
             "content": {
               "application/json": {
                 "schema": {
@@ -2163,10 +2594,40 @@
                 }
               }
             },
-            "description": "Arrives in milestone P3"
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Role or CSRF check failed"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Invalid id"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
           }
         },
-        "summary": "stream: not implemented yet (P3)",
+        "summary": "SSE of KPI samples (event `metrics`, data: RunMetricsV1)",
         "tags": [
           "stream"
         ]
