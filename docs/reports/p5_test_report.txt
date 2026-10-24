@@ -1,0 +1,160 @@
+# Milestone P5 test report (2026-10-25, Windows 11, Python 3.11.9, Node 22.14.0)
+# Local runs on branch feat/p5-cases; CI recorded below once pushed.
+
+## ruff / format / mypy strict / contract / evidence snapshot
+All checks passed!
+161 files already formatted
+Success: no issues found in 42 source files
+openapi.json: identical
+schema.d.ts: identical
+28 files in snapshot; 0 changed, 0 missing, 14 new; 0 stale tables
+
+## pytest tests/test_cases.py -v
+tests/test_cases.py::test_alert_transitions[new-triaged-True] PASSED     [  4%]
+tests/test_cases.py::test_alert_transitions[new-closed-True] PASSED      [  9%]
+tests/test_cases.py::test_alert_transitions[triaged-escalated-True] PASSED [ 13%]
+tests/test_cases.py::test_alert_transitions[escalated-triaged-True] PASSED [ 18%]
+tests/test_cases.py::test_alert_transitions[triaged-new-False] PASSED    [ 22%]
+tests/test_cases.py::test_alert_transitions[closed-triaged-False] PASSED [ 27%]
+tests/test_cases.py::test_alert_transitions[closed-new-False] PASSED     [ 31%]
+tests/test_cases.py::test_alert_transitions[triaged-triaged-True] PASSED [ 36%]
+tests/test_cases.py::test_only_admins_reopen PASSED                      [ 40%]
+tests/test_cases.py::test_case_transitions[open-in_review-True] PASSED   [ 45%]
+tests/test_cases.py::test_case_transitions[in_review-open-True] PASSED   [ 50%]
+tests/test_cases.py::test_case_transitions[open-escalated-True] PASSED   [ 54%]
+tests/test_cases.py::test_case_transitions[escalated-in_review-True] PASSED [ 59%]
+tests/test_cases.py::test_case_transitions[escalated-open-False] PASSED  [ 63%]
+tests/test_cases.py::test_case_transitions[closed-escalated-False] PASSED [ 68%]
+tests/test_cases.py::test_closing_a_case_needs_a_resolution PASSED       [ 72%]
+tests/test_cases.py::test_a_run_records_its_alerts PASSED                [ 77%]
+tests/test_cases.py::test_filters PASSED                                 [ 81%]
+tests/test_cases.py::test_saved_views_are_per_user PASSED                [ 86%]
+tests/test_cases.py::test_feedback_moves_thresholds_exactly_as_the_alert_policy PASSED [ 90%]
+tests/test_cases.py::test_scripted_triage_session_keeps_the_audit_chain_valid PASSED [ 95%]
+tests/test_cases.py::test_cases_list_and_users PASSED                    [100%]
+============================= 22 passed in 8.62s ==============================
+
+## pytest (full suite; skipped = Neo4j/Redis integration tests, run in CI)
+358 passed, 15 skipped, 54 warnings in 201.96s (0:03:21)
+
+## webapp: eslint, tsc, prettier
+eslint: no problems
+tsc: no type errors
+All matched files use Prettier code style!
+
+## webapp: vitest run
+ ✓ src/components/app-sidebar.test.tsx > AppSidebar > shows every navigation group and page to an admin 772ms
+ ✓ src/components/app-sidebar.test.tsx > AppSidebar > hides the admin pages from an analyst 164ms
+ ✓ src/components/app-sidebar.test.tsx > AppSidebar > marks the current page and labels unbuilt pages with their milestone 203ms
+ ✓ src/components/login-form.test.tsx > LoginForm > validates the fields before calling the API 762ms
+ ✓ src/components/cases/alert-queue.test.tsx > AlertQueue > lists alerts and sends the default filters 1020ms
+ ✓ src/components/login-form.test.tsx > LoginForm > sends the CSRF header and goes to the requested page on success 842ms
+ ✓ src/components/login-form.test.tsx > LoginForm > explains a lockout with the wait time from Retry-After 498ms
+ ✓ src/components/cases/alert-queue.test.tsx > AlertQueue > validates the risk range and applies only valid filters 3298ms
+ ✓ src/components/system-status-card.test.tsx > SystemStatusCard > shows a skeleton while loading 195ms
+ ✓ src/components/system-status-card.test.tsx > SystemStatusCard > lists each component with an icon-and-text status 118ms
+ ✓ src/components/system-status-card.test.tsx > SystemStatusCard > shows the error envelope's message and request id, and retries 365ms
+ ✓ src/components/live/kpi-card.test.tsx > KpiCard > shows a skeleton while loading 102ms
+ ✓ src/components/live/kpi-card.test.tsx > KpiCard > says why there is no value instead of showing a number 20ms
+ ✓ src/components/live/kpi-card.test.tsx > KpiCard > shows errors as an alert with an icon and text 125ms
+ ✓ src/components/live/kpi-card.test.tsx > KpiCard > shows the value, its detail and a labelled trend 53ms
+ ✓ src/components/live/kpi-card.test.tsx > AlertFeed > has an empty state 12ms
+ ✓ src/components/cases/alert-queue.test.tsx > AlertQueue > selects a range with shift-click and sets the status in bulk 2035ms
+ ✓ src/components/live/kpi-card.test.tsx > AlertFeed > lists risk, type, size, reason and simulated age; a click opens the detail 292ms
+ ✓ src/components/cases/alert-queue.test.tsx > AlertQueue > moves with j/k and opens the focused alert with Enter 731ms
+ ✓ src/components/cases/common.test.tsx > parseTime > reads naive API times as UTC and keeps explicit offsets 4ms
+ ✓ src/components/cases/common.test.tsx > ActivityList > describes case changes, newest first 297ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > adversarial round-trips through the form unchanged 23ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > baseline round-trips through the form unchanged 2ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > demo_story round-trips through the form unchanged 2ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > drift round-trips through the form unchanged 2ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > high_noise round-trips through the form unchanged 4ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > hub_heavy round-trips through the form unchanged 1ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > scale_sweep round-trips through the form unchanged 1ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > leaves empty optional fields out instead of sending 0 1ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > rejects bad numbers with field messages 4ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > maps server error locations to form fields 1ms
+ ✓ src/lib/schemas.test.ts > form schemas > rejects malformed login input 9ms
+ ✓ src/lib/schemas.test.ts > form schemas > requires a 12-character password and a known role for new users 2ms
+ ✓ src/lib/schemas.test.ts > safeNext > /cases -> /cases 1ms
+ ✓ src/lib/schemas.test.ts > safeNext > /users?x=1 -> /users?x=1 1ms
+ ✓ src/lib/schemas.test.ts > safeNext > null -> / 0ms
+ ✓ src/lib/schemas.test.ts > safeNext > https://evil.example -> / 0ms
+ ✓ src/lib/schemas.test.ts > safeNext > //evil.example -> / 0ms
+ ✓ src/lib/schemas.test.ts > safeNext > /\evil.example -> / 0ms
+ ✓ src/lib/schemas.test.ts > safeNext > /login?next=/x -> / 1ms
+ ✓ src/lib/cases/filters.test.ts > alert filters > send only what is set 4ms
+ ✓ src/lib/cases/filters.test.ts > alert filters > validate ranges 2ms
+ ✓ src/lib/cases/filters.test.ts > alert filters > fill older saved views with defaults 1ms
+ ✓ src/lib/cases/filters.test.ts > bulk selection > toggles one row, or a range with shift 1ms
+ ✓ src/lib/cases/filters.test.ts > bulk selection > offers only the statuses some selected alert can move to 1ms
+ ✓ src/lib/cases/forms.test.ts > case forms > need a title of at least 3 characters 6ms
+ ✓ src/lib/cases/forms.test.ts > case forms > need a resolution only when closing 3ms
+ ✓ src/lib/cases/forms.test.ts > case forms > name saved views 5ms
+ ✓ src/lib/cases/forms.test.ts > case forms > offer the API's transitions; only admins reopen 1ms
+ ✓ src/lib/replay/story.test.ts > stateAt > counts only flags up to t; early warnings are listed but not counted 7ms
+ ✓ src/lib/replay/story.test.ts > stateAt > does not double count a true ring 1ms
+ ✓ src/lib/replay/story.test.ts > parseDeepLink > reads the query string and the old hash form, clamping t 2ms
+ ✓ src/lib/live/use-live-run.test.ts > windowedRate > is the event rate between consecutive samples 5ms
+ Test Files  12 passed (12)
+      Tests  53 passed (53)
+
+## webapp: playwright test --repeat-each=2 (screenshot specs skipped)
+  ok  1 [chromium] › e2e\auth.spec.ts:16:1 › anonymous visitors are sent to the login page (1.1s)
+  ok  2 [chromium] › e2e\auth.spec.ts:22:1 › a wrong password is refused with a clear message (1.7s)
+  ok  3 [chromium] › e2e\auth.spec.ts:31:1 › analyst: admin pages are hidden and a direct URL returns the 403 page (2.8s)
+  ok  4 [chromium] › e2e\auth.spec.ts:45:1 › admin: the rules page is visible and users can be managed (3.8s)
+  ok  5 [chromium] › e2e\auth.spec.ts:64:1 › signing out ends the session (2.3s)
+  ok  6 [chromium] › e2e\cases.spec.ts:39:1 › analyst triages an alert into an escalated case; admin sees it in the audit view (17.0s)
+  ok  7 [chromium] › e2e\cases.spec.ts:111:1 › the cases list has no serious axe violations (2.4s)
+  ok  8 [chromium] › e2e\dashboard.spec.ts:16:1 › a baseline run streams alerts and the KPIs equal the run-metrics endpoint (3.1s)
+  ok  9 [chromium] › e2e\replay.spec.ts:35:1 › replay at ?t=90&det=cap10&key=1 shows the same counts as the end of story.html (2.6s)
+  ok 10 [chromium] › e2e\replay.spec.ts:69:1 › replays list and replay page have no serious or critical axe violations (11.3s)
+  ok 18 [chromium] › e2e\simulator.spec.ts:14:1 › demo_story seed 7 started from the UI gives the CLI's stream digest (6.8s)
+  ok 19 [chromium] › e2e\simulator.spec.ts:43:1 › the builder shows field errors and the page has no serious axe violations (5.7s)
+  ok 20 [chromium] › e2e\auth.spec.ts:16:1 › anonymous visitors are sent to the login page (672ms)
+  ok 21 [chromium] › e2e\auth.spec.ts:22:1 › a wrong password is refused with a clear message (998ms)
+  ok 22 [chromium] › e2e\auth.spec.ts:31:1 › analyst: admin pages are hidden and a direct URL returns the 403 page (2.3s)
+  ok 23 [chromium] › e2e\auth.spec.ts:45:1 › admin: the rules page is visible and users can be managed (3.8s)
+  ok 24 [chromium] › e2e\auth.spec.ts:64:1 › signing out ends the session (2.2s)
+  ok 25 [chromium] › e2e\cases.spec.ts:39:1 › analyst triages an alert into an escalated case; admin sees it in the audit view (15.6s)
+  ok 26 [chromium] › e2e\cases.spec.ts:111:1 › the cases list has no serious axe violations (2.9s)
+  ok 27 [chromium] › e2e\dashboard.spec.ts:16:1 › a baseline run streams alerts and the KPIs equal the run-metrics endpoint (4.5s)
+  ok 28 [chromium] › e2e\replay.spec.ts:35:1 › replay at ?t=90&det=cap10&key=1 shows the same counts as the end of story.html (3.3s)
+  ok 29 [chromium] › e2e\replay.spec.ts:69:1 › replays list and replay page have no serious or critical axe violations (9.8s)
+  ok 37 [chromium] › e2e\simulator.spec.ts:14:1 › demo_story seed 7 started from the UI gives the CLI's stream digest (6.1s)
+  ok 38 [chromium] › e2e\simulator.spec.ts:43:1 › the builder shows field errors and the page has no serious axe violations (5.8s)
+  14 skipped
+  24 passed (2.7m)
+
+## Acceptance criteria
+- State machines enforced by the API, with 409 invalid_transition listing the allowed targets; closing
+  a case without a resolution is a 422; only admins reopen: test_alert_transitions,
+  test_case_transitions, test_only_admins_reopen, test_closing_a_case_needs_a_resolution (pytest); the case form refuses to close without a resolution (Vitest
+  forms.test.ts, Playwright cases.spec.ts).
+- Alerts recorded from a real baseline run (seed 7), filters and saved views: tests/test_cases.py.
+- Label feedback: confirm/dismiss on the current run returns AlertPolicy.feedback's result, equal to
+  the same feedback applied to a deep copy of the policy (pytest); the alert page shows the
+  threshold before and after (Playwright).
+- Scripted triage session (status, assignment, labels, notes with an edit, case, attachment,
+  transitions) verified through GET /api/v1/audit/verify and `fraudsim audit-verify` (pytest).
+- Playwright: an analyst opens the top alert, reads the evidence table, adds a note, labels it,
+  creates a case and escalates it; an admin finds CASE_CREATED and CASE_UPDATED for that case in the
+  audit view and the chain verifies.
+- axe: no serious/critical violations on /alerts, /alerts/[id] (activity tab), /cases/[id], /cases
+  and /audit.
+
+## Fixed while testing
+- Toggling the evidence graph to its table showed nothing: React reused the graph's container and
+  Cytoscape's cleanup emptied it. The two views now have their own keyed elements.
+- App-database times have no offset (SQLite drops it), so the browser read them as local time and
+  case times were shifted by the UTC offset. The web app now reads them as UTC (parseTime, Vitest).
+- The audit table scrolled sideways once it had long entries (axe scrollable-region-focusable);
+  the details column now wraps.
+
+## Observations (not changed in P5)
+- The queue shows a ring's latest risk, not its risk when it was raised. In the seed-7 baseline run
+  one alert (raised as kind "alert") now reads 0.00 in bucket 0.0-0.1; the ring timeline on its page
+  holds the earlier scores.
+- The API's current run counts as live for label feedback even after it has finished, so labels on
+  its alerts still adjust that run's in-memory policy (as pytest expects).

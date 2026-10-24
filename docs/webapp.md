@@ -223,6 +223,80 @@ P4 fixed:
 - the rich-colour toasts;
 - a form that re-validated on blur and moved the button under the pointer.
 
+## Alerts and case management (P5)
+
+**Recording.** `AlertRecorder` (`api/v1/cases/recorder.py`) runs inside the
+stream publisher. A ring becomes an `alerts` row the first time it raises an
+alert or early warning (unique on run and ring id). Later updates refresh its
+members, risk, explanation and a capped `history`. Triage fields (status,
+assignee) are never overwritten by the engine. A database error is logged and
+the live run goes on. Risk and members in the queue are the ring's latest
+values, not the values at the moment it was raised; the ring history keeps
+each change.
+
+**Workflow.** The API enforces the state machines (`cases/workflow.py`):
+- alerts: new → triaged / escalated / closed, triaged ↔ escalated, any → closed;
+- cases: open ↔ in_review, → escalated, → closed;
+- closing a case needs a resolution (422 without one);
+- a closed alert or case can only be reopened by an admin;
+- any other move is a 409 `invalid_transition` that lists the allowed targets.
+
+Every change (status, assignment, label, note, case, attachment) is written
+to the hash-chained app audit trail (`runs/app_audit`), which `fraudsim
+audit-verify` and `GET /api/v1/audit/verify` check.
+
+**Labels and threshold feedback.** `POST /alerts/{id}/labels` stores
+confirmed fraud, dismissed (benign) or needs info. If the alert's run is the
+API's current run, confirm and dismiss also call that run's
+`AlertPolicy.feedback`. The response, and the alert page, show the
+threshold before and after. pytest checks that the change equals the same
+feedback applied to a copy of the policy.
+
+**Notes** are Markdown text, stored as written and shown as plain text.
+Editing one stores a new version that supersedes the old one. Earlier
+versions stay readable and are never deleted. Only the author or an admin can
+edit a note.
+
+**Cases** group alerts. Attaching an alert freezes its evidence (canonical
+JSON, SHA-256). The case page shows the hash and opens the frozen copy, so a
+case keeps the evidence it was opened on even if the ring changes later.
+
+**Pages.**
+- `/alerts`: the queue. Filters cover status, ring type, detector, risk
+  range, time range, assignee and text, with validation (risk in [0, 1], from
+  ≤ to). Views can be saved per user. Bulk actions assign, set a status (only
+  the targets some selected alert allows), create a case or add to a case.
+  Keyboard: `j`/`k` move, `Enter` opens, `x` selects; shift-click selects a
+  range.
+- `/alerts/[id]`: overview with the score, threshold and calibration bucket,
+  and a caveat from E10 (the shipped calibration does not transfer to
+  ring-level alerts: ECE 0.10, and rings scored 0.8–0.9 were true rings 29%
+  of the time). Evidence as a Cytoscape graph with a table alternative;
+  feature contributions; counterfactuals; the ring timeline; labels, notes
+  and the audit activity. Create a case or add to one.
+- `/cases` and `/cases/[id]`: status transitions (resolution on close),
+  priority, assignee, attached alerts with their evidence hash, notes and
+  history.
+- `/audit` (admin): the trail, filterable by action, actor and object, with
+  the hash-chain check.
+
+**Times.** SQLite returns naive datetimes, so the API sends app-database
+times without an offset; the web app reads them as UTC (`parseTime`).
+
+**Tests.**
+- pytest (`tests/test_cases.py`, 22 tests): state machines, recording from a
+  real baseline run, filters, saved views, policy feedback, and a scripted
+  triage session verified through the API and the CLI.
+- Vitest: filter and selection rules, form schemas, the alert queue (filter
+  validation and requests, shift-click range, bulk status, `j`/`k`/`Enter`),
+  and the activity list.
+- Playwright (`e2e/cases.spec.ts`): an analyst opens the top alert, reads the
+  evidence table, adds a note, labels it (threshold change shown), creates a
+  case and escalates it. The form refuses to close it without a resolution.
+  An admin then finds the case entries in the audit view and the chain
+  verifies. axe reports no serious or critical violations on the queue, alert,
+  case, cases list and audit pages.
+
 ## Running it
 
 ```bash

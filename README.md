@@ -100,7 +100,23 @@ P4 adds the Simulator page and replays:
 |---|---|
 | ![Simulator](docs/images/webapp_p4_simulator.png) | ![Replay](docs/images/webapp_p4_replay.png) |
 
-The P2–P4 screenshots are taken by `webapp/e2e/screenshots.spec.ts` against the
+P5 adds alert triage and case management:
+- an alert queue with filters, saved views, bulk actions and keyboard triage;
+- alert pages with the evidence graph (and a table), contributions,
+  counterfactuals, the ring timeline, labels that feed the alert policy, and
+  versioned notes;
+- cases with enforced transitions and frozen, hashed evidence;
+- an admin audit view with the hash-chain check.
+
+| Alert queue | Alert evidence |
+|---|---|
+| ![Alert queue](docs/images/webapp_p5_alerts.png) | ![Alert evidence](docs/images/webapp_p5_alert_evidence.png) |
+
+| Escalated case | Audit view (admin) |
+|---|---|
+| ![Case](docs/images/webapp_p5_case.png) | ![Audit](docs/images/webapp_p5_audit.png) |
+
+The P2–P5 screenshots are taken by `webapp/e2e/screenshots.spec.ts` against the
 real API, with the e2e fixture accounts (`SCREENSHOTS=1 npx playwright test screenshots`).
 
 | Dashboard (dark) | A page of a later milestone (light) |
@@ -340,8 +356,9 @@ Phase 2 (web app and research extensions, [plan](docs/phase2/phase2_prompt.md)):
 | P10a/E10 ring-level calibration and alert utility; E11 early warning without look-ahead | done (`docs/research/`) |
 | P3 Live dashboard (KPIs and alert feed over SSE) | done |
 | P4 Simulator and replays | done |
-| P5 Alerts and case management | next |
-| P6–P16 | planned |
+| P5 Alerts and case management | done |
+| P6 Entity and graph explorer | next |
+| P7–P16 | planned |
 
 Known open items:
 - Paper: check the bibliography entries against the publishers' pages before submission.
