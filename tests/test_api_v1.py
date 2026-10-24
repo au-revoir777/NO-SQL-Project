@@ -107,6 +107,14 @@ def test_old_routes_keep_their_error_shape(tmp_path: Path, monkeypatch: pytest.M
 # ─── App-state store ──────────────────────────────────────────────────
 
 
+def test_upgrade_creates_the_database_folder(tmp_path: Path) -> None:
+    # Regression: a fresh container has no runs/ folder; Alembic's own engine
+    # could not create the SQLite file there ("unable to open database file").
+    url = f"sqlite:///{(tmp_path / 'not' / 'yet' / 'app.db').as_posix()}"
+    appdb.upgrade(url)
+    assert appdb.current_revision(url) is not None
+
+
 def test_migration_round_trip_on_sqlite(tmp_path: Path) -> None:
     url = f"sqlite:///{(tmp_path / 'app.db').as_posix()}"
     appdb.upgrade(url)
