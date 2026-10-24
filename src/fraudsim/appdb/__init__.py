@@ -31,8 +31,7 @@ def database_url() -> str:
 def get_engine(url: str | None = None) -> Engine:
     url = url or database_url()
     if url not in _engines:
-        if url.startswith("sqlite:///") and not url.startswith("sqlite:///:memory:"):
-            Path(url.removeprefix("sqlite:///")).parent.mkdir(parents=True, exist_ok=True)
+        _ensure_sqlite_dir(url)
         kw: dict[str, Any] = {}
         if url.startswith("sqlite"):
             kw["connect_args"] = {"check_same_thread": False}
@@ -47,7 +46,14 @@ def alembic_config(url: str | None = None) -> Config:
     return cfg
 
 
+def _ensure_sqlite_dir(url: str) -> None:
+    """SQLite cannot create the database's folder; Alembic opens its own engine too."""
+    if url.startswith("sqlite:///") and not url.startswith("sqlite:///:memory:"):
+        Path(url.removeprefix("sqlite:///")).parent.mkdir(parents=True, exist_ok=True)
+
+
 def upgrade(url: str | None = None, revision: str = "head") -> None:
+    _ensure_sqlite_dir(url or database_url())
     command.upgrade(alembic_config(url), revision)
 
 
