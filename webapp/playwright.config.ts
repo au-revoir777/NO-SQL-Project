@@ -32,7 +32,12 @@ export default defineConfig({
   // argon2 (64 MiB, 3 passes) competes with Chromium and Next for the CPU: one
   // login measured up to 5.4 s on a laptop running this suite (0.2 s when idle).
   expect: { timeout: 15_000 },
-  reporter: [["list"], ["html", { open: "never", outputFolder: "playwright-report" }]],
+  // On CI, failures also become GitHub annotations (readable without the artifact).
+  reporter: [
+    ["list"],
+    ...(process.env.CI ? [["github"] as const] : []),
+    ["html", { open: "never", outputFolder: "playwright-report" }],
+  ],
   use: {
     baseURL: `http://localhost:${WEB_PORT}`,
     trace: "retain-on-failure",
