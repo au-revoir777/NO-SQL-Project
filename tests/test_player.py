@@ -159,3 +159,23 @@ async def test_player_over_redis_bus(fake_redis: Any) -> None:
     received = [e async for e in await bus.subscribe()]
     assert len(received) == stats.events_published
     assert received[0].event_type == EventType.USER_JOIN
+
+
+async def test_current_rate_is_live_during_the_run() -> None:
+    # Regression (P3): stats.wall_time_s is only set at the end, so the achieved
+    # rate read 0 for the whole run; current_rate() measures it while running.
+    clock = FakeClock()
+    gen = EventGenerator(seed=1, run_id="p", config=small_scenario(rate=20.0))
+    bus = AsyncQueueBus(maxsize=0)
+    mid: list[tuple[float, float]] = []
+    player = StreamPlayer(gen, bus, speed=2.0, clock=clock, sleep=clock.sleep)
+
+    def sample(_event: Event) -> None:
+        if player.stats.events_published == 200:
+            mid.append((player.current_rate(), clock.t))
+
+    player.on_event = sample
+    stats = await player.run()
+    ((rate, t),) = mid
+    assert t > 0 and rate == pytest.approx(200 / t)  # events so far / wall time so far
+    assert player.current_rate() == stats.achieved_rate

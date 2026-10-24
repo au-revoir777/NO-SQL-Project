@@ -48,6 +48,8 @@ async function proxy(request: NextRequest, path: string[]): Promise<Response> {
       body: hasBody ? await request.arrayBuffer() : undefined,
       redirect: "manual",
       cache: "no-store",
+      // Closing the page (or an EventSource) also closes the upstream stream.
+      signal: request.signal,
     });
   } catch {
     const requestId =

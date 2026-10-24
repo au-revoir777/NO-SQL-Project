@@ -263,6 +263,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/runs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Start Run
+         * @description Stop the current run, if any, and start a new one (simulator in memory).
+         */
+        post: operations["runs_start"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/runs/current": {
         parameters: {
             query?: never;
@@ -308,7 +328,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** SSE of alerts and early warnings (event `alert`, data: AlertV1) */
+        /** SSE of alerts and early warnings (event `alert`) */
         get: operations["stream_alerts"];
         put?: never;
         post?: never;
@@ -325,7 +345,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** SSE of KPI samples (event `metrics`, data: RunMetricsV1) */
+        /** SSE of KPI samples (event `metrics`) */
         get: operations["stream_metrics"];
         put?: never;
         post?: never;
@@ -744,6 +764,41 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /**
+         * AlertV1
+         * @description One alert or early warning as published to `fraudsim:alerts`.
+         */
+        AlertV1: {
+            /** Detectors */
+            detectors: string[];
+            /**
+             * Kind
+             * @description alert | early_warning
+             */
+            kind: string;
+            /** Members */
+            members: string[];
+            /** Members Count */
+            members_count: number;
+            /** Ring Id */
+            ring_id: string;
+            /** Ring Type */
+            ring_type: string | null;
+            /** Risk */
+            risk: number | null;
+            /** Run Id */
+            run_id: string;
+            /** Sim Time S */
+            sim_time_s: number;
+            /** Status */
+            status: string | null;
+            /** Threshold */
+            threshold: number | null;
+            /** Top Reason */
+            top_reason: string | null;
+            /** Ts */
+            ts: string;
+        };
         /** AnalystFeedbackRequest */
         AnalystFeedbackRequest: {
             /** Action */
@@ -1059,7 +1114,7 @@ export interface components {
             detect_ms: components["schemas"]["DetectLatency"];
             /**
              * Events Per S
-             * @description Achieved event rate, events per wall-clock second
+             * @description Events per wall-clock second since the start (pauses excluded)
              */
             events_per_s: number;
             /** Events Total */
@@ -1082,6 +1137,11 @@ export interface components {
             sim_time_s: number;
             /** Status */
             status: string;
+            /**
+             * Wall S
+             * @description Wall-clock seconds played so far (pauses excluded)
+             */
+            wall_s: number;
         };
         /** RunStatusResponse */
         RunStatusResponse: {
@@ -1176,6 +1236,25 @@ export interface components {
             seed: number;
             /**
              * Speed Multiplier
+             * @default 1
+             */
+            speed_multiplier: number;
+        };
+        /** StartRunV1 */
+        StartRunV1: {
+            /**
+             * Scenario
+             * @default baseline
+             */
+            scenario: string;
+            /**
+             * Seed
+             * @default 42
+             */
+            seed: number;
+            /**
+             * Speed Multiplier
+             * @description 0 = as fast as possible
              * @default 1
              */
             speed_multiplier: number;
@@ -2199,6 +2278,75 @@ export interface operations {
             };
         };
     };
+    runs_start: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["StartRunV1"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RunStatusV1"];
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Role or CSRF check failed */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Unknown scenario */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
     runs_current: {
         parameters: {
             query?: never;
@@ -2335,14 +2483,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description event-stream; each `data:` line is one JSON object */
+            /** @description event-stream; each `data:` line is one such object */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
-                    "text/event-stream": string;
+                    "text/event-stream": components["schemas"]["AlertV1"];
                 };
             };
             /** @description Not signed in or session invalid */
@@ -2351,7 +2498,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"];
+                    "text/event-stream": components["schemas"]["ErrorEnvelope"];
                 };
             };
             /** @description Role or CSRF check failed */
@@ -2360,7 +2507,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"];
+                    "text/event-stream": components["schemas"]["ErrorEnvelope"];
                 };
             };
             /** @description Invalid id */
@@ -2369,7 +2516,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"];
+                    "text/event-stream": components["schemas"]["ErrorEnvelope"];
                 };
             };
             /** @description Internal error */
@@ -2378,7 +2525,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"];
+                    "text/event-stream": components["schemas"]["ErrorEnvelope"];
                 };
             };
         };
@@ -2396,14 +2543,13 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description event-stream; each `data:` line is one JSON object */
+            /** @description event-stream; each `data:` line is one such object */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
-                    "text/event-stream": string;
+                    "text/event-stream": components["schemas"]["RunMetricsV1"];
                 };
             };
             /** @description Not signed in or session invalid */
@@ -2412,7 +2558,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"];
+                    "text/event-stream": components["schemas"]["ErrorEnvelope"];
                 };
             };
             /** @description Role or CSRF check failed */
@@ -2421,7 +2567,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"];
+                    "text/event-stream": components["schemas"]["ErrorEnvelope"];
                 };
             };
             /** @description Invalid id */
@@ -2430,7 +2576,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"];
+                    "text/event-stream": components["schemas"]["ErrorEnvelope"];
                 };
             };
             /** @description Internal error */
@@ -2439,7 +2585,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ErrorEnvelope"];
+                    "text/event-stream": components["schemas"]["ErrorEnvelope"];
                 };
             };
         };

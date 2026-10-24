@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 from collections.abc import AsyncIterator
 from datetime import UTC, datetime
+from typing import Any
 
 from fastapi import APIRouter, Query, Request
 from fastapi.responses import StreamingResponse
@@ -29,13 +30,18 @@ router = APIRouter(prefix="/stream", tags=["stream"])
 HEARTBEAT_S = 15.0
 ID_PATTERN = r"^(\$|\d+-\d+)$"
 
-SSE_RESPONSES: dict[int | str, dict[str, object]] = {
-    200: {
-        "content": {"text/event-stream": {"schema": {"type": "string"}}},
-        "description": "event-stream; each `data:` line is one JSON object",
-    },
-    422: {"model": ErrorEnvelope, "description": "Invalid id"},
-}
+
+class EventStreamResponse(StreamingResponse):
+    """text/event-stream; the documented 200 model is the payload of each `data:` line."""
+
+    media_type = "text/event-stream"
+
+
+def sse_responses(model: type) -> dict[int | str, dict[str, Any]]:
+    return {
+        200: {"model": model, "description": "event-stream; each `data:` line is one such object"},
+        422: {"model": ErrorEnvelope, "description": "Invalid id"},
+    }
 
 
 def _start_id(request: Request, since: str) -> str:
@@ -67,10 +73,9 @@ async def _events(
 
 def _sse(
     request: Request, stream: str, event: str, since: str, run_id: str | None
-) -> StreamingResponse:
-    return StreamingResponse(
+) -> EventStreamResponse:
+    return EventStreamResponse(
         _events(request, stream, event, _start_id(request, since), run_id),
-        media_type="text/event-stream",
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )
 
@@ -78,26 +83,28 @@ def _sse(
 @router.get(
     "/alerts",
     operation_id="stream_alerts",
-    responses=SSE_RESPONSES,
-    summary=f"SSE of alerts and early warnings (event `alert`, data: {AlertV1.__name__})",
+    response_class=EventStreamResponse,
+    responses=sse_responses(AlertV1),
+    summary="SSE of alerts and early warnings (event `alert`)",
 )
 async def stream_alerts(
     request: Request,
     since: str = Query("$", pattern=ID_PATTERN, description="Start after this id; $ = new only"),
     run_id: str | None = Query(None, max_length=64),
-) -> StreamingResponse:
+) -> EventStreamResponse:
     return _sse(request, ALERTS, "alert", since, run_id)
 
 
 @router.get(
     "/metrics",
     operation_id="stream_metrics",
-    responses=SSE_RESPONSES,
-    summary=f"SSE of KPI samples (event `metrics`, data: {RunMetricsV1.__name__})",
+    response_class=EventStreamResponse,
+    responses=sse_responses(RunMetricsV1),
+    summary="SSE of KPI samples (event `metrics`)",
 )
 async def stream_metrics(
     request: Request,
     since: str = Query("$", pattern=ID_PATTERN, description="Start after this id; $ = new only"),
     run_id: str | None = Query(None, max_length=64),
-) -> StreamingResponse:
+) -> EventStreamResponse:
     return _sse(request, METRICS, "metrics", since, run_id)

@@ -471,6 +471,11 @@ class LiveRun:
     def status(self) -> str:
         return self.player.state
 
+    @property
+    def drained(self) -> bool:
+        """True once the detector has processed every event the player published."""
+        return self._consumer_task is not None and self._consumer_task.done()
+
     def pause(self) -> None:
         self.player.pause()
 

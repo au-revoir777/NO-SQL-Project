@@ -1,0 +1,109 @@
+# Milestone P3 test report (2026-10-24, Windows 11, Python 3.11.9, Node 22.14.0)
+# Local runs on branch feat/p3-live-dashboard; CI recorded below once pushed.
+
+## ruff check / format --check (src tests scripts)
+All checks passed!
+148 files already formatted
+
+## mypy (strict) api/v1, appdb, api/openapi.py
+Success: no issues found in 31 source files
+
+## contract: regenerated OpenAPI vs docs/api/openapi.json
+identical
+
+## evidence snapshot (results, models, paper tables)
+28 files in snapshot; 0 changed, 0 missing, 13 new; 0 stale tables
+
+## pytest tests/test_stream.py tests/test_player.py -v (Redis variants run in the CI integration job)
+tests/test_stream.py::test_memory_hub_contract PASSED
+tests/test_stream.py::test_redis_hub_contract_with_fakeredis PASSED
+tests/test_stream.py::test_memory_hub_wakes_a_blocked_reader PASSED
+tests/test_stream.py::test_memory_hub_is_bounded PASSED
+tests/test_stream.py::test_sse_delivers_in_order_and_resumes_without_loss_or_duplicates[memory] PASSED
+tests/test_stream.py::test_sse_delivers_in_order_and_resumes_without_loss_or_duplicates[redis] SKIPPED
+tests/test_stream.py::test_sse_filters_by_run_and_sends_heartbeats[memory] PASSED
+tests/test_stream.py::test_sse_filters_by_run_and_sends_heartbeats[redis] SKIPPED
+tests/test_stream.py::test_sse_needs_a_session_and_a_valid_id[memory] PASSED
+tests/test_stream.py::test_sse_needs_a_session_and_a_valid_id[redis] SKIPPED
+tests/test_stream.py::test_a_run_publishes_alerts_and_kpis_equal_to_the_endpoint PASSED
+tests/test_stream.py::test_finished_means_the_detector_has_drained_the_queue PASSED
+tests/test_player.py::test_speed_multiplier_scales_wall_time[1.0] PASSED
+tests/test_player.py::test_speed_multiplier_scales_wall_time[4.0] PASSED
+tests/test_player.py::test_speed_multiplier_scales_wall_time[20.0] PASSED
+tests/test_player.py::test_speed_zero_is_unpaced_and_stream_is_unchanged PASSED
+tests/test_player.py::test_rate_controls_events_per_second PASSED
+tests/test_player.py::test_pause_resume_and_live_controls PASSED
+tests/test_player.py::test_on_event_callback_and_until PASSED
+tests/test_player.py::test_invalid_speed PASSED
+tests/test_player.py::test_redis_bus_roundtrip PASSED
+tests/test_player.py::test_player_over_redis_bus PASSED
+tests/test_player.py::test_current_rate_is_live_during_the_run PASSED
+================= 20 passed, 3 skipped, 9 warnings in 16.36s ==================
+
+## pytest (full suite; skipped = Neo4j/Redis integration tests, run in CI)
+285 passed, 15 skipped, 15 warnings in 160.27s (0:02:40)
+
+## webapp: eslint, tsc, prettier
+eslint: no problems
+tsc: no type errors
+[[33mwarn[39m] Code style issues found in 8 files. Run Prettier with --write to fix.
+
+## webapp: vitest run
+ ✓ src/components/live/kpi-card.test.tsx > KpiCard > shows a skeleton while loading 89ms
+ ✓ src/components/live/kpi-card.test.tsx > KpiCard > says why there is no value instead of showing a number 17ms
+ ✓ src/components/live/kpi-card.test.tsx > KpiCard > shows errors as an alert with an icon and text 87ms
+ ✓ src/components/live/kpi-card.test.tsx > KpiCard > shows the value, its detail and a labelled trend 18ms
+ ✓ src/components/live/kpi-card.test.tsx > AlertFeed > has an empty state 11ms
+ ✓ src/components/live/kpi-card.test.tsx > AlertFeed > lists risk, type, size, reason and simulated age; a click opens the detail 209ms
+ ✓ src/components/app-sidebar.test.tsx > AppSidebar > shows every navigation group and page to an admin 448ms
+ ✓ src/components/app-sidebar.test.tsx > AppSidebar > hides the admin pages from an analyst 123ms
+ ✓ src/components/app-sidebar.test.tsx > AppSidebar > marks the current page and labels unbuilt pages with their milestone 132ms
+ ✓ src/components/login-form.test.tsx > LoginForm > validates the fields before calling the API 648ms
+ ✓ src/components/login-form.test.tsx > LoginForm > sends the CSRF header and goes to the requested page on success 608ms
+ ✓ src/components/login-form.test.tsx > LoginForm > explains a lockout with the wait time from Retry-After 458ms
+ ✓ src/lib/schemas.test.ts > form schemas > rejects malformed login input 8ms
+ ✓ src/lib/schemas.test.ts > form schemas > requires a 12-character password and a known role for new users 2ms
+ ✓ src/lib/schemas.test.ts > safeNext > /cases -> /cases 1ms
+ ✓ src/lib/schemas.test.ts > safeNext > /users?x=1 -> /users?x=1 1ms
+ ✓ src/lib/schemas.test.ts > safeNext > null -> / 0ms
+ ✓ src/lib/schemas.test.ts > safeNext > https://evil.example -> / 0ms
+ ✓ src/lib/schemas.test.ts > safeNext > //evil.example -> / 0ms
+ ✓ src/lib/schemas.test.ts > safeNext > /\evil.example -> / 0ms
+ ✓ src/lib/schemas.test.ts > safeNext > /login?next=/x -> / 1ms
+ ✓ src/components/system-status-card.test.tsx > SystemStatusCard > shows a skeleton while loading 76ms
+ ✓ src/components/system-status-card.test.tsx > SystemStatusCard > lists each component with an icon-and-text status 73ms
+ ✓ src/components/system-status-card.test.tsx > SystemStatusCard > shows the error envelope's message and request id, and retries 200ms
+ ✓ src/lib/live/use-live-run.test.ts > windowedRate > is the event rate between consecutive samples 4ms
+ Test Files  6 passed (6)
+      Tests  25 passed (25)
+
+## webapp: playwright test --repeat-each=3 (API :8100 fresh DB, next start :3100; screenshot specs skipped)
+(next build stopped on Next's security notice and was retried; see the note at the end)
+  ok 11 [chromium] › e2e\auth.spec.ts:16:1 › anonymous visitors are sent to the login page (648ms)
+  ok 12 [chromium] › e2e\auth.spec.ts:22:1 › a wrong password is refused with a clear message (1.6s)
+  ok 13 [chromium] › e2e\auth.spec.ts:31:1 › analyst: admin pages are hidden and a direct URL returns the 403 page (2.4s)
+  ok 14 [chromium] › e2e\auth.spec.ts:45:1 › admin: the rules page is visible and users can be managed (3.8s)
+  ok 15 [chromium] › e2e\auth.spec.ts:64:1 › signing out ends the session (2.2s)
+  ok 16 [chromium] › e2e\dashboard.spec.ts:16:1 › a baseline run streams alerts and the KPIs equal the run-metrics endpoint (2.9s)
+  ok 21 [chromium] › e2e\auth.spec.ts:16:1 › anonymous visitors are sent to the login page (670ms)
+  ok 22 [chromium] › e2e\auth.spec.ts:22:1 › a wrong password is refused with a clear message (1.6s)
+  ok 23 [chromium] › e2e\auth.spec.ts:31:1 › analyst: admin pages are hidden and a direct URL returns the 403 page (2.7s)
+  ok 24 [chromium] › e2e\auth.spec.ts:45:1 › admin: the rules page is visible and users can be managed (3.3s)
+  ok 25 [chromium] › e2e\auth.spec.ts:64:1 › signing out ends the session (2.4s)
+  ok 26 [chromium] › e2e\dashboard.spec.ts:16:1 › a baseline run streams alerts and the KPIs equal the run-metrics endpoint (2.5s)
+  12 skipped
+  18 passed (1.1m)
+
+## Bugs found and fixed while testing P3
+- GET /api/v1/runs/current called tracker.active() (does not exist): 500 whenever a run existed. Now tracker.live(); covered by test_a_run_publishes_alerts...
+- The player's achieved rate read 0 for the whole run (wall time set only at the end): StreamPlayer.current_rate()/active_wall_s(); regression test in test_player.py.
+- "finished" was the player's state while the detector still processed queued events (page and endpoint disagreed: 911 vs 663 events). The KPI status is now "processing" until the queue is drained; the publisher keeps sending samples until "finished".
+- Vitest: first test of a file exceeded the 5 s default on a loaded machine (5.2 s, 6.8 s); testTimeout 15 s.
+
+## Note: npm audit (webapp, production dependencies)
+next  16.0.0 - 16.4.0
+Severity: critical
+zod  <4.6.6
+Severity: high
+2 vulnerabilities (1 high, 1 critical)
+Pending the owner's decision: the fixes (next 16.4.1, zod 4.6.6) were released less than two weeks ago (pinning rule).

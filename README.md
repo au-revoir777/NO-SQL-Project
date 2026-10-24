@@ -86,7 +86,11 @@ make e2e                                 # Playwright (once: cd webapp && npm ru
 |---|---|---|
 | ![Login](docs/images/webapp_p2_login.png) | ![Users admin](docs/images/webapp_p2_users_admin.png) | ![403 page](docs/images/webapp_p2_forbidden.png) |
 
-The P2 screenshots are taken by `webapp/e2e/screenshots.spec.ts` against the
+P3 adds the live dashboard: KPI cards, an alert feed and charts, streamed over SSE from the running engine (in-process, or Redis Streams with `REDIS_URL`).
+
+![Live dashboard after a baseline run](docs/images/webapp_p3_dashboard.png)
+
+The P2 and P3 screenshots are taken by `webapp/e2e/screenshots.spec.ts` against the
 real API, with the e2e fixture accounts (`SCREENSHOTS=1 npx playwright test screenshots`).
 
 | Dashboard (dark) | A page of a later milestone (light) |
@@ -322,8 +326,11 @@ Phase 2 (web app and research extensions, [plan](docs/phase2/phase2_prompt.md)):
 |---|---|
 | P1 Foundations: `/api/v1` contract, app-state store, Next.js shell, CI | done |
 | P2 Authentication and roles | done |
-| P3 Live dashboard (KPIs and alert feed over SSE) | next |
-| P4–P16 | planned |
+| M0 audit, R1 (legacy routes authenticated), R3 (run provenance) | done (`docs/audit/m0_gap_report.md`) |
+| P10a/E10 ring-level calibration and alert utility; E11 early warning without look-ahead | done (`docs/research/`) |
+| P3 Live dashboard (KPIs and alert feed over SSE) | done |
+| P4 Simulator page | next |
+| P5–P16 | planned |
 
 Known open items:
 - Paper: check the bibliography entries against the publishers' pages before submission.

@@ -32,6 +32,15 @@ MAX_MEMBERS = 50
 STATUSES = ("candidate", "confirmed", "dissolved")
 
 
+def run_status(live: Any) -> str:
+    """
+    The player's state, except "processing" while the player has finished but the
+    detector is still working through queued events: only "finished" is final.
+    """
+    status = str(live.status)
+    return "processing" if status == "finished" and not live.drained else status
+
+
 def kpis(live: Any, run_id: str, oracle: dict[str, Any] | None = None) -> dict[str, Any]:
     """Operational KPIs of a live run; ground-truth metrics only under `oracle`."""
     engine = live.engine
@@ -44,12 +53,13 @@ def kpis(live: Any, run_id: str, oracle: dict[str, Any] | None = None) -> dict[s
     latency = percentiles([detect_ms(rep) for rep in engine.reports], ps=(50, 95, 99))
     sample: dict[str, Any] = {
         "run_id": run_id,
-        "status": live.status,
+        "status": run_status(live),
         "scenario": live.scenario,
         "seed": live.seed,
         "sim_time_s": round(sim_s, 3),
         "events_total": int(snap.get("events_emitted", 0)),
-        "events_per_s": round(float(live.player.stats.achieved_rate or 0.0), 2),
+        "events_per_s": round(live.player.current_rate(), 2),
+        "wall_s": round(live.player.active_wall_s(), 3),
         "batches": len(engine.reports),
         "graph": engine.store.stats(),
         "rings_by_status": {s: by_status.get(s, 0) for s in STATUSES},
@@ -146,4 +156,12 @@ class StreamPublisher:
     async def publish_metrics(self, live: Any) -> None:
         self._last_metrics = time.monotonic()
         # Ground truth is evaluated fresh, so the last sample equals the endpoint.
-        await hub().publish(METRICS, kpis(live, self.run_id, live.metrics_summary()))
+        sample = kpis(live, self.run_id, live.metrics_summary())
+        await hub().publish(METRICS, sample)
+        if sample["status"] == "processing" and self._trailing is None:
+            # Keep publishing until the detector has drained the queue, so the
+            # final "finished" sample (the run's true end state) always goes out.
+            loop = asyncio.get_running_loop()
+            self._trailing = loop.call_later(
+                METRICS_EVERY_S, lambda: loop.create_task(self._trailing_publish())
+            )

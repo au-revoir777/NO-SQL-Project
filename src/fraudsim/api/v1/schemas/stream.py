@@ -39,7 +39,10 @@ class RunMetricsV1(BaseModel):
     seed: int
     sim_time_s: float
     events_total: int
-    events_per_s: float = Field(description="Achieved event rate, events per wall-clock second")
+    events_per_s: float = Field(
+        description="Events per wall-clock second since the start (pauses excluded)"
+    )
+    wall_s: float = Field(description="Wall-clock seconds played so far (pauses excluded)")
     batches: int
     graph: dict[str, int]
     rings_by_status: RingsByStatus

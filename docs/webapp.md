@@ -55,8 +55,11 @@ Routes so far:
 | `GET /api/v1/auth/csrf` | sets the CSRF cookie and returns the token |
 | `POST /api/v1/auth/login`, `/refresh`, `/logout`; `GET /api/v1/auth/me` | session (see Authentication) |
 | `GET /api/v1/runs/current` | the live run from the existing engine (same source as `GET /status`) |
+| `POST /api/v1/runs` | start a run (scenario, seed, speed); stops the current one; serialised by a lock |
+| `GET /api/v1/runs/current/metrics` | KPI sample of the live run (`?oracle=true` adds labelled ground truth) |
+| `GET /api/v1/stream/alerts`, `/stream/metrics` | Server-Sent Events (see Live dashboard) |
 | `GET, POST /api/v1/admin/users`; `PATCH /api/v1/admin/users/{id}` | user administration (admin) |
-| `/api/v1/{alerts,cases,entities,graph,reports,experiments,rules,stream}` | `501` until their milestone (P3 to P9), behind the role checks below |
+| `/api/v1/{alerts,cases,entities,graph,reports,experiments,rules}` | `501` until their milestone (P5 to P9), behind the role checks below |
 
 ## Authentication and roles (P2)
 
@@ -113,6 +116,52 @@ one integer column; per-device sessions can be added later if needed.
 
 ASSUMPTION: the API trusts the socket address for the rate limit's IP key; behind
 a reverse proxy (P14) the forwarded-for header has to be configured in uvicorn.
+
+## Live dashboard (P3)
+
+```
+LiveRun broadcast ──► /ws (M7 dashboard, unchanged)
+                 └──► StreamPublisher ──► fraudsim:alerts   (each alert and early warning)
+                                      ├─► fraudsim:metrics  (KPI sample, ≤ 2/s + one trailing sample)
+                                      └─► fraudsim:events   (newest events of each batch)
+streams: Redis Streams (XADD MAXLEN~, XREAD BLOCK) if REDIS_URL is set, else in-process
+         ──► GET /api/v1/stream/{alerts,metrics} (SSE) ──► Next.js BFF ──► EventSource
+```
+
+- **Resume.** Every SSE event carries the stream entry id. A reconnecting
+  EventSource sends `Last-Event-ID` and gets exactly the entries after it: no gap
+  and no duplicate (tested on the in-process store, and against real Redis in
+  the integration job). `?since=` sets the start for a first connection
+  (`$` = new only, `0-0` = backlog); `?run_id=` keeps one run. A `: keep-alive`
+  comment goes out after 15 s of silence. The response ends when the access token
+  expires, and the client refreshes and reconnects from its last id.
+- **KPIs** (`stream/publisher.py: kpis()`, the same function behind
+  `GET /runs/current/metrics`):
+  - events per wall-clock second since the start, pauses excluded;
+  - graph size;
+  - open alerts and alerts in the run;
+  - alerts per **simulated** hour, labelled as not an operational rate;
+  - rings by status;
+  - detect latency p50/p95/p99 per batch, with the same definition as
+    `evaluate_run` (`detect_ms`).
+
+  Simulator ground truth (ring precision, recall, F1, missed rings) appears only
+  under `oracle`, labelled "Oracle (simulator ground truth)", and the page shows
+  it only behind the toggle.
+- **Page.** `components/live/*`:
+  - KPI cards with sparklines and explicit loading, empty and error states;
+  - latency and throughput charts. Throughput is plotted between samples, so the
+    start-up burst does not dominate;
+  - the alert feed: risk badge, ring type, size, top reason and age in simulated
+    seconds, with a detail dialog;
+  - one status per stream.
+
+  Updates are buffered and rendered at most 4 times a second. New alerts with risk
+  ≥ 0.8 are announced through an `aria-live` region. Every number belongs to the
+  run id in the header: when a new run starts, the page resets.
+
+ASSUMPTION: the alert detail is a dialog with the streamed fields; triage and
+the full explanation belong to the Alerts page (P5).
 
 ## Running it
 

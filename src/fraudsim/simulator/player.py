@@ -134,6 +134,27 @@ class StreamPlayer:
     def paused(self) -> bool:
         return self.state == "paused"
 
+    def active_wall_s(self) -> float:
+        """Wall-clock seconds spent playing so far (pauses excluded); final once the run ends."""
+        if self._started_at is None:
+            return 0.0
+        if self.state in ("finished", "stopped"):
+            return self.stats.wall_time_s - self.stats.paused_time_s
+        now = self._clock()
+        paused = self.stats.paused_time_s + (now - self._paused_at if self._paused_at else 0.0)
+        return now - self._started_at - paused
+
+    def current_rate(self) -> float:
+        """
+        Events per wall-clock second so far, pauses excluded. `stats.wall_time_s`
+        is only set when the run ends; until then this measures the live rate.
+        After the end it equals `stats.achieved_rate`.
+        """
+        if self._started_at is None or self.state in ("finished", "stopped"):
+            return self.stats.achieved_rate
+        active = self.active_wall_s()
+        return self.stats.events_published / active if active > 0 else 0.0
+
     def _reanchor(self) -> None:
         self._anchor_wall = self._clock()
         self._anchor_sim = self.stats.sim_time_s

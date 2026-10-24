@@ -174,10 +174,16 @@ def test_a_run_publishes_alerts_and_kpis_equal_to_the_endpoint(
         with TestClient(app, base_url="https://testserver") as c:
             sign_in(c, *users["analyst"])
             assert c.get("/api/v1/runs/current/metrics").status_code in (200, 404)
-            c.post("/runs/start", json={"scenario": "baseline", "seed": 7, "speed_multiplier": 0})
-            run_id = c.get("/status").json()["run_id"]
+            bad = c.post("/api/v1/runs", json={"scenario": "nope"})
+            assert bad.status_code == 404 and bad.json()["error"]["code"] == "unknown_scenario"
+            started = c.post(
+                "/api/v1/runs", json={"scenario": "baseline", "seed": 7, "speed_multiplier": 0}
+            )
+            assert started.status_code == 201
+            run_id = started.json()["run_id"]
             deadline = time.monotonic() + 120
-            while c.get("/status").json()["status"] != "finished":
+            # "finished" only once the detector has drained the queue (not just the player).
+            while c.get("/api/v1/runs/current/metrics").json()["status"] != "finished":
                 assert time.monotonic() < deadline, "run did not finish"
                 time.sleep(0.3)
             time.sleep(1.0)  # trailing KPI sample
@@ -194,3 +200,13 @@ def test_a_run_publishes_alerts_and_kpis_equal_to_the_endpoint(
     assert last == endpoint  # every KPI on the page traces to this run's engine
     assert last["run_id"] == run_id and last["alerts_total"] >= 1
     assert last["oracle"]["label"] == "Oracle (simulator ground truth)"
+
+
+def test_finished_means_the_detector_has_drained_the_queue() -> None:
+    from types import SimpleNamespace
+
+    from fraudsim.api.v1.stream.publisher import run_status
+
+    assert run_status(SimpleNamespace(status="finished", drained=False)) == "processing"
+    assert run_status(SimpleNamespace(status="finished", drained=True)) == "finished"
+    assert run_status(SimpleNamespace(status="running", drained=False)) == "running"

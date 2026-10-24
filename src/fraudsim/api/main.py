@@ -5,7 +5,6 @@ FastAPI application with REST routes and WebSocket streaming.
 from __future__ import annotations
 
 import asyncio
-import os
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -16,7 +15,7 @@ from fastapi.responses import PlainTextResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
 from fraudsim.api import v1
-from fraudsim.api.live import LiveRun
+from fraudsim.api.run_control import UnknownScenarioError, start_live_run
 from fraudsim.api.schemas import (
     AnalystFeedbackRequest,
     ConfigRequest,
@@ -36,10 +35,9 @@ from fraudsim.api.v1.auth.websocket import (
     authenticate_websocket,
     cors_origins,
 )
-from fraudsim.api.v1.stream.publisher import StreamPublisher
 from fraudsim.metrics.exporters import prometheus_text
 from fraudsim.simulator.scenario_loader import list_scenarios, load_scenario
-from fraudsim.types import EvasionMode, RingType, new_run_id
+from fraudsim.types import EvasionMode, RingType
 
 app = FastAPI(
     title="FraudSim API",
@@ -102,37 +100,10 @@ async def get_status() -> RunStatusResponse:
 
 @app.post("/runs/start", response_model=RunStatusResponse, dependencies=ANALYST)
 async def start_run(req: StartRunRequest) -> RunStatusResponse:
-    if req.scenario not in list_scenarios():
-        raise HTTPException(status_code=404, detail=f"Unknown scenario '{req.scenario}'")
-    if state.live is not None:
-        await state.live.stop()
-        state.live = None
-    state.run_id = new_run_id()
-    state.scenario = req.scenario
-    state.seed = req.seed
-    state.speed_multiplier = req.speed_multiplier
-    state.events_emitted = 0
-    state.active_rings.clear()
-    state.live = LiveRun(
-        scenario=req.scenario,
-        seed=req.seed,
-        run_id=state.run_id,
-        speed=req.speed_multiplier,
-        # WebSocket fan-out as before, plus the P3 streams (alerts, KPIs, events).
-        broadcast=StreamPublisher(state.run_id, lambda: state.live, state.broadcast_ws),
-        log_dir=Path(os.environ.get("FRAUDSIM_RUNS_DIR", "runs")) / "live" / state.run_id,
-    )
-    await state.live.start()
-
-    await state.broadcast_ws(
-        {
-            "type": "RUN_STARTED",
-            "run_id": state.run_id,
-            "scenario": state.scenario,
-            "seed": state.seed,
-        }
-    )
-
+    try:
+        await start_live_run(req.scenario, req.seed, req.speed_multiplier)
+    except UnknownScenarioError:
+        raise HTTPException(status_code=404, detail=f"Unknown scenario '{req.scenario}'") from None
     return await get_status()
 
 

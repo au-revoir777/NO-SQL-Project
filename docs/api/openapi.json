@@ -1,6 +1,122 @@
 {
   "components": {
     "schemas": {
+      "AlertV1": {
+        "description": "One alert or early warning as published to `fraudsim:alerts`.",
+        "properties": {
+          "detectors": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Detectors",
+            "type": "array"
+          },
+          "kind": {
+            "description": "alert | early_warning",
+            "title": "Kind",
+            "type": "string"
+          },
+          "members": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Members",
+            "type": "array"
+          },
+          "members_count": {
+            "title": "Members Count",
+            "type": "integer"
+          },
+          "ring_id": {
+            "title": "Ring Id",
+            "type": "string"
+          },
+          "ring_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ring Type"
+          },
+          "risk": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Risk"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "sim_time_s": {
+            "title": "Sim Time S",
+            "type": "number"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          },
+          "threshold": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Threshold"
+          },
+          "top_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Top Reason"
+          },
+          "ts": {
+            "title": "Ts",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "ring_id",
+          "kind",
+          "ts",
+          "sim_time_s",
+          "risk",
+          "threshold",
+          "ring_type",
+          "status",
+          "members_count",
+          "members",
+          "detectors",
+          "top_reason"
+        ],
+        "title": "AlertV1",
+        "type": "object"
+      },
       "AnalystFeedbackRequest": {
         "properties": {
           "action": {
@@ -807,7 +923,7 @@
             "$ref": "#/components/schemas/DetectLatency"
           },
           "events_per_s": {
-            "description": "Achieved event rate, events per wall-clock second",
+            "description": "Events per wall-clock second since the start (pauses excluded)",
             "title": "Events Per S",
             "type": "number"
           },
@@ -858,6 +974,11 @@
           "status": {
             "title": "Status",
             "type": "string"
+          },
+          "wall_s": {
+            "description": "Wall-clock seconds played so far (pauses excluded)",
+            "title": "Wall S",
+            "type": "number"
           }
         },
         "required": [
@@ -868,6 +989,7 @@
           "sim_time_s",
           "events_total",
           "events_per_s",
+          "wall_s",
           "batches",
           "graph",
           "rings_by_status",
@@ -1049,6 +1171,33 @@
           }
         },
         "title": "StartRunRequest",
+        "type": "object"
+      },
+      "StartRunV1": {
+        "properties": {
+          "scenario": {
+            "default": "baseline",
+            "maxLength": 64,
+            "title": "Scenario",
+            "type": "string"
+          },
+          "seed": {
+            "default": 42,
+            "maximum": 2147483647.0,
+            "minimum": 0.0,
+            "title": "Seed",
+            "type": "integer"
+          },
+          "speed_multiplier": {
+            "default": 1.0,
+            "description": "0 = as fast as possible",
+            "maximum": 1000.0,
+            "minimum": 0.0,
+            "title": "Speed Multiplier",
+            "type": "number"
+          }
+        },
+        "title": "StartRunV1",
         "type": "object"
       },
       "UpdateUserRequest": {
@@ -2296,6 +2445,88 @@
         ]
       }
     },
+    "/api/v1/runs": {
+      "post": {
+        "description": "Stop the current run, if any, and start a new one (simulator in memory).",
+        "operationId": "runs_start",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartRunV1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunStatusV1"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Role or CSRF check failed"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Unknown scenario"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
+          }
+        },
+        "summary": "Start Run",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
     "/api/v1/runs/current": {
       "get": {
         "operationId": "runs_current",
@@ -2479,20 +2710,18 @@
         "responses": {
           "200": {
             "content": {
-              "application/json": {
-                "schema": {}
-              },
               "text/event-stream": {
                 "schema": {
+                  "$ref": "#/components/schemas/AlertV1",
                   "type": "string"
                 }
               }
             },
-            "description": "event-stream; each `data:` line is one JSON object"
+            "description": "event-stream; each `data:` line is one such object"
           },
           "401": {
             "content": {
-              "application/json": {
+              "text/event-stream": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorEnvelope"
                 }
@@ -2502,7 +2731,7 @@
           },
           "403": {
             "content": {
-              "application/json": {
+              "text/event-stream": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorEnvelope"
                 }
@@ -2512,7 +2741,7 @@
           },
           "422": {
             "content": {
-              "application/json": {
+              "text/event-stream": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorEnvelope"
                 }
@@ -2522,7 +2751,7 @@
           },
           "500": {
             "content": {
-              "application/json": {
+              "text/event-stream": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorEnvelope"
                 }
@@ -2531,7 +2760,7 @@
             "description": "Internal error"
           }
         },
-        "summary": "SSE of alerts and early warnings (event `alert`, data: AlertV1)",
+        "summary": "SSE of alerts and early warnings (event `alert`)",
         "tags": [
           "stream"
         ]
@@ -2575,20 +2804,18 @@
         "responses": {
           "200": {
             "content": {
-              "application/json": {
-                "schema": {}
-              },
               "text/event-stream": {
                 "schema": {
+                  "$ref": "#/components/schemas/RunMetricsV1",
                   "type": "string"
                 }
               }
             },
-            "description": "event-stream; each `data:` line is one JSON object"
+            "description": "event-stream; each `data:` line is one such object"
           },
           "401": {
             "content": {
-              "application/json": {
+              "text/event-stream": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorEnvelope"
                 }
@@ -2598,7 +2825,7 @@
           },
           "403": {
             "content": {
-              "application/json": {
+              "text/event-stream": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorEnvelope"
                 }
@@ -2608,7 +2835,7 @@
           },
           "422": {
             "content": {
-              "application/json": {
+              "text/event-stream": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorEnvelope"
                 }
@@ -2618,7 +2845,7 @@
           },
           "500": {
             "content": {
-              "application/json": {
+              "text/event-stream": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorEnvelope"
                 }
@@ -2627,7 +2854,7 @@
             "description": "Internal error"
           }
         },
-        "summary": "SSE of KPI samples (event `metrics`, data: RunMetricsV1)",
+        "summary": "SSE of KPI samples (event `metrics`)",
         "tags": [
           "stream"
         ]
