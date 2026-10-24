@@ -372,6 +372,87 @@ covers merging, comparison and the UTC window. Playwright
 - the graph canvas is drawn;
 - axe reports no serious or critical violations.
 
+## Investigation reports (P7)
+
+`POST /api/v1/reports` builds a report for a scope: runs, cases and/or
+alerts, optionally limited to rings first seen in a simulated-time window.
+
+**Sections** (each optional):
+- executive summary;
+- alert table;
+- per-ring detail with the evidence subgraph;
+- contributions chart;
+- counterfactuals;
+- timeline;
+- analyst notes and labels;
+- SAR-style summary: subjects, shared attributes, transfers and amounts, the
+  activity window, typology, evidence references, and an analyst narrative
+  from the notes;
+- run metrics;
+- limitations, including the E10 calibration caveat.
+
+The "Oracle (simulator ground truth)" comparison per run is added only on
+request. Every page carries the fixed disclaimer "Generated from simulated
+data for research/demo purposes. Not a regulatory filing." in its footer,
+together with the page number.
+
+**Where the numbers come from.**
+- Run facts (`fraudsim.reports.run_logs`) are read only from the run's log
+  directory: `manifest.json`, `events.jsonl`, `detections.jsonl`,
+  `rings.jsonl`, and `ground_truth.jsonl` for the Oracle section. Live runs
+  gained `sync_logs()`, which flushes their streams and writes the ring states
+  and the ledger, so a report reads the current run as it stands.
+- A ring attached to a case uses its frozen evidence and cites the snapshot's
+  SHA-256. Other rings use the app-DB alert, or the run log's first
+  alert/early-warning record when the run was not recorded in the app DB.
+
+**Rendering.** Jinja2 (`reports/templates/report.html.j2`) with print CSS
+(A4, page numbers in `@page` margin boxes). Charts are static SVG from
+matplotlib in the paper's style, with no date metadata, a fixed hash salt and
+a seeded graph layout, so the HTML is byte-stable apart from `generated_at`.
+
+ASSUMPTION: the evidence subgraph is drawn server-side (networkx +
+matplotlib), not captured from Cytoscape. It is deterministic and needs no
+JavaScript at build time.
+
+ASSUMPTION: PDF is printed with `--print-to-pdf` by the headless Chromium
+that the web app's Playwright installs (`FRAUDSIM_CHROMIUM` overrides). This
+avoids WeasyPrint's native libraries on Windows and adds no Python
+dependency. Without Chromium, PDF requests answer 503 `pdf_unavailable`;
+HTML still works. New pinned dependency: `jinja2==3.1.6`.
+
+**Records.** Each report gets:
+- an id;
+- the run ids and scenario config hashes it used;
+- the SHA-256 of its file (`$FRAUDSIM_RUNS_DIR/app_reports/<id>.<html|pdf>`),
+  with `<id>.json` (its numbers, without charts) beside it;
+- a `REPORT_GENERATED` audit entry with the hash.
+
+Endpoints: `GET /api/v1/reports` lists them, `GET /api/v1/reports/{id}` gives
+one, and `GET /api/v1/reports/{id}/download` returns the file (`text/html` or
+`application/pdf`).
+
+**Pages.** `/reports` has the builder (runs, cases, alert ids, time window,
+sections, Oracle, format) and the list with re-download. Case pages link to it
+with the case in scope (`/reports?case=<id>`).
+
+**Tests.**
+- pytest `tests/test_reports.py`:
+  - every run number equals a recount of the JSONL files done in the test;
+  - every raised ring appears once;
+  - the Oracle section appears only on request, with its label;
+  - the record lists the runs used, and the file hash is in the audit entry;
+  - the frozen snapshot hash and the case narrative are in the report;
+  - golden: two independent runs of baseline seed 7 render the same bytes
+    apart from the timestamp, and match `tests/golden/report_baseline_seed7.html`
+    (charts left out of the committed copy, because SVG path data can change
+    with the matplotlib version);
+  - PDF: content type, magic bytes and hash.
+- Vitest: the builder's schema.
+- Playwright `e2e/reports.spec.ts`: from a case page, generate a PDF,
+  download it (`%PDF-`, over 10 KB, `application/pdf`), see it listed with one
+  ring, and run axe.
+
 ## Running it
 
 ```bash

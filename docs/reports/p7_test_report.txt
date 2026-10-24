@@ -1,0 +1,156 @@
+# Milestone P7 test report (2026-10-25, Windows 11, Python 3.11.9, Node 22.14.0)
+# Local runs on branch feat/p7-reports; CI recorded below once pushed.
+
+## ruff / format / mypy strict / contract / evidence snapshot
+All checks passed!
+173 files already formatted
+Success: no issues found in 51 source files
+openapi.json: identical
+schema.d.ts: identical
+28 files in snapshot; 0 changed, 0 missing, 14 new; 0 stale tables
+
+## pytest tests/test_reports.py -v
+tests/test_reports.py::test_report_numbers_equal_the_run_logs PASSED    
+tests/test_reports.py::test_golden_html_is_byte_stable PASSED           
+tests/test_reports.py::test_case_report_records_runs_hash_and_audit PASSED
+tests/test_reports.py::test_report_validation PASSED                    
+tests/test_reports.py::test_pdf_report PASSED                           
+============================= 5 passed in 21.08s ==============================
+
+## pytest (full suite; skipped = Neo4j/Redis integration tests, run in CI)
+Run 1: 1 failed, 388 passed, 26 skipped (347 s). The failing test was not identified: re-running the
+last-failed test passed and cleared pytest's cache before I recorded its name.
+Run 2 (-rf): 389 passed, 26 skipped, 54 warnings in 187.87s
+Run 3 (-rf): 389 passed, 26 skipped, 54 warnings in 173.41s
+Recorded as an unexplained one-off (run 1 was also unusually slow); not reproduced in two full runs.
+
+## webapp: eslint, tsc, prettier
+eslint: no problems
+tsc: no type errors
+All matched files use Prettier code style!
+
+## webapp: vitest run
+ ✓ src/components/app-sidebar.test.tsx > AppSidebar > shows every navigation group and page to an admin 730ms
+ ✓ src/components/app-sidebar.test.tsx > AppSidebar > hides the admin pages from an analyst 164ms
+ ✓ src/components/app-sidebar.test.tsx > AppSidebar > marks the current page and labels unbuilt pages with their milestone 138ms
+ ✓ src/components/login-form.test.tsx > LoginForm > validates the fields before calling the API 709ms
+ ✓ src/components/cases/alert-queue.test.tsx > AlertQueue > lists alerts and sends the default filters 820ms
+ ✓ src/components/login-form.test.tsx > LoginForm > sends the CSRF header and goes to the requested page on success 653ms
+ ✓ src/components/login-form.test.tsx > LoginForm > explains a lockout with the wait time from Retry-After 422ms
+ ✓ src/components/live/kpi-card.test.tsx > KpiCard > shows a skeleton while loading 65ms
+ ✓ src/components/live/kpi-card.test.tsx > KpiCard > says why there is no value instead of showing a number 13ms
+ ✓ src/components/live/kpi-card.test.tsx > KpiCard > shows errors as an alert with an icon and text 74ms
+ ✓ src/components/live/kpi-card.test.tsx > KpiCard > shows the value, its detail and a labelled trend 17ms
+ ✓ src/components/live/kpi-card.test.tsx > AlertFeed > has an empty state 6ms
+ ✓ src/components/live/kpi-card.test.tsx > AlertFeed > lists risk, type, size, reason and simulated age; a click opens the detail 203ms
+ ✓ src/components/cases/alert-queue.test.tsx > AlertQueue > validates the risk range and applies only valid filters 3066ms
+ ✓ src/components/system-status-card.test.tsx > SystemStatusCard > shows a skeleton while loading 154ms
+ ✓ src/components/system-status-card.test.tsx > SystemStatusCard > lists each component with an icon-and-text status 113ms
+ ✓ src/components/system-status-card.test.tsx > SystemStatusCard > shows the error envelope's message and request id, and retries 253ms
+ ✓ src/components/cases/alert-queue.test.tsx > AlertQueue > selects a range with shift-click and sets the status in bulk 2042ms
+ ✓ src/components/cases/alert-queue.test.tsx > AlertQueue > moves with j/k and opens the focused alert with Enter 844ms
+ ✓ src/components/cases/common.test.tsx > parseTime > reads naive API times as UTC and keeps explicit offsets 4ms
+ ✓ src/components/cases/common.test.tsx > ActivityList > describes case changes, newest first 154ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > adversarial round-trips through the form unchanged 24ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > baseline round-trips through the form unchanged 4ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > demo_story round-trips through the form unchanged 2ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > drift round-trips through the form unchanged 2ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > high_noise round-trips through the form unchanged 3ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > hub_heavy round-trips through the form unchanged 1ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > scale_sweep round-trips through the form unchanged 1ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > leaves empty optional fields out instead of sending 0 1ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > rejects bad numbers with field messages 3ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > maps server error locations to form fields 3ms
+ ✓ src/lib/explorer/graph.test.ts > explorer graph helpers > parses node keys 3ms
+ ✓ src/lib/explorer/graph.test.ts > explorer graph helpers > merges neighbourhoods: smallest hop, seeds, crossed stops, origins 26ms
+ ✓ src/lib/explorer/graph.test.ts > explorer graph helpers > reads the time window as UTC 1ms
+ ✓ src/lib/cases/forms.test.ts > case forms > need a title of at least 3 characters 7ms
+ ✓ src/lib/cases/forms.test.ts > case forms > need a resolution only when closing 4ms
+ ✓ src/lib/cases/forms.test.ts > case forms > name saved views 1ms
+ ✓ src/lib/cases/forms.test.ts > case forms > offer the API's transitions; only admins reopen 1ms
+ ✓ src/lib/reports/form.test.ts > report form > needs a title and some scope 12ms
+ ✓ src/lib/reports/form.test.ts > report form > checks sections and the time window 1ms
+ ✓ src/lib/reports/form.test.ts > report form > sends UTC times and leaves empty ones out 1ms
+ ✓ src/lib/schemas.test.ts > form schemas > rejects malformed login input 8ms
+ ✓ src/lib/schemas.test.ts > form schemas > requires a 12-character password and a known role for new users 1ms
+ ✓ src/lib/schemas.test.ts > safeNext > /cases -> /cases 1ms
+ ✓ src/lib/schemas.test.ts > safeNext > /users?x=1 -> /users?x=1 0ms
+ ✓ src/lib/schemas.test.ts > safeNext > null -> / 0ms
+ ✓ src/lib/schemas.test.ts > safeNext > https://evil.example -> / 0ms
+ ✓ src/lib/schemas.test.ts > safeNext > //evil.example -> / 0ms
+ ✓ src/lib/schemas.test.ts > safeNext > /\evil.example -> / 0ms
+ ✓ src/lib/schemas.test.ts > safeNext > /login?next=/x -> / 1ms
+ ✓ src/lib/cases/filters.test.ts > alert filters > send only what is set 5ms
+ ✓ src/lib/cases/filters.test.ts > alert filters > validate ranges 2ms
+ ✓ src/lib/cases/filters.test.ts > alert filters > fill older saved views with defaults 1ms
+ ✓ src/lib/cases/filters.test.ts > bulk selection > toggles one row, or a range with shift 1ms
+ ✓ src/lib/cases/filters.test.ts > bulk selection > offers only the statuses some selected alert can move to 1ms
+ ✓ src/lib/replay/story.test.ts > stateAt > counts only flags up to t; early warnings are listed but not counted 6ms
+ ✓ src/lib/replay/story.test.ts > stateAt > does not double count a true ring 1ms
+ ✓ src/lib/replay/story.test.ts > parseDeepLink > reads the query string and the old hash form, clamping t 2ms
+ ✓ src/lib/live/use-live-run.test.ts > windowedRate > is the event rate between consecutive samples 3ms
+ Test Files  14 passed (14)
+      Tests  59 passed (59)
+
+## webapp: CI=1 playwright test --repeat-each=2 --retries=0 (screenshot specs skipped)
+  ok  1 [chromium] › e2e\auth.spec.ts:16:1 › anonymous visitors are sent to the login page (1.0s)
+  ok  2 [chromium] › e2e\auth.spec.ts:22:1 › a wrong password is refused with a clear message (1.7s)
+  ok  3 [chromium] › e2e\auth.spec.ts:31:1 › analyst: admin pages are hidden and a direct URL returns the 403 page (3.0s)
+  ok  4 [chromium] › e2e\auth.spec.ts:45:1 › admin: the rules page is visible and users can be managed (3.9s)
+  ok  5 [chromium] › e2e\auth.spec.ts:64:1 › signing out ends the session (2.3s)
+  ok  6 [chromium] › e2e\cases.spec.ts:44:1 › analyst triages an alert into an escalated case; admin sees it in the audit view (16.6s)
+  ok  7 [chromium] › e2e\cases.spec.ts:116:1 › audit and alert tables stay accessible when they scroll sideways (narrow window) (5.6s)
+  ok  8 [chromium] › e2e\cases.spec.ts:129:1 › the cases list has no serious axe violations (3.9s)
+  ok  9 [chromium] › e2e\dashboard.spec.ts:16:1 › a baseline run streams alerts and the KPIs equal the run-metrics endpoint (3.7s)
+  ok 10 [chromium] › e2e\explorer.spec.ts:37:1 › search device_007 on the course graph: the four users of Ring A in the README (7.3s)
+  ok 11 [chromium] › e2e\explorer.spec.ts:74:1 › the walk stops at the office-wifi hub, expands on demand, and compares two pins (6.3s)
+  ok 12 [chromium] › e2e\explorer.spec.ts:105:1 › Ctrl+K finds card_005 and opens it (5.2s)
+  ok 13 [chromium] › e2e\explorer.spec.ts:120:1 › an alert of the current run opens its ring over time (8.2s)
+  ok 14 [chromium] › e2e\replay.spec.ts:35:1 › replay at ?t=90&det=cap10&key=1 shows the same counts as the end of story.html (2.7s)
+  ok 15 [chromium] › e2e\replay.spec.ts:69:1 › replays list and replay page have no serious or critical axe violations (11.0s)
+  ok 16 [chromium] › e2e\reports.spec.ts:28:1 › generate a PDF report for a case and download it (11.1s)
+  ok 26 [chromium] › e2e\simulator.spec.ts:14:1 › demo_story seed 7 started from the UI gives the CLI's stream digest (8.4s)
+  ok 27 [chromium] › e2e\simulator.spec.ts:43:1 › the builder shows field errors and the page has no serious axe violations (6.5s)
+  ok 28 [chromium] › e2e\auth.spec.ts:16:1 › anonymous visitors are sent to the login page (865ms)
+  ok 29 [chromium] › e2e\auth.spec.ts:22:1 › a wrong password is refused with a clear message (2.7s)
+  ok 30 [chromium] › e2e\auth.spec.ts:31:1 › analyst: admin pages are hidden and a direct URL returns the 403 page (2.8s)
+  ok 31 [chromium] › e2e\auth.spec.ts:45:1 › admin: the rules page is visible and users can be managed (4.0s)
+  ok 32 [chromium] › e2e\auth.spec.ts:64:1 › signing out ends the session (2.9s)
+  ok 33 [chromium] › e2e\cases.spec.ts:44:1 › analyst triages an alert into an escalated case; admin sees it in the audit view (18.6s)
+  ok 34 [chromium] › e2e\cases.spec.ts:116:1 › audit and alert tables stay accessible when they scroll sideways (narrow window) (7.2s)
+  ok 35 [chromium] › e2e\cases.spec.ts:129:1 › the cases list has no serious axe violations (3.6s)
+  ok 36 [chromium] › e2e\dashboard.spec.ts:16:1 › a baseline run streams alerts and the KPIs equal the run-metrics endpoint (3.7s)
+  ok 37 [chromium] › e2e\explorer.spec.ts:37:1 › search device_007 on the course graph: the four users of Ring A in the README (8.2s)
+  ok 38 [chromium] › e2e\explorer.spec.ts:74:1 › the walk stops at the office-wifi hub, expands on demand, and compares two pins (5.0s)
+  ok 39 [chromium] › e2e\explorer.spec.ts:105:1 › Ctrl+K finds card_005 and opens it (4.2s)
+  ok 40 [chromium] › e2e\explorer.spec.ts:120:1 › an alert of the current run opens its ring over time (7.3s)
+  ok 41 [chromium] › e2e\replay.spec.ts:35:1 › replay at ?t=90&det=cap10&key=1 shows the same counts as the end of story.html (3.4s)
+  ok 42 [chromium] › e2e\replay.spec.ts:69:1 › replays list and replay page have no serious or critical axe violations (10.2s)
+  ok 43 [chromium] › e2e\reports.spec.ts:28:1 › generate a PDF report for a case and download it (11.3s)
+  ok 53 [chromium] › e2e\simulator.spec.ts:14:1 › demo_story seed 7 started from the UI gives the CLI's stream digest (7.6s)
+  ok 54 [chromium] › e2e\simulator.spec.ts:43:1 › the builder shows field errors and the page has no serious axe violations (6.9s)
+  18 skipped
+  36 passed (4.6m)
+
+## Acceptance criteria
+- Report numbers equal the values from the underlying run logs, computed both ways:
+  test_report_numbers_equal_the_run_logs (headless baseline seed 7; events, transactions and amount,
+  ring updates, rings, alerts and early warnings, events by type) and, through the API for a live
+  run, test_case_report_records_runs_hash_and_audit (numbers file vs. a recount of runs/live/<id>).
+- The report record lists every run_id used, with the scenario config hashes; the file's SHA-256 is
+  in the REPORT_GENERATED audit entry: test_case_report_records_runs_hash_and_audit.
+- Golden: the HTML report of baseline seed 7 is byte-stable apart from the timestamp field (two
+  independent runs, different timestamps) and matches tests/golden/report_baseline_seed7.html
+  (charts excluded from the committed copy; they are compared byte for byte between the two builds).
+- Playwright: a PDF report for a case is generated and downloaded: `%PDF-` magic, more than 10 KB,
+  Content-Type application/pdf, listed with one ring (e2e/reports.spec.ts).
+- Disclaimer from Global Rule 10 on every page (PDF @page footer) and in the header and closing footer.
+
+## CI before the docs commit
+- Run 40129709690 (48314f7, the report backend): all 11 jobs passed, the golden test included (Linux).
+
+## Fixed while testing
+- Executive summary: "0.918.0 of the rings": Jinja trim_blocks joined two sentences.
+- Logs-only reports showed ring type "unknown": detection records have no type; it is now read from
+  rings.jsonl, which live runs now write too (sync_logs).
+- The evidence-graph legend covered a node; it now sits outside the plot.

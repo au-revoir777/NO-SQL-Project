@@ -129,7 +129,21 @@ It explores the current run, the course seed graph or a Neo4j database.
 |---|---|---|
 | ![Entity](docs/images/webapp_p6_entity.png) | ![Hub stop](docs/images/webapp_p6_hub_stop.png) | ![Ring](docs/images/webapp_p6_ring.png) |
 
-The P2–P6 screenshots are taken by `webapp/e2e/screenshots.spec.ts` against the
+P7 adds investigation reports (HTML or PDF) for runs, cases and alerts:
+- the evidence subgraph, contributions and counterfactuals per ring;
+- the timeline and the analysts' notes;
+- run metrics read from the run logs;
+- a SAR-style summary;
+- an optional Oracle comparison.
+
+Every report is hashed and audited, and every page says "Generated from
+simulated data for research/demo purposes. Not a regulatory filing."
+
+| Report builder and list | Report, page 1 | Report, ring page |
+|---|---|---|
+| ![Reports](docs/images/webapp_p7_reports.png) | ![PDF page 1](docs/images/webapp_p7_report_pdf.png) | ![PDF ring page](docs/images/webapp_p7_report_ring.png) |
+
+The P2–P7 screenshots are taken by `webapp/e2e/screenshots.spec.ts` against the
 real API, with the e2e fixture accounts (`SCREENSHOTS=1 npx playwright test screenshots`).
 
 | Dashboard (dark) | A page of a later milestone (light) |
@@ -371,8 +385,9 @@ Phase 2 (web app and research extensions, [plan](docs/phase2/phase2_prompt.md)):
 | P4 Simulator and replays | done |
 | P5 Alerts and case management | done |
 | P6 Entity and graph explorer | done |
-| P7 Report generator | next |
-| P8–P16 | planned |
+| P7 Report generator | done |
+| P8 Experiments and metrics page | next |
+| P9–P16 | planned |
 
 Known open items:
 - Paper: check the bibliography entries against the publishers' pages before submission.
