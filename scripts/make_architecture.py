@@ -28,7 +28,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Circle, FancyArrowPatch, FancyBboxPatch, Rectangle
 
 OUT = Path(__file__).resolve().parents[1] / "docs" / "paper" / "figures"
-W, H = 1200, 540
+W, H = 1200, 440
 FONT = "Times New Roman"
 
 BENIGN = "#2e9e4f"  # green, as in the reference papers
@@ -86,39 +86,35 @@ def vector(x, y, colors, cell=9):  # type: ignore[no-untyped-def]
         rect(x, y + i * cell, cell, cell, fill=c, stroke=LINE, rounded=False, lw=0.6)
 
 
-# ── Top banner: closed loop ─────────────────────────────────────────────────
-text(
-    600,
-    18,
-    "Closed loop (feedback runs): alerts are returned to the attacker",
-    10.5,
-    bold=True,
-)
-edge((1126, 128), (1196, 128), (1196, 32), (10, 32), (10, 326), (22, 326), dashed=True)
-
-# ── Stage separators and titles ─────────────────────────────────────────────
-for x in (232, 488, 708, 900):
-    edge((x, 52), (x, 438), dashed=True, arrow=False, stroke="#9aa0a6", lw=0.8)
-titles = [
-    (116, "(a) Seeded simulator"),
-    (360, "(b) Incremental region"),
-    (598, "(c) Hub-aware weighting"),
-    (804, "(d) Detect and track"),
-    (1046, "(e) Score and explain"),
+# ── Layout: five equal-height stage panels, flow left to right at MID ───────
+TOP, BOT, MID = 76, 352, 214
+PANEL_FILL = "#f6f8fb"
+PANELS = [
+    (20, 220, "(a) Seeded simulator"),
+    (250, 470, "(b) Incremental region"),
+    (500, 690, "(c) Hub-aware weighting"),
+    (720, 890, "(d) Detect and track"),
+    (920, 1180, "(e) Score and explain"),
 ]
-for x, t in titles:
-    text(x, 62, t, 9.5, bold=True)
+for x0, x1, title in PANELS:
+    rect(x0, TOP, x1 - x0, BOT - TOP, fill=PANEL_FILL, stroke=PANEL, lw=1.0)
+    text((x0 + x1) / 2, 60, title, 9.5, bold=True)
+for x0, x1 in ((220, 250), (470, 500), (690, 720)):
+    edge((x0, MID), (x1, MID), lw=1.2)
+
+# ── Closed loop: alerts go back to the adaptive attacker ────────────────────
+text(600, 14, "Closed loop (feedback runs): alerts are returned to the attacker", 10.5, bold=True)
+edge((1160, TOP), (1160, 30), (10, 30), (10, 320), (36, 320), dashed=True)
 
 # ── (a) Simulator ───────────────────────────────────────────────────────────
-rect(22, 80, 196, 118, "", fill="#ffffff", stroke=PANEL, lw=1.0)
-text(120, 94, "scenario + seed", 9, italic=True)
+text(120, 88, "scenario + seed", 9, italic=True)
 pts = {
-    "u1": (58, 130),
-    "u2": (92, 118),
-    "u3": (80, 160),
-    "r1": (150, 124),
-    "r2": (180, 150),
-    "r3": (146, 172),
+    "u1": (58, 118),
+    "u2": (92, 106),
+    "u3": (80, 142),
+    "r1": (150, 110),
+    "r2": (182, 130),
+    "r3": (146, 148),
 }
 for a, b in (
     ("u1", "u2"),
@@ -132,158 +128,118 @@ for a, b in (
     edge(pts[a], pts[b], arrow=False, lw=0.8)
 for k, (x, y) in pts.items():
     node(x, y, 8, BENIGN if k.startswith("u") else FRAUD)
-text(120, 190, "users, hubs, planted rings", 8.5)
-# event stream
-text(120, 214, "event stream, 50 / batch", 8.5, italic=True)
+text(120, 166, "users, hubs, planted rings", 8)
+text(110, 190, "event stream, 50 / batch", 8, italic=True)
 for i in range(8):
     rect(
-        36 + i * 18,
-        224,
-        12,
-        22,
+        34 + i * 19,
+        205,
+        13,
+        18,
         fill=BLUE if i % 3 else "#c9d9ee",
         stroke=LINE,
         rounded=False,
         lw=0.6,
     )
-edge((182, 235), (258, 235))
-rect(
-    22,
-    300,
-    196,
-    52,
-    "adaptive attacker",
-    fill="#fff4e0",
-    stroke="#d29922",
-    size=9.5,
-)
-edge((120, 300), (120, 254), (60, 254), (60, 246))
-rect(
-    22,
-    372,
-    196,
-    52,
-    "ground-truth ledger\n(hidden)",
-    fill="#fbe3d6",
-    stroke=FRAUD,
-    size=9.5,
-)
-edge((214, 198), (226, 198), (226, 398), (218, 398), dashed=True)
-text(200, 362, "labels", 8.5, italic=True)
+edge((186, MID), (220, MID), arrow=False, lw=1.2)
+rect(36, 252, 130, 36, "ground-truth\nledger (hidden)", fill="#fbe3d6", stroke=FRAUD, size=8.5)
+edge((44, 130), (28, 130), (28, 270), (36, 270), dashed=True)
+rect(36, 302, 168, 38, "adaptive attacker", fill="#fff4e0", stroke="#d29922", size=9)
+edge((186, 302), (186, 224))
 
 # ── (b) Graph store and dirty region ────────────────────────────────────────
-rect(258, 80, 214, 228, "", fill="#ffffff", stroke=PANEL, lw=1.0)
-text(365, 94, "graph store", 9, italic=True)
-S.append(Shape("ellipse", 270, 116, 150, 150, "", "none", "#d1242f", dashed=True, lw=1.0))
-hub = (350, 196)
-node(*hub, 15, HUB, "hub", size=8.5, stroke="none")
+text(360, 90, "graph store", 9, italic=True)
+S.append(Shape("ellipse", 280, 122, 150, 150, "", "none", "#d1242f", dashed=True, lw=1.0))
+hub = (355, 197)
 for i in range(12):
-    xx = 350 + 62 * math.cos(i * 0.52)
-    yy = 196 + 62 * math.sin(i * 0.52)
+    xx = hub[0] + 58 * math.cos(i * 0.52)
+    yy = hub[1] + 58 * math.sin(i * 0.52)
     edge(hub, (xx, yy), arrow=False, lw=0.6, stroke="#9aa0a6")
     node(xx, yy, 5.5, BENIGN if i % 4 else FRAUD)
-node(440, 140, 7, FRAUD, stroke=LINE)
-node(452, 178, 7, FRAUD, stroke=LINE)
-edge((440, 140), (452, 178), arrow=False, lw=1.0)
-edge((452, 178), (408, 196), arrow=False, lw=1.0)
-text(365, 274, "touched users + 2 hops", 8.5)
-text(365, 294, "fan-out caps 250 / 20", 8.5)
-edge((472, 196), (512, 196))
+node(*hub, 15, HUB, "hub", size=8.5, stroke="none")
+node(446, 150, 7, FRAUD, stroke=LINE)
+node(454, 184, 7, FRAUD, stroke=LINE)
+edge((446, 150), (454, 184), arrow=False, lw=1.0)
+edge((454, 184), (413, 197), arrow=False, lw=1.0)
+text(360, 300, "touched users + 2 hops", 8.5)
+text(360, 320, "fan-out caps 250 / 20", 8.5)
 
 # ── (c) Hub-aware weighting ─────────────────────────────────────────────────
-rect(512, 80, 172, 228, "", fill="#ffffff", stroke=PANEL, lw=1.0)
-node(548, 130, 9, FRAUD)
-node(648, 130, 9, FRAUD)
-node(598, 112, 7, NEUTRAL, stroke=LINE)
-edge((548, 130), (598, 112), arrow=False, lw=2.6)
-edge((598, 112), (648, 130), arrow=False, lw=2.6)
-text(598, 96, "device, d = 3: w = 0.72", 8)
-node(548, 196, 9, BENIGN)
-node(648, 196, 9, BENIGN)
-node(598, 178, 9, HUB, stroke=LINE)
-edge((548, 196), (598, 178), arrow=False, lw=0.7)
-edge((598, 178), (648, 196), arrow=False, lw=0.7)
-text(598, 216, "office, d = 50: w = 0.25", 8)
-text(598, 244, "W = Σ h(d)·δ(t) + β·T", 9, italic=True)
-text(598, 262, "h(d) = 1 / ln(1 + d)", 9, italic=True)
-text(598, 284, "W ≥ θe, peel cores", 9)
-edge((684, 196), (726, 140))
+text(595, 92, "device, d = 3: w = 0.72", 8)
+node(545, 126, 9, FRAUD)
+node(645, 126, 9, FRAUD)
+node(595, 108, 7, NEUTRAL, stroke=LINE)
+edge((545, 126), (595, 108), arrow=False, lw=2.6)
+edge((595, 108), (645, 126), arrow=False, lw=2.6)
+node(545, 172, 9, BENIGN)
+node(645, 172, 9, BENIGN)
+node(595, 154, 9, HUB, stroke=LINE)
+edge((545, 172), (595, 154), arrow=False, lw=0.7)
+edge((595, 154), (645, 172), arrow=False, lw=0.7)
+text(595, 192, "office IP, d = 50: w = 0.25", 8)
+text(595, 244, "W = Σ h(d)·δ(t) + β·T", 9, italic=True)
+text(595, 264, "h(d) = 1 / ln(1 + d)", 9, italic=True)
+text(595, 304, "keep pairs with W ≥ θe,", 8.5)
+text(595, 320, "peel dense cores", 8.5)
 
 # ── (d) Detectors, ensemble and tracker ─────────────────────────────────────
-rect(726, 82, 156, 30, "hub-aware", fill="#e3edf9", stroke=PANEL, size=9)
-rect(726, 118, 156, 30, "money cycle", fill="#e3edf9", stroke=PANEL, size=9)
-rect(726, 154, 156, 30, "smurfing", fill="#e3edf9", stroke=PANEL, size=9)
+for i, label in enumerate(("hub-aware", "money cycle", "smurfing")):
+    rect(736, 90 + i * 34, 130, 28, label, fill="#e3edf9", stroke=PANEL, size=9)
+    edge((866, 104 + i * 34), (878, 104 + i * 34), arrow=False, lw=0.8)
 rect(
-    726,
-    196,
-    156,
-    34,
-    "baselines on timer",
-    fill="#ffffff",
-    stroke="#9aa0a6",
-    dashed=True,
-    size=8.5,
+    736, 194, 130, 30, "baselines (timer)", fill="#ffffff", stroke="#9aa0a6", dashed=True, size=8.5
 )
-node(804, 258, 8, "#ffffff", "+", stroke=LINE, size=12)
-for y in (97, 133, 169):
-    edge((882, y), (892, y), (892, 248), (812, 255), arrow=True, lw=0.8)
+edge((878, 104), (878, 248), (810, 248), lw=0.8)
+node(801, 248, 9, "#ffffff", "+", stroke=LINE, size=12)
+edge((801, 224), (801, 239), dashed=True)
+text(846, 262, "ensemble", 8, italic=True)
 rect(
-    726,
+    736,
     280,
-    156,
-    62,
+    130,
+    56,
     "ring tracker\nconfirm 2 hits\ndrop 3 misses",
     fill="#ffffff",
     stroke=LINE,
     size=8.5,
 )
-edge((804, 266), (804, 280))
-edge((804, 230), (804, 250), dashed=True)
-edge((882, 311), (922, 311), (922, 150), (936, 150))
+edge((801, 257), (801, 280))
+edge((866, 308), (905, 308), (905, 140), (934, 140), lw=1.2)
 
 # ── (e) Scoring, explanations, outputs ──────────────────────────────────────
-text(962, 92, "features", 9, italic=True)
-vector(950, 100, [BLUE, BLUE, "#b6d7a8", "#b6d7a8", "#f9cb9c", "#f9cb9c", NEUTRAL, NEUTRAL])
-vector(962, 100, ["#c9d9ee", BLUE, "#b6d7a8", "#d9ead3", "#f9cb9c", "#fce5cd", NEUTRAL, "#d0d4d9"])
-edge((976, 136), (1000, 136))
+text(948, 92, "ring features", 9, italic=True, align="left")
+vector(938, 104, [BLUE, BLUE, "#b6d7a8", "#b6d7a8", "#f9cb9c", "#f9cb9c", NEUTRAL, NEUTRAL])
+vector(950, 104, ["#c9d9ee", BLUE, "#b6d7a8", "#d9ead3", "#f9cb9c", "#fce5cd", NEUTRAL, "#d0d4d9"])
+edge((962, 140), (986, 140))
+rect(986, 116, 92, 48, "calibrated\nscorer", fill="#ffffff", stroke=LINE, size=8.5)
+edge((1078, 140), (1100, 140))
+rect(1100, 108, 16, 64, fill="#ffffff", stroke=LINE, rounded=False, lw=0.6)
+rect(1100, 128, 16, 44, fill=FRAUD, stroke="none", rounded=False)
+edge((1094, 136), (1124, 136), arrow=False, dashed=True, lw=0.8, stroke="#d1242f")
+text(1138, 136, "θa", 9, italic=True)
+text(1108, 186, "risk", 8.5)
 rect(
-    1000,
-    112,
-    90,
-    48,
-    "calibrated\nscorer",
-    fill="#ffffff",
-    stroke=LINE,
-    size=8.5,
-)
-edge((1090, 136), (1110, 136))
-rect(1110, 118, 16, 70, fill="#ffffff", stroke=LINE, rounded=False, lw=0.6)
-rect(1110, 140, 16, 48, fill=FRAUD, stroke="none", rounded=False)
-edge((1104, 150), (1132, 150), arrow=False, dashed=True, lw=0.8, stroke="#d1242f")
-text(1158, 150, "θa", 9, italic=True)
-text(1118, 204, "risk", 8.5)
-rect(
-    936,
-    222,
-    186,
-    46,
-    "explanation:\nevidence, counterfactual",
+    938,
+    214,
+    226,
+    44,
+    "explanation: contributions,\nevidence, counterfactual",
     fill="#ffffff",
     stroke=PANEL,
     size=8.5,
 )
-edge((1045, 160), (1045, 222))
-rect(936, 300, 76, 40, "dashboard", fill="#ffffff", stroke=LINE, size=8.5)
-rect(1020, 300, 76, 40, "audit log", fill="#ffffff", stroke=LINE, size=8.5)
-rect(1104, 300, 80, 40, "evaluation", fill="#ffffff", stroke=LINE, size=8.5)
-edge((974, 268), (974, 300))
-edge((1058, 268), (1058, 300))
-edge((1122, 245), (1144, 245), (1144, 300))
-edge((120, 424), (120, 456), (1144, 456), (1144, 340), dashed=True)
-text(560, 466, "labels reach only the evaluation", 8.5, italic=True)
+edge((1032, 164), (1032, 214))
+for x, w, label in ((932, 76, "dashboard"), (1014, 66, "audit log"), (1086, 80, "evaluation")):
+    rect(x, 292, w, 40, label, fill="#ffffff", stroke=LINE, size=8.5)
+    if label != "evaluation":
+        edge((x + w / 2, 258), (x + w / 2, 292))
+edge((1126, 258), (1126, 292))
+# labels reach only the evaluation
+edge((166, 270), (212, 270), (212, 372), (1170, 372), (1172, 312), (1166, 312), dashed=True)
+text(690, 384, "labels reach only the evaluation", 8.5, italic=True)
 
 # ── Legend ──────────────────────────────────────────────────────────────────
-ly = 500
+ly = 420
 items = [
     (BENIGN, "benign user"),
     (FRAUD, "ring member"),
