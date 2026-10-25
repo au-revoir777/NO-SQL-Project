@@ -121,7 +121,9 @@ class RedisStreamBus(EventBus):
         maxlen: int | None = 1_000_000,
         block_ms: int = 1000,
         client: Any = None,
+        count: int = 500,
     ) -> None:
+        self._count = count
         self._redis_url = redis_url
         self._stream_name = stream_name
         self._maxlen = maxlen
@@ -171,7 +173,7 @@ class RedisStreamBus(EventBus):
 
     async def subscribe(self) -> _RedisStreamIterator:
         client = await self._connect()
-        return _RedisStreamIterator(client, self._stream_name, self._block_ms)
+        return _RedisStreamIterator(client, self._stream_name, self._block_ms, self._count)
 
     async def close(self) -> None:
         if self._closed:
@@ -184,7 +186,8 @@ class RedisStreamBus(EventBus):
 class _RedisStreamIterator(AsyncEventIterator):
     """Async iterator over a Redis stream, stopping at the end-of-stream marker."""
 
-    def __init__(self, client: Any, stream: str, block_ms: int) -> None:
+    def __init__(self, client: Any, stream: str, block_ms: int, count: int = 500) -> None:
+        self._count = count
         self._client = client
         self._stream = stream
         self._block_ms = block_ms
@@ -197,7 +200,7 @@ class _RedisStreamIterator(AsyncEventIterator):
     async def __anext__(self) -> Event:
         while not self._buffer:
             resp = await self._client.xread(
-                {self._stream: self._last_id}, count=500, block=self._block_ms
+                {self._stream: self._last_id}, count=self._count, block=self._block_ms
             )
             for _stream, entries in resp or []:
                 self._buffer.extend(entries)
