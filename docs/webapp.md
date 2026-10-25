@@ -453,6 +453,23 @@ with the case in scope (`/reports?case=<id>`).
   download it (`%PDF-`, over 10 KB, `application/pdf`), see it listed with one
   ring, and run axe.
 
+## What-if and counterfactuals (P11)
+
+`POST /api/v1/alerts/{id}/what-if` re-scores an alert's ring with changed
+**actionable** features, using the deployed scorer: the run's own scorer when
+the run is current, else the shipped model (path and SHA-256 in the response).
+Nothing is stored. Alerts keep the scored feature vector with their
+explanation, so older alerts recorded before P11 answer 409 `no_features`.
+With no changes, the score is exactly the scorer's output for the scored
+vector (tested). The alert page's **What-if** tab has sliders for the
+actionable features, the score against the threshold, and an Apply button for
+each counterfactual.
+
+Counterfactuals now aim just below the raw score at which the interpolated
+isotonic calibration reaches the threshold. Before P11 they aimed at the
+calibrator's breakpoint and, in E12, none of them flipped the decision. See
+`docs/research/e12_results.md` and the protocol's amendment 1.
+
 ## Running it
 
 ```bash

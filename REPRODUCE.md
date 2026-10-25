@@ -65,6 +65,41 @@ Results committed before this change keep their original manifests: E4, E7 and
 `docs/audit/m0_baseline.json`, not rewritten.
 On the test laptop (Core i3-1115G4, 7.7 GB) the tuning grid took about 1.5 h (interrupted once and completed), the suite about 35 min, and the 100,000-user scale point another 30 min.
 
+## 3b. Phase 2 research experiments (protocols in `docs/research/`)
+
+Each has a protocol committed before its first result, and Markdown tables
+generated from its CSVs (`docs/research/e*_tables.md`, never edited by hand).
+
+```bash
+# E10 ring-level calibration and alert utility (seeds 301-303 + 1001-1010)
+python scripts/run_paper_experiments.py ring_alerts
+python -m fraudsim.experiments.ring_calibration --results-dir results/ --report docs/research/e10_tables.md
+
+# E11 early warning without look-ahead
+python scripts/run_paper_experiments.py early_warning
+python -m fraudsim.experiments.early_warning_eval --results-dir results/ --report docs/research/e11_tables.md
+
+# E12 explanation quality: collect units, retrain a second scorer on seeds 111-120, analyse
+python -m fraudsim.experiments.explanation_quality --collect --results-dir results
+python -m fraudsim.cli train-scorer --model logistic_regression --train-seeds 111-120 \
+    --test-seeds 201-205 --out results/e12_explanations/retrained_scorer_lr_seeds111-120.joblib
+python -m fraudsim.experiments.explanation_quality --analyse --results-dir results \
+    --retrained results/e12_explanations/retrained_scorer_lr_seeds111-120.joblib \
+    --report docs/research/e12_tables.md
+
+# E8 latency on the real stack. It WIPES the Neo4j database it is given, so use
+# throwaway containers, not the one holding a demo graph:
+docker run -d --name e8-neo4j -p 17687:7687 -e NEO4J_AUTH=neo4j/<random> neo4j:5.26-community
+docker run -d --name e8-redis -p 16379:6379 redis:7.4-alpine
+NEO4J_PASSWORD=<random> python -m fraudsim.experiments.stack_latency --run --results-dir results \
+    --neo4j-uri bolt://localhost:17687 --redis-url redis://localhost:16379/0
+python -m fraudsim.experiments.stack_latency --report docs/research/e8_tables.md
+docker rm -f -v e8-neo4j e8-redis
+```
+
+On the test laptop: E12 collection 5 min, the second scorer about 25 min, the
+analysis under a minute; E8 about 60 min.
+
 ## 4. Tables, figures, paper
 
 ```bash

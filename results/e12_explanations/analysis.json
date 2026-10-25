@@ -1,0 +1,33 @@
+{
+  "protocol": "docs/research/e12_protocol.md",
+  "units": 1383,
+  "alerts": 262,
+  "threshold": 0.8,
+  "deltas": [
+    0.01,
+    0.05
+  ],
+  "draws": 20,
+  "shipped_model": {
+    "path": "models/ring_scorer_lr.joblib",
+    "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+  },
+  "retrained_model": {
+    "path": "results/e12_explanations/retrained_scorer_lr_seeds111-120.joblib",
+    "sha256": "a0b01eb3f8cd2fbf7af88087e30907e38b1a3f8961ad7db518ee34c93b746d9a",
+    "train_seeds": [
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120
+    ],
+    "training_id": "00ca4120b360"
+  },
+  "units_sha256": "4655b2ab54db55741e8e50e1a8f3f4b6e014bc4826a8ee152da9aace40ea5582"
+}

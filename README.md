@@ -386,8 +386,25 @@ Phase 2 (web app and research extensions, [plan](docs/phase2/phase2_prompt.md)):
 | P5 Alerts and case management | done |
 | P6 Entity and graph explorer | done |
 | P7 Report generator | done |
-| P8 Experiments and metrics page | next |
-| P9–P16 | planned |
+| P10/E8 latency on the real stack (Redis Streams → engine → Neo4j) | done (`docs/research/e8_results.md`) |
+| P11/E12 explanation quality; what-if panel on alert pages | done (`docs/research/e12_results.md`) |
+| P12 Learned baselines and evasion-strength sweeps | next |
+| P8, P9, P13–P16 | planned (after P12 and paper refinement, by agreement) |
+
+Research results added in Phase 2 (each with a protocol committed before its
+first result):
+- **E8, real stack:** on Neo4j and Redis Streams the engine flags exactly the
+  same rings as in memory (52 of 52 runs). Detection per batch is 3–19 times
+  slower. Throughput is bounded at about 35–52 events/s on the test laptop,
+  enough for the paced scenarios but not for bursts.
+- **E12, explanations:**
+  - Before the fix, the counterfactuals shown on alert pages did not flip the
+    decision (0 of 103 valid); now they do (103 of 103).
+  - 69% of alerts have no single actionable counterfactual.
+  - Contributions are stable under small noise and across retraining
+    (Spearman 0.92), but the proposed counterfactual changes with the model
+    (29% the same).
+  - For correct alerts the evidence is the true ring (Oracle).
 
 Known open items:
 - Paper: check the bibliography entries against the publishers' pages before submission.

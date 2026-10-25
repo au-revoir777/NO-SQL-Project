@@ -1,0 +1,119 @@
+  train baseline     seed 111: 47 rows, 15 positive
+  train baseline     seed 112: 39 rows, 8 positive
+  train baseline     seed 113: 38 rows, 14 positive
+  train baseline     seed 114: 39 rows, 10 positive
+  train baseline     seed 115: 39 rows, 8 positive
+  train baseline     seed 116: 27 rows, 8 positive
+  train baseline     seed 117: 42 rows, 8 positive
+  train baseline     seed 118: 52 rows, 12 positive
+  train baseline     seed 119: 34 rows, 9 positive
+  train baseline     seed 120: 28 rows, 8 positive
+  test  baseline     seed 201: 34 rows, 8 positive
+  test  baseline     seed 202: 31 rows, 11 positive
+  test  baseline     seed 203: 41 rows, 14 positive
+  test  baseline     seed 204: 37 rows, 13 positive
+  test  baseline     seed 205: 38 rows, 13 positive
+  train high_noise   seed 111: 166 rows, 45 positive
+  train high_noise   seed 112: 173 rows, 30 positive
+  train high_noise   seed 113: 143 rows, 12 positive
+  train high_noise   seed 114: 187 rows, 31 positive
+  train high_noise   seed 115: 136 rows, 13 positive
+  train high_noise   seed 116: 130 rows, 12 positive
+  train high_noise   seed 117: 204 rows, 20 positive
+  train high_noise   seed 118: 167 rows, 10 positive
+  train high_noise   seed 119: 180 rows, 10 positive
+  train high_noise   seed 120: 211 rows, 35 positive
+  test  high_noise   seed 201: 200 rows, 22 positive
+  test  high_noise   seed 202: 204 rows, 28 positive
+  test  high_noise   seed 203: 146 rows, 22 positive
+  test  high_noise   seed 204: 199 rows, 38 positive
+  test  high_noise   seed 205: 190 rows, 24 positive
+  train hub_heavy    seed 111: 79 rows, 7 positive
+  train hub_heavy    seed 112: 95 rows, 10 positive
+  train hub_heavy    seed 113: 96 rows, 10 positive
+  train hub_heavy    seed 114: 80 rows, 7 positive
+  train hub_heavy    seed 115: 98 rows, 10 positive
+  train hub_heavy    seed 116: 112 rows, 11 positive
+  train hub_heavy    seed 117: 104 rows, 5 positive
+  train hub_heavy    seed 118: 115 rows, 11 positive
+  train hub_heavy    seed 119: 101 rows, 8 positive
+  train hub_heavy    seed 120: 114 rows, 7 positive
+  test  hub_heavy    seed 201: 129 rows, 13 positive
+  test  hub_heavy    seed 202: 90 rows, 17 positive
+  test  hub_heavy    seed 203: 105 rows, 10 positive
+  test  hub_heavy    seed 204: 87 rows, 16 positive
+  test  hub_heavy    seed 205: 135 rows, 18 positive
+  train adversarial  seed 111: 162 rows, 52 positive
+  train adversarial  seed 112: 111 rows, 16 positive
+  train adversarial  seed 113: 109 rows, 28 positive
+  train adversarial  seed 114: 136 rows, 13 positive
+  train adversarial  seed 115: 101 rows, 4 positive
+  train adversarial  seed 116: 120 rows, 18 positive
+  train adversarial  seed 117: 93 rows, 13 positive
+  train adversarial  seed 118: 106 rows, 15 positive
+  train adversarial  seed 119: 89 rows, 14 positive
+  train adversarial  seed 120: 102 rows, 34 positive
+  test  adversarial  seed 201: 95 rows, 19 positive
+  test  adversarial  seed 202: 121 rows, 29 positive
+  test  adversarial  seed 203: 111 rows, 11 positive
+  test  adversarial  seed 204: 121 rows, 19 positive
+  test  adversarial  seed 205: 121 rows, 20 positive
+  train drift        seed 111: 200 rows, 34 positive
+  train drift        seed 112: 118 rows, 8 positive
+  train drift        seed 113: 160 rows, 12 positive
+  train drift        seed 114: 117 rows, 14 positive
+  train drift        seed 115: 183 rows, 5 positive
+  train drift        seed 116: 163 rows, 13 positive
+  train drift        seed 117: 120 rows, 13 positive
+  train drift        seed 118: 130 rows, 6 positive
+  train drift        seed 119: 153 rows, 8 positive
+  train drift        seed 120: 120 rows, 12 positive
+  test  drift        seed 201: 149 rows, 4 positive
+  test  drift        seed 202: 149 rows, 18 positive
+  test  drift        seed 203: 147 rows, 9 positive
+  test  drift        seed 204: 148 rows, 7 positive
+  test  drift        seed 205: 173 rows, 5 positive
+  train scale_sweep  seed 111: 375 rows, 151 positive
+  train scale_sweep  seed 112: 341 rows, 110 positive
+  train scale_sweep  seed 113: 350 rows, 146 positive
+  train scale_sweep  seed 114: 303 rows, 111 positive
+  train scale_sweep  seed 115: 383 rows, 173 positive
+  train scale_sweep  seed 116: 276 rows, 70 positive
+  train scale_sweep  seed 117: 396 rows, 133 positive
+  train scale_sweep  seed 118: 387 rows, 104 positive
+  train scale_sweep  seed 119: 233 rows, 74 positive
+  train scale_sweep  seed 120: 385 rows, 142 positive
+  test  scale_sweep  seed 201: 332 rows, 147 positive
+  test  scale_sweep  seed 202: 349 rows, 105 positive
+  test  scale_sweep  seed 203: 201 rows, 45 positive
+  test  scale_sweep  seed 204: 311 rows, 134 positive
+  test  scale_sweep  seed 205: 322 rows, 145 positive
+{
+  "model": "results\\e12_explanations\\retrained_scorer_lr_seeds111-120.joblib",
+  "metrics": {
+    "fit_slice": {
+      "n": 6160,
+      "positives": 1089,
+      "brier": 0.051421,
+      "roc_auc": 0.972332,
+      "pr_auc": 0.847559,
+      "ece": 0.029339
+    },
+    "calibration_slice": {
+      "n": 2938,
+      "positives": 861,
+      "brier": 0.033543,
+      "roc_auc": 0.985009,
+      "pr_auc": 0.937208,
+      "ece": 0.0
+    },
+    "test": {
+      "n": 4516,
+      "positives": 984,
+      "brier": 0.044172,
+      "roc_auc": 0.980326,
+      "pr_auc": 0.899733,
+      "ece": 0.018226
+    }
+  }
+}
