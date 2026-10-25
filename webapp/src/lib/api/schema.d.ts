@@ -170,6 +170,28 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/alerts/{alert_id}/what-if": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * What If
+         * @description Re-score the alert's ring with changed actionable features, using the
+         *     deployed scorer. Nothing is stored; with no changes the score is exactly the
+         *     scorer's output for the scored vector.
+         */
+        post: operations["alerts_what_if"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/audit": {
         parameters: {
             query?: never;
@@ -3159,6 +3181,94 @@ export interface components {
             /** Valid */
             valid: boolean;
         };
+        /** WhatIfCounterfactual */
+        WhatIfCounterfactual: {
+            /** Current */
+            current: number;
+            /** Feature */
+            feature: string;
+            /** Label */
+            label: string;
+            /** Target */
+            target: number;
+            /**
+             * Valid
+             * @description Setting the feature to target scores below the threshold
+             */
+            valid: boolean;
+        };
+        /** WhatIfFeature */
+        WhatIfFeature: {
+            /** Actionable */
+            actionable: boolean;
+            /** Contribution */
+            contribution: number;
+            /** Label */
+            label: string;
+            /** Name */
+            name: string;
+            /** Original */
+            original: number;
+            /** Value */
+            value: number;
+        };
+        /** WhatIfIn */
+        WhatIfIn: {
+            /**
+             * Changes
+             * @description Actionable feature -> new value; the other features keep their scored values
+             */
+            changes?: {
+                [key: string]: number;
+            };
+        };
+        /** WhatIfModel */
+        WhatIfModel: {
+            /**
+             * From Run
+             * @description The run's own scorer (else the shipped model)
+             */
+            from_run: boolean;
+            /** Path */
+            path: string;
+            /** Sha256 */
+            sha256: string | null;
+        };
+        /** WhatIfOut */
+        WhatIfOut: {
+            /**
+             * Alert
+             * @description score >= threshold
+             */
+            alert: boolean;
+            /** Counterfactuals */
+            counterfactuals: components["schemas"]["WhatIfCounterfactual"][];
+            /** Features */
+            features: components["schemas"]["WhatIfFeature"][];
+            /**
+             * Flips
+             * @description The changes move the decision across the threshold
+             */
+            flips: boolean;
+            model: components["schemas"]["WhatIfModel"];
+            /**
+             * Original Score
+             * @description Calibrated score of the scored vector, unmodified
+             */
+            original_score: number;
+            /**
+             * Raw
+             * @description Model probability before calibration, with the changes
+             */
+            raw: number;
+            /**
+             * Score
+             * @description Calibrated score with the changes
+             */
+            score: number;
+            /** Threshold */
+            threshold: number;
+        };
     };
     responses: never;
     parameters: never;
@@ -3925,6 +4035,77 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["NoteOut"];
+                };
+            };
+            /** @description Not signed in or session invalid */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Role or CSRF check failed */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Validation error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description Internal error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    alerts_what_if: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                alert_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["WhatIfIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WhatIfOut"];
                 };
             };
             /** @description Not signed in or session invalid */

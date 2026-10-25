@@ -49,6 +49,7 @@ import {
   words,
 } from "./common";
 import { type Evidence, EvidenceGraph } from "./evidence-graph";
+import { WhatIfPanel } from "./what-if-panel";
 
 function Stat({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -412,6 +413,7 @@ export function AlertDetail({ id }: { id: number }) {
           <TabsTrigger value="counterfactuals">Counterfactuals</TabsTrigger>
           <TabsTrigger value="timeline">Timeline</TabsTrigger>
           <TabsTrigger value="activity">Activity</TabsTrigger>
+          <TabsTrigger value="what-if">What-if</TabsTrigger>
         </TabsList>
         <Card className="mt-2">
           <CardContent>
@@ -435,6 +437,9 @@ export function AlertDetail({ id }: { id: number }) {
             </TabsContent>
             <TabsContent value="timeline">
               <Timeline a={a} />
+            </TabsContent>
+            <TabsContent value="what-if">
+              <WhatIfPanel alertId={a.id} />
             </TabsContent>
             <TabsContent value="activity" className="grid gap-6 lg:grid-cols-2">
               <section className="space-y-6">

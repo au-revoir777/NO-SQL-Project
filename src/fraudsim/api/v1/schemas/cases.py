@@ -181,3 +181,45 @@ class AuditVerify(BaseModel):
     ok: bool
     entries: int
     problem: str | None
+
+
+class WhatIfIn(BaseModel):
+    changes: dict[str, float] = Field(
+        default_factory=dict,
+        description="Actionable feature -> new value; the other features keep their scored values",
+    )
+
+
+class WhatIfFeature(BaseModel):
+    name: str
+    label: str
+    value: float
+    original: float
+    actionable: bool
+    contribution: float
+
+
+class WhatIfCounterfactual(BaseModel):
+    feature: str
+    label: str
+    current: float
+    target: float
+    valid: bool = Field(description="Setting the feature to target scores below the threshold")
+
+
+class WhatIfModel(BaseModel):
+    path: str
+    sha256: str | None
+    from_run: bool = Field(description="The run's own scorer (else the shipped model)")
+
+
+class WhatIfOut(BaseModel):
+    model: WhatIfModel
+    threshold: float
+    original_score: float = Field(description="Calibrated score of the scored vector, unmodified")
+    score: float = Field(description="Calibrated score with the changes")
+    raw: float = Field(description="Model probability before calibration, with the changes")
+    alert: bool = Field(description="score >= threshold")
+    flips: bool = Field(description="The changes move the decision across the threshold")
+    features: list[WhatIfFeature]
+    counterfactuals: list[WhatIfCounterfactual]

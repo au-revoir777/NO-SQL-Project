@@ -5171,6 +5171,186 @@
         ],
         "title": "ValidationResult",
         "type": "object"
+      },
+      "WhatIfCounterfactual": {
+        "properties": {
+          "current": {
+            "title": "Current",
+            "type": "number"
+          },
+          "feature": {
+            "title": "Feature",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "target": {
+            "title": "Target",
+            "type": "number"
+          },
+          "valid": {
+            "description": "Setting the feature to target scores below the threshold",
+            "title": "Valid",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "feature",
+          "label",
+          "current",
+          "target",
+          "valid"
+        ],
+        "title": "WhatIfCounterfactual",
+        "type": "object"
+      },
+      "WhatIfFeature": {
+        "properties": {
+          "actionable": {
+            "title": "Actionable",
+            "type": "boolean"
+          },
+          "contribution": {
+            "title": "Contribution",
+            "type": "number"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "original": {
+            "title": "Original",
+            "type": "number"
+          },
+          "value": {
+            "title": "Value",
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "label",
+          "value",
+          "original",
+          "actionable",
+          "contribution"
+        ],
+        "title": "WhatIfFeature",
+        "type": "object"
+      },
+      "WhatIfIn": {
+        "properties": {
+          "changes": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "description": "Actionable feature -> new value; the other features keep their scored values",
+            "title": "Changes",
+            "type": "object"
+          }
+        },
+        "title": "WhatIfIn",
+        "type": "object"
+      },
+      "WhatIfModel": {
+        "properties": {
+          "from_run": {
+            "description": "The run's own scorer (else the shipped model)",
+            "title": "From Run",
+            "type": "boolean"
+          },
+          "path": {
+            "title": "Path",
+            "type": "string"
+          },
+          "sha256": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sha256"
+          }
+        },
+        "required": [
+          "path",
+          "sha256",
+          "from_run"
+        ],
+        "title": "WhatIfModel",
+        "type": "object"
+      },
+      "WhatIfOut": {
+        "properties": {
+          "alert": {
+            "description": "score >= threshold",
+            "title": "Alert",
+            "type": "boolean"
+          },
+          "counterfactuals": {
+            "items": {
+              "$ref": "#/components/schemas/WhatIfCounterfactual"
+            },
+            "title": "Counterfactuals",
+            "type": "array"
+          },
+          "features": {
+            "items": {
+              "$ref": "#/components/schemas/WhatIfFeature"
+            },
+            "title": "Features",
+            "type": "array"
+          },
+          "flips": {
+            "description": "The changes move the decision across the threshold",
+            "title": "Flips",
+            "type": "boolean"
+          },
+          "model": {
+            "$ref": "#/components/schemas/WhatIfModel"
+          },
+          "original_score": {
+            "description": "Calibrated score of the scored vector, unmodified",
+            "title": "Original Score",
+            "type": "number"
+          },
+          "raw": {
+            "description": "Model probability before calibration, with the changes",
+            "title": "Raw",
+            "type": "number"
+          },
+          "score": {
+            "description": "Calibrated score with the changes",
+            "title": "Score",
+            "type": "number"
+          },
+          "threshold": {
+            "title": "Threshold",
+            "type": "number"
+          }
+        },
+        "required": [
+          "model",
+          "threshold",
+          "original_score",
+          "score",
+          "raw",
+          "alert",
+          "flips",
+          "features",
+          "counterfactuals"
+        ],
+        "title": "WhatIfOut",
+        "type": "object"
       }
     }
   },
@@ -6387,6 +6567,99 @@
           }
         },
         "summary": "Add Note",
+        "tags": [
+          "alerts"
+        ]
+      }
+    },
+    "/api/v1/alerts/{alert_id}/what-if": {
+      "post": {
+        "description": "Re-score the alert's ring with changed actionable features, using the\ndeployed scorer. Nothing is stored; with no changes the score is exactly the\nscorer's output for the scored vector.",
+        "operationId": "alerts_what_if",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "alert_id",
+            "required": true,
+            "schema": {
+              "title": "Alert Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WhatIfIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WhatIfOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not signed in or session invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Role or CSRF check failed"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "Internal error"
+          }
+        },
+        "summary": "What If",
         "tags": [
           "alerts"
         ]

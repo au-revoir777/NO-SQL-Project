@@ -11,13 +11,17 @@ stored and no threshold changes.
 
 from __future__ import annotations
 
+import math
 from datetime import datetime
+from functools import lru_cache
+from pathlib import Path
 from typing import Annotated, Any, Literal
 
+import numpy as np
 from fastapi import APIRouter, Query, Request, Response
 from sqlalchemy import select
 
-from fraudsim.api.live import ring_payload
+from fraudsim.api.live import DEFAULT_MODEL, load_default_scorer, ring_payload
 from fraudsim.api.state import state
 from fraudsim.api.v1.auth import audit
 from fraudsim.api.v1.auth.deps import DB, CurrentUser, client_ip
@@ -38,8 +42,17 @@ from fraudsim.api.v1.schemas.cases import (
     NoteOut,
     SavedViewIn,
     SavedViewOut,
+    WhatIfCounterfactual,
+    WhatIfFeature,
+    WhatIfIn,
+    WhatIfModel,
+    WhatIfOut,
 )
 from fraudsim.appdb.models import Alert, AlertStatus, Label, LabelKind, Note, Role, SavedView
+from fraudsim.logging.replay import file_sha256
+from fraudsim.scoring.explanations import ACTIONABLE, model_counterfactuals
+from fraudsim.scoring.features import FEATURE_LABELS, FEATURE_NAMES
+from fraudsim.scoring.scorer import RingScorer
 
 router = APIRouter(prefix="/alerts", tags=["alerts"])
 
@@ -359,4 +372,111 @@ def add_note(alert_id: int, body: NoteIn, request: Request, db: DB, user: Curren
     db.commit()
     return next(
         x for x in svc.notes_for(db, run_id=a.run_id, alert_ref=a.alert_ref) if x.id == n.id
+    )
+
+
+# ─── What-if (P11) ────────────────────────────────────────────────────
+
+
+@lru_cache(maxsize=1)
+def _shipped_scorer() -> RingScorer | None:
+    return load_default_scorer()
+
+
+def _scorer_for(a: Alert) -> tuple[RingScorer, WhatIfModel]:
+    """The scorer that scored the alert: the run's own when it is current, else the shipped one."""
+    live = state.live if state.live is not None and state.run_id == a.run_id else None
+    scorer = getattr(getattr(live, "scoring", None), "scorer", None) if live else None
+    from_run = scorer is not None
+    if scorer is None:
+        scorer = _shipped_scorer()
+    if scorer is None:
+        raise ApiError(409, "no_scorer", "No scoring model is available on the server")
+    path = getattr(scorer, "source_path", None) or DEFAULT_MODEL
+    return scorer, WhatIfModel(
+        path=Path(path).name,
+        sha256=file_sha256(Path(path)) if Path(path).exists() else None,
+        from_run=from_run,
+    )
+
+
+def _features_of(a: Alert) -> dict[str, float]:
+    live = state.live if state.live is not None and state.run_id == a.run_id else None
+    ring = live.engine.tracker.rings.get(a.alert_ref) if live else None
+    feats = (ring.features if ring is not None else None) or (a.explanation or {}).get("features")
+    if not feats:
+        raise ApiError(
+            409,
+            "no_features",
+            "This alert has no stored feature vector (recorded before what-if existed)",
+        )
+    return {k: float(feats[k]) for k in FEATURE_NAMES}
+
+
+@router.post(
+    "/{alert_id}/what-if",
+    response_model=WhatIfOut,
+    operation_id="alerts_what_if",
+    responses=NOT_FOUND,
+)
+def what_if(alert_id: int, body: WhatIfIn, db: DB) -> WhatIfOut:
+    """
+    Re-score the alert's ring with changed actionable features, using the
+    deployed scorer. Nothing is stored; with no changes the score is exactly the
+    scorer's output for the scored vector.
+    """
+    a = svc.get_alert(db, alert_id)
+    bad = sorted(set(body.changes) - set(ACTIONABLE))
+    if bad:
+        raise ApiError(
+            422,
+            "validation_error",
+            f"Only actionable features can change: {', '.join(bad)}",
+            details=[{"allowed": list(ACTIONABLE)}],
+        )
+    if any(not math.isfinite(v) or v < 0 for v in body.changes.values()):
+        raise ApiError(422, "validation_error", "Feature values must be finite and non-negative")
+    scorer, model = _scorer_for(a)
+    original = _features_of(a)
+    threshold = float(a.threshold if a.threshold is not None else 0.8)
+    x0 = np.asarray([original[f] for f in FEATURE_NAMES], dtype=float)
+    x = x0.copy()
+    for f, v in body.changes.items():
+        x[FEATURE_NAMES.index(f)] = v
+    score0 = float(scorer.predict(x0)[0])
+    score = float(scorer.predict(x)[0])
+    contrib = scorer.contributions(x)
+    cfs = []
+    for feat, cur, tgt in model_counterfactuals(scorer, x, contrib, threshold):
+        y = x.copy()
+        y[FEATURE_NAMES.index(feat)] = tgt
+        cfs.append(
+            WhatIfCounterfactual(
+                feature=feat,
+                label=FEATURE_LABELS[feat],
+                current=round(cur, 6),
+                target=round(tgt, 6),
+                valid=float(scorer.predict(y)[0]) < threshold,
+            )
+        )
+    return WhatIfOut(
+        model=model,
+        threshold=threshold,
+        original_score=score0,
+        score=score,
+        raw=float(scorer.raw_proba(x)[0]),
+        alert=score >= threshold,
+        flips=(score >= threshold) != (score0 >= threshold),
+        features=[
+            WhatIfFeature(
+                name=f,
+                label=FEATURE_LABELS[f],
+                value=float(x[i]),
+                original=float(x0[i]),
+                actionable=f in ACTIONABLE,
+                contribution=contrib[f],
+            )
+            for i, f in enumerate(FEATURE_NAMES)
+        ],
+        counterfactuals=cfs,
     )

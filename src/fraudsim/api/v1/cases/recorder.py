@@ -28,6 +28,8 @@ MAX_HISTORY = 200
 
 def _snapshot(ring: Any) -> dict[str, Any]:
     exp = dict(ring.explanation or {})
+    if exp and ring.features:
+        exp["features"] = dict(ring.features)  # the scored vector, for what-if (P11)
     return {
         "ring_type": ring.ring_type.value,
         "ring_status": ring.status.value,
