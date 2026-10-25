@@ -201,7 +201,14 @@ seeds disjoint from all evaluation seeds (Fig.~\ref{fig:training}): the detector
 runs on six scenarios with seeds 101--110, each confirmed or changed ring
 becomes a row of its 19 features, labelled from the hidden ledger, and within
 each run the first 70\% of rows fit the regression and the last 30\% the
-calibrator.
+calibrator. On the held-out test seeds 201--205 it reaches ROC AUC
+\GenRingAUC{} and PR AUC \GenRingPR{} over \GenRingUnits{} ring units (a unit's
+score is its highest calibrated score); over the \GenSnapUnits{} correlated
+snapshots of those rings the figures are \GenSnapAUC{} and \GenSnapPR{}.
+Trained without one scenario and tested on it, the scorer loses at most
+\GenDropSnapAUC{} ROC AUC (\texttt{\GenDropSnapAUCWhere}) and at most
+\GenDropRingPR{} ring-level PR AUC (\texttt{\GenDropRingPRWhere}), but all
+scenarios come from the same generator.
 
 \begin{figure*}[t]
 \centering
@@ -340,7 +347,10 @@ not find in public form.
 generator; the test seeds are independent draws but from the same
 distribution. In the weight-function comparison, three of the five selected
 edge thresholds lie on the edge of the grid, so those functions might do
-somewhat better with a wider grid.
+somewhat better with a wider grid. The scorer was trained on the same
+generator and scenarios it is tested on; leaving one scenario out costs little
+(Section~\ref{sec:method}), but a scenario type the generator cannot produce is
+not covered by that test.
 
 \textbf{Scale.} The largest graph we measured has \ScaleMaxUsers{} users. A
 million users was not feasible on the 7.7\,GB test machine: at 100{,}000 users
@@ -372,7 +382,28 @@ benchmarks. Our node-level numbers are not comparable to those benchmarks.
 
 \textbf{Calibration.} The shipped scorer is miscalibrated at the ring level
 (Section~\ref{sec:phase2}). Its scores rank alerts well but should not be read
-as probabilities until a ring-level calibrator replaces it.
+as probabilities until a ring-level calibrator replaces it. We did not re-run
+the main tables with the ring-level refit: it is a monotone map of the same
+scores, so with the alert threshold selected on the validation seeds it offers
+the same set of ranked operating points and changes only which one the grid
+picks, not the ranking behind Tables~\ref{tab:baselines}
+and~\ref{tab:ablation}.
+
+\textbf{Attacker model.} The adaptive attacker only shifts its mix among the
+implemented evasion strategies. We did not test a white-box attacker that
+exploits the detector's parameters: rings smaller than 3 or larger than 25
+members, sharing patterns whose edge density stays below 0.75, transfers kept
+under the cap $\beta_{\max}$ of the transaction term, or one distinct hub per
+pair of members. Each of these would bypass a fixed rule of our detector, so
+the evasion results are a lower bound on what an informed attacker achieves.
+
+\textbf{Streaming load.} ``Streaming'' here means micro-batches on a paced
+simulated stream. Accuracy falls as the event rate rises (F1 \SwRateLoF{} at
+\SwRateLo{} events/s, \SwRateHiF{} at \SwRateHi{}), and on Neo4j the store
+saturates at \EightTputLo{}--\EightTputHi{} events per second on the test
+laptop. Cheap engineering steps we did not test are reading each region with
+one batched query instead of several round trips, and caching attribute degrees
+between batches.
 
 \section{Conclusion}
 Keeping links through busy shared attributes, instead of capping them, lets a

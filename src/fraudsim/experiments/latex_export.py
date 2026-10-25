@@ -531,6 +531,31 @@ def _adaptivity_numbers(results_dir: Path) -> list[str]:
     return out
 
 
+def _e6b_numbers(results_dir: Path, f2) -> list[str]:  # type: ignore[no-untyped-def]
+    """Macros for E6b (leave-one-scenario-out scorer, ring-level scorer metrics)."""
+    got = _results(results_dir, "e6b_generalisation")
+    if not got:
+        return []
+    df, header = got
+    out = [header]
+    a = df[df["fold"] == "all"].iloc[0]
+    out += [
+        _macro("GenSnapAUC", f"{a['snap_roc_auc']:.3f}"),
+        _macro("GenSnapPR", f"{a['snap_pr_auc']:.3f}"),
+        _macro("GenRingAUC", f"{a['ring_roc_auc']:.3f}"),
+        _macro("GenRingPR", f"{a['ring_pr_auc']:.3f}"),
+        _macro("GenRingUnits", f"{int(a['ring_n']):,}"),
+        _macro("GenSnapUnits", f"{int(a['snap_n']):,}"),
+    ]
+    ref = df[(df["fold"] != "all") & (df["model"] == "all_scenarios")].set_index("fold")
+    loo = df[(df["fold"] != "all") & (df["model"] == "leave_one_out")].set_index("fold")
+    for col, tag in (("snap_roc_auc", "SnapAUC"), ("ring_pr_auc", "RingPR")):
+        drop = (ref[col] - loo[col]).dropna()
+        out.append(_macro(f"GenDrop{tag}", f"{drop.max():.2f}"))
+        out.append(_macro(f"GenDrop{tag}Where", _esc(str(drop.idxmax()))))
+    return out
+
+
 def _e5b_numbers(results_dir: Path, f2) -> list[str]:  # type: ignore[no-untyped-def]
     """Macros for E5b (fan-out limit at large hubs). Size tags: A = 500, B = 2,000, C = 10,000."""
     got = _results(results_dir, "e5b_large_hubs")
@@ -841,6 +866,7 @@ def generate_numbers(output_dir: Path, results_dir: Path = Path("results")) -> P
     out += _e1b_numbers(results_dir, f2)
     out += _e2b_numbers(results_dir, f2)
     out += _e5b_numbers(results_dir, f2)
+    out += _e6b_numbers(results_dir, f2)
     tuned = Path("configs/tuned.json")
     if tuned.exists():
         t = json.loads(tuned.read_text(encoding="utf-8"))
