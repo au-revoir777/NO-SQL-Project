@@ -119,7 +119,7 @@ rings; right: ring F1 (mean, 95\% CI).}
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{\figpath/fig5_evasion.pdf}
-\caption{Ring recall by evasion strategy, pooled over all E1 runs.}
+\caption{Ring recall by evasion strategy, pooled over all runs of Table~ef{tab:baselines}.}
 \label{fig:evasion}
 \end{figure*}
 
@@ -197,7 +197,11 @@ Table~\ref{tab:ablation} removes one component at a time (\AblPairs{} paired
 runs). The calibrated scorer contributes most: without it F1 falls from
 \AblFullF{} to \AblNoScoringF{} because precision drops to \AblNoScoringP{}.
 Without the hub-aware detector, F1 falls to \AblNoHubAwareF{} and to
-\AblNoHubAwareFHubHeavy{} on \texttt{hub\_heavy}. Removing the cycle or the
+\AblNoHubAwareFHubHeavy{} on \texttt{hub\_heavy}, but precision rises to
+\AblNoHubAwareP{} at recall \AblNoHubAwareR{}: most false candidates come from
+the hub-aware detector, and the scorer removes most of them. A separate alert
+threshold per detector is a cheap refinement this suggests; we have not
+tested it. Removing the cycle or the
 smurfing detector costs \AblNoCycleF{} and \AblNoSmurfingF{}. Replacing the hub
 weight by a constant at the same edge threshold collapses \texttt{hub\_heavy}
 (\AblFullFHubHeavy{} to \AblNoHubWeightFHubHeavy{}) but slightly helps

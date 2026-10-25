@@ -186,7 +186,8 @@ Candidates from different detectors are merged when their Jaccard overlap is at
 least $0.5$, or when one contains $80\%$ of the other and they differ in size by
 at most a factor of two. A tracker matches candidates to existing rings across
 batches; a ring is \emph{confirmed} after two consecutive hits and dissolved
-after three misses. Confirmed rings are scored by a logistic-regression model
+after three misses (this hysteresis is what the ablation ``w/o hysteresis''
+sets to one hit and one miss). Confirmed rings are scored by a logistic-regression model
 over 19 ring features (size, density, which attribute kinds are shared, the
 hub-adjusted weight, cycle presence and length, burstiness, account ages,
 internal transfers per member, amount statistics, growth, hub exposure and
@@ -220,7 +221,8 @@ of 19 ring features. (d) Within each run, rows in time order are split 70/30
 between logistic regression and isotonic calibration. (e) Held-out test seeds
 (values from \texttt{models/ring\_scorer\_lr.json}). Below: in detection, each
 changed ring is scored every batch, and an alert carries its explanation;
-analyst feedback adjusts the threshold.}
+analyst feedback adjusts the threshold in the product; that loop is not part
+of any experiment in this paper.}
 \label{fig:training}
 \end{figure*}
 
@@ -247,7 +249,7 @@ Table~\ref{tab:scenario-def} lists the scenarios.
 (b) One seeded generator combines a benign population, benign hubs, planted
 rings and an evasion layer. (c) Observable events go to the detector, with a
 digest of the sequence recorded with every result; ring lifecycle events go
-only to the ground-truth ledger used for evaluation and the Oracle view. In
+only to the ground-truth ledger used for evaluation and for the demo's Oracle view, which overlays that ground truth on the dashboard and is not shown to the detector. In
 closed-loop runs, flags are returned to the adaptive attacker.}
 \label{fig:simulator}
 \end{figure*}
@@ -268,7 +270,7 @@ hub\_heavy & 100 & 60 & 25 & 4 planted, hub hiding \\
 adversarial & 120 & 90 & 30 & 5 planted + random, all five \\
 drift & 200 & 90 & 40 & 2 planted + random, hub hiding \\
 demo\_story & 120 & 90 & 20 & 3 planted, hub hiding \\
-scale\_sweep & $10^3$+ & 120 & 100 & latency benchmark (E4) \\
+scale\_sweep & $10^3$+ & 120 & 100 & latency benchmark (RQ2) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -341,7 +343,13 @@ group labels, and we could replay only a four-day slice with a one-hour window.
 Elliptic and the AMLSim samples turned out to be outside what the transaction
 rules can detect, for structural reasons we describe. A real-world test of
 hub-aware weighting would need data with shared-attribute links, which we did
-not find in public form.
+not find in public form with group labels. The IEEE-CIS fraud data
+(\url{https://ieee-dataport.org/documents/ieee-cis-fraud-detection}) comes
+closest: e-commerce transactions with card, address and e-mail-domain fields
+and masked identity and device fields, labelled per transaction. It would let
+the shared-attribute detectors and the hub weight run on real links and measure
+false alarms around busy attributes, but without ring labels it cannot measure
+ring recall.
 
 \textbf{Tuning.} Thresholds were selected on validation seeds of the same
 generator; the test seeds are independent draws but from the same

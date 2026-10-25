@@ -204,7 +204,7 @@ def training_pipeline() -> None:
     A.rect(898, 400, 190, 40, "analyst confirm / dismiss", stroke=LINE, size=8.5)
     A.edge((993, 372), (993, 400))
     A.edge((898, 420), (784, 420), (784, 372), dashed=True)
-    A.text(640, 420, "shifts θa per ring type (audited)", 8, italic=True)
+    A.text(600, 420, "shifts θa per ring type (product only; not evaluated)", 8, italic=True)
     _save("training_pipeline")
 
 

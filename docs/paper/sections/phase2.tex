@@ -7,7 +7,7 @@ reason.
 
 \subsection{RQ6: latency on the deployed stack}
 The latencies of Section~\ref{sec:results} come from the in-memory store. We
-therefore replayed the paced E1 scenarios and the users sweep through
+therefore replayed the paced scenarios of RQ1 and the users sweep through
 the deployed path: Redis Streams into the detection engine, with the graph in
 Neo4j~5.26. All \EightRuns{} runs produced the same sequence of ring updates and
 the same flagged rings as the in-memory engine (\EightSame{} of \EightRuns{}),
@@ -78,8 +78,8 @@ evidence does not list. We have not run it.
 To test whether the rule stage is needed, we trained gradient boosting on the
 same 19 ring features over rule-free candidate groups (Louvain communities
 without a density filter). Training, calibration and threshold selection used
-the shipped scorer's protocol. On E1's test streams it reaches F1
-\ThirteenGbF{} against \ThirteenPropF{} (paired Wilcoxon $p$ \ThirteenP{},
+the shipped scorer's protocol. On the test streams of RQ1 it reaches F1
+\ThirteenGbF{} against \ThirteenPropF{} (paired Wilcoxon $p\ThirteenP$,
 rank-biserial \ThirteenRb{}). Precision is not the problem: it is \ThirteenGbP{}
 against \ThirteenPropP{}, with a third of the alerts. Recall is:
 \ThirteenGbR{} against \ThirteenPropR{}. The gap is largest where hubs and
