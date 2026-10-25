@@ -531,6 +531,47 @@ def _adaptivity_numbers(results_dir: Path) -> list[str]:
     return out
 
 
+def _e4b_numbers(results_dir: Path, f2) -> list[str]:  # type: ignore[no-untyped-def]
+    """Macros for E4b (timer-based full recomputation; scale with growing hubs)."""
+    out: list[str] = []
+    got = _results(results_dir, "e4b_timer")
+    if got:
+        df, header = got
+        out.append(header)
+        df["f1"] = df["f1"].fillna(0)
+        df["cost"] = df["detect_ms_sum"] / df["sim_s"]
+        s = summarize(df, ["method"]).set_index("method")
+        t = paired_vs(df, "inc", "f1").set_index("method")
+        tags = {"inc": "Inc", "timer_1": "One", "timer_5": "Five", "timer_30": "Thirty"}
+        for m, tag in tags.items():
+            g = df[df["method"] == m]
+            if g.empty:
+                continue
+            out.append(_macro(f"Tm{tag}F", f2(s.loc[m, "f1_mean"])))
+            out.append(_macro(f"Tm{tag}TTD", _num(g["ttd_p50_s"].median())))
+            out.append(_macro(f"Tm{tag}Cost", f"{g['cost'].mean():,.0f}"))
+            out.append(_macro(f"Tm{tag}Pass", _num(g["detect_ms_p50"].mean())))
+            if m in t.index:
+                out.append(_macro(f"Tm{tag}Pval", _p(float(t.loc[m, "wilcoxon_p"]))))
+        out.append(_macro("TmRuns", str(df[df["method"] == "inc"].shape[0])))
+    got = _results(results_dir, "e4b_scale_hubs")
+    if got:
+        df, header = got
+        out.append(header)
+        sizes = {1000: "A", 5000: "B", 20000: "C"}
+        modes = {"incremental": "Inc", "full": "Full", "timer_5": "Timer"}
+        for n, st in sizes.items():
+            for mode, mt in modes.items():
+                g = df[(df["users"] == n) & (df["mode"] == mode)]
+                if g.empty:
+                    continue
+                out.append(_macro(f"Gh{mt}Ms{st}", _num(g["detect_ms_p50"].mean())))
+                out.append(_macro(f"Gh{mt}Region{st}", f"{g['region_p50'].median():,.0f}"))
+                out.append(_macro(f"Gh{mt}Cost{st}", f"{g['ms_per_sim_s'].mean():,.0f}"))
+        out.append(_macro("GhSeeds", str(df["seed"].nunique())))
+    return out
+
+
 def _e6b_numbers(results_dir: Path, f2) -> list[str]:  # type: ignore[no-untyped-def]
     """Macros for E6b (leave-one-scenario-out scorer, ring-level scorer metrics)."""
     got = _results(results_dir, "e6b_generalisation")
@@ -868,6 +909,7 @@ def generate_numbers(output_dir: Path, results_dir: Path = Path("results")) -> P
     out += _e2b_numbers(results_dir, f2)
     out += _e5b_numbers(results_dir, f2)
     out += _e6b_numbers(results_dir, f2)
+    out += _e4b_numbers(results_dir, f2)
     tuned = Path("configs/tuned.json")
     if tuned.exists():
         t = json.loads(tuned.read_text(encoding="utf-8"))
