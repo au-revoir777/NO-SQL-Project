@@ -96,7 +96,7 @@
       "rows": null
     },
     "docs/paper/tables/numbers.tex": {
-      "sha256": "2bd450b647c17d3c2a5ca6c8953bccc955e11dfa6df59443123f5ce199a41866",
+      "sha256": "791a8726edaaf762ad2d53166c38f6b11050094b90e049402fac2a637c24a642",
       "rows": null
     },
     "docs/paper/tables/tab1_baselines.tex": {
@@ -108,7 +108,7 @@
       "rows": null
     },
     "docs/paper/tables/tab2_ablation.tex": {
-      "sha256": "965b7de29ec0d46b070d91ef8a01cfad9685991368dcd24038849500f9d7bf01",
+      "sha256": "7b95d97ec57c7667b4aa74b6fd045bb034e0ff54a31502f19b800274a36271b6",
       "rows": null
     },
     "docs/paper/tables/tab3_scale.tex": {
@@ -156,6 +156,20 @@
       "new_sha256": "2bd450b647c17d3c2a5ca6c8953bccc955e11dfa6df59443123f5ce199a41866",
       "commit": "E2b/E2c (P2)",
       "reason": "E2b/E2c weight-function macros appended (docs/research/e2b_protocol.md); no existing macro changed."
+    },
+    {
+      "file": "docs/paper/tables/numbers.tex",
+      "old_sha256": "2bd450b647c17d3c2a5ca6c8953bccc955e11dfa6df59443123f5ce199a41866",
+      "new_sha256": "791a8726edaaf762ad2d53166c38f6b11050094b90e049402fac2a637c24a642",
+      "commit": "P3-P8",
+      "reason": "Refinement P3/P5-P8: macros appended for E5b, E6b and E12 (TwelveCfAlerts), and Holm-corrected p added as a new column of the ablation table; no existing value changed."
+    },
+    {
+      "file": "docs/paper/tables/tab2_ablation.tex",
+      "old_sha256": "965b7de29ec0d46b070d91ef8a01cfad9685991368dcd24038849500f9d7bf01",
+      "new_sha256": "7b95d97ec57c7667b4aa74b6fd045bb034e0ff54a31502f19b800274a36271b6",
+      "commit": "P3-P8",
+      "reason": "Refinement P3/P5-P8: macros appended for E5b, E6b and E12 (TwelveCfAlerts), and Holm-corrected p added as a new column of the ablation table; no existing value changed."
     }
   ]
 }
