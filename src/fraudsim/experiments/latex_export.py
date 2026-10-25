@@ -550,7 +550,6 @@ def _e4b_numbers(results_dir: Path, f2) -> list[str]:  # type: ignore[no-untyped
             out.append(_macro(f"Tm{tag}F", f2(s.loc[m, "f1_mean"])))
             out.append(_macro(f"Tm{tag}TTD", _num(g["ttd_p50_s"].median())))
             out.append(_macro(f"Tm{tag}Cost", f"{g['cost'].mean():,.0f}"))
-            out.append(_macro(f"Tm{tag}Pass", _num(g["detect_ms_p50"].mean())))
             if m in t.index:
                 out.append(_macro(f"Tm{tag}Pval", _p(float(t.loc[m, "wilcoxon_p"]))))
         out.append(_macro("TmRuns", str(df[df["method"] == "inc"].shape[0])))

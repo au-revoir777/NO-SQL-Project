@@ -136,9 +136,8 @@ def report(out_md: Path = ROOT / "docs/research/e4b_tables.md") -> None:
         lines += [
             "## E4b-1: timer-based full recomputation (5 scenarios × seeds 1001-1005)",
             "",
-            "| Method | F1 | TTD p50 (s) | Cost (ms per simulated s) | ms per pass p50"
-            " | p F1 | p TTD |",
-            "|---|---|---|---|---|---|---|",
+            "| Method | F1 | TTD p50 (s) | Cost (ms per simulated s) | p F1 | p TTD |",
+            "|---|---|---|---|---|---|",
         ]
         ref = df[df["method"] == "inc"].set_index(["scenario", "seed"]).sort_index()
         for m in ["inc", *[f"timer_{t:g}" for t in TIMERS]]:
@@ -156,7 +155,7 @@ def report(out_md: Path = ROOT / "docs/research/e4b_tables.md") -> None:
                 )
             lines.append(
                 f"| {m} | {g['f1'].mean():.2f} | {g['ttd_p50_s'].median():.1f} | "
-                f"{g['cost'].mean():.1f} | {g['detect_ms_p50'].mean():.1f} | {pf} | {pt} |"
+                f"{g['cost'].mean():.1f} | {pf} | {pt} |"
             )
         lines.append("")
     sp = ROOT / "results/e4b_scale_hubs/results.csv"
