@@ -1,0 +1,1607 @@
+{
+  "grids": [
+    {
+      "experiment": "e5b_large_hubs",
+      "scenarios": [
+        "hub_heavy"
+      ],
+      "scenario_hashes": {
+        "hub_heavy": "031690a6797d4592"
+      },
+      "seeds": [
+        1001,
+        1002,
+        1003,
+        1004,
+        1005
+      ],
+      "methods": [
+        {
+          "name": "log_fanout",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d), fan-out 250/20",
+          "hash": "53f3152dbf4c4cca"
+        },
+        {
+          "name": "log_bound",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {
+            "hub_crossing": "bound"
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d), bound crossing",
+          "hash": "992c49d43c784f02"
+        },
+        {
+          "name": "const_fanout",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "none",
+              "edge_threshold": 1.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "constant, fan-out 250/20",
+          "hash": "da95f2f145693897"
+        },
+        {
+          "name": "static_cap100",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 100
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "Static Cypher (cap 100)",
+          "hash": "ba014e72f65daf1d"
+        },
+        {
+          "name": "static_cap10",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 10
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "Static Cypher (cap 10)",
+          "hash": "d5c0ce97f23ddc91"
+        }
+      ],
+      "scenario_overrides": {
+        "simulation.hub_distribution.mega_office_gateway.size": 500,
+        "simulation.num_users": 550
+      },
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-25T14:18:50.171560+00:00",
+      "ended_at": "2026-10-25T14:22:47.321898+00:00",
+      "wall_s": 237.151,
+      "rows": 25,
+      "git_commit": "d518eb48eb374ce53cfcc2ad8121f60b9dd36925",
+      "git_dirty": false,
+      "python": "3.11.9",
+      "platform": "Windows-10",
+      "cpu_count": 4,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "e5b_large_hubs",
+      "scenarios": [
+        "hub_heavy"
+      ],
+      "scenario_hashes": {
+        "hub_heavy": "031690a6797d4592"
+      },
+      "seeds": [
+        1001,
+        1002,
+        1003,
+        1004,
+        1005
+      ],
+      "methods": [
+        {
+          "name": "log_full",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d), full recomputation",
+          "hash": "db9af9f830a37517"
+        },
+        {
+          "name": "const_full",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "none",
+              "edge_threshold": 1.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "constant, full recomputation",
+          "hash": "1ebf79bb969cf647"
+        }
+      ],
+      "scenario_overrides": {
+        "simulation.hub_distribution.mega_office_gateway.size": 500,
+        "simulation.num_users": 550
+      },
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-25T14:22:47.499461+00:00",
+      "ended_at": "2026-10-25T14:28:10.607595+00:00",
+      "wall_s": 323.109,
+      "rows": 10,
+      "git_commit": "d518eb48eb374ce53cfcc2ad8121f60b9dd36925",
+      "git_dirty": false,
+      "python": "3.11.9",
+      "platform": "Windows-10",
+      "cpu_count": 4,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "e5b_large_hubs",
+      "scenarios": [
+        "hub_heavy"
+      ],
+      "scenario_hashes": {
+        "hub_heavy": "031690a6797d4592"
+      },
+      "seeds": [
+        1001,
+        1002,
+        1003,
+        1004,
+        1005
+      ],
+      "methods": [
+        {
+          "name": "log_fanout",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d), fan-out 250/20",
+          "hash": "53f3152dbf4c4cca"
+        },
+        {
+          "name": "log_bound",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {
+            "hub_crossing": "bound"
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d), bound crossing",
+          "hash": "992c49d43c784f02"
+        },
+        {
+          "name": "const_fanout",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "none",
+              "edge_threshold": 1.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "constant, fan-out 250/20",
+          "hash": "da95f2f145693897"
+        },
+        {
+          "name": "static_cap100",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 100
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "Static Cypher (cap 100)",
+          "hash": "ba014e72f65daf1d"
+        },
+        {
+          "name": "static_cap10",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 10
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "Static Cypher (cap 10)",
+          "hash": "d5c0ce97f23ddc91"
+        }
+      ],
+      "scenario_overrides": {
+        "simulation.hub_distribution.mega_office_gateway.size": 2000,
+        "simulation.num_users": 2050
+      },
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-25T14:28:10.974797+00:00",
+      "ended_at": "2026-10-25T14:36:26.246453+00:00",
+      "wall_s": 495.255,
+      "rows": 25,
+      "git_commit": "d518eb48eb374ce53cfcc2ad8121f60b9dd36925",
+      "git_dirty": false,
+      "python": "3.11.9",
+      "platform": "Windows-10",
+      "cpu_count": 4,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "e5b_large_hubs",
+      "scenarios": [
+        "hub_heavy"
+      ],
+      "scenario_hashes": {
+        "hub_heavy": "031690a6797d4592"
+      },
+      "seeds": [
+        1002
+      ],
+      "methods": [
+        {
+          "name": "log_full",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d), full recomputation",
+          "hash": "db9af9f830a37517"
+        }
+      ],
+      "scenario_overrides": {
+        "simulation.hub_distribution.mega_office_gateway.size": 2000,
+        "simulation.num_users": 2050
+      },
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-25T15:22:15.542386+00:00",
+      "ended_at": "2026-10-25T15:29:16.201208+00:00",
+      "wall_s": 420.641,
+      "rows": 1,
+      "git_commit": "930b415c6a6743bb63637a555ac5198d2d003f6e",
+      "git_dirty": false,
+      "python": "3.11.9",
+      "platform": "Windows-10",
+      "cpu_count": 4,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "e5b_large_hubs",
+      "scenarios": [
+        "hub_heavy"
+      ],
+      "scenario_hashes": {
+        "hub_heavy": "031690a6797d4592"
+      },
+      "seeds": [
+        1003
+      ],
+      "methods": [
+        {
+          "name": "log_full",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d), full recomputation",
+          "hash": "db9af9f830a37517"
+        }
+      ],
+      "scenario_overrides": {
+        "simulation.hub_distribution.mega_office_gateway.size": 2000,
+        "simulation.num_users": 2050
+      },
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-25T15:29:16.494368+00:00",
+      "ended_at": "2026-10-25T15:35:38.548132+00:00",
+      "wall_s": 382.04,
+      "rows": 1,
+      "git_commit": "930b415c6a6743bb63637a555ac5198d2d003f6e",
+      "git_dirty": false,
+      "python": "3.11.9",
+      "platform": "Windows-10",
+      "cpu_count": 4,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "e5b_large_hubs",
+      "scenarios": [
+        "hub_heavy"
+      ],
+      "scenario_hashes": {
+        "hub_heavy": "031690a6797d4592"
+      },
+      "seeds": [
+        1004
+      ],
+      "methods": [
+        {
+          "name": "log_full",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d), full recomputation",
+          "hash": "db9af9f830a37517"
+        }
+      ],
+      "scenario_overrides": {
+        "simulation.hub_distribution.mega_office_gateway.size": 2000,
+        "simulation.num_users": 2050
+      },
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-25T15:35:38.860614+00:00",
+      "ended_at": "2026-10-25T15:41:56.142288+00:00",
+      "wall_s": 377.269,
+      "rows": 1,
+      "git_commit": "930b415c6a6743bb63637a555ac5198d2d003f6e",
+      "git_dirty": false,
+      "python": "3.11.9",
+      "platform": "Windows-10",
+      "cpu_count": 4,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "e5b_large_hubs",
+      "scenarios": [
+        "hub_heavy"
+      ],
+      "scenario_hashes": {
+        "hub_heavy": "031690a6797d4592"
+      },
+      "seeds": [
+        1005
+      ],
+      "methods": [
+        {
+          "name": "log_full",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d), full recomputation",
+          "hash": "db9af9f830a37517"
+        }
+      ],
+      "scenario_overrides": {
+        "simulation.hub_distribution.mega_office_gateway.size": 2000,
+        "simulation.num_users": 2050
+      },
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-25T15:41:56.388103+00:00",
+      "ended_at": "2026-10-25T15:48:10.439855+00:00",
+      "wall_s": 374.042,
+      "rows": 1,
+      "git_commit": "930b415c6a6743bb63637a555ac5198d2d003f6e",
+      "git_dirty": false,
+      "python": "3.11.9",
+      "platform": "Windows-10",
+      "cpu_count": 4,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "e5b_large_hubs",
+      "scenarios": [
+        "hub_heavy"
+      ],
+      "scenario_hashes": {
+        "hub_heavy": "031690a6797d4592"
+      },
+      "seeds": [
+        1002
+      ],
+      "methods": [
+        {
+          "name": "const_full",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "none",
+              "edge_threshold": 1.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "constant, full recomputation",
+          "hash": "1ebf79bb969cf647"
+        }
+      ],
+      "scenario_overrides": {
+        "simulation.hub_distribution.mega_office_gateway.size": 2000,
+        "simulation.num_users": 2050
+      },
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-25T15:48:10.711990+00:00",
+      "ended_at": "2026-10-25T16:19:49.157495+00:00",
+      "wall_s": 1898.406,
+      "rows": 1,
+      "git_commit": "930b415c6a6743bb63637a555ac5198d2d003f6e",
+      "git_dirty": false,
+      "python": "3.11.9",
+      "platform": "Windows-10",
+      "cpu_count": 4,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "e5b_large_hubs",
+      "scenarios": [
+        "hub_heavy"
+      ],
+      "scenario_hashes": {
+        "hub_heavy": "031690a6797d4592"
+      },
+      "seeds": [
+        1003
+      ],
+      "methods": [
+        {
+          "name": "const_full",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "none",
+              "edge_threshold": 1.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "constant, full recomputation",
+          "hash": "1ebf79bb969cf647"
+        }
+      ],
+      "scenario_overrides": {
+        "simulation.hub_distribution.mega_office_gateway.size": 2000,
+        "simulation.num_users": 2050
+      },
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-25T16:19:49.385500+00:00",
+      "ended_at": "2026-10-25T16:48:49.688647+00:00",
+      "wall_s": 1740.284,
+      "rows": 1,
+      "git_commit": "930b415c6a6743bb63637a555ac5198d2d003f6e",
+      "git_dirty": false,
+      "python": "3.11.9",
+      "platform": "Windows-10",
+      "cpu_count": 4,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "e5b_large_hubs",
+      "scenarios": [
+        "hub_heavy"
+      ],
+      "scenario_hashes": {
+        "hub_heavy": "031690a6797d4592"
+      },
+      "seeds": [
+        1001
+      ],
+      "methods": [
+        {
+          "name": "log_fanout",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d), fan-out 250/20",
+          "hash": "53f3152dbf4c4cca"
+        },
+        {
+          "name": "log_bound",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {
+            "hub_crossing": "bound"
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d), bound crossing",
+          "hash": "992c49d43c784f02"
+        },
+        {
+          "name": "const_fanout",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "none",
+              "edge_threshold": 1.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "constant, fan-out 250/20",
+          "hash": "da95f2f145693897"
+        },
+        {
+          "name": "static_cap100",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 100
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "Static Cypher (cap 100)",
+          "hash": "ba014e72f65daf1d"
+        },
+        {
+          "name": "static_cap10",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 10
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "Static Cypher (cap 10)",
+          "hash": "d5c0ce97f23ddc91"
+        }
+      ],
+      "scenario_overrides": {
+        "simulation.hub_distribution.mega_office_gateway.size": 10000,
+        "simulation.num_users": 10050
+      },
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-25T16:48:49.962983+00:00",
+      "ended_at": "2026-10-25T16:49:58.813644+00:00",
+      "wall_s": 68.85,
+      "rows": 5,
+      "git_commit": "930b415c6a6743bb63637a555ac5198d2d003f6e",
+      "git_dirty": false,
+      "python": "3.11.9",
+      "platform": "Windows-10",
+      "cpu_count": 4,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "e5b_large_hubs",
+      "scenarios": [
+        "hub_heavy"
+      ],
+      "scenario_hashes": {
+        "hub_heavy": "031690a6797d4592"
+      },
+      "seeds": [
+        1002
+      ],
+      "methods": [
+        {
+          "name": "log_fanout",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d), fan-out 250/20",
+          "hash": "53f3152dbf4c4cca"
+        },
+        {
+          "name": "log_bound",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {
+            "hub_crossing": "bound"
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d), bound crossing",
+          "hash": "992c49d43c784f02"
+        },
+        {
+          "name": "const_fanout",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "none",
+              "edge_threshold": 1.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "constant, fan-out 250/20",
+          "hash": "da95f2f145693897"
+        },
+        {
+          "name": "static_cap100",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 100
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "Static Cypher (cap 100)",
+          "hash": "ba014e72f65daf1d"
+        },
+        {
+          "name": "static_cap10",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 10
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "Static Cypher (cap 10)",
+          "hash": "d5c0ce97f23ddc91"
+        }
+      ],
+      "scenario_overrides": {
+        "simulation.hub_distribution.mega_office_gateway.size": 10000,
+        "simulation.num_users": 10050
+      },
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-25T16:49:58.908023+00:00",
+      "ended_at": "2026-10-25T16:51:06.561701+00:00",
+      "wall_s": 67.654,
+      "rows": 5,
+      "git_commit": "930b415c6a6743bb63637a555ac5198d2d003f6e",
+      "git_dirty": false,
+      "python": "3.11.9",
+      "platform": "Windows-10",
+      "cpu_count": 4,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "e5b_large_hubs",
+      "scenarios": [
+        "hub_heavy"
+      ],
+      "scenario_hashes": {
+        "hub_heavy": "031690a6797d4592"
+      },
+      "seeds": [
+        1003
+      ],
+      "methods": [
+        {
+          "name": "log_fanout",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d), fan-out 250/20",
+          "hash": "53f3152dbf4c4cca"
+        },
+        {
+          "name": "log_bound",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {
+            "hub_crossing": "bound"
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d), bound crossing",
+          "hash": "992c49d43c784f02"
+        },
+        {
+          "name": "const_fanout",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "none",
+              "edge_threshold": 1.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "constant, fan-out 250/20",
+          "hash": "da95f2f145693897"
+        },
+        {
+          "name": "static_cap100",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 100
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "Static Cypher (cap 100)",
+          "hash": "ba014e72f65daf1d"
+        },
+        {
+          "name": "static_cap10",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 10
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "Static Cypher (cap 10)",
+          "hash": "d5c0ce97f23ddc91"
+        }
+      ],
+      "scenario_overrides": {
+        "simulation.hub_distribution.mega_office_gateway.size": 10000,
+        "simulation.num_users": 10050
+      },
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-25T16:51:06.652668+00:00",
+      "ended_at": "2026-10-25T16:52:24.607968+00:00",
+      "wall_s": 77.955,
+      "rows": 5,
+      "git_commit": "930b415c6a6743bb63637a555ac5198d2d003f6e",
+      "git_dirty": false,
+      "python": "3.11.9",
+      "platform": "Windows-10",
+      "cpu_count": 4,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "e5b_large_hubs",
+      "scenarios": [
+        "hub_heavy"
+      ],
+      "scenario_hashes": {
+        "hub_heavy": "031690a6797d4592"
+      },
+      "seeds": [
+        1004
+      ],
+      "methods": [
+        {
+          "name": "log_fanout",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d), fan-out 250/20",
+          "hash": "53f3152dbf4c4cca"
+        },
+        {
+          "name": "log_bound",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {
+            "hub_crossing": "bound"
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d), bound crossing",
+          "hash": "992c49d43c784f02"
+        },
+        {
+          "name": "const_fanout",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "none",
+              "edge_threshold": 1.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "constant, fan-out 250/20",
+          "hash": "da95f2f145693897"
+        },
+        {
+          "name": "static_cap100",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 100
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "Static Cypher (cap 100)",
+          "hash": "ba014e72f65daf1d"
+        },
+        {
+          "name": "static_cap10",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 10
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "Static Cypher (cap 10)",
+          "hash": "d5c0ce97f23ddc91"
+        }
+      ],
+      "scenario_overrides": {
+        "simulation.hub_distribution.mega_office_gateway.size": 10000,
+        "simulation.num_users": 10050
+      },
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-25T16:52:24.711204+00:00",
+      "ended_at": "2026-10-25T16:53:45.807071+00:00",
+      "wall_s": 81.095,
+      "rows": 5,
+      "git_commit": "930b415c6a6743bb63637a555ac5198d2d003f6e",
+      "git_dirty": false,
+      "python": "3.11.9",
+      "platform": "Windows-10",
+      "cpu_count": 4,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "e5b_large_hubs",
+      "scenarios": [
+        "hub_heavy"
+      ],
+      "scenario_hashes": {
+        "hub_heavy": "031690a6797d4592"
+      },
+      "seeds": [
+        1005
+      ],
+      "methods": [
+        {
+          "name": "log_fanout",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d), fan-out 250/20",
+          "hash": "53f3152dbf4c4cca"
+        },
+        {
+          "name": "log_bound",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {
+            "hub_crossing": "bound"
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d), bound crossing",
+          "hash": "992c49d43c784f02"
+        },
+        {
+          "name": "const_fanout",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "none",
+              "edge_threshold": 1.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "constant, fan-out 250/20",
+          "hash": "da95f2f145693897"
+        },
+        {
+          "name": "static_cap100",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 100
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "Static Cypher (cap 100)",
+          "hash": "ba014e72f65daf1d"
+        },
+        {
+          "name": "static_cap10",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 10
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "Static Cypher (cap 10)",
+          "hash": "d5c0ce97f23ddc91"
+        }
+      ],
+      "scenario_overrides": {
+        "simulation.hub_distribution.mega_office_gateway.size": 10000,
+        "simulation.num_users": 10050
+      },
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-25T16:53:45.910936+00:00",
+      "ended_at": "2026-10-25T16:55:12.705233+00:00",
+      "wall_s": 86.794,
+      "rows": 5,
+      "git_commit": "930b415c6a6743bb63637a555ac5198d2d003f6e",
+      "git_dirty": false,
+      "python": "3.11.9",
+      "platform": "Windows-10",
+      "cpu_count": 4,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    }
+  ]
+}
