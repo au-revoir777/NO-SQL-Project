@@ -1,0 +1,169 @@
+# Milestone P11 test report (2026-10-25, Windows 11, Python 3.11.9, Node 22.14.0)
+# Local runs on branch feat/p11-explanations (P10's E8 is on the same branch; see p10_test_report.txt).
+
+## ruff / format / mypy strict / contract / evidence snapshot
+All checks passed!
+178 files already formatted
+Success: no issues found in 51 source files
+openapi.json: identical
+schema.d.ts: identical
+28 files in snapshot; 0 changed, 0 missing, 28 new; 0 stale tables
+
+## pytest tests/test_explanation_quality.py tests/test_what_if.py tests/test_stack_latency.py tests/test_scoring.py -v
+tests/test_explanation_quality.py::test_counterfactual_is_the_closed_form_and_flips_the_decision PASSED
+tests/test_explanation_quality.py::test_zero_perturbation_is_perfectly_stable PASSED
+tests/test_explanation_quality.py::test_perturbation_touches_only_non_actionable_features PASSED
+tests/test_explanation_quality.py::test_metric_primitives_on_known_values PASSED
+tests/test_what_if.py::test_unmodified_vector_returns_exactly_the_scorer_output PASSED
+tests/test_what_if.py::test_applying_a_counterfactual_flips_the_decision PASSED
+tests/test_what_if.py::test_what_if_validation PASSED                   
+tests/test_stack_latency.py::test_nearest_rank_percentiles PASSED       
+tests/test_stack_latency.py::test_detect_time_matches_e4_and_signatures_compare_updates PASSED
+tests/test_stack_latency.py::test_paced_schedule_follows_simulated_time PASSED
+tests/test_scoring.py::test_features_of_a_hidden_ring_with_a_cycle PASSED
+tests/test_scoring.py::test_features_growth_and_other_risk_signals PASSED
+tests/test_scoring.py::test_scorer_learns_calibrates_and_round_trips[logistic_regression] PASSED
+tests/test_scoring.py::test_scorer_learns_calibrates_and_round_trips[gradient_boosting] PASSED
+tests/test_scoring.py::test_lr_contributions_and_counterfactual_are_exact PASSED
+tests/test_scoring.py::test_calibration_bucket_labels PASSED            
+tests/test_scoring.py::test_explanation_reason_evidence_and_counterfactual PASSED
+tests/test_scoring.py::test_explanation_without_model_still_gives_reason PASSED
+tests/test_scoring.py::test_alert_policy_adapts_and_logs PASSED         
+tests/test_scoring.py::test_training_protocol_and_scored_closed_loop PASSED
+tests/test_scoring.py::test_engine_scoring_stage_records_rows PASSED    
+============================= 21 passed in 31.25s =============================
+
+## pytest (full suite; skipped = Neo4j/Redis integration tests, run in CI)
+1 failed, 399 passed, 26 skipped, 54 warnings in 276.85s: tests/test_reports.py::test_golden_html_is_byte_stable.
+Expected: the report golden file contains four counterfactual sentences whose target values the P11 fix
+changes (e.g. 0.23 -> 0.21). Regenerated in 394fb22 after checking that the diff is only those sentences;
+the golden test then passes (1 passed).
+
+## webapp: npm run lint, typecheck, format:check
+eslint: no problems
+tsc: no type errors
+All matched files use Prettier code style!
+
+## webapp: vitest run
+ ✓ src/components/app-sidebar.test.tsx > AppSidebar > shows every navigation group and page to an admin 663ms
+ ✓ src/components/app-sidebar.test.tsx > AppSidebar > hides the admin pages from an analyst 188ms
+ ✓ src/components/app-sidebar.test.tsx > AppSidebar > marks the current page and labels unbuilt pages with their milestone 199ms
+ ✓ src/components/login-form.test.tsx > LoginForm > validates the fields before calling the API 864ms
+ ✓ src/components/login-form.test.tsx > LoginForm > sends the CSRF header and goes to the requested page on success 710ms
+ ✓ src/components/cases/alert-queue.test.tsx > AlertQueue > lists alerts and sends the default filters 1094ms
+ ✓ src/components/login-form.test.tsx > LoginForm > explains a lockout with the wait time from Retry-After 453ms
+ ✓ src/components/cases/alert-queue.test.tsx > AlertQueue > validates the risk range and applies only valid filters 3357ms
+ ✓ src/components/system-status-card.test.tsx > SystemStatusCard > shows a skeleton while loading 137ms
+ ✓ src/components/system-status-card.test.tsx > SystemStatusCard > lists each component with an icon-and-text status 120ms
+ ✓ src/components/system-status-card.test.tsx > SystemStatusCard > shows the error envelope's message and request id, and retries 460ms
+ ✓ src/components/live/kpi-card.test.tsx > KpiCard > shows a skeleton while loading 120ms
+ ✓ src/components/live/kpi-card.test.tsx > KpiCard > says why there is no value instead of showing a number 34ms
+ ✓ src/components/live/kpi-card.test.tsx > KpiCard > shows errors as an alert with an icon and text 117ms
+ ✓ src/components/live/kpi-card.test.tsx > KpiCard > shows the value, its detail and a labelled trend 45ms
+ ✓ src/components/live/kpi-card.test.tsx > AlertFeed > has an empty state 10ms
+ ✓ src/components/live/kpi-card.test.tsx > AlertFeed > lists risk, type, size, reason and simulated age; a click opens the detail 313ms
+ ✓ src/components/cases/alert-queue.test.tsx > AlertQueue > selects a range with shift-click and sets the status in bulk 2237ms
+ ✓ src/components/cases/alert-queue.test.tsx > AlertQueue > moves with j/k and opens the focused alert with Enter 863ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > adversarial round-trips through the form unchanged 30ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > baseline round-trips through the form unchanged 3ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > demo_story round-trips through the form unchanged 2ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > drift round-trips through the form unchanged 2ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > high_noise round-trips through the form unchanged 4ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > hub_heavy round-trips through the form unchanged 2ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > scale_sweep round-trips through the form unchanged 2ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > leaves empty optional fields out instead of sending 0 1ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > rejects bad numbers with field messages 5ms
+ ✓ src/lib/simulator/scenario-form.test.ts > scenario form > maps server error locations to form fields 1ms
+ ✓ src/components/cases/common.test.tsx > parseTime > reads naive API times as UTC and keeps explicit offsets 5ms
+ ✓ src/components/cases/common.test.tsx > ActivityList > describes case changes, newest first 213ms
+ ✓ src/lib/explorer/graph.test.ts > explorer graph helpers > parses node keys 5ms
+ ✓ src/lib/explorer/graph.test.ts > explorer graph helpers > merges neighbourhoods: smallest hop, seeds, crossed stops, origins 29ms
+ ✓ src/lib/explorer/graph.test.ts > explorer graph helpers > reads the time window as UTC 1ms
+ ✓ src/lib/cases/forms.test.ts > case forms > need a title of at least 3 characters 8ms
+ ✓ src/lib/cases/forms.test.ts > case forms > need a resolution only when closing 7ms
+ ✓ src/lib/cases/forms.test.ts > case forms > name saved views 1ms
+ ✓ src/lib/cases/forms.test.ts > case forms > offer the API's transitions; only admins reopen 1ms
+ ✓ src/lib/reports/form.test.ts > report form > needs a title and some scope 16ms
+ ✓ src/lib/reports/form.test.ts > report form > checks sections and the time window 4ms
+ ✓ src/lib/reports/form.test.ts > report form > sends UTC times and leaves empty ones out 4ms
+ ✓ src/components/cases/what-if-panel.test.ts > what-if slider ranges > keep shares in [0, 1], sizes in whole members, and leave room above the scored value 6ms
+ ✓ src/lib/cases/filters.test.ts > alert filters > send only what is set 7ms
+ ✓ src/lib/cases/filters.test.ts > alert filters > validate ranges 2ms
+ ✓ src/lib/cases/filters.test.ts > alert filters > fill older saved views with defaults 1ms
+ ✓ src/lib/cases/filters.test.ts > bulk selection > toggles one row, or a range with shift 1ms
+ ✓ src/lib/cases/filters.test.ts > bulk selection > offers only the statuses some selected alert can move to 1ms
+ ✓ src/lib/schemas.test.ts > form schemas > rejects malformed login input 11ms
+ ✓ src/lib/schemas.test.ts > form schemas > requires a 12-character password and a known role for new users 3ms
+ ✓ src/lib/schemas.test.ts > safeNext > /cases -> /cases 1ms
+ ✓ src/lib/schemas.test.ts > safeNext > /users?x=1 -> /users?x=1 1ms
+ ✓ src/lib/schemas.test.ts > safeNext > null -> / 0ms
+ ✓ src/lib/schemas.test.ts > safeNext > https://evil.example -> / 0ms
+ ✓ src/lib/schemas.test.ts > safeNext > //evil.example -> / 0ms
+ ✓ src/lib/schemas.test.ts > safeNext > /\evil.example -> / 0ms
+ ✓ src/lib/schemas.test.ts > safeNext > /login?next=/x -> / 1ms
+ ✓ src/lib/replay/story.test.ts > stateAt > counts only flags up to t; early warnings are listed but not counted 7ms
+ ✓ src/lib/replay/story.test.ts > stateAt > does not double count a true ring 1ms
+ ✓ src/lib/replay/story.test.ts > parseDeepLink > reads the query string and the old hash form, clamping t 2ms
+ ✓ src/lib/live/use-live-run.test.ts > windowedRate > is the event rate between consecutive samples 5ms
+ Test Files  15 passed (15)
+      Tests  60 passed (60)
+
+## webapp: CI=1 playwright test --repeat-each=2 --retries=0 (screenshot specs skipped)
+  ok  1 [chromium] › e2e\auth.spec.ts:16:1 › anonymous visitors are sent to the login page (971ms)
+  ok  2 [chromium] › e2e\auth.spec.ts:22:1 › a wrong password is refused with a clear message (1.8s)
+  ok  3 [chromium] › e2e\auth.spec.ts:31:1 › analyst: admin pages are hidden and a direct URL returns the 403 page (3.6s)
+  ok  4 [chromium] › e2e\auth.spec.ts:45:1 › admin: the rules page is visible and users can be managed (4.0s)
+  ok  5 [chromium] › e2e\auth.spec.ts:64:1 › signing out ends the session (3.2s)
+  ok  6 [chromium] › e2e\cases.spec.ts:44:1 › analyst triages an alert into an escalated case; admin sees it in the audit view (19.1s)
+  ok  7 [chromium] › e2e\cases.spec.ts:116:1 › audit and alert tables stay accessible when they scroll sideways (narrow window) (8.0s)
+  ok  8 [chromium] › e2e\cases.spec.ts:129:1 › the cases list has no serious axe violations (3.9s)
+  ok  9 [chromium] › e2e\dashboard.spec.ts:16:1 › a baseline run streams alerts and the KPIs equal the run-metrics endpoint (4.1s)
+  ok 10 [chromium] › e2e\explorer.spec.ts:37:1 › search device_007 on the course graph: the four users of Ring A in the README (10.2s)
+  ok 11 [chromium] › e2e\explorer.spec.ts:74:1 › the walk stops at the office-wifi hub, expands on demand, and compares two pins (6.1s)
+  ok 12 [chromium] › e2e\explorer.spec.ts:105:1 › Ctrl+K finds card_005 and opens it (5.1s)
+  ok 13 [chromium] › e2e\explorer.spec.ts:120:1 › an alert of the current run opens its ring over time (8.3s)
+  ok 14 [chromium] › e2e\replay.spec.ts:35:1 › replay at ?t=90&det=cap10&key=1 shows the same counts as the end of story.html (3.0s)
+  ok 15 [chromium] › e2e\replay.spec.ts:69:1 › replays list and replay page have no serious or critical axe violations (16.8s)
+  ok 16 [chromium] › e2e\reports.spec.ts:28:1 › generate a PDF report for a case and download it (19.9s)
+  ok 26 [chromium] › e2e\simulator.spec.ts:14:1 › demo_story seed 7 started from the UI gives the CLI's stream digest (10.0s)
+  ok 27 [chromium] › e2e\simulator.spec.ts:43:1 › the builder shows field errors and the page has no serious axe violations (9.1s)
+  ok 28 [chromium] › e2e\what-if.spec.ts:15:1 › what-if: applying a counterfactual flips the decision (7.4s)
+  ok 29 [chromium] › e2e\auth.spec.ts:16:1 › anonymous visitors are sent to the login page (799ms)
+  ok 30 [chromium] › e2e\auth.spec.ts:22:1 › a wrong password is refused with a clear message (1.7s)
+  ok 31 [chromium] › e2e\auth.spec.ts:31:1 › analyst: admin pages are hidden and a direct URL returns the 403 page (2.9s)
+  ok 32 [chromium] › e2e\auth.spec.ts:45:1 › admin: the rules page is visible and users can be managed (3.6s)
+  ok 33 [chromium] › e2e\auth.spec.ts:64:1 › signing out ends the session (2.7s)
+  ok 34 [chromium] › e2e\cases.spec.ts:44:1 › analyst triages an alert into an escalated case; admin sees it in the audit view (22.4s)
+  ok 35 [chromium] › e2e\cases.spec.ts:116:1 › audit and alert tables stay accessible when they scroll sideways (narrow window) (11.8s)
+  ok 36 [chromium] › e2e\cases.spec.ts:129:1 › the cases list has no serious axe violations (4.4s)
+  ok 37 [chromium] › e2e\dashboard.spec.ts:16:1 › a baseline run streams alerts and the KPIs equal the run-metrics endpoint (3.9s)
+  ok 38 [chromium] › e2e\explorer.spec.ts:37:1 › search device_007 on the course graph: the four users of Ring A in the README (8.7s)
+  ok 39 [chromium] › e2e\explorer.spec.ts:74:1 › the walk stops at the office-wifi hub, expands on demand, and compares two pins (5.6s)
+  ok 40 [chromium] › e2e\explorer.spec.ts:105:1 › Ctrl+K finds card_005 and opens it (4.6s)
+  ok 41 [chromium] › e2e\explorer.spec.ts:120:1 › an alert of the current run opens its ring over time (8.2s)
+  ok 42 [chromium] › e2e\replay.spec.ts:35:1 › replay at ?t=90&det=cap10&key=1 shows the same counts as the end of story.html (2.9s)
+  ok 43 [chromium] › e2e\replay.spec.ts:69:1 › replays list and replay page have no serious or critical axe violations (11.4s)
+  ok 44 [chromium] › e2e\reports.spec.ts:28:1 › generate a PDF report for a case and download it (15.5s)
+  ok 54 [chromium] › e2e\simulator.spec.ts:14:1 › demo_story seed 7 started from the UI gives the CLI's stream digest (7.3s)
+  ok 55 [chromium] › e2e\simulator.spec.ts:43:1 › the builder shows field errors and the page has no serious axe violations (8.1s)
+  19 skipped
+  37 passed (5.7m)
+
+## Acceptance criteria
+- Unit test: validity check on a hand-built LR with a known closed-form counterfactual
+  (test_counterfactual_is_the_closed_form_and_flips_the_decision); stability metric is 0 for zero
+  perturbation (test_zero_perturbation_is_perfectly_stable).
+- The what-if endpoint returns exactly the scorer's output for the unmodified vector
+  (test_unmodified_vector_returns_exactly_the_scorer_output: equal to scorer.predict on the stored vector
+  and to the alert's recorded risk); a counterfactual applied through it flips the decision.
+- Distributions reported (median, IQR, counts), not selected examples: docs/research/e12_tables.md.
+- results/e12_explanations/: collection from commit eef051e (clean), 50 runs, stream digests equal to E10's.
+- Semi-global view: generated as an E12 table (mean |contribution| per ring type). The Experiments page
+  that would show it is P8, not built yet.
+
+## Found and fixed
+- Counterfactual targets aimed at the isotonic breakpoint instead of the interpolated crossing, so the
+  proposed change did not flip the decision (0/103 in E12). Fixed (103/103); E12 protocol amendment 1,
+  committed before the first run.
+- The retraining job for the consistency check died once without a traceback (most likely the laptop
+  sleeping overnight); rerun completely.

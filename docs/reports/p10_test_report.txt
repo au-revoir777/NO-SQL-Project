@@ -1,0 +1,28 @@
+# Milestone P10 test report (2026-10-25) - E8 latency on the real stack
+# P10's calibration and early-warning parts were P10a (E10, E11), reported earlier.
+
+## pytest tests/test_stack_latency.py tests/test_event_bus.py
+tests/test_stack_latency.py::test_nearest_rank_percentiles PASSED       
+tests/test_stack_latency.py::test_detect_time_matches_e4_and_signatures_compare_updates PASSED
+tests/test_stack_latency.py::test_paced_schedule_follows_simulated_time PASSED
+tests/test_event_bus.py::test_async_queue_bus_publish_subscribe PASSED  
+tests/test_event_bus.py::test_async_queue_bus_publish_batch PASSED      
+tests/test_event_bus.py::test_unknown_event_bus_backend PASSED          
+============================== 6 passed in 6.18s ==============================
+
+## E8 runs (results/e8_stack_latency/)
+- 52 runs: warm-up 1, paced E1 scenarios 15, unpaced users sweep 9, Redis read sweep 27;
+  commit a53be5f, clean tree, 3,610 s wall.
+- Correctness: identical ring-update sequence 52/52, identical flagged rings 52/52 against the in-memory
+  engine on the same events.
+- Throwaway containers e8-neo4j (neo4j:5.26-community, ports 17687/17474) and e8-redis (redis:7.4-alpine,
+  port 16379), random password outside the repository; removed afterwards. The owner's fraud-neo4j and
+  fraud-redis containers were not touched.
+- A smoke run (warm-up only) to a scratch directory preceded the measured run; its numbers are not used.
+
+## Acceptance criteria
+- Each result row has run_id, config hash, seed and stream digest; manifest written (git commit, dirty
+  flag, environment including the other containers running).
+- Tables regenerate from the CSV (docs/research/e8_tables.md); no number in docs before its CSV.
+- JVM warm-up excluded and reported separately.
+- Paper macros: deferred to the paper-refinement step (as for E10/E11), by the agreed order.
