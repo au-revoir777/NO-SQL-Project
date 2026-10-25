@@ -389,7 +389,7 @@ Phase 2 (web app and research extensions, [plan](docs/phase2/phase2_prompt.md)):
 | P10/E8 latency on the real stack (Redis Streams → engine → Neo4j) | done (`docs/research/e8_results.md`) |
 | P11/E12 explanation quality; what-if panel on alert pages | done (`docs/research/e12_results.md`) |
 | P12/E13–E14 learned baseline and evasion-strength sweeps | done (`docs/research/e13_e14_results.md`) |
-| Paper refinement | next |
+| Paper refinement (P1-P8 of `docs/paper/paper_refinement_prompt.md`): scored baselines (E1b), frontier intervals (E3b), weight functions (E2b/E2c), large hubs (E5b), timer baselines and growing hubs (E4b), scorer generalisation (E6b), per-detector thresholds (E2d), citations, explanation claims, cleanup | done (`docs/research/e1b_*`, `e2b_*`, `e5b_*`, `e4b_*`, `e6b_*`, `e2d_*`, `p7_*`, `p8_*`) |
 | P8, P9, P13–P16 | planned (after P12 and paper refinement, by agreement) |
 
 Research results added in Phase 2 (each with a protocol committed before its
