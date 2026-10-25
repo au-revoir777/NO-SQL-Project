@@ -77,28 +77,60 @@ def overrides(size: int) -> dict[str, int]:
     }
 
 
+# Amendment 1 (docs/research/e5b_protocol.md): seeds per (hub size, full arm).
+FULL_SEEDS = {
+    (500, "log_full"): SEEDS,
+    (500, "const_full"): SEEDS,
+    (2000, "log_full"): SEEDS,
+    (2000, "const_full"): SEEDS[:3],
+    (10000, "log_full"): SEEDS[:3],  # extended to all seeds within FULL_BUDGET_S
+    (10000, "const_full"): (),
+}
+
+
+def _done(path: Path) -> set[tuple[int, int, str]]:
+    if not path.exists():
+        return set()
+    df = pd.read_csv(path)
+    return {(int(r.hub_size), int(r.seed), str(r.method)) for r in df.itertuples()}
+
+
 def run(out: Path = ROOT / "results", log: Callable[[str], None] = print) -> Path:
+    """Run what is still missing (resumable; recorded runs are kept)."""
     ms = methods()
     path = Path(out) / EXPERIMENT / "results.csv"
+
+    def grid(size: int, seeds: tuple[int, ...], todo: list[Method]) -> None:
+        done = _done(path)
+        for seed in seeds:
+            missing = [m for m in todo if (size, seed, m.name) not in done]
+            if missing:
+                run_grid(
+                    EXPERIMENT,
+                    ["hub_heavy"],
+                    [seed],
+                    missing,
+                    Path(out),
+                    scenario_overrides=overrides(size),
+                    log=log,
+                    extra_columns={"hub_size": size},
+                )
+
     for size in HUB_SIZES:
-        kw = {
-            "scenario_overrides": overrides(size),
-            "log": log,
-            "extra_columns": {"hub_size": size},
-        }
-        run_grid(EXPERIMENT, ["hub_heavy"], SEEDS, ms["incremental"], Path(out), **kw)
-        if size != max(HUB_SIZES):
-            run_grid(EXPERIMENT, ["hub_heavy"], SEEDS, ms["full"], Path(out), **kw)
-            continue
-        # Contingency (protocol): seeds 1001-1003 first; the rest only if the projected
-        # total for the full arms stays within the budget.
-        t0 = time.perf_counter()
-        run_grid(EXPERIMENT, ["hub_heavy"], SEEDS[:3], ms["full"], Path(out), **kw)
-        spent = time.perf_counter() - t0
-        if spent * len(SEEDS) / 3 <= FULL_BUDGET_S:
-            run_grid(EXPERIMENT, ["hub_heavy"], SEEDS[3:], ms["full"], Path(out), **kw)
-        else:
-            log(f"[e5b] full arms at {size}: {spent:.0f}s for 3 seeds; seeds 1004-1005 skipped")
+        grid(size, SEEDS, ms["incremental"])
+        for m in ms["full"]:
+            seeds = FULL_SEEDS[(size, m.name)]
+            t0 = time.perf_counter()
+            grid(size, seeds, [m])
+            spent = time.perf_counter() - t0
+            if size == max(HUB_SIZES) and m.name == "log_full" and seeds:
+                if spent * len(SEEDS) / len(seeds) <= FULL_BUDGET_S:
+                    grid(size, SEEDS[len(seeds) :], [m])
+                else:
+                    log(
+                        f"[e5b] {m.name} at {size}: {spent:.0f}s for {len(seeds)} seeds; "
+                        "rest skipped"
+                    )
     return path
 
 

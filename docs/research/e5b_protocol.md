@@ -65,3 +65,20 @@ one pass over the co-members of every large attribute a touched user holds.
 (new columns; existing results are unchanged).
 
 Amendments, if any, are appended below with their reason.
+
+## Amendment 1 (2026-10-25, before any result at 10,000 users)
+
+Compute only; no result at 10,000 users existed when this was written. At 2,000
+users one full-recomputation run of the constant weight (`const_full`) took
+2,116 s, and one of the shipped weight (`log_full`) took 392 s. The constant
+weight links all of the hub's co-members at weight 1.0, so every full pass peels
+one very large component. On the original schedule the 10,000-user full arms
+would take well over ten hours, so the 2-hour contingency would be exceeded by
+its own first three seeds. Changes:
+
+- 2,000 users: `log_full` on all five seeds; `const_full` on seeds 1001-1003 only.
+- 10,000 users: incremental arms and caps on all five seeds; `log_full` on seeds
+  1001-1003, extended to 1004-1005 under the original 2-hour rule; `const_full`
+  not run. Its cost at 2,000 users is reported instead, as a result in itself.
+- Runs already recorded are kept, not repeated. The process was stopped during
+  `const_full` seed 1002 at 2,000 users, and that run is redone.
