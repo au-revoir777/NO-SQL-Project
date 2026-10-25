@@ -259,3 +259,13 @@ def test_engine_scoring_stage_records_rows() -> None:
     assert stage.rows and stage.rows[0]["features"]
     ring = next(iter(engine.tracker.rings.values()))
     assert ring.features["size"] == 4 and ring.risk is None
+
+
+def test_alert_policy_detector_thresholds() -> None:
+    pol = AlertPolicy(default_threshold=0.8)
+    assert pol.threshold("shared_ip", {"hub_aware"}) == 0.8  # off by default
+    pol.detector_thresholds = {"hub_aware": 0.9, "other": 0.6}
+    assert pol.threshold("shared_ip", {"hub_aware", "temporal_cycle"}) == 0.9
+    assert pol.threshold("money_cycle", {"temporal_cycle"}) == 0.6
+    pol.thresholds["money_cycle"] = 0.7  # analyst-adapted per-type threshold wins
+    assert pol.threshold("money_cycle", {"temporal_cycle"}) == 0.7

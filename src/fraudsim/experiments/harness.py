@@ -69,6 +69,8 @@ class Method:
     # A scorer of its own (repo-relative path); None = the grid's model. Left out of
     # config() when None, so existing methods keep their method_hash.
     model_path: str | None = None
+    # Per-detector alert thresholds (E2d); left out of config() when None.
+    detector_thresholds: dict[str, float] | None = None
 
     def config(self) -> dict[str, Any]:
         out: dict[str, Any] = {
@@ -81,6 +83,8 @@ class Method:
         }
         if self.model_path is not None:
             out["model_path"] = self.model_path
+        if self.detector_thresholds is not None:
+            out["detector_thresholds"] = self.detector_thresholds
         return out
 
 
@@ -226,6 +230,8 @@ def run_method(
     stage = ScoringStage(scorer=scorer) if (method.scored and scorer is not None) else None
     if stage is not None and method.alert_threshold is not None:
         stage.policy.default_threshold = method.alert_threshold
+    if stage is not None and method.detector_thresholds:
+        stage.policy.detector_thresholds = dict(method.detector_thresholds)
     engine = DetectionEngine(
         store,
         build_detectors(store, method.overrides),

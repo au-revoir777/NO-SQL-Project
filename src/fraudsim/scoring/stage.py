@@ -35,10 +35,18 @@ class AlertPolicy:
     min_threshold: float = 0.05
     max_threshold: float = 0.99
     thresholds: dict[str, float] = field(default_factory=dict)
+    # Optional per-detector thresholds (E2d): {"hub_aware": a_hub, "other": a_other}.
+    # Empty = off; feedback-adapted per-ring-type thresholds still take precedence.
+    detector_thresholds: dict[str, float] = field(default_factory=dict)
     log: list[dict[str, Any]] = field(default_factory=list)
 
-    def threshold(self, ring_type: str) -> float:
-        return self.thresholds.get(ring_type, self.default_threshold)
+    def threshold(self, ring_type: str, sources: set[str] | None = None) -> float:
+        if ring_type in self.thresholds:
+            return self.thresholds[ring_type]
+        if self.detector_thresholds and sources is not None:
+            key = "hub_aware" if "hub_aware" in sources else "other"
+            return self.detector_thresholds.get(key, self.default_threshold)
+        return self.default_threshold
 
     def feedback(
         self, ring_id: str, ring_type: str, score: float, action: str, ts: datetime | None = None
@@ -117,7 +125,7 @@ class ScoringStage:
                         "features": feats.to_vector(),
                     }
                 )
-            threshold = self.policy.threshold(ring.ring_type.value)
+            threshold = self.policy.threshold(ring.ring_type.value, ring.sources)
             risk, exp = explain(
                 rid, ring.members, feats, view, joined, ring.evidence, self.scorer, threshold
             )
