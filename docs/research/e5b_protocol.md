@@ -92,3 +92,12 @@ arms at all three sizes; `log_full` at 10,000 users is only a reference point.
 `log_full` at 10,000 users is therefore stopped after seed 1001 and reported as
 "1 seed, compute-only reference", without an interval. One seed also cannot
 show whether the full-recomputation time is stable.
+
+## Amendment 3 (2026-10-25 19:12 UTC, before the 10,000-user `log_full` result)
+
+Compute only. The single `log_full` run at 10,000 users (seed 1001), started at
+about 17:20 UTC, was still running after nearly two hours, with the process at
+3.5 GB of the machine's 7.7 GB. If it has not finished by 21:00 UTC, it is
+stopped and reported as "did not finish within 3.5 h on the test laptop". No
+F1 is reported for it in that case. Its timing would be confounded by memory
+pressure in any case, as the 50k and 100k points of E4 were.
