@@ -132,6 +132,26 @@ finds \HubSizeCapTenNoCycleHidden{}, because the rings also move money among
 themselves in short cycles. What separates the methods is precision, and so
 F1 (\HubSizePropF{} vs.\ \HubSizeCapTenF{}).
 
+\textbf{Hubs above the fan-out limit.} Fig.~\ref{fig:hubsize} stops at 200
+accounts, below the 250-user first-hop limit. We therefore resized the office
+hub to 500, 2,000 and 10,000 accounts (5 seeds each) and compared the shipped
+engine with full recomputation and with a ``bound'' rule that does cross an
+over-limit attribute, towards those co-members whose attribute weight with the
+touched user could reach the edge threshold. At every size the bound rule
+flagged the same rings as the 250-user limit, with identical precision, recall
+and region size (\LhBoundSame{} runs): it never added a user. Full
+recomputation found no more hub-hiding rings either (\LhLogFullHHA{} vs.\
+\LhLogFanHHA{} at 500, \LhLogFullHHB{} vs.\ \LhLogFanHHB{} at 2,000), while
+the incremental region stayed at a median of \LhRegionInc{} users against up to
+\LhRegionFullMax{} for full recomputation. The test does exercise the limit: on
+the same streams a constant weight (edge threshold 1.0, as selected in RQ5)
+loses hub-hiding rings to it (\LhConstFanHHA{} incremental vs.\
+\LhConstFullHHA{} full at 500; F1 \LhConstFanFA{} vs.\ \LhConstFullFA{}), at a
+cost of about \LhConstFullWallB{} minutes per full run at 2,000 users. So, for
+hubs up to 10,000 accounts, the limit did not hide hub-sharing rings for the
+hub-aware weight; it does for a constant weight. The static rules stay well
+behind (F1 \LhCapTenFA{}, \LhCapTenFB{}, \LhCapTenFC{}).
+
 \textbf{Evasion strategies.} Fig.~\ref{fig:evasion} breaks recall down by the
 strategy each planted or random ring uses. The proposed method's advantage in
 recall comes mostly from rings without evasion (\EvPropNone{} vs.\

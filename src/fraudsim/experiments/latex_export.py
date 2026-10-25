@@ -520,6 +520,60 @@ def _adaptivity_numbers(results_dir: Path) -> list[str]:
     return out
 
 
+def _e5b_numbers(results_dir: Path, f2) -> list[str]:  # type: ignore[no-untyped-def]
+    """Macros for E5b (fan-out limit at large hubs). Size tags: A = 500, B = 2,000, C = 10,000."""
+    got = _results(results_dir, "e5b_large_hubs")
+    if not got:
+        return []
+    df, header = got
+    out = [header]
+    df["f1"] = df["f1"].fillna(0)
+    sizes = {500: "A", 2000: "B", 10000: "C"}
+    tags = {
+        "log_fanout": "LogFan",
+        "log_bound": "LogBound",
+        "log_full": "LogFull",
+        "const_fanout": "ConstFan",
+        "const_full": "ConstFull",
+        "static_cap10": "CapTen",
+    }
+
+    def hh(g: pd.DataFrame) -> str:
+        det = tot = 0
+        for v in g["detected_by_evasion"].dropna():
+            x = json.loads(v).get("hub_hiding")
+            if x:
+                det, tot = det + x[0], tot + x[1]
+        return f"{det}/{tot}"
+
+    for size, st in sizes.items():
+        for m, tag in tags.items():
+            g = df[(df["hub_size"] == size) & (df["method"] == m)]
+            if g.empty:
+                continue
+            out.append(_macro(f"Lh{tag}F{st}", f2(g["f1"].mean())))
+            out.append(_macro(f"Lh{tag}HH{st}", hh(g)))
+            out.append(_macro(f"Lh{tag}N{st}", str(len(g))))
+            out.append(_macro(f"Lh{tag}Wall{st}", f"{g['wall_s'].mean() / 60:.0f}"))
+    cols = ["precision", "recall", "f1", "rings_flagged", "region_p50", "region_max"]
+    same = total = 0
+    for size in sizes:
+        a = df[(df["hub_size"] == size) & (df["method"] == "log_fanout")].set_index("seed")
+        b = df[(df["hub_size"] == size) & (df["method"] == "log_bound")].set_index("seed")
+        for s in sorted(set(a.index) & set(b.index)):
+            total += 1
+            same += all(
+                (pd.isna(a.loc[s, c]) and pd.isna(b.loc[s, c])) or a.loc[s, c] == b.loc[s, c]
+                for c in cols
+            )
+    out.append(_macro("LhBoundSame", f"{same}/{total}"))
+    inc = df[(df["hub_size"] >= 2000) & (df["method"] == "log_fanout")]["region_p50"]
+    full = df[df["method"] == "log_full"]["region_max"]
+    out.append(_macro("LhRegionInc", f"{inc.median():.0f}"))
+    out.append(_macro("LhRegionFullMax", f"{full.max():,.0f}"))
+    return out
+
+
 def _e2b_numbers(results_dir: Path, f2) -> list[str]:  # type: ignore[no-untyped-def]
     """Macros for E2b (hub_heavy, 30 seeds) and E2c (weight functions, 5 scenarios)."""
     from fraudsim.experiments.weight_functions import _hub_hiding_recall
@@ -775,6 +829,7 @@ def generate_numbers(output_dir: Path, results_dir: Path = Path("results")) -> P
     out += _phase2_numbers(results_dir)
     out += _e1b_numbers(results_dir, f2)
     out += _e2b_numbers(results_dir, f2)
+    out += _e5b_numbers(results_dir, f2)
     tuned = Path("configs/tuned.json")
     if tuned.exists():
         t = json.loads(tuned.read_text(encoding="utf-8"))

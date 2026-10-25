@@ -28,7 +28,9 @@ We make four contributions.
 \item \textbf{C1, hub-aware weighting.} We replace the degree cap with a
 continuous weight: each shared attribute contributes $1/\ln(1+d)$, where $d$ is
 its degree, with exponential time decay, and transfers inside the pair add
-weight. Busy hubs count for little on their own, but a group that shares a hub
+weight. The discount itself is FRAUDAR's column weighting
+\cite{hooi2016fraudar}; our contribution is its use for shared-attribute ring
+detection on a stream. Busy hubs count for little on their own, but a group that shares a hub
 and also trades among itself still accumulates weight (Section~\ref{sec:method}).
 What we can show is that keeping hub links is what matters: a constant weight
 with its own threshold performs as well, and caps lose rings hidden behind hubs
@@ -62,28 +64,37 @@ through shared entities. We keep shared-attribute links, which are cheap and
 explainable, and change how much each one counts.
 
 \textbf{Dense subgraphs and peeling.} Finding unusually dense groups is a
-classical route to fraud and collusion detection: spectral and greedy
+classical route to fraud and collusion detection: greedy peeling approximates
+the densest subgraph \cite{charikar2000greedy}, spectral and greedy
 densest-subgraph algorithms scale to billion-edge graphs \cite{feng2024unified},
 and sequential peeling of a weighted bipartite graph exposes coordinated
-adversarial annotators \cite{karaaslanli2025crowd}. Core decomposition, the
-peeling primitive we use to extract dense cores, has efficient parallel and
+adversarial annotators \cite{karaaslanli2025crowd}. FRAUDAR
+\cite{hooi2016fraudar} makes peeling resistant to camouflage by weighting each
+edge by a decreasing function of the degree of the object it points to,
+recommending $1/\log(x+c)$ and arguing that $1/x$ shrinks too fast; Spade
+\cite{jiang2022spade} maintains such peeling-based dense subgraphs
+incrementally under edge insertions on transaction graphs. Core decomposition,
+the peeling primitive we use to extract dense cores, has efficient parallel and
 GPU implementations \cite{ahmad2023gpukcore,li2021graphblas} and is related to
-densest-subgraph approximation \cite{dhulipala2022dp}. These methods run on a
-whole static graph; we peel only the region a micro-batch touched.
+densest-subgraph approximation \cite{dhulipala2022dp}. Our degree discount is
+therefore not new: it is FRAUDAR's column weighting, and close to
+Adamic--Adar. What we study is applying it to shared-attribute ring detection
+on a stream, as a replacement for the degree cap of rule-based systems, with
+incremental detection, ring tracking and calibrated alerts around it.
 
 \textbf{Community detection on dynamic graphs.} Louvain modularity optimisation
-remains a standard way to find groups and is still being refined
-\cite{li2023dplouvain}; we use it as a baseline. Incremental community
+\cite{blondel2008louvain} remains a standard way to find groups and is still
+being refined \cite{li2023dplouvain}; we use it as a baseline. Incremental community
 detection avoids repartitioning a changing graph by updating only the
 affected communities \cite{zhang2026incremental,abughofa2021incremental}.
 Community structure, however, is not ring structure: a benign hub joins
 thousands of users into one community.
 
 \textbf{Similarity weighting.} Local similarity indices such as Jaccard and
-Adamic--Adar, which discounts a shared neighbour by the logarithm of its
-degree, are standard in link prediction \cite{varma2022jaccard}. Our hub weight
-applies the same discount to shared attributes, and we match flagged rings to
-true ones by Jaccard overlap.
+Adamic--Adar \cite{adamic2003friends}, which discounts a shared neighbour by
+the logarithm of its degree, are standard in link prediction
+\cite{varma2022jaccard}. Our hub weight applies a similar discount to shared
+attributes, and we match flagged rings to true ones by Jaccard overlap.
 
 \textbf{AML on public data.} Work on the Elliptic Bitcoin graph compares tabular
 ensembles with GNNs under temporal splits
@@ -93,9 +104,11 @@ provides synthetic laundering attempts with typology labels
 scores are not comparable with our ring-level metrics
 (Section~\ref{sec:public}).
 
-\textbf{Calibration and explanations.} Post-hoc calibration such as Platt
-scaling and isotonic regression makes AML risk scores usable as probabilities
-\cite{azbergen2026calibration}, and learned calibration has been studied
+\textbf{Calibration and explanations.} Post-hoc calibration by isotonic
+regression \cite{zadrozny2002transforming} and its comparison with Platt
+scaling \cite{niculescu2005predicting} make classifier scores usable as
+probabilities; Azbergen et al.\ \cite{azbergen2026calibration} compare such
+calibrators for AML risk scores, and learned calibration has been studied
 beyond classification \cite{ding2021temperature}. Counterfactual explanations
 state what would have to change for a different decision; their robustness
 \cite{artelt2021robustness}, consistency across model updates
@@ -157,7 +170,13 @@ transfers, and builds a view of that region over a 900\,s window, together with
 the \emph{global} degree of every attribute in it, so $h(\deg a)$ is the same as
 in a full pass. The first hop may cross attributes with up to 250 users (so the
 co-members of a hub are re-examined); later hops cross only attributes with at
-most 20 users, which stops the region from spreading through hubs. Incremental
+most 20 users, which stops the region from spreading through hubs. The first-hop
+limit is itself a degree cap on the region: a pair whose only link is an
+attribute shared by more than 250 users never enters the same region. For the
+hub-aware weight this costs nothing, since one such attribute contributes at most
+$1/\ln 252\approx0.18$, below the edge threshold, so a full pass would not link
+the pair either; a weight that lets one busy attribute reach the threshold, such
+as a constant, does lose such pairs (Section~\ref{sec:results}). Incremental
 detectors (hub-aware shared attribute, temporal cycle, smurfing) run on the
 view; whole-graph detectors (the static Cypher rules and community detection)
 run on a timer.
@@ -172,7 +191,7 @@ over 19 ring features (size, density, which attribute kinds are shared, the
 hub-adjusted weight, cycle presence and length, burstiness, account ages,
 internal transfers per member, amount statistics, growth, hub exposure and
 the number of agreeing detectors), calibrated with isotonic regression
-\cite{azbergen2026calibration}. A ring becomes an alert when its calibrated risk
+\cite{zadrozny2002transforming}. A ring becomes an alert when its calibrated risk
 reaches the alert threshold $\theta_a$. Each alert carries the per-feature
 contributions to the score, the subgraph of shared attributes and transfers
 that formed it, and counterfactuals (for the leading features, the value at which
@@ -280,7 +299,7 @@ detectors.
 \item \textbf{Static Cypher, cap 100 / cap 10.} The original rules: shared
 device (Q1), shared card (Q2), 3-cycles of transfers (Q3), and shared IP with a
 degree cap (Q4a/Q4b), run on the whole graph every 5\,s of simulated time.
-\item \textbf{Louvain.} Louvain communities \cite{li2023dplouvain} of the
+\item \textbf{Louvain.} Louvain communities \cite{blondel2008louvain} of the
 user graph projected through shared attributes and transfers, kept when dense
 enough.
 \item \textbf{Connected components.} Weakly connected components of the same
@@ -328,7 +347,11 @@ million users was not feasible on the 7.7\,GB test machine: at 100{,}000 users
 less than 0.3\,GB of memory was free and one full recomputation already took
 over 20\,s per batch. In the scale scenario, attribute counts grow with the
 number of users while hub sizes stay fixed; graphs whose hubs grow with the
-population would give larger dirty regions.
+population would give larger dirty regions. The 250-user first-hop limit was
+tested with hubs of up to 10,000 accounts, five seeds per size, on one scenario;
+its harmlessness rests on the hub-aware weight keeping a single busy attribute
+below the edge threshold, and would not hold for a weight or threshold that
+does not.
 
 \textbf{Latency.} The latencies of Section~\ref{sec:results} come from the
 in-memory store on a laptop. Section~\ref{sec:phase2} repeats the measurement on
