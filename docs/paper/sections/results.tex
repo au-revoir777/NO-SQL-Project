@@ -92,7 +92,11 @@ stop the expansion at hubs; it even shrinks as the graph grows, since this
 scenario scales the number of devices, cards and IPs with the users (so an
 ordinary attribute is shared by fewer users) while hub sizes stay fixed. Its
 latency therefore stays flat: at \ScaleMaxUsers{} users a batch takes \ScaleIncMs{}\,ms
-incrementally against \ScaleFullMs{}\,ms in full (\ScaleSpeedup$\times$). At
+incrementally against \ScaleFullMs{}\,ms in full. This comparison is a worst-case
+bound, not a deployment comparison: nobody would recompute the whole graph on
+every 50-event batch, the incremental figure (3 seeds) varies more than its
+mean, and the 50{,}000 and 100{,}000-user full figures are confounded by memory
+pressure. At
 1{,}000 users the region already covers almost the whole graph, and the
 incremental mode is slower than full recomputation because of the cost of
 expanding the region. On the accuracy scenarios, incremental and full
@@ -100,12 +104,26 @@ recomputation flag exactly the same rings in every run (ablation
 \emph{no incremental} in Table~\ref{tab:ablation}), so restricting detection to
 the dirty region loses nothing there.
 
-On the small accuracy scenarios one static full-graph pass is cheap
-(\ECapTenFullLat{}\,ms) and cheaper than one batch of the proposed detectors
-(\EPropLat{}\,ms), which build the hub-aware projection and peel it. The
-proposed detectors run per batch, the static rules only on a timer; their time
-to detect is similar here (\EPropTTD{}\,s vs.\ \ECapTenTTD{}\,s) because the
-timer runs every 5 simulated seconds.
+\textbf{Against a timer.} The realistic alternative is to run the same
+detectors on the whole graph on a timer. On the accuracy scenarios (30 to 200
+users, \TmRuns{} paired runs) a 1\,s timer matches the incremental engine in F1
+(\TmOneF{} vs.\ \TmIncF{}, $p=\TmOnePval{}$) and time to detect
+(\TmOneTTD{}\,s vs.\ \TmIncTTD{}\,s) at lower detection cost (\TmOneCost{}
+vs.\ \TmIncCost{}\,ms per simulated second); a 5\,s timer costs less still
+(\TmFiveCost{}) but detects later (\TmFiveTTD{}\,s), and a 30\,s timer misses
+almost every ring, which ends before two passes confirm it (F1 \TmThirtyF{}).
+On small graphs, incremental detection therefore buys nothing. The picture
+reverses with size. In \texttt{scale\_sweep} with hubs that grow with the
+population (15\% and 8\% of users, other hubs up to 10\%; \GhSeeds{} seeds), the
+cost per simulated second is \GhIncCostA{}, \GhIncCostB{} and \GhIncCostC{}\,ms
+for incremental detection at 1{,}000, 5{,}000 and 20{,}000 users, against
+\GhTimerCostA{}, \GhTimerCostB{} and \GhTimerCostC{}\,ms for a 5\,s timer
+(\GhFullCostC{}\,ms for recomputing every batch at 20{,}000). Above a few
+thousand users the timer needs more than one second of computation per
+simulated second, so it cannot keep up, while the incremental region stays
+near \GhIncRegionC{} users even though the hubs grow. The static rules run on
+the same 5\,s timer, which is why their time to detect is similar to ours on the
+accuracy scenarios (\EPropTTD{}\,s vs.\ \ECapTenTTD{}\,s).
 
 \subsection{RQ3: robustness to evasion}
 \begin{figure}[t]

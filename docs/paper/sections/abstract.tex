@@ -1,31 +1,18 @@
 \begin{abstract}
 Fraud rings share devices, cards and network addresses and move money among
-themselves, which graph queries can expose. Two obstacles appear on live
-transaction streams. Legitimate shared infrastructure such as office gateways,
-carrier address translation and kiosks links many unrelated accounts, and the
-usual remedy, a hard degree cap, hides any ring that shares a busy attribute.
-Whole-graph queries re-run on a timer also cost more as the graph grows. We
-replace the cap with a continuous hub-aware weight with time decay, detect
-incrementally on the neighbourhood touched by each micro-batch, and pass
-candidate rings through a calibrated scorer that explains every alert. On a
-deterministic simulator with ring-level ground truth and five evasion
-strategies, over \EScenarios{} scenarios and \ESeeds{} test seeds, the full
-pipeline reaches a ring F1 score of \EPropF{} against \ECapTenF{} for the
-original degree-capped Cypher rules. Most of that gap is the scorer: with the
-same calibrated scorer on top, the capped rules reach \ECapTenSF{} and Louvain
-communities \ELouvainSF{}, and the remaining differences are significant in a
-paired, Holm-corrected Wilcoxon test. Keeping links through busy attributes
-instead of capping them extends the reachable recall on shared-attribute rings
-from \FrCapSMaxR{} to \FrHubSMaxR{}. The particular degree discount matters
-little: with its own tuned threshold, a constant weight is as accurate (F1
-\WcConstF{} against \WcShipF{}), while a soft cap at degree 10 loses most rings
-hidden behind hubs. Incremental detection flags the same rings
-as full recomputation and, with \ScaleMaxUsers{} users, takes \ScaleIncMs{} ms
-per batch against \ScaleFullMs{} ms. Rings that rotate identities or act slowly
-evade every method we tested. On Neo4j and Redis Streams the detector flags the
-same rings. A learned classifier over rule-free groups reaches F1
-\ThirteenGbF{} and collapses under decoy edges. Measuring explanation quality
-exposed counterfactuals that never changed the decision, which we fixed. All
-positive results are synthetic, and we state what the public anti-money
-laundering datasets we could use can and cannot test.
+themselves. Rule-based graph detectors cap the degree of shared attributes to
+suppress office gateways and carrier NAT, which hides any ring behind such a
+hub, and re-running whole-graph queries gets costly as the graph grows. We keep
+hub links with a degree-discounted weight, detect incrementally on the region
+each micro-batch touches, and score candidate rings with a calibrated,
+explained model. On a deterministic simulator with ring-level ground truth and
+five evasion strategies (\EScenarios{} scenarios, \ESeeds{} paired test seeds),
+the pipeline reaches ring F1 \EPropF{} against \ECapTenF{} for degree-capped
+Cypher rules; given the same scorer, the capped rules reach \ECapTenSF{}, so the
+scorer accounts for most of the gap. Keeping hub links raises the reachable
+recall on shared-attribute rings from \FrCapSMaxR{} to \FrHubSMaxR{}, while the
+exact discount matters little. Incremental detection buys nothing over a 1\,s
+timer-driven full pass on small graphs, but stays affordable as the graph
+grows, where a 5\,s timer cannot keep up. Slow and identity-rotating rings evade every method we
+tested, and all positive results are synthetic.
 \end{abstract}

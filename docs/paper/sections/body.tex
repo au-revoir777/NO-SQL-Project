@@ -37,7 +37,8 @@ with its own threshold performs as well, and caps lose rings hidden behind hubs
 (Section~\ref{sec:results}).
 \item \textbf{C2, incremental detection.} A micro-batch engine re-evaluates only
 the $k$-hop region touched by each batch, with fan-out limits that keep that
-region bounded when it reaches a hub.
+region bounded when it reaches a hub. Against a timer-driven full pass it pays
+off only as the graph grows (Section~\ref{sec:results}).
 \item \textbf{C3, calibrated, explained alerts.} Candidate rings are scored by a
 calibrated classifier, and each alert carries feature contributions, an
 evidence subgraph and counterfactuals. The scorer supplies most of the
@@ -426,8 +427,10 @@ pipeline, so the scorer accounts for most of the gain over the original rules,
 and at the best operating point on shared-attribute rings the weight and the
 cap are not distinguishable on F1. Restricting detection to the region a
 micro-batch touches gave the same rings as full recomputation in every
-accuracy run, and kept per-batch latency flat as the graph grew to
-\ScaleMaxUsers{} users while full recomputation grew past 20\,s. Rings that
+accuracy run. On small graphs it is no cheaper than recomputing on a 1\,s
+timer, and it detects no faster; its value is at scale, where at 20{,}000
+users with growing hubs it costs \GhIncCostC{}\,ms per simulated second against
+\GhTimerCostC{}\,ms for a 5\,s timer, which can no longer keep up. Rings that
 rotate identities or act slowly evade all methods we tested, and all of our
 positive results are on synthetic data. On Neo4j and Redis Streams the detector flags exactly the same rings, at the
 cost of slower detection and a throughput bounded by the store. A learned model

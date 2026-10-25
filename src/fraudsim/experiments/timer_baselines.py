@@ -178,7 +178,7 @@ def report(out_md: Path = ROOT / "docs/research/e4b_tables.md") -> None:
         ]
         for (u, mode), r in g.iterrows():
             lines.append(
-                f"| {u:,} | {mode} | {r['n']} | {r['region']:.0f} | {r['p50']:.1f} "
+                f"| {u:,} | {mode} | {int(r['n'])} | {r['region']:.0f} | {r['p50']:.1f} "
                 f"({r['p50_min']:.1f}–{r['p50_max']:.1f}) | {r['cost']:.1f} |"
             )
     out_md.write_text("\n".join(lines) + "\n", encoding="utf-8")

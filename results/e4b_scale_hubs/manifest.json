@@ -1,0 +1,56 @@
+{
+  "grids": [
+    {
+      "experiment": "e4b_scale_hubs",
+      "scenario": "scale_sweep",
+      "sizes": [
+        1000,
+        5000,
+        20000
+      ],
+      "seeds": [
+        1001,
+        1002,
+        1003
+      ],
+      "hub_scaling": {
+        "cloud_proxy": 0.15,
+        "workplace_network": 0.08,
+        "max_size": 0.1
+      },
+      "modes": {
+        "incremental": {
+          "incremental": true
+        },
+        "full": {
+          "incremental": false
+        },
+        "timer_5": {
+          "incremental": false,
+          "full_timer_s": 5.0
+        }
+      },
+      "backend": "in_memory",
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-25T21:03:40.511682+00:00",
+      "ended_at": "2026-10-25T21:31:10.078018+00:00",
+      "wall_s": 1649.558,
+      "rows": 27,
+      "git_commit": "7f8235ebf5b9f3dd8dc5938332ddd0fbd460c7e0",
+      "git_dirty": false,
+      "python": "3.11.9",
+      "platform": "Windows-10",
+      "cpu_count": 4,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    }
+  ]
+}
