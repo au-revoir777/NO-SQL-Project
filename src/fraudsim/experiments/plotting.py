@@ -21,27 +21,41 @@ import pandas as pd
 
 from fraudsim.experiments.stats import ci95, summarize
 
+# Publication style (after figures4papers' design notes): sans-serif text sized
+# for one IEEE column, no top/right spines, frameless legends, no grid, a blue
+# for the proposed method, red for the main alternative, neutrals for the rest,
+# and 300 dpi output.
 plt.rcParams.update(
     {
+        "font.family": "sans-serif",
+        "font.sans-serif": ["Arial", "Helvetica", "DejaVu Sans"],
         "font.size": 8,
         "axes.titlesize": 8,
         "axes.labelsize": 8,
         "legend.fontsize": 7,
+        "legend.frameon": False,
+        "axes.spines.top": False,
+        "axes.spines.right": False,
+        "axes.linewidth": 0.8,
+        "axes.grid": False,
+        "lines.linewidth": 1.4,
         "figure.dpi": 150,
+        "savefig.dpi": 300,
         "savefig.bbox": "tight",
+        "savefig.facecolor": "white",
         "pdf.fonttype": 42,
     }
 )
 COL = (3.5, 2.4)  # one IEEE column
 COLORS = {
-    "proposed": "#1f6feb",
-    "cap": "#d1242f",
-    "hub": "#1f6feb",
-    "cap_scored": "#d1242f",
-    "hub_scored": "#1f6feb",
-    "static": "#d1242f",
-    "community": "#8250df",
-    "ablation": "#6e7781",
+    "proposed": "#0F4D92",
+    "cap": "#B64342",
+    "hub": "#0F4D92",
+    "cap_scored": "#E9A6A1",
+    "hub_scored": "#3775BA",
+    "static": "#B64342",
+    "community": "#767676",
+    "ablation": "#4D4D4D",
 }
 
 

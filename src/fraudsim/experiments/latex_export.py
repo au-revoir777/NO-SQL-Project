@@ -493,6 +493,137 @@ def _adaptivity_numbers(results_dir: Path) -> list[str]:
     return out
 
 
+def _phase2_numbers(results_dir: Path) -> list[str]:
+    """Macros for the Phase 2 experiments (E8, E10-E14), computed from their CSVs."""
+    out: list[str] = []
+    r = Path(results_dir)
+
+    def m(name: str, value: str) -> None:
+        out.append(_macro(name, value))
+
+    def pct(x: float) -> str:
+        return f"{100 * x:.0f}"
+
+    e8 = r / "e8_stack_latency" / "results.csv"
+    if e8.exists():
+        df = pd.read_csv(e8)
+        out.append(f"% from {e8.as_posix()}\n")
+        m("EightRuns", str(len(df)))
+        m("EightSame", str(int((df["same_updates"] & df["same_flagged"]).sum())))
+        paced = df[df["phase"] == "e1_paced"].groupby("scenario").median(numeric_only=True)
+        m("EightFlagLo", f"{paced['event_to_flag_ms_p50'].min():.0f}")
+        m("EightFlagHi", f"{paced['event_to_flag_ms_p50'].max():.0f}")
+        meas = df[df["phase"].isin(["e1_paced", "users_unpaced"])]
+        g = meas.groupby(["phase", "scenario", "users"], dropna=False).median(numeric_only=True)
+        ratio = g["detect_ms_p50"] / g["memory_detect_ms_p50"]
+        m("EightSlowLo", f"{ratio.min():.0f}")
+        m("EightSlowHi", f"{ratio.max():.0f}")
+        users = df[df["phase"] == "users_unpaced"].groupby("users").median(numeric_only=True)
+        m("EightTputLo", f"{users['events_per_s'].min():.0f}")
+        m("EightTputHi", f"{users['events_per_s'].max():.0f}")
+        m("EightBurstLo", f"{users['event_to_flag_ms_p50'].min() / 1000:.0f}")
+        m("EightBurstHi", f"{users['event_to_flag_ms_p50'].max() / 1000:.0f}")
+
+    e10 = r / "e10_ring_alerts"
+    if (e10 / "summary.csv").exists():
+        sm = pd.read_csv(e10 / "summary.csv").set_index("scope").loc["all"]
+        cal = pd.read_csv(e10 / "calibrators.csv")
+        cal = cal[cal["scope"] == "all"].set_index("calibrator")
+        rel = pd.read_csv(e10 / "reliability.csv")
+        rel = rel[(rel["calibrator"] == "shipped") & (rel["binning"] == "width")].set_index("bin")
+        out.append(f"% from {(e10 / 'summary.csv').as_posix()}, calibrators.csv, reliability.csv\n")
+        m("TenUnits", str(int(sm["units"])))
+        m("TenAlerts", str(int(sm["alerts"])))
+        m("TenEce", f"{sm['ece_width']:.2f}")
+        m("TenBrier", f"{cal.loc['shipped', 'brier']:.3f}")
+        best = cal.drop(index=["shipped", "uncalibrated"], errors="ignore")["brier"].min()
+        m("TenBrierRefit", f"{best:.3f}")
+        m("TenPAtFive", f"{sm['precision_at_5pct']:.2f}")
+        m("TenBinEight", pct(rel.loc[8, "positive_rate"]) if 8 in rel.index else "--")
+        m("TenBinNine", pct(rel.loc[9, "positive_rate"]) if 9 in rel.index else "--")
+
+    e11 = r / "e11_early_warning" / "summary.csv"
+    if e11.exists():
+        sm = pd.read_csv(e11).set_index("scope").loc["all"]
+        out.append(f"% from {e11.as_posix()}\n")
+        m("ElevenEligible", str(int(sm["eligible_rings"])))
+        m("ElevenWarned", str(int(sm["warned_before_activation"])))
+        m("ElevenShare", pct(sm["share_warned"]))
+        m("ElevenLead", f"{sm['lead_median_s']:.1f}")
+        m("ElevenPrecision", pct(sm["warning_precision"]))
+
+    e12 = r / "e12_explanations"
+    if (e12 / "counterfactuals.csv").exists():
+        units = pd.read_csv(e12 / "units.csv")
+        cf = pd.read_csv(e12 / "counterfactuals.csv")
+        st = pd.read_csv(e12 / "stability.csv")
+        co = pd.read_csv(e12 / "consistency.csv")
+        alerts = units[units["shipped"] >= 0.8]
+        ship, corr = cf[cf["mode"] == "as_shipped"], cf[cf["mode"] == "corrected"]
+        with_cf = corr.drop_duplicates(["scenario", "seed", "ring_id"]).shape[0]
+        out.append(f"% from {e12.as_posix()}/*.csv\n")
+        m("TwelveAlerts", str(len(alerts)))
+        m("TwelveCfs", str(len(corr)))
+        m("TwelveValidAsShipped", str(int(ship["valid"].sum())))
+        m("TwelveValidCorrected", str(int(corr["valid"].sum())))
+        m("TwelveNoCfShare", pct(1 - with_cf / len(alerts)))
+        m("TwelveDriftFive", f"{st[st['delta'] == 0.05]['contribution_drift'].median():.3f}")
+        m("TwelveSpearman", f"{co['spearman'].median():.2f}")
+        m("TwelveCfSame", pct(co["cf_agreement"].mean()))
+        m("TwelveStillAlert", pct(co["retrained_alerts"].mean()))
+        tp = alerts[alerts["label"] == "tp"]
+        m("TwelveFidPrec", f"{tp['evidence_precision'].median():.2f}")
+        m("TwelveFidCov", f"{tp['evidence_coverage'].median():.2f}")
+
+    e13 = r / "e13_learned_baselines" / "results.csv"
+    if e13.exists():
+        from fraudsim.experiments.learned_baselines import paired
+
+        df = pd.read_csv(e13)
+        out.append(f"% from {e13.as_posix()}\n")
+        prop = df[df["method"] == "proposed"].sort_values(["scenario", "seed"])
+        gb = df[df["method"] == "tabular_gb"].sort_values(["scenario", "seed"])
+        stat = paired(gb["f1"].fillna(0), prop["f1"].fillna(0))
+        m("ThirteenPropF", f"{prop['f1'].mean():.3f}")
+        m("ThirteenGbF", f"{gb['f1'].mean():.3f}")
+        m("ThirteenPropP", f"{prop['precision'].mean():.2f}")
+        m("ThirteenGbP", f"{gb['precision'].mean():.2f}")
+        m("ThirteenPropR", f"{prop['recall'].mean():.2f}")
+        m("ThirteenGbR", f"{gb['recall'].mean():.2f}")
+        m("ThirteenRb", f"{stat['rank_biserial']:.2f}")
+        m("ThirteenP", "< 0.001" if stat["p"] == "<0.001" else f"= {stat['p']}")
+        for sc, tag in (("hub_heavy", "Hub"), ("adversarial", "Adv")):
+            m(f"ThirteenPropF{tag}", f"{prop[prop['scenario'] == sc]['f1'].mean():.2f}")
+            m(f"ThirteenGbF{tag}", f"{gb[gb['scenario'] == sc]['f1'].mean():.2f}")
+
+    e14 = r / "e14_evasion_strength" / "results.csv"
+    if e14.exists():
+        df = pd.read_csv(e14)
+        out.append(f"% from {e14.as_posix()}\n")
+
+        def recall(row: pd.Series) -> float:
+            v = json.loads(row["recall_by_evasion"]).get(row["sweep_mode"])
+            return float("nan") if v is None else float(v)
+
+        df["swept"] = df.apply(recall, axis=1)
+        dec = (
+            df[df["sweep_mode"] == "decoy_edges"].groupby(["method", "sweep_value"])["swept"].mean()
+        )
+        m("FourteenDecoyPropLo", f"{dec['proposed'].min():.2f}")
+        m("FourteenDecoyPropHi", f"{dec['proposed'].max():.2f}")
+        m("FourteenDecoyLouvainMax", f"{dec['louvain'].loc[8]:.2f}")
+        m("FourteenDecoyGbMax", f"{dec['tabular_gb'].loc[8]:.2f}")
+        slow = (
+            df[df["sweep_mode"] == "low_and_slow"]
+            .groupby(["method", "sweep_value"])["swept"]
+            .mean()
+        )
+        m("FourteenSlowPropHi", f"{slow['proposed'].max():.2f}")
+        m("FourteenSlowCapLo", f"{slow['static_cap10'].min():.2f}")
+        m("FourteenSlowCapHi", f"{slow['static_cap10'].max():.2f}")
+    return out
+
+
 def generate_numbers(output_dir: Path, results_dir: Path = Path("results")) -> Path | None:
     """numbers.tex: every number quoted in the prose, as a macro."""
     out = ["% Numbers quoted in the paper text, generated from results/*/results.csv.\n"]
@@ -543,6 +674,7 @@ def generate_numbers(output_dir: Path, results_dir: Path = Path("results")) -> P
     out += _sweep_numbers(results_dir, f2)
     out += _adaptivity_numbers(results_dir)
     out += _public_numbers(results_dir)
+    out += _phase2_numbers(results_dir)
     tuned = Path("configs/tuned.json")
     if tuned.exists():
         t = json.loads(tuned.read_text(encoding="utf-8"))

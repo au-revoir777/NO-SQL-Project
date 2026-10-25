@@ -259,6 +259,7 @@ RAM, Windows 11), Python 3.11.9, NumPy 2.2.6, scikit-learn 1.7.2,
 NetworkX 3.5, with experiments run one at a time.
 
 \input{sections/results.tex}
+\input{sections/phase2.tex}
 
 \section{Threats to Validity}
 \label{sec:threats}
@@ -292,12 +293,23 @@ over 20\,s per batch. In the scale scenario, attribute counts grow with the
 number of users while hub sizes stay fixed; graphs whose hubs grow with the
 population would give larger dirty regions.
 
-\textbf{Latency.} Latencies are measured on the in-memory store on a laptop;
-Neo4j adds query and transport cost that we did not include in these numbers.
+\textbf{Latency.} The latencies of Section~\ref{sec:results} come from the
+in-memory store on a laptop. Section~\ref{sec:phase2} repeats the measurement on
+Neo4j and Redis Streams. The detected rings are identical, but detection is
+several times slower and throughput is bounded by the store. Both figures
+describe one laptop running Docker, not a server.
 
-\textbf{Baselines.} We do not compare with GNN classifiers, which answer a
-different question (per-node labels rather than groups) and need labelled
-training graphs.
+\textbf{Baselines.} The learned baseline of Section~\ref{sec:phase2} is a
+tabular model over Louvain groups, so its weakness under decoy edges is partly
+the grouping's. We did not run a graph neural network. A GraphSAGE node
+classifier with a fixed rule for turning node scores into rings, as used by
+Badjie et al.~\cite{badjie2026ensembles} and Kumar et al.~\cite{kumar2026tagat},
+is the obvious next comparison, together with node-level AUC on public
+benchmarks. Our node-level numbers are not comparable to those benchmarks.
+
+\textbf{Calibration.} The shipped scorer is miscalibrated at the ring level
+(Section~\ref{sec:phase2}). Its scores rank alerts well but should not be read
+as probabilities until a ring-level calibrator replaces it.
 
 \section{Conclusion}
 Replacing the degree cap with a continuous hub-aware weight lets a streaming
@@ -308,9 +320,15 @@ micro-batch touches gave the same rings as full recomputation in every
 accuracy run, and kept per-batch latency flat as the graph grew to
 \ScaleMaxUsers{} users while full recomputation grew past 20\,s. Rings that
 rotate identities or act slowly evade all methods we tested, and all of our
-positive results are on synthetic data. The next steps are data with real
-shared-attribute links, longer windows for slow rings, and a Neo4j-backed
-measurement of the same latency curve.
+positive results are on synthetic data. On Neo4j and Redis Streams the detector flags exactly the same rings, at the
+cost of slower detection and a throughput bounded by the store. A learned model
+over rule-free groups is more precise but finds half as many rings, and it
+collapses under decoy edges, which the hub-aware rules withstand. The
+explanations are stable and their evidence is faithful. Measuring them also
+found and fixed a calibration defect that had made every counterfactual
+invalid. The next steps are data with real shared-attribute links, a ring-level
+calibrator, a GraphSAGE baseline, multi-feature counterfactuals, and longer runs
+for slow and identity-rotating rings.
 
 Code, scenarios, models and the scripts that regenerate every table and figure
 are in the project repository (\texttt{REPRODUCE.md}).
