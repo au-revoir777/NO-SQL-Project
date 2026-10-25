@@ -35,7 +35,8 @@ the $k$-hop region touched by each batch, with fan-out limits that keep that
 region bounded when it reaches a hub.
 \item \textbf{C3, calibrated, explained alerts.} Candidate rings are scored by a
 calibrated classifier, and each alert carries feature contributions, an
-evidence subgraph and counterfactuals.
+evidence subgraph and counterfactuals. The scorer supplies most of the
+precision, for our candidates and for the baselines' (Section~\ref{sec:results}).
 \item \textbf{C4, evaluation under evasion.} A deterministic simulator with
 ring-level ground truth and five evasion strategies, including an attacker that
 adapts to the detector's flags, lets us measure each component on identical
@@ -330,7 +331,10 @@ Neo4j and Redis Streams. The detected rings are identical, but detection is
 several times slower and throughput is bounded by the store. Both figures
 describe one laptop running Docker, not a server.
 
-\textbf{Baselines.} The learned baseline of Section~\ref{sec:phase2} is a
+\textbf{Baselines.} The scored baselines of Table~\ref{tab:baselines} use the
+shipped scorer, which was trained on candidates of the proposed pipeline; a
+scorer trained on each baseline's own candidates might do better for it. The
+learned baseline of Section~\ref{sec:phase2} is a
 tabular model over Louvain groups, so its weakness under decoy edges is partly
 the grouping's. We did not run a graph neural network. A GraphSAGE node
 classifier with a fixed rule for turning node scores into rings, as used by
@@ -344,9 +348,13 @@ as probabilities until a ring-level calibrator replaces it.
 
 \section{Conclusion}
 Replacing the degree cap with a continuous hub-aware weight lets a streaming
-detector reach fraud rings that share busy infrastructure, which no cap reaches;
-on its own the weighting is not precise, and a calibrated scorer over ring
-features supplies most of the precision. Restricting detection to the region a
+detector reach a recall on rings that share busy infrastructure that no cap
+reaches; on its own the weighting is not precise, and a calibrated scorer over
+ring features supplies most of the precision. Given the same scorer, the
+degree-capped rules reach F1 \ECapTenSF{} against \EPropF{} for the full
+pipeline, so the scorer accounts for most of the gain over the original rules,
+and at the best operating point on shared-attribute rings the weight and the
+cap are not distinguishable on F1. Restricting detection to the region a
 micro-batch touches gave the same rings as full recomputation in every
 accuracy run, and kept per-batch latency flat as the graph grew to
 \ScaleMaxUsers{} users while full recomputation grew past 20\,s. Rings that

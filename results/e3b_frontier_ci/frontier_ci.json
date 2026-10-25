@@ -1,0 +1,502 @@
+{
+  "protocol": "docs/research/e1b_protocol.md (E3b)",
+  "source": "results/e3_frontier/results.csv",
+  "runs_per_point": 20,
+  "bootstrap": {
+    "resamples": 2000,
+    "seed": 0,
+    "stratified_by": "scenario"
+  },
+  "best_f1": {
+    "hub_scored": {
+      "method": "hubS_0.8",
+      "f1": 0.5834
+    },
+    "cap_scored": {
+      "method": "capS_0.7",
+      "f1": 0.554
+    },
+    "difference": 0.0294,
+    "difference_ci": [
+      -0.0302,
+      0.0973
+    ],
+    "share_of_resamples_hub_better": 0.837,
+    "per_run_wilcoxon": {
+      "n": 20,
+      "median_diff": 0.0196,
+      "p": 0.6601,
+      "rank_biserial": 0.125
+    }
+  },
+  "points": {
+    "cap_3": {
+      "family": "cap",
+      "precision": 0.3241,
+      "recall": 0.5,
+      "f1": 0.3933,
+      "precision_ci": [
+        0.2605,
+        0.4
+      ],
+      "recall_ci": [
+        0.4211,
+        0.5714
+      ],
+      "f1_ci": [
+        0.3207,
+        0.4695
+      ]
+    },
+    "cap_5": {
+      "family": "cap",
+      "precision": 0.2847,
+      "recall": 0.5517,
+      "f1": 0.3756,
+      "precision_ci": [
+        0.2381,
+        0.3333
+      ],
+      "recall_ci": [
+        0.4918,
+        0.5965
+      ],
+      "f1_ci": [
+        0.3228,
+        0.4247
+      ]
+    },
+    "cap_10": {
+      "family": "cap",
+      "precision": 0.2349,
+      "recall": 0.5517,
+      "f1": 0.3295,
+      "precision_ci": [
+        0.1988,
+        0.2727
+      ],
+      "recall_ci": [
+        0.4918,
+        0.5965
+      ],
+      "f1_ci": [
+        0.2857,
+        0.3717
+      ]
+    },
+    "cap_20": {
+      "family": "cap",
+      "precision": 0.2155,
+      "recall": 0.5517,
+      "f1": 0.3099,
+      "precision_ci": [
+        0.1827,
+        0.2485
+      ],
+      "recall_ci": [
+        0.4918,
+        0.5965
+      ],
+      "f1_ci": [
+        0.2686,
+        0.3484
+      ]
+    },
+    "cap_50": {
+      "family": "cap",
+      "precision": 0.1857,
+      "recall": 0.5517,
+      "f1": 0.2779,
+      "precision_ci": [
+        0.1584,
+        0.2126
+      ],
+      "recall_ci": [
+        0.4918,
+        0.5965
+      ],
+      "f1_ci": [
+        0.241,
+        0.3113
+      ]
+    },
+    "cap_100": {
+      "family": "cap",
+      "precision": 0.1814,
+      "recall": 0.5517,
+      "f1": 0.273,
+      "precision_ci": [
+        0.1552,
+        0.2069
+      ],
+      "recall_ci": [
+        0.4918,
+        0.5965
+      ],
+      "f1_ci": [
+        0.2369,
+        0.3057
+      ]
+    },
+    "cap_200": {
+      "family": "cap",
+      "precision": 0.1814,
+      "recall": 0.5517,
+      "f1": 0.273,
+      "precision_ci": [
+        0.1552,
+        0.2069
+      ],
+      "recall_ci": [
+        0.4918,
+        0.5965
+      ],
+      "f1_ci": [
+        0.2369,
+        0.3057
+      ]
+    },
+    "hub_0.3": {
+      "family": "hub",
+      "precision": 0.1462,
+      "recall": 0.8621,
+      "f1": 0.25,
+      "precision_ci": [
+        0.1247,
+        0.1687
+      ],
+      "recall_ci": [
+        0.7832,
+        0.9455
+      ],
+      "f1_ci": [
+        0.2165,
+        0.284
+      ]
+    },
+    "hub_0.4": {
+      "family": "hub",
+      "precision": 0.1545,
+      "recall": 0.8103,
+      "f1": 0.2595,
+      "precision_ci": [
+        0.1256,
+        0.1913
+      ],
+      "recall_ci": [
+        0.7368,
+        0.8772
+      ],
+      "f1_ci": [
+        0.2161,
+        0.3118
+      ]
+    },
+    "hub_0.5": {
+      "family": "hub",
+      "precision": 0.1293,
+      "recall": 0.7586,
+      "f1": 0.2209,
+      "precision_ci": [
+        0.1061,
+        0.1553
+      ],
+      "recall_ci": [
+        0.6842,
+        0.8197
+      ],
+      "f1_ci": [
+        0.1861,
+        0.2587
+      ]
+    },
+    "hub_0.6": {
+      "family": "hub",
+      "precision": 0.1585,
+      "recall": 0.6034,
+      "f1": 0.2511,
+      "precision_ci": [
+        0.1411,
+        0.1772
+      ],
+      "recall_ci": [
+        0.5345,
+        0.6724
+      ],
+      "f1_ci": [
+        0.2264,
+        0.2766
+      ]
+    },
+    "hub_0.8": {
+      "family": "hub",
+      "precision": 0.1552,
+      "recall": 0.3793,
+      "f1": 0.2202,
+      "precision_ci": [
+        0.1146,
+        0.1975
+      ],
+      "recall_ci": [
+        0.2712,
+        0.4912
+      ],
+      "f1_ci": [
+        0.1627,
+        0.2736
+      ]
+    },
+    "hub_1.0": {
+      "family": "hub",
+      "precision": 0.193,
+      "recall": 0.1552,
+      "f1": 0.172,
+      "precision_ci": [
+        0.1091,
+        0.2745
+      ],
+      "recall_ci": [
+        0.0819,
+        0.25
+      ],
+      "f1_ci": [
+        0.0917,
+        0.2545
+      ]
+    },
+    "hub_1.3": {
+      "family": "hub",
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "precision_ci": [
+        0.0,
+        0.0
+      ],
+      "recall_ci": [
+        0.0,
+        0.0
+      ],
+      "f1_ci": [
+        0.0,
+        0.0
+      ]
+    },
+    "capS_0.2": {
+      "family": "cap_scored",
+      "precision": 0.48,
+      "recall": 0.5345,
+      "f1": 0.5058,
+      "precision_ci": [
+        0.395,
+        0.6
+      ],
+      "recall_ci": [
+        0.4828,
+        0.5818
+      ],
+      "f1_ci": [
+        0.4354,
+        0.5869
+      ]
+    },
+    "hubS_0.2": {
+      "family": "hub_scored",
+      "precision": 0.3515,
+      "recall": 0.8103,
+      "f1": 0.4903,
+      "precision_ci": [
+        0.2907,
+        0.4221
+      ],
+      "recall_ci": [
+        0.7018,
+        0.9091
+      ],
+      "f1_ci": [
+        0.418,
+        0.5659
+      ]
+    },
+    "capS_0.5": {
+      "family": "cap_scored",
+      "precision": 0.6458,
+      "recall": 0.4655,
+      "f1": 0.541,
+      "precision_ci": [
+        0.54,
+        0.7857
+      ],
+      "recall_ci": [
+        0.4,
+        0.5357
+      ],
+      "f1_ci": [
+        0.4625,
+        0.6235
+      ]
+    },
+    "hubS_0.5": {
+      "family": "hub_scored",
+      "precision": 0.4608,
+      "recall": 0.7241,
+      "f1": 0.5632,
+      "precision_ci": [
+        0.3675,
+        0.5796
+      ],
+      "recall_ci": [
+        0.6071,
+        0.8364
+      ],
+      "f1_ci": [
+        0.4685,
+        0.655
+      ]
+    },
+    "capS_0.7": {
+      "family": "cap_scored",
+      "precision": 0.725,
+      "recall": 0.4483,
+      "f1": 0.554,
+      "precision_ci": [
+        0.6111,
+        0.8612
+      ],
+      "recall_ci": [
+        0.3818,
+        0.5172
+      ],
+      "f1_ci": [
+        0.4746,
+        0.6419
+      ]
+    },
+    "hubS_0.7": {
+      "family": "hub_scored",
+      "precision": 0.5114,
+      "recall": 0.6724,
+      "f1": 0.5809,
+      "precision_ci": [
+        0.404,
+        0.641
+      ],
+      "recall_ci": [
+        0.5345,
+        0.7966
+      ],
+      "f1_ci": [
+        0.4743,
+        0.6755
+      ]
+    },
+    "capS_0.8": {
+      "family": "cap_scored",
+      "precision": 0.7179,
+      "recall": 0.431,
+      "f1": 0.5387,
+      "precision_ci": [
+        0.5952,
+        0.8611
+      ],
+      "recall_ci": [
+        0.3559,
+        0.5093
+      ],
+      "f1_ci": [
+        0.4474,
+        0.6399
+      ]
+    },
+    "hubS_0.8": {
+      "family": "hub_scored",
+      "precision": 0.5375,
+      "recall": 0.6379,
+      "f1": 0.5834,
+      "precision_ci": [
+        0.4318,
+        0.6667
+      ],
+      "recall_ci": [
+        0.5,
+        0.7586
+      ],
+      "f1_ci": [
+        0.4779,
+        0.6731
+      ]
+    },
+    "capS_0.9": {
+      "family": "cap_scored",
+      "precision": 0.7273,
+      "recall": 0.3793,
+      "f1": 0.4986,
+      "precision_ci": [
+        0.5946,
+        0.871
+      ],
+      "recall_ci": [
+        0.2931,
+        0.4737
+      ],
+      "f1_ci": [
+        0.3982,
+        0.6067
+      ]
+    },
+    "hubS_0.9": {
+      "family": "hub_scored",
+      "precision": 0.6122,
+      "recall": 0.4655,
+      "f1": 0.5289,
+      "precision_ci": [
+        0.4677,
+        0.7955
+      ],
+      "recall_ci": [
+        0.3499,
+        0.5819
+      ],
+      "f1_ci": [
+        0.4081,
+        0.648
+      ]
+    },
+    "capS_0.95": {
+      "family": "cap_scored",
+      "precision": NaN,
+      "recall": 0.0,
+      "f1": 0.0,
+      "precision_ci": [
+        NaN,
+        NaN
+      ],
+      "recall_ci": [
+        0.0,
+        0.0
+      ],
+      "f1_ci": [
+        0.0,
+        0.0
+      ]
+    },
+    "hubS_0.95": {
+      "family": "hub_scored",
+      "precision": NaN,
+      "recall": 0.0,
+      "f1": 0.0,
+      "precision_ci": [
+        NaN,
+        NaN
+      ],
+      "recall_ci": [
+        0.0,
+        0.0
+      ],
+      "f1_ci": [
+        0.0,
+        0.0
+      ]
+    }
+  }
+}

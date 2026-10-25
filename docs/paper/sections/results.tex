@@ -5,12 +5,26 @@
 \input{tables/tab1_baselines.tex}
 \input{tables/tab1b_scenarios.tex}
 
-Table~\ref{tab:baselines} pools \ERuns{} runs (\EScenarios{} scenarios
-$\times$ \ESeeds{} test seeds $\times$ six methods). The proposed method reaches
-ring F1 \EPropF{} ($\pm$\EPropFCI{}), against \ECapTenF{} for the static rules
-with a degree cap of 10, \ECapHundredF{} with a cap of 100, \ELouvainF{} for
-Louvain and \EPlainCCF{} for connected components; each difference is
-significant on the paired streams ($p<0.001$). The static rules reach recall
+Table~\ref{tab:baselines} pools \EScenarios{} scenarios $\times$ \ESeeds{}
+test seeds for every method, all on identical streams. Without a scorer, the
+static rules reach ring F1 \ECapTenF{} with a degree cap of 10 and
+\ECapHundredF{} with a cap of 100, Louvain \ELouvainF{} and connected
+components \EPlainCCF{}. These rows differ from the proposed method in two
+ways at once: how candidates are generated and whether they are scored. With
+the same calibrated scorer and an alert threshold selected per method on the
+validation seeds, the static rules reach \ECapTenSF{} (cap 10) and
+\ECapHundredSF{} (cap 100) and Louvain \ELouvainSF{}, against \EPropF{}
+($\pm$\EPropFCI{}) for the proposed method; every difference to the proposed
+method remains significant after Holm correction ($p<0.001$). Within the
+scored group the differences isolate the candidate generator, the hub-aware
+rule and incremental detection; between a generator's unscored and scored rows
+they isolate the scorer. For the rules with cap 10, the scorer raises F1
+from \ECapTenF{} to \ECapTenSF{}, through precision (\ECapTenP{} to
+\ECapTenSP{}) at some cost in recall (\ECapTenR{} to \ECapTenSR{}); the
+candidate generator raises it further to \EPropF{}, mostly through recall
+(\ECapTenSR{} to \EPropR{}). The scorer was trained on candidates of the proposed pipeline, so
+on rule and Louvain candidates it works under some distribution shift. The
+unscored static rules reach recall
 \ECapTenR{} but precision only \ECapTenP{}: the shared-attribute rules and the
 3-cycle rule fire on many benign groups, and two-hit confirmation does not
 remove them. Connected components never produce a group within the ring size
@@ -35,7 +49,10 @@ recall \FrHubMaxR{}, but on its own at precision \FrHubPAtMaxR{}. With the
 calibrated scorer on top, hub weighting reaches recall \FrHubSMaxR{} (precision
 \FrHubSPAtMaxR{}) and its best F1 is \FrHubSBestF{} (alert threshold
 \FrHubSBestFAt{}); the cap with the scorer stays below recall \FrCapSMaxR{} and
-its best F1 is \FrCapSBestF{}. At low recall the cap with the scorer is the
+its best F1 is \FrCapSBestF{}. The difference in best F1, \FrDiff{}, has a
+95\% bootstrap interval of \FrDiffLo{} to \FrDiffHi{} over the 20 runs (the best
+threshold re-selected in every resample), so at the best operating point the
+two mechanisms are not distinguishable on F1. At low recall the cap with the scorer is the
 more precise of the two (\FrCapSBestFP{} at recall \FrCapSBestFR{}). Hub
 weighting therefore does not dominate the cap everywhere; it extends the
 frontier to recall levels the cap cannot reach, and the scorer is what makes
@@ -47,7 +64,9 @@ those levels usable.
 \caption{Precision and recall on shared-attribute rings (micro-averaged over
 4 scenarios $\times$ 5 test seeds). Solid: detector alone, swept over the
 degree cap or the edge threshold $\theta_e$. Dashed: with the calibrated scorer,
-swept over the alert threshold $\theta_a$ (cap 10; $\theta_e=\TunedEdge$).}
+swept over the alert threshold $\theta_a$ (cap 10; $\theta_e=\TunedEdge$).
+Best-F1 difference with the scorer (hub minus cap): \FrDiff{}, 95\% bootstrap
+interval \FrDiffLo{} to \FrDiffHi{} (\texttt{results/e3b\_frontier\_ci}).}
 \label{fig:frontier}
 \end{figure}
 

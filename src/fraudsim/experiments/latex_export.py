@@ -56,51 +56,78 @@ def _num(x: float, digits: int = 1) -> str:
 
 def _latency(r: pd.Series, family: str | None) -> str:
     """Per-batch latency for incremental methods; one full-graph pass for full-graph baselines."""
-    if family == "baseline":
+    if family in ("baseline", "baseline_scored"):
         return _num(r.get("full_graph_ms_p50_mean")) + r"$^\dagger$"
     return _num(r["detect_ms_p50_mean"])
 
 
 def generate_baseline_table(output_dir: Path, results_dir: Path = Path("results")) -> Path | None:
-    """Table 1: every method over all E1 scenario x seed runs."""
+    """Table 1: every E1 method, plus the E1b scored baselines when their results exist."""
     got = _results(results_dir, "e1_baselines")
     if got is None:
         return None
     df, header = got
-    labels = df.drop_duplicates("method").set_index("method")["method_label"]
+    scored = _results(results_dir, "e1b_scored_baselines")
+    if scored is not None:
+        sdf, sheader = scored
+        # Main table: scored baselines at their validation-selected thresholds only.
+        sdf = sdf[~sdf["method"].str.endswith("_apriori")]
+        df = pd.concat([df, sdf], ignore_index=True)
+        header += sheader
+    labels = df.drop_duplicates("method").set_index("method")["method_label"].to_dict()
+    for m in list(labels):
+        if m.endswith("_scored") and m[: -len("_scored")] in labels:
+            labels[m] = labels[m[: -len("_scored")]] + " + scorer"
     families = df.drop_duplicates("method").set_index("method")["family"].to_dict()
-    s = summarize(df, ["method"])
-    tests = (
-        paired_vs(df, "proposed", "f1").set_index("method")
-        if "proposed" in set(df["method"])
-        else None
-    )
+    s = summarize(df, ["method"]).set_index("method")
+    if "proposed" in set(df["method"]):
+        from fraudsim.experiments.scored_baselines import holm
+
+        tests = paired_vs(df, "proposed", "f1").set_index("method")
+        adj = holm({m: float(tests.loc[m, "wilcoxon_p"]) for m in tests.index})
+    else:
+        adj = {}
     best = s["f1_mean"].max()
-    lines = []
-    for _, r in s.iterrows():
+
+    def line(method: str) -> str:
+        r = s.loc[method]
         f1 = fmt_ci(r["f1_mean"], r["f1_ci95"])
         if r["f1_mean"] == best:
             f1 = r"\textbf{" + f1 + "}"
-        p = (
-            _p(tests.loc[r["method"], "wilcoxon_p"])
-            if tests is not None and r["method"] in tests.index
-            else "--"
-        )
-        lines.append(
-            f"{_esc(labels.get(r['method'], r['method']))} & {fmt_ci(r['precision_mean'], r['precision_ci95'])}"
+        return (
+            f"{_esc(labels.get(method, method))} & {fmt_ci(r['precision_mean'], r['precision_ci95'])}"
             f" & {fmt_ci(r['recall_mean'], r['recall_ci95'])} & {f1}"
-            f" & {_num(r['ttd_p50_s_mean'])} & {_latency(r, families.get(r['method']))} & {p} \\\\"
+            f" & {_num(r['ttd_p50_s_mean'])} & {_latency(r, families.get(method))}"
+            f" & {_p(adj[method]) if method in adj else '--'} \\\\"
         )
+
+    unscored = [m for m in s.index if families.get(m) == "baseline"]
+    scored_rows = [f"{m}_scored" for m in unscored if f"{m}_scored" in s.index]
+    proposed = [m for m in ("proposed", "proposed_default") if m in s.index]
+    if scored_rows:
+        lines = [r"\multicolumn{7}{l}{\textit{Without a scorer}} \\"]
+        lines += [line(m) for m in unscored]
+        lines += [r"\midrule", r"\multicolumn{7}{l}{\textit{With the calibrated scorer}} \\"]
+        lines += [line(m) for m in scored_rows + proposed]
+        scorer_note = (
+            " Scored baselines use the shipped scorer (\\texttt{models/ring\\_scorer\\_lr.json}),"
+            " with the alert threshold selected per method on the validation seeds; the proposed"
+            " method includes the same scorer, so only rows within a group isolate the candidate"
+            " generator. $p$ values are Holm-corrected."
+        )
+    else:
+        lines = [line(m) for m in unscored + proposed]
+        scorer_note = ""
     n_scen, n_seed = df["scenario"].nunique(), df["seed"].nunique()
     body = (
         header
         + rf"""\begin{{table*}}[t]
 \centering
-\caption{{Ring-level detection on {n_scen} scenarios $\times$ {n_seed} test seeds (mean $\pm$ 95\% CI over runs;
+\caption{{Ring-level detection on {n_scen} scenarios $\times$ {n_seed} test seeds, pooled (mean $\pm$ 95\% CI over runs;
 a run with no flags has undefined precision and counts as F1 $=0$). TTD: median time from ring activation to
 first flag. Latency: median per-batch detection time on the in-memory store; $^\dagger$full-graph
 methods run on a 5\,s timer, not per batch, so their entry is the median time of one full-graph pass. $p$: paired Wilcoxon signed-rank
-test of F1 against the proposed method on identical streams.}}
+test of F1 against the proposed method on identical streams.{scorer_note}}}
 \label{{tab:baselines}}
 \begin{{tabular}}{{lcccccc}}
 \toprule
@@ -493,6 +520,38 @@ def _adaptivity_numbers(results_dir: Path) -> list[str]:
     return out
 
 
+def _e1b_numbers(results_dir: Path, f2) -> list[str]:  # type: ignore[no-untyped-def]
+    """Macros for E1b (scored baselines) and E3b (frontier intervals)."""
+    out: list[str] = []
+    got = _results(results_dir, "e1b_scored_baselines")
+    if got:
+        df, header = got
+        out.append(header)
+        s = summarize(df, ["method"]).set_index("method")
+        sel = Path(results_dir) / "e1b_scored_baselines" / "selected_thresholds.json"
+        chosen = json.loads(sel.read_text(encoding="utf-8"))["alert_threshold"]
+        alerts = {f"{k}_scored": v for k, v in chosen.items()}
+        for m, tag in (
+            ("static_cap10_scored", "CapTenS"),
+            ("static_cap100_scored", "CapHundredS"),
+            ("louvain_scored", "LouvainS"),
+        ):
+            if m in s.index:
+                for metric, mt in (("precision", "P"), ("recall", "R"), ("f1", "F")):
+                    out.append(_macro(f"E{tag}{mt}", f2(s.loc[m, f"{metric}_mean"])))
+                out.append(_macro(f"E{tag}FCI", f2(s.loc[m, "f1_ci95"])))
+                out.append(_macro(f"E{tag}At", f"{float(alerts[m]):g}"))
+    ci = Path(results_dir) / "e3b_frontier_ci" / "frontier_ci.json"
+    if ci.exists():
+        b = json.loads(ci.read_text(encoding="utf-8"))["best_f1"]
+        out.append(f"% from {ci.as_posix()}\n")
+        out.append(_macro("FrDiff", f"{b['difference']:.2f}"))
+        out.append(_macro("FrDiffLo", f"{b['difference_ci'][0]:.2f}"))
+        out.append(_macro("FrDiffHi", f"{b['difference_ci'][1]:.2f}"))
+        out.append(_macro("FrHubBetterPct", f"{100 * b['share_of_resamples_hub_better']:.0f}"))
+    return out
+
+
 def _phase2_numbers(results_dir: Path) -> list[str]:
     """Macros for the Phase 2 experiments (E8, E10-E14), computed from their CSVs."""
     out: list[str] = []
@@ -675,6 +734,7 @@ def generate_numbers(output_dir: Path, results_dir: Path = Path("results")) -> P
     out += _adaptivity_numbers(results_dir)
     out += _public_numbers(results_dir)
     out += _phase2_numbers(results_dir)
+    out += _e1b_numbers(results_dir, f2)
     tuned = Path("configs/tuned.json")
     if tuned.exists():
         t = json.loads(tuned.read_text(encoding="utf-8"))

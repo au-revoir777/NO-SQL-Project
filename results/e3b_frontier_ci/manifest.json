@@ -1,0 +1,29 @@
+{
+  "grids": [
+    {
+      "experiment": "e3b_frontier_ci",
+      "source": "results/e3_frontier/results.csv",
+      "resamples": 2000,
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-25T12:45:46.711651+00:00",
+      "ended_at": "2026-10-25T12:45:46.712651+00:00",
+      "wall_s": 0.001,
+      "rows": 0,
+      "git_commit": "fcd9d1f1b01aac3a77ed89557b5d773bec044bb0",
+      "git_dirty": false,
+      "python": "3.11.9",
+      "platform": "Windows-10",
+      "cpu_count": 4,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    }
+  ]
+}

@@ -9,13 +9,15 @@ replace the cap with a continuous hub-aware weight with time decay, detect
 incrementally on the neighbourhood touched by each micro-batch, and pass
 candidate rings through a calibrated scorer that explains every alert. On a
 deterministic simulator with ring-level ground truth and five evasion
-strategies, over \EScenarios{} scenarios and \ESeeds{} test seeds, the method
-reaches a ring F1 score of \EPropF{} against \ECapTenF{} for the original
-degree-capped Cypher rules and \ELouvainF{} for Louvain communities, and every
-difference is significant in a paired Wilcoxon signed-rank test. Hub weighting
-extends the reachable recall on shared-attribute rings from \FrCapSMaxR{} to
-\FrHubSMaxR{}, though not at higher precision everywhere, and the scorer
-contributes most of the precision. Incremental detection flags the same rings
+strategies, over \EScenarios{} scenarios and \ESeeds{} test seeds, the full
+pipeline reaches a ring F1 score of \EPropF{} against \ECapTenF{} for the
+original degree-capped Cypher rules. Most of that gap is the scorer: with the
+same calibrated scorer on top, the capped rules reach \ECapTenSF{} and Louvain
+communities \ELouvainSF{}, and the remaining differences are significant in a
+paired, Holm-corrected Wilcoxon test. Hub weighting extends the reachable
+recall on shared-attribute rings from \FrCapSMaxR{} to \FrHubSMaxR{}; its best
+F1 there is not significantly higher than the capped rules' (difference
+\FrDiff{}, 95\% interval \FrDiffLo{} to \FrDiffHi{}). Incremental detection flags the same rings
 as full recomputation and, with \ScaleMaxUsers{} users, takes \ScaleIncMs{} ms
 per batch against \ScaleFullMs{} ms. Rings that rotate identities or act slowly
 evade every method we tested. On Neo4j and Redis Streams the detector flags the

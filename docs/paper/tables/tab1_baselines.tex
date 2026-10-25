@@ -1,20 +1,27 @@
 % generated from results/e1_baselines/results.csv (sha256 of LF text 898355fc90852cc6, 300 rows)
+% generated from results/e1b_scored_baselines/results.csv (sha256 of LF text 0d8b65d8aef12277, 300 rows)
 \begin{table*}[t]
 \centering
-\caption{Ring-level detection on 5 scenarios $\times$ 10 test seeds (mean $\pm$ 95\% CI over runs;
+\caption{Ring-level detection on 5 scenarios $\times$ 10 test seeds, pooled (mean $\pm$ 95\% CI over runs;
 a run with no flags has undefined precision and counts as F1 $=0$). TTD: median time from ring activation to
 first flag. Latency: median per-batch detection time on the in-memory store; $^\dagger$full-graph
 methods run on a 5\,s timer, not per batch, so their entry is the median time of one full-graph pass. $p$: paired Wilcoxon signed-rank
-test of F1 against the proposed method on identical streams.}
+test of F1 against the proposed method on identical streams. Scored baselines use the shipped scorer (\texttt{models/ring\_scorer\_lr.json}), with the alert threshold selected per method on the validation seeds; the proposed method includes the same scorer, so only rows within a group isolate the candidate generator. $p$ values are Holm-corrected.}
 \label{tab:baselines}
 \begin{tabular}{lcccccc}
 \toprule
 Method & Precision & Recall & F1 & TTD (s) & Latency (ms) & $p$ \\
 \midrule
+\multicolumn{7}{l}{\textit{Without a scorer}} \\
 Static Cypher (cap 100) & 0.12 $\pm$ 0.03 & 0.61 $\pm$ 0.08 & 0.19 $\pm$ 0.05 & 9.5 & 6.0$^\dagger$ & $<$0.001 \\
 Static Cypher (cap 10) & 0.14 $\pm$ 0.04 & 0.61 $\pm$ 0.08 & 0.21 $\pm$ 0.05 & 9.5 & 5.9$^\dagger$ & $<$0.001 \\
 Louvain communities & 0.39 $\pm$ 0.09 & 0.33 $\pm$ 0.08 & 0.29 $\pm$ 0.06 & 18.8 & 38.4$^\dagger$ & $<$0.001 \\
 Connected components & -- & 0.00 $\pm$ 0.00 & 0.00 $\pm$ 0.00 & -- & 11.1$^\dagger$ & $<$0.001 \\
+\midrule
+\multicolumn{7}{l}{\textit{With the calibrated scorer}} \\
+Static Cypher (cap 100) + scorer & 0.63 $\pm$ 0.08 & 0.48 $\pm$ 0.09 & 0.52 $\pm$ 0.08 & 8.6 & 4.5$^\dagger$ & $<$0.001 \\
+Static Cypher (cap 10) + scorer & 0.64 $\pm$ 0.07 & 0.53 $\pm$ 0.09 & 0.56 $\pm$ 0.07 & 9.3 & 4.6$^\dagger$ & $<$0.001 \\
+Louvain communities + scorer & 0.81 $\pm$ 0.12 & 0.32 $\pm$ 0.09 & 0.41 $\pm$ 0.09 & 19.0 & 27.9$^\dagger$ & $<$0.001 \\
 Hub-aware incremental (proposed) & 0.76 $\pm$ 0.06 & 0.74 $\pm$ 0.06 & \textbf{0.73 $\pm$ 0.05} & 9.3 & 26.6 & -- \\
 Proposed, a-priori thresholds & 0.73 $\pm$ 0.06 & 0.69 $\pm$ 0.06 & 0.68 $\pm$ 0.05 & 9.0 & 22.7 & 0.034 \\
 \bottomrule

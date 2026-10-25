@@ -96,11 +96,11 @@
       "rows": null
     },
     "docs/paper/tables/numbers.tex": {
-      "sha256": "4ebad89d33e10a72b05d08113c5c9e97ab1d84fda127ecfa9187624c93852ac5",
+      "sha256": "03e3ccfbff460e17c4a3607df54fdf0fe93b7154279ab564b6aceb2b89cca884",
       "rows": null
     },
     "docs/paper/tables/tab1_baselines.tex": {
-      "sha256": "6bc23f2eb55766089bf49d8c8a69cf9c94e086e159d5ad0cfb4fd16183d54256",
+      "sha256": "cb5cff2943af2ae279c556a544997880581a948e162a52be78cc6611b8166775",
       "rows": null
     },
     "docs/paper/tables/tab1b_scenarios.tex": {
@@ -135,6 +135,20 @@
       "new_sha256": "4ebad89d33e10a72b05d08113c5c9e97ab1d84fda127ecfa9187624c93852ac5",
       "commit": "ba46dbd",
       "reason": "Phase 2 macros (E8, E10-E14) appended by latex_export._phase2_numbers for the paper refinement; no existing macro changed (diff is additions only)."
+    },
+    {
+      "file": "docs/paper/tables/numbers.tex",
+      "old_sha256": "4ebad89d33e10a72b05d08113c5c9e97ab1d84fda127ecfa9187624c93852ac5",
+      "new_sha256": "03e3ccfbff460e17c4a3607df54fdf0fe93b7154279ab564b6aceb2b89cca884",
+      "commit": "E1b (P1)",
+      "reason": "E1b scored-baseline rows and E3b interval macros added (docs/research/e1b_protocol.md); existing rows and macros unchanged except Table II p-values, now Holm-corrected (all <0.001 except the a-priori row, 0.034, unchanged)."
+    },
+    {
+      "file": "docs/paper/tables/tab1_baselines.tex",
+      "old_sha256": "6bc23f2eb55766089bf49d8c8a69cf9c94e086e159d5ad0cfb4fd16183d54256",
+      "new_sha256": "cb5cff2943af2ae279c556a544997880581a948e162a52be78cc6611b8166775",
+      "commit": "E1b (P1)",
+      "reason": "E1b scored-baseline rows and E3b interval macros added (docs/research/e1b_protocol.md); existing rows and macros unchanged except Table II p-values, now Holm-corrected (all <0.001 except the a-priori row, 0.034, unchanged)."
     }
   ]
 }

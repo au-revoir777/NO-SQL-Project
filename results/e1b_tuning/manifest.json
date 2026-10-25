@@ -1,0 +1,521 @@
+{
+  "grids": [
+    {
+      "experiment": "e1b_tuning",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "static_cap10_scored_a0.2",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 10
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "label": "Cypher cap 10 + scorer (alert 0.2)",
+          "hash": "4c4b31f2def0c15b"
+        },
+        {
+          "name": "static_cap10_scored_a0.3",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 10
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "label": "Cypher cap 10 + scorer (alert 0.3)",
+          "hash": "0a180f98d5d913f7"
+        },
+        {
+          "name": "static_cap10_scored_a0.5",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 10
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "label": "Cypher cap 10 + scorer (alert 0.5)",
+          "hash": "d6319b4d22000484"
+        },
+        {
+          "name": "static_cap10_scored_a0.7",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 10
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "label": "Cypher cap 10 + scorer (alert 0.7)",
+          "hash": "5452c791fd13b4c9"
+        },
+        {
+          "name": "static_cap10_scored_a0.8",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 10
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "Cypher cap 10 + scorer (alert 0.8)",
+          "hash": "4fadf830fe6f271c"
+        },
+        {
+          "name": "static_cap10_scored_a0.9",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 10
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "label": "Cypher cap 10 + scorer (alert 0.9)",
+          "hash": "28f51271f005a71c"
+        },
+        {
+          "name": "static_cap100_scored_a0.2",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 100
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "label": "Cypher cap 100 + scorer (alert 0.2)",
+          "hash": "275a106eab2cdb5a"
+        },
+        {
+          "name": "static_cap100_scored_a0.3",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 100
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "label": "Cypher cap 100 + scorer (alert 0.3)",
+          "hash": "469bb2ec5b56e7e0"
+        },
+        {
+          "name": "static_cap100_scored_a0.5",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 100
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "label": "Cypher cap 100 + scorer (alert 0.5)",
+          "hash": "31416d63045b5351"
+        },
+        {
+          "name": "static_cap100_scored_a0.7",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 100
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "label": "Cypher cap 100 + scorer (alert 0.7)",
+          "hash": "daab5e1ca0e056c4"
+        },
+        {
+          "name": "static_cap100_scored_a0.8",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 100
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "Cypher cap 100 + scorer (alert 0.8)",
+          "hash": "74ed54d3b6f3f5e7"
+        },
+        {
+          "name": "static_cap100_scored_a0.9",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 100
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "label": "Cypher cap 100 + scorer (alert 0.9)",
+          "hash": "3e4cd50c0ca972e8"
+        },
+        {
+          "name": "louvain_scored_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain"
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "label": "Louvain + scorer (alert 0.2)",
+          "hash": "9ea67f7b5a17a87e"
+        },
+        {
+          "name": "louvain_scored_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain"
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "label": "Louvain + scorer (alert 0.3)",
+          "hash": "6657676760178c38"
+        },
+        {
+          "name": "louvain_scored_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain"
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "label": "Louvain + scorer (alert 0.5)",
+          "hash": "e64d7b315a849b0a"
+        },
+        {
+          "name": "louvain_scored_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain"
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "label": "Louvain + scorer (alert 0.7)",
+          "hash": "4b8eae4f0d0c1ebc"
+        },
+        {
+          "name": "louvain_scored_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain"
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "Louvain + scorer (alert 0.8)",
+          "hash": "e2a78112b7572b88"
+        },
+        {
+          "name": "louvain_scored_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain"
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "label": "Louvain + scorer (alert 0.9)",
+          "hash": "c0ffaf7193a2a9f2"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-25T12:45:58.179330+00:00",
+      "ended_at": "2026-10-25T12:48:18.186680+00:00",
+      "wall_s": 140.007,
+      "rows": 270,
+      "git_commit": "fcd9d1f1b01aac3a77ed89557b5d773bec044bb0",
+      "git_dirty": false,
+      "python": "3.11.9",
+      "platform": "Windows-10",
+      "cpu_count": 4,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    }
+  ]
+}

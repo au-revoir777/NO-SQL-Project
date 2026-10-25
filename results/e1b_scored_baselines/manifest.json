@@ -1,0 +1,216 @@
+{
+  "grids": [
+    {
+      "experiment": "e1b_scored_baselines",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        1001,
+        1002,
+        1003,
+        1004,
+        1005,
+        1006,
+        1007,
+        1008,
+        1009,
+        1010
+      ],
+      "methods": [
+        {
+          "name": "static_cap10_scored",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 10
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "label": "Cypher cap 10 + scorer",
+          "hash": "59dffa7f0a717fd1"
+        },
+        {
+          "name": "static_cap100_scored",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 100
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "label": "Cypher cap 100 + scorer",
+          "hash": "b0928f06c4af78be"
+        },
+        {
+          "name": "louvain_scored",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain"
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "label": "Louvain + scorer",
+          "hash": "a3928bec39c381db"
+        },
+        {
+          "name": "static_cap10_scored_apriori",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 10
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "label": "Cypher cap 10 + scorer (alert 0.5)",
+          "hash": "3da1feb1b45cb02f"
+        },
+        {
+          "name": "static_cap100_scored_apriori",
+          "overrides": {
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "static_cypher": {
+              "max_degree_cap": 100
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "label": "Cypher cap 100 + scorer (alert 0.5)",
+          "hash": "696af779af032d9f"
+        },
+        {
+          "name": "louvain_scored_apriori",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain"
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "label": "Louvain + scorer (alert 0.5)",
+          "hash": "4cd0ba041e67c3e1"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-25T12:48:22.532549+00:00",
+      "ended_at": "2026-10-25T12:50:55.416212+00:00",
+      "wall_s": 152.884,
+      "rows": 300,
+      "git_commit": "fcd9d1f1b01aac3a77ed89557b5d773bec044bb0",
+      "git_dirty": false,
+      "python": "3.11.9",
+      "platform": "Windows-10",
+      "cpu_count": 4,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    }
+  ]
+}
