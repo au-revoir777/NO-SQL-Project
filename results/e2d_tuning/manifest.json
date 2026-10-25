@@ -1,0 +1,917 @@
+{
+  "grids": [
+    {
+      "experiment": "e2d_tuning",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "det_h0.5_o0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.5,
+            "other": 0.5
+          },
+          "label": "hub 0.5, other 0.5",
+          "hash": "4618619a98a10b75"
+        },
+        {
+          "name": "det_h0.5_o0.6",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.5,
+            "other": 0.6
+          },
+          "label": "hub 0.5, other 0.6",
+          "hash": "3aa4908221561d72"
+        },
+        {
+          "name": "det_h0.5_o0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.5,
+            "other": 0.7
+          },
+          "label": "hub 0.5, other 0.7",
+          "hash": "0d40ba235e91e512"
+        },
+        {
+          "name": "det_h0.5_o0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.5,
+            "other": 0.8
+          },
+          "label": "hub 0.5, other 0.8",
+          "hash": "60aed96e29470dc0"
+        },
+        {
+          "name": "det_h0.5_o0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.5,
+            "other": 0.9
+          },
+          "label": "hub 0.5, other 0.9",
+          "hash": "2b6ccbe5c16c1884"
+        },
+        {
+          "name": "det_h0.5_o0.95",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.5,
+            "other": 0.95
+          },
+          "label": "hub 0.5, other 0.95",
+          "hash": "485d6e27ecf7aabd"
+        },
+        {
+          "name": "det_h0.6_o0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.6,
+            "other": 0.5
+          },
+          "label": "hub 0.6, other 0.5",
+          "hash": "6bf670e51688c186"
+        },
+        {
+          "name": "det_h0.6_o0.6",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.6,
+            "other": 0.6
+          },
+          "label": "hub 0.6, other 0.6",
+          "hash": "1edb3789d508dc4a"
+        },
+        {
+          "name": "det_h0.6_o0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.6,
+            "other": 0.7
+          },
+          "label": "hub 0.6, other 0.7",
+          "hash": "856b134e82f39594"
+        },
+        {
+          "name": "det_h0.6_o0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.6,
+            "other": 0.8
+          },
+          "label": "hub 0.6, other 0.8",
+          "hash": "0fc4d14b76036fcd"
+        },
+        {
+          "name": "det_h0.6_o0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.6,
+            "other": 0.9
+          },
+          "label": "hub 0.6, other 0.9",
+          "hash": "608dc5cf08d3f67e"
+        },
+        {
+          "name": "det_h0.6_o0.95",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.6,
+            "other": 0.95
+          },
+          "label": "hub 0.6, other 0.95",
+          "hash": "d1c14d497bb547dc"
+        },
+        {
+          "name": "det_h0.7_o0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.7,
+            "other": 0.5
+          },
+          "label": "hub 0.7, other 0.5",
+          "hash": "f30d75437d63862c"
+        },
+        {
+          "name": "det_h0.7_o0.6",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.7,
+            "other": 0.6
+          },
+          "label": "hub 0.7, other 0.6",
+          "hash": "5d7e1ed627f27934"
+        },
+        {
+          "name": "det_h0.7_o0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.7,
+            "other": 0.7
+          },
+          "label": "hub 0.7, other 0.7",
+          "hash": "de4c3aa37142ca21"
+        },
+        {
+          "name": "det_h0.7_o0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.7,
+            "other": 0.8
+          },
+          "label": "hub 0.7, other 0.8",
+          "hash": "446ae05f4ea0e713"
+        },
+        {
+          "name": "det_h0.7_o0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.7,
+            "other": 0.9
+          },
+          "label": "hub 0.7, other 0.9",
+          "hash": "e6b46d001fee0e0b"
+        },
+        {
+          "name": "det_h0.7_o0.95",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.7,
+            "other": 0.95
+          },
+          "label": "hub 0.7, other 0.95",
+          "hash": "02b7e82d077ddb1f"
+        },
+        {
+          "name": "det_h0.8_o0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.8,
+            "other": 0.5
+          },
+          "label": "hub 0.8, other 0.5",
+          "hash": "4d42d492635fb420"
+        },
+        {
+          "name": "det_h0.8_o0.6",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.8,
+            "other": 0.6
+          },
+          "label": "hub 0.8, other 0.6",
+          "hash": "adf81c330fa493b3"
+        },
+        {
+          "name": "det_h0.8_o0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.8,
+            "other": 0.7
+          },
+          "label": "hub 0.8, other 0.7",
+          "hash": "1ac9dc6e249770e7"
+        },
+        {
+          "name": "det_h0.8_o0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.8,
+            "other": 0.8
+          },
+          "label": "hub 0.8, other 0.8",
+          "hash": "0aad94bfbca85d1b"
+        },
+        {
+          "name": "det_h0.8_o0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.8,
+            "other": 0.9
+          },
+          "label": "hub 0.8, other 0.9",
+          "hash": "55f573cb0591640c"
+        },
+        {
+          "name": "det_h0.8_o0.95",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.8,
+            "other": 0.95
+          },
+          "label": "hub 0.8, other 0.95",
+          "hash": "81a3d664eec51380"
+        },
+        {
+          "name": "det_h0.9_o0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.9,
+            "other": 0.5
+          },
+          "label": "hub 0.9, other 0.5",
+          "hash": "a2b1bedc96faa151"
+        },
+        {
+          "name": "det_h0.9_o0.6",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.9,
+            "other": 0.6
+          },
+          "label": "hub 0.9, other 0.6",
+          "hash": "b6ac7a009c7a26c6"
+        },
+        {
+          "name": "det_h0.9_o0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.9,
+            "other": 0.7
+          },
+          "label": "hub 0.9, other 0.7",
+          "hash": "018dd21bdd4d33d2"
+        },
+        {
+          "name": "det_h0.9_o0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.9,
+            "other": 0.8
+          },
+          "label": "hub 0.9, other 0.8",
+          "hash": "f8bcb462c0834b9b"
+        },
+        {
+          "name": "det_h0.9_o0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.9,
+            "other": 0.9
+          },
+          "label": "hub 0.9, other 0.9",
+          "hash": "d5c1384257e269aa"
+        },
+        {
+          "name": "det_h0.9_o0.95",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.9,
+            "other": 0.95
+          },
+          "label": "hub 0.9, other 0.95",
+          "hash": "fe90a453a91e3dce"
+        },
+        {
+          "name": "det_h0.95_o0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.95,
+            "other": 0.5
+          },
+          "label": "hub 0.95, other 0.5",
+          "hash": "8002bde79ced2611"
+        },
+        {
+          "name": "det_h0.95_o0.6",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.95,
+            "other": 0.6
+          },
+          "label": "hub 0.95, other 0.6",
+          "hash": "b18f714041857386"
+        },
+        {
+          "name": "det_h0.95_o0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.95,
+            "other": 0.7
+          },
+          "label": "hub 0.95, other 0.7",
+          "hash": "0b61c1ce3d7bb08a"
+        },
+        {
+          "name": "det_h0.95_o0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.95,
+            "other": 0.8
+          },
+          "label": "hub 0.95, other 0.8",
+          "hash": "a21b9bfdb64d5ac7"
+        },
+        {
+          "name": "det_h0.95_o0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.95,
+            "other": 0.9
+          },
+          "label": "hub 0.95, other 0.9",
+          "hash": "9d439e40379e71cd"
+        },
+        {
+          "name": "det_h0.95_o0.95",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "detector_thresholds": {
+            "hub_aware": 0.95,
+            "other": 0.95
+          },
+          "label": "hub 0.95, other 0.95",
+          "hash": "cf9f0d509c3c9b57"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-25T21:31:30.436977+00:00",
+      "ended_at": "2026-10-25T21:51:49.222178+00:00",
+      "wall_s": 1218.78,
+      "rows": 540,
+      "git_commit": "7773a022bddf70a3569f3c7e07fbaeb4f4d23690",
+      "git_dirty": false,
+      "python": "3.11.9",
+      "platform": "Windows-10",
+      "cpu_count": 4,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    }
+  ]
+}

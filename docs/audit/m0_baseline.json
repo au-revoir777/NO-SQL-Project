@@ -96,7 +96,7 @@
       "rows": null
     },
     "docs/paper/tables/numbers.tex": {
-      "sha256": "791a8726edaaf762ad2d53166c38f6b11050094b90e049402fac2a637c24a642",
+      "sha256": "fb5d544d7661312c49e59cb56e04261dfd6ee51560d4505cafd02011dd592c92",
       "rows": null
     },
     "docs/paper/tables/tab1_baselines.tex": {
@@ -170,6 +170,13 @@
       "new_sha256": "7b95d97ec57c7667b4aa74b6fd045bb034e0ff54a31502f19b800274a36271b6",
       "commit": "P3-P8",
       "reason": "Refinement P3/P5-P8: macros appended for E5b, E6b and E12 (TwelveCfAlerts), and Holm-corrected p added as a new column of the ablation table; no existing value changed."
+    },
+    {
+      "file": "docs/paper/tables/numbers.tex",
+      "old_sha256": "791a8726edaaf762ad2d53166c38f6b11050094b90e049402fac2a637c24a642",
+      "new_sha256": "fb5d544d7661312c49e59cb56e04261dfd6ee51560d4505cafd02011dd592c92",
+      "commit": "P3-P8b",
+      "reason": "Refinement P3/P4/P8: E4b and E5b macros appended; no existing value changed."
     }
   ]
 }

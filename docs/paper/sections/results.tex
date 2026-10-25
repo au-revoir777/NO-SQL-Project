@@ -223,9 +223,10 @@ runs). The calibrated scorer contributes most: without it F1 falls from
 Without the hub-aware detector, F1 falls to \AblNoHubAwareF{} and to
 \AblNoHubAwareFHubHeavy{} on \texttt{hub\_heavy}, but precision rises to
 \AblNoHubAwareP{} at recall \AblNoHubAwareR{}: most false candidates come from
-the hub-aware detector, and the scorer removes most of them. A separate alert
-threshold per detector is a cheap refinement this suggests; we have not
-tested it. Removing the cycle or the
+the hub-aware detector, and the scorer removes most of them. This suggests a
+separate alert threshold for rings the hub-aware detector found; selected on
+the validation seeds over a $6\times6$ grid, the best pair was the shipped
+single threshold (0.8, 0.8), so the refinement gains nothing here. Removing the cycle or the
 smurfing detector costs \AblNoCycleF{} and \AblNoSmurfingF{}. Replacing the hub
 weight by a constant at the same edge threshold collapses \texttt{hub\_heavy}
 (\AblFullFHubHeavy{} to \AblNoHubWeightFHubHeavy{}) but slightly helps
