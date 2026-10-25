@@ -82,3 +82,13 @@ its own first three seeds. Changes:
   not run. Its cost at 2,000 users is reported instead, as a result in itself.
 - Runs already recorded are kept, not repeated. The process was stopped during
   `const_full` seed 1002 at 2,000 users, and that run is redone.
+
+## Amendment 2 (2026-10-25, before the first 10,000-user `log_full` result)
+
+Compute only, decided by the author. The first `log_full` seed at 10,000 users
+had run for more than 45 minutes without finishing. The equivalence question
+(bound crossing vs the 250-user limit) was already answered by the incremental
+arms at all three sizes; `log_full` at 10,000 users is only a reference point.
+`log_full` at 10,000 users is therefore stopped after seed 1001 and reported as
+"1 seed, compute-only reference", without an interval. One seed also cannot
+show whether the full-recomputation time is stable.
