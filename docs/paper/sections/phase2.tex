@@ -39,29 +39,40 @@ early, and \ElevenPrecision\% of first early warnings pointed at a real ring.
 
 \subsection{RQ8: explanation quality}
 We measured the explanations the product shows on the \TwelveAlerts{} alerts of
-the test streams. Writing the unit test for counterfactual validity exposed a
-defect: counterfactuals aimed at the raw score of the calibrator's breakpoint,
-but the calibrator interpolates between breakpoints, so the proposed change left
-the calibrated score above the threshold. As shipped, \TwelveValidAsShipped{} of
-\TwelveCfs{} counterfactuals flipped the decision. Aimed at the interpolated
-crossing, \TwelveValidCorrected{} of \TwelveCfs{} do. The correction was
-registered as a protocol amendment before the experiment ran. Any system that
-derives counterfactual targets from an isotonic calibrator can make the same
-mistake.
+the test streams. The unit is an alert (a ring at its peak calibrated score of
+at least \TunedAlert{}); a model counterfactual is a proposed change of one
+actionable feature, and an alert can have none, one or several.
+\TwelveCfAlerts{} of the \TwelveAlerts{} alerts have at least one, \TwelveCfs{}
+in all. Writing the unit test for counterfactual validity exposed a defect:
+counterfactuals aimed at the raw score of the calibrator's breakpoint, but the
+calibrator interpolates between breakpoints, so the proposed change left the
+calibrated score above the threshold. As shipped, \TwelveValidAsShipped{} of
+the \TwelveCfs{} counterfactuals flipped the decision; aimed at the
+interpolated crossing, \TwelveValidCorrected{} of \TwelveCfs{} do. The
+correction was registered as a protocol amendment before the experiment ran.
+Any system that derives counterfactual targets from an isotonic calibrator can
+make the same mistake.
 
-Coverage is the larger limitation: \TwelveNoCfShare\% of alerts have no
-single-feature counterfactual over the actionable features, because typical
-transfer size dominates their score. The explanations are stable. Under 5\%
-noise in non-actionable features, after Artelt et al.~\cite{artelt2021robustness},
-the contribution vector moves by a median of \TwelveDriftFive{} (relative
-$L_1$), and the top three features never change for the median alert. A scorer
-retrained on disjoint seeds, after Movin et al.~\cite{movin2025acdc}, ranks the
+Coverage is the larger limitation: the other \TwelveNoCfShare\% of alerts have
+no single-feature counterfactual over the actionable features, because typical
+transfer size dominates their score. Under 5\% noise in non-actionable
+features, after Artelt et al.~\cite{artelt2021robustness}, the contribution
+vector moves by a median of \TwelveDriftFive{} (relative $L_1$) and the top
+three features never change for the median alert; for a linear model this is
+close to guaranteed, so it mainly checks the implementation. A scorer retrained
+on disjoint seeds, after Movin et al.~\cite{movin2025acdc}, ranks the
 contributions similarly (median Spearman \TwelveSpearman{}) and still raises
-\TwelveStillAlert\% of the alerts. It proposes the same first counterfactual for
-only \TwelveCfSame\%, though, so a counterfactual describes this model, not the
-ring. Against simulator ground truth, the evidence subgraph of a correct alert
-is the true ring: median precision \TwelveFidPrec{} and coverage
-\TwelveFidCov{}.
+\TwelveStillAlert\% of the alerts, but it proposes the same first
+counterfactual for only \TwelveCfSame\% of them, so a counterfactual describes
+this model, not the ring. Against simulator ground truth, the members shown in
+the evidence subgraph of a correct alert are the true ring's (median precision
+\TwelveFidPrec{}, coverage \TwelveFidCov{}). Because that subgraph is built from
+the flagged ring's members, this checks that the evidence shows the right
+accounts; it does not test whether the evidence explains the score. A
+deletion test would: remove the shared-attribute links or the internal
+transfers that the evidence lists, recompute the ring's features and score, and
+compare the drop with removing as many links of the same members that the
+evidence does not list. We have not run it.
 
 \subsection{RQ9: a learned baseline and evasion strength}
 To test whether the rule stage is needed, we trained gradient boosting on the

@@ -755,6 +755,7 @@ def _phase2_numbers(results_dir: Path) -> list[str]:
         m("TwelveValidAsShipped", str(int(ship["valid"].sum())))
         m("TwelveValidCorrected", str(int(corr["valid"].sum())))
         m("TwelveNoCfShare", pct(1 - with_cf / len(alerts)))
+        m("TwelveCfAlerts", str(with_cf))
         m("TwelveDriftFive", f"{st[st['delta'] == 0.05]['contribution_drift'].median():.3f}")
         m("TwelveSpearman", f"{co['spearman'].median():.2f}")
         m("TwelveCfSame", pct(co["cf_agreement"].mean()))

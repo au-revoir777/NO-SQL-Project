@@ -424,12 +424,15 @@ rotate identities or act slowly evade all methods we tested, and all of our
 positive results are on synthetic data. On Neo4j and Redis Streams the detector flags exactly the same rings, at the
 cost of slower detection and a throughput bounded by the store. A learned model
 over rule-free groups is more precise but finds half as many rings, and it
-collapses under decoy edges, which the hub-aware rules withstand. The
-explanations are stable and their evidence is faithful. Measuring them also
-found and fixed a calibration defect that had made every counterfactual
-invalid. The next steps are data with real shared-attribute links, a ring-level
-calibrator, a GraphSAGE baseline, multi-feature counterfactuals, and longer runs
-for slow and identity-rotating rings.
+collapses under decoy edges, which the hub-aware rules withstand. Measuring
+the explanations found and fixed a calibration defect that had made every
+counterfactual invalid; after the fix every counterfactual flips the decision,
+but only \TwelveCfAlerts{} of \TwelveAlerts{} alerts have one, and a retrained
+model usually proposes a different one. The evidence shows the flagged
+accounts; whether it explains the score is untested. The next steps are data
+with real shared-attribute links, a ring-level calibrator, a GraphSAGE
+baseline, multi-feature counterfactuals, a deletion test of the evidence, and
+longer runs for slow and identity-rotating rings.
 
 Code, scenarios, models and the scripts that regenerate every table and figure
 are in the project repository (\texttt{REPRODUCE.md}).
