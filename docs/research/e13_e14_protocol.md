@@ -97,4 +97,17 @@ against the proposed method on the swept-mode recall, per (mode, value), uses
 
 ## Amendments
 
-None yet.
+**1 (before any usable result): candidate groups are Louvain communities, not
+connected components.** The first training run (manifest entry `e13_train`,
+status `failed`) collected 42 candidate rows with 0 positives over all 60
+training streams. The protocol's `plain_cc` grouping is degenerate. On every
+scenario the weakly connected components merge almost every account into one
+component, above the community detector's maximum size of 25, so nearly no
+group is ever proposed. E1 shows the same: `plain_cc` flags 0 rings (recall
+0.000) on every test stream. No learner can be trained on that.
+
+`tabular_gb` therefore uses **Louvain communities** on the same projection
+(E1's `louvain` grouping, sizes 3–25, seed 0), **with the density filter
+switched off** (`min_density = 0`), so that the learned model, not a hand-set
+density rule, decides which groups are rings. Everything else stands: the
+same training protocol, threshold grid, objective, test seeds and comparisons.

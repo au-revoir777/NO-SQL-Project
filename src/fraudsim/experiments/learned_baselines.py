@@ -57,15 +57,26 @@ SWEEPS: dict[str, tuple[str, list[Any]]] = {
 
 
 def plain_cc_overrides() -> dict[str, dict[str, Any]]:
-    """E1's rule-free connected-components grouping (the plain_cc baseline)."""
+    """E1's connected-components grouping (degenerate here: see protocol amendment 1)."""
     return next(m for m in baseline_methods() if m.name == "plain_cc").overrides
+
+
+def candidate_overrides() -> dict[str, dict[str, Any]]:
+    """
+    tabular_gb's candidate groups (protocol amendment 1): E1's Louvain grouping
+    with the density filter off, so the learned model decides, not a density rule.
+    """
+    base = next(m for m in baseline_methods() if m.name == "louvain").overrides
+    out = {k: dict(v) for k, v in base.items()}
+    out["community"] = {**out.get("community", {}), "min_density": 0.0}
+    return out
 
 
 def tabular_gb(threshold: float) -> Method:
     return Method(
         "tabular_gb",
         "Gradient boosting on candidate groups (no rule stage)",
-        plain_cc_overrides(),
+        candidate_overrides(),
         scored=True,
         family="learned_baseline",
         alert_threshold=threshold,
@@ -82,7 +93,7 @@ def collect_candidate_rows(scenario: str, seed: int) -> tuple[list[Row], dict[st
     stage = ScoringStage(scorer=None, record=True)
     engine = DetectionEngine(
         store,
-        build_detectors(store, plain_cc_overrides()),
+        build_detectors(store, candidate_overrides()),
         tracker=RingTracker(EnsembleConfig()),
         config=EngineConfig(batch_size=50, full_interval_s=5.0),
         scorer=stage,
@@ -131,7 +142,7 @@ def train(out: Path = ROOT / "results", log: Callable[[str], None] = print) -> P
         "scenarios": list(TRAIN_SCENARIOS),
         "train_seeds": list(TRAIN_SEEDS),
         "fit_fraction": FIT_FRACTION,
-        "candidates": plain_cc_overrides(),
+        "candidates": candidate_overrides(),
     }
     with recorded(out_dir, "e13_train", details) as entry:
         rows: list[Row] = []
@@ -147,7 +158,7 @@ def train(out: Path = ROOT / "results", log: Callable[[str], None] = print) -> P
         scorer = RingScorer("gradient_boosting").fit(*_matrix(fit), *_matrix(cal))
         scorer.meta.train = {
             "protocol": "docs/research/e13_e14_protocol.md",
-            "candidates": "plain_cc",
+            "candidates": "louvain, min_density 0 (amendment 1)",
             "scenarios": list(TRAIN_SCENARIOS),
             "train_seeds": list(TRAIN_SEEDS),
             "fit_fraction": FIT_FRACTION,
@@ -169,7 +180,7 @@ def tune(out: Path = ROOT / "results", log: Callable[[str], None] = print) -> fl
         Method(
             f"tabular_gb_a{a}",
             f"tabular_gb alert {a}",
-            plain_cc_overrides(),
+            candidate_overrides(),
             family="tuning",
             alert_threshold=a,
             model_path=MODEL_REL,

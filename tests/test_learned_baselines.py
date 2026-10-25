@@ -8,6 +8,7 @@ import pytest
 
 from fraudsim.experiments.harness import make_stream, run_method
 from fraudsim.experiments.learned_baselines import (
+    candidate_overrides,
     collect_candidate_rows,
     paired,
     plain_cc_overrides,
@@ -31,9 +32,9 @@ def test_paired_statistics_on_known_values() -> None:
 
 
 def test_baseline_is_rule_free_and_its_candidates_are_deterministic() -> None:
-    o = plain_cc_overrides()
+    o = candidate_overrides()
     assert all(not o[d]["enabled"] for d in ("static_cypher", "hub_aware", "temporal_cycle"))
-    assert o["community"] == {"algorithm": "wcc", "min_density": 0.0}
+    assert o["community"] == {"algorithm": "louvain", "min_density": 0.0}
     a, info_a = collect_candidate_rows("baseline", 7)
     b, info_b = collect_candidate_rows("baseline", 7)
     assert info_a == info_b and info_a["rows"] > 0
