@@ -1,0 +1,177 @@
+{
+  "grids": [
+    {
+      "experiment": "e2b_hub_heavy",
+      "scenarios": [
+        "hub_heavy"
+      ],
+      "scenario_hashes": {
+        "hub_heavy": "031690a6797d4592"
+      },
+      "seeds": [
+        1001,
+        1002,
+        1003,
+        1004,
+        1005,
+        1006,
+        1007,
+        1008,
+        1009,
+        1010,
+        1011,
+        1012,
+        1013,
+        1014,
+        1015,
+        1016,
+        1017,
+        1018,
+        1019,
+        1020,
+        1021,
+        1022,
+        1023,
+        1024,
+        1025,
+        1026,
+        1027,
+        1028,
+        1029,
+        1030
+      ],
+      "methods": [
+        {
+          "name": "w_inverse_log_degree",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d) (shipped)",
+          "hash": "c3f03a04246aa033"
+        },
+        {
+          "name": "w_inverse_degree_plain",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_degree_plain",
+              "edge_threshold": 0.1
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/d",
+          "hash": "701ec117773dd26d"
+        },
+        {
+          "name": "w_inverse_sqrt_degree",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_sqrt_degree",
+              "edge_threshold": 0.2
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/sqrt(d)",
+          "hash": "aa6ff672645f0cc5"
+        },
+        {
+          "name": "w_soft_cap",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "soft_cap",
+              "edge_threshold": 1.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "soft cap at 10",
+          "hash": "3c4f791f0bf07159"
+        },
+        {
+          "name": "w_none",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "none",
+              "edge_threshold": 1.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "constant",
+          "hash": "c6e1100af9414371"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-25T13:51:01.574833+00:00",
+      "ended_at": "2026-10-25T13:53:29.963140+00:00",
+      "wall_s": 148.388,
+      "rows": 150,
+      "git_commit": "3d7ef272dd6907ba12e11c4544c6737bb1f842a7",
+      "git_dirty": false,
+      "python": "3.11.9",
+      "platform": "Windows-10",
+      "cpu_count": 4,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    }
+  ]
+}

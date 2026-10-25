@@ -14,10 +14,12 @@ pipeline reaches a ring F1 score of \EPropF{} against \ECapTenF{} for the
 original degree-capped Cypher rules. Most of that gap is the scorer: with the
 same calibrated scorer on top, the capped rules reach \ECapTenSF{} and Louvain
 communities \ELouvainSF{}, and the remaining differences are significant in a
-paired, Holm-corrected Wilcoxon test. Hub weighting extends the reachable
-recall on shared-attribute rings from \FrCapSMaxR{} to \FrHubSMaxR{}; its best
-F1 there is not significantly higher than the capped rules' (difference
-\FrDiff{}, 95\% interval \FrDiffLo{} to \FrDiffHi{}). Incremental detection flags the same rings
+paired, Holm-corrected Wilcoxon test. Keeping links through busy attributes
+instead of capping them extends the reachable recall on shared-attribute rings
+from \FrCapSMaxR{} to \FrHubSMaxR{}. The particular degree discount matters
+little: with its own tuned threshold, a constant weight is as accurate (F1
+\WcConstF{} against \WcShipF{}), while a soft cap at degree 10 loses most rings
+hidden behind hubs. Incremental detection flags the same rings
 as full recomputation and, with \ScaleMaxUsers{} users, takes \ScaleIncMs{} ms
 per batch against \ScaleFullMs{} ms. Rings that rotate identities or act slowly
 evade every method we tested. On Neo4j and Redis Streams the detector flags the

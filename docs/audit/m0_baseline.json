@@ -96,7 +96,7 @@
       "rows": null
     },
     "docs/paper/tables/numbers.tex": {
-      "sha256": "03e3ccfbff460e17c4a3607df54fdf0fe93b7154279ab564b6aceb2b89cca884",
+      "sha256": "2bd450b647c17d3c2a5ca6c8953bccc955e11dfa6df59443123f5ce199a41866",
       "rows": null
     },
     "docs/paper/tables/tab1_baselines.tex": {
@@ -149,6 +149,13 @@
       "new_sha256": "cb5cff2943af2ae279c556a544997880581a948e162a52be78cc6611b8166775",
       "commit": "E1b (P1)",
       "reason": "E1b scored-baseline rows and E3b interval macros added (docs/research/e1b_protocol.md); existing rows and macros unchanged except Table II p-values, now Holm-corrected (all <0.001 except the a-priori row, 0.034, unchanged)."
+    },
+    {
+      "file": "docs/paper/tables/numbers.tex",
+      "old_sha256": "03e3ccfbff460e17c4a3607df54fdf0fe93b7154279ab564b6aceb2b89cca884",
+      "new_sha256": "2bd450b647c17d3c2a5ca6c8953bccc955e11dfa6df59443123f5ce199a41866",
+      "commit": "E2b/E2c (P2)",
+      "reason": "E2b/E2c weight-function macros appended (docs/research/e2b_protocol.md); no existing macro changed."
     }
   ]
 }

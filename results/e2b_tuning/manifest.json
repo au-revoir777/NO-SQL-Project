@@ -1,0 +1,893 @@
+{
+  "grids": [
+    {
+      "experiment": "e2b_tuning",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "w_inverse_log_degree_e0.1",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.1
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d) (shipped), edge 0.1",
+          "hash": "3cedaf31d5eeca64"
+        },
+        {
+          "name": "w_inverse_log_degree_e0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.2
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d) (shipped), edge 0.2",
+          "hash": "d7a990fc16bb4580"
+        },
+        {
+          "name": "w_inverse_log_degree_e0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d) (shipped), edge 0.3",
+          "hash": "9709079c9df2820e"
+        },
+        {
+          "name": "w_inverse_log_degree_e0.4",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.4
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d) (shipped), edge 0.4",
+          "hash": "9defcda0dc1ef4c3"
+        },
+        {
+          "name": "w_inverse_log_degree_e0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.5
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d) (shipped), edge 0.5",
+          "hash": "730c4ddca558e0cc"
+        },
+        {
+          "name": "w_inverse_log_degree_e0.6",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.6
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d) (shipped), edge 0.6",
+          "hash": "8c52ee8e0e640164"
+        },
+        {
+          "name": "w_inverse_log_degree_e0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.8
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d) (shipped), edge 0.8",
+          "hash": "cccb6642939b016d"
+        },
+        {
+          "name": "w_inverse_log_degree_e1.0",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 1.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/ln(1+d) (shipped), edge 1.0",
+          "hash": "910b82833a859439"
+        },
+        {
+          "name": "w_inverse_degree_plain_e0.1",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_degree_plain",
+              "edge_threshold": 0.1
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/d, edge 0.1",
+          "hash": "48bb5914d4fc12f1"
+        },
+        {
+          "name": "w_inverse_degree_plain_e0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_degree_plain",
+              "edge_threshold": 0.2
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/d, edge 0.2",
+          "hash": "e78298c1c6b7a967"
+        },
+        {
+          "name": "w_inverse_degree_plain_e0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_degree_plain",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/d, edge 0.3",
+          "hash": "0fc21325c908c01c"
+        },
+        {
+          "name": "w_inverse_degree_plain_e0.4",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_degree_plain",
+              "edge_threshold": 0.4
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/d, edge 0.4",
+          "hash": "366b728d9d92571e"
+        },
+        {
+          "name": "w_inverse_degree_plain_e0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_degree_plain",
+              "edge_threshold": 0.5
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/d, edge 0.5",
+          "hash": "da705a5bed3a6dca"
+        },
+        {
+          "name": "w_inverse_degree_plain_e0.6",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_degree_plain",
+              "edge_threshold": 0.6
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/d, edge 0.6",
+          "hash": "aa56188152127775"
+        },
+        {
+          "name": "w_inverse_degree_plain_e0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_degree_plain",
+              "edge_threshold": 0.8
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/d, edge 0.8",
+          "hash": "fe09a2c56eb5ded2"
+        },
+        {
+          "name": "w_inverse_degree_plain_e1.0",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_degree_plain",
+              "edge_threshold": 1.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/d, edge 1.0",
+          "hash": "5d4538eaadbe89a4"
+        },
+        {
+          "name": "w_inverse_sqrt_degree_e0.1",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_sqrt_degree",
+              "edge_threshold": 0.1
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/sqrt(d), edge 0.1",
+          "hash": "73d792f372a797c4"
+        },
+        {
+          "name": "w_inverse_sqrt_degree_e0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_sqrt_degree",
+              "edge_threshold": 0.2
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/sqrt(d), edge 0.2",
+          "hash": "f8b1ec93cc632c6d"
+        },
+        {
+          "name": "w_inverse_sqrt_degree_e0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_sqrt_degree",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/sqrt(d), edge 0.3",
+          "hash": "b8596a6f4a2d419d"
+        },
+        {
+          "name": "w_inverse_sqrt_degree_e0.4",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_sqrt_degree",
+              "edge_threshold": 0.4
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/sqrt(d), edge 0.4",
+          "hash": "db753f9f1b279e29"
+        },
+        {
+          "name": "w_inverse_sqrt_degree_e0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_sqrt_degree",
+              "edge_threshold": 0.5
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/sqrt(d), edge 0.5",
+          "hash": "f1967f1d3a3d6cbe"
+        },
+        {
+          "name": "w_inverse_sqrt_degree_e0.6",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_sqrt_degree",
+              "edge_threshold": 0.6
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/sqrt(d), edge 0.6",
+          "hash": "58ceee1d7d37b01b"
+        },
+        {
+          "name": "w_inverse_sqrt_degree_e0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_sqrt_degree",
+              "edge_threshold": 0.8
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/sqrt(d), edge 0.8",
+          "hash": "effca59f1ad33484"
+        },
+        {
+          "name": "w_inverse_sqrt_degree_e1.0",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_sqrt_degree",
+              "edge_threshold": 1.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "1/sqrt(d), edge 1.0",
+          "hash": "fd72dc56a33917f4"
+        },
+        {
+          "name": "w_soft_cap_e0.1",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "soft_cap",
+              "edge_threshold": 0.1
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "soft cap at 10, edge 0.1",
+          "hash": "8259d67b30f95512"
+        },
+        {
+          "name": "w_soft_cap_e0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "soft_cap",
+              "edge_threshold": 0.2
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "soft cap at 10, edge 0.2",
+          "hash": "0e2fad8adbdfe5e4"
+        },
+        {
+          "name": "w_soft_cap_e0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "soft_cap",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "soft cap at 10, edge 0.3",
+          "hash": "5275676ad9465a4f"
+        },
+        {
+          "name": "w_soft_cap_e0.4",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "soft_cap",
+              "edge_threshold": 0.4
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "soft cap at 10, edge 0.4",
+          "hash": "528446ab4510ac6e"
+        },
+        {
+          "name": "w_soft_cap_e0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "soft_cap",
+              "edge_threshold": 0.5
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "soft cap at 10, edge 0.5",
+          "hash": "0546cadb17c21d8c"
+        },
+        {
+          "name": "w_soft_cap_e0.6",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "soft_cap",
+              "edge_threshold": 0.6
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "soft cap at 10, edge 0.6",
+          "hash": "ea88229e8cdbe38d"
+        },
+        {
+          "name": "w_soft_cap_e0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "soft_cap",
+              "edge_threshold": 0.8
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "soft cap at 10, edge 0.8",
+          "hash": "3dc093de991ce1d9"
+        },
+        {
+          "name": "w_soft_cap_e1.0",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "soft_cap",
+              "edge_threshold": 1.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "soft cap at 10, edge 1.0",
+          "hash": "e5ea36fc4333e699"
+        },
+        {
+          "name": "w_none_e0.1",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "none",
+              "edge_threshold": 0.1
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "constant, edge 0.1",
+          "hash": "7003cfccd12c0f5c"
+        },
+        {
+          "name": "w_none_e0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "none",
+              "edge_threshold": 0.2
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "constant, edge 0.2",
+          "hash": "c784ccb84d7b0491"
+        },
+        {
+          "name": "w_none_e0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "none",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "constant, edge 0.3",
+          "hash": "59dec68bf05e16eb"
+        },
+        {
+          "name": "w_none_e0.4",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "none",
+              "edge_threshold": 0.4
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "constant, edge 0.4",
+          "hash": "151b1f9cc20f2ebc"
+        },
+        {
+          "name": "w_none_e0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "none",
+              "edge_threshold": 0.5
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "constant, edge 0.5",
+          "hash": "401111760b3fc5f3"
+        },
+        {
+          "name": "w_none_e0.6",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "none",
+              "edge_threshold": 0.6
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "constant, edge 0.6",
+          "hash": "607accfe09c58e7d"
+        },
+        {
+          "name": "w_none_e0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "none",
+              "edge_threshold": 0.8
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "constant, edge 0.8",
+          "hash": "d2845f56c6b7f3a3"
+        },
+        {
+          "name": "w_none_e1.0",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "none",
+              "edge_threshold": 1.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "constant, edge 1.0",
+          "hash": "4688437305665dcd"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-25T13:28:26.772471+00:00",
+      "ended_at": "2026-10-25T13:50:56.263994+00:00",
+      "wall_s": 1349.492,
+      "rows": 600,
+      "git_commit": "3d7ef272dd6907ba12e11c4544c6737bb1f842a7",
+      "git_dirty": false,
+      "python": "3.11.9",
+      "platform": "Windows-10",
+      "cpu_count": 4,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    }
+  ]
+}

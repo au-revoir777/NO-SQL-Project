@@ -520,6 +520,45 @@ def _adaptivity_numbers(results_dir: Path) -> list[str]:
     return out
 
 
+def _e2b_numbers(results_dir: Path, f2) -> list[str]:  # type: ignore[no-untyped-def]
+    """Macros for E2b (hub_heavy, 30 seeds) and E2c (weight functions, 5 scenarios)."""
+    from fraudsim.experiments.weight_functions import _hub_hiding_recall
+
+    out: list[str] = []
+    tags = {
+        "inverse_log_degree": "Ship",
+        "inverse_degree_plain": "Inv",
+        "inverse_sqrt_degree": "Sqrt",
+        "soft_cap": "Soft",
+        "none": "Const",
+    }
+    sel_path = Path(results_dir) / "e2b_hub_heavy" / "selected_edge_thresholds.json"
+    for exp, prefix in (("e2b_hub_heavy", "Wb"), ("e2c_weight_functions", "Wc")):
+        got = _results(results_dir, exp)
+        if not got:
+            continue
+        df, header = got
+        out.append(header)
+        s = summarize(df, ["method"]).set_index("method")
+        t = paired_vs(df, "w_inverse_log_degree", "f1").set_index("method")
+        for fn, tag in tags.items():
+            m = f"w_{fn}"
+            if m not in s.index:
+                continue
+            for metric, mt in (("precision", "P"), ("recall", "R"), ("f1", "F")):
+                out.append(_macro(f"{prefix}{tag}{mt}", f2(s.loc[m, f"{metric}_mean"])))
+            hh = _hub_hiding_recall(df[df["method"] == m])
+            out.append(_macro(f"{prefix}{tag}HH", f2(hh) if hh is not None else "--"))
+            if m in t.index:
+                out.append(_macro(f"{prefix}{tag}Pval", _p(float(t.loc[m, "wilcoxon_p"]))))
+        out.append(_macro(f"{prefix}Seeds", str(df["seed"].nunique())))
+    if sel_path.exists():
+        sel = json.loads(sel_path.read_text(encoding="utf-8"))["edge_threshold"]
+        for fn, tag in tags.items():
+            out.append(_macro(f"W{tag}Edge", f"{float(sel[fn]):g}"))
+    return out
+
+
 def _e1b_numbers(results_dir: Path, f2) -> list[str]:  # type: ignore[no-untyped-def]
     """Macros for E1b (scored baselines) and E3b (frontier intervals)."""
     out: list[str] = []
@@ -735,6 +774,7 @@ def generate_numbers(output_dir: Path, results_dir: Path = Path("results")) -> P
     out += _public_numbers(results_dir)
     out += _phase2_numbers(results_dir)
     out += _e1b_numbers(results_dir, f2)
+    out += _e2b_numbers(results_dir, f2)
     tuned = Path("configs/tuned.json")
     if tuned.exists():
         t = json.loads(tuned.read_text(encoding="utf-8"))

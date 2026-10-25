@@ -179,10 +179,32 @@ runs). The calibrated scorer contributes most: without it F1 falls from
 Without the hub-aware detector, F1 falls to \AblNoHubAwareF{} and to
 \AblNoHubAwareFHubHeavy{} on \texttt{hub\_heavy}. Removing the cycle or the
 smurfing detector costs \AblNoCycleF{} and \AblNoSmurfingF{}. Replacing the hub
-weight by a constant collapses \texttt{hub\_heavy} (\AblFullFHubHeavy{} to
-\AblNoHubWeightFHubHeavy{}) but slightly helps \texttt{high\_noise}
-(\AblFullFHighNoise{} to \AblNoHubWeightFHighNoise{}), so over all four
-scenarios the difference is not significant ($p=\AblNoHubWeightPval{}$).
+weight by a constant at the same edge threshold collapses \texttt{hub\_heavy}
+(\AblFullFHubHeavy{} to \AblNoHubWeightFHubHeavy{}) but slightly helps
+\texttt{high\_noise} (\AblFullFHighNoise{} to \AblNoHubWeightFHighNoise{}), so
+over all four scenarios the difference is not significant
+($p=\AblNoHubWeightPval{}$). That ablation keeps the edge threshold tuned for
+$1/\ln(1+d)$, which is unfair to the constant; the next paragraph gives each
+weight its own threshold.
+
+\textbf{Weight functions.} We compared five weights $h(d)$, each with its edge
+threshold selected on the validation seeds and the alert threshold fixed at
+\TunedAlert{}: the shipped $1/\ln(1+d)$ ($\theta_e=\WShipEdge{}$), $1/d$
+(\WInvEdge{}), $1/\sqrt{d}$ (\WSqrtEdge{}), a soft cap
+$1/(1+e^{(d-10)/2})$ (\WSoftEdge{}) and a constant (\WConstEdge{}); for $1/d$,
+the soft cap and the constant the selected value lies on the edge of the grid.
+On \texttt{hub\_heavy} with \WbSeeds{} paired seeds, the shipped weight reaches
+F1 \WbShipF{} and recall \WbShipHH{} of the rings hidden behind hubs; the
+constant reaches \WbConstF{} and \WbConstHH{} ($p=\WbConstPval{}$), $1/\sqrt{d}$
+\WbSqrtF{}, while $1/d$ (\WbInvF{}) and the soft cap (\WbSoftF{}, hidden-ring
+recall \WbSoftHH{} at precision \WbSoftP{}) are worse ($p$ \WbSoftPval{}). Over
+the five scenarios the picture is the same: \WcShipF{} for the shipped weight,
+\WcConstF{} for the constant and \WcSqrtF{} for $1/\sqrt{d}$, none
+significantly different even before correction, and \WcInvF{} for $1/d$ and
+\WcSoftF{} for the soft cap. Discounting busy attributes too strongly, or
+switching them off, loses rings that share a hub; within the range that keeps
+hub links, the shape of the discount makes no measurable difference once the
+edge threshold is tuned for it.
 Hysteresis and time decay make no significant difference here; without decay
 F1 is even slightly higher (\AblNoTimeDecayF{}). The accuracy scenarios last
 60--90\,s, short against the 300\,s half-life, so decay has little to act on

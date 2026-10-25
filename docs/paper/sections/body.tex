@@ -30,6 +30,9 @@ continuous weight: each shared attribute contributes $1/\ln(1+d)$, where $d$ is
 its degree, with exponential time decay, and transfers inside the pair add
 weight. Busy hubs count for little on their own, but a group that shares a hub
 and also trades among itself still accumulates weight (Section~\ref{sec:method}).
+What we can show is that keeping hub links is what matters: a constant weight
+with its own threshold performs as well, and caps lose rings hidden behind hubs
+(Section~\ref{sec:results}).
 \item \textbf{C2, incremental detection.} A micro-batch engine re-evaluates only
 the $k$-hop region touched by each batch, with fan-out limits that keep that
 region bounded when it reaches a hub.
@@ -316,7 +319,9 @@ not find in public form.
 
 \textbf{Tuning.} Thresholds were selected on validation seeds of the same
 generator; the test seeds are independent draws but from the same
-distribution.
+distribution. In the weight-function comparison, three of the five selected
+edge thresholds lie on the edge of the grid, so those functions might do
+somewhat better with a wider grid.
 
 \textbf{Scale.} The largest graph we measured has \ScaleMaxUsers{} users. A
 million users was not feasible on the 7.7\,GB test machine: at 100{,}000 users
@@ -347,10 +352,13 @@ benchmarks. Our node-level numbers are not comparable to those benchmarks.
 as probabilities until a ring-level calibrator replaces it.
 
 \section{Conclusion}
-Replacing the degree cap with a continuous hub-aware weight lets a streaming
-detector reach a recall on rings that share busy infrastructure that no cap
-reaches; on its own the weighting is not precise, and a calibrated scorer over
-ring features supplies most of the precision. Given the same scorer, the
+Keeping links through busy shared attributes, instead of capping them, lets a
+streaming detector reach a recall on rings that share busy infrastructure that
+no cap reaches. The shape of the discount matters little: a constant weight
+with its own threshold did as well as $1/\ln(1+d)$, while strong discounts and
+soft caps lost the rings hidden behind hubs. On its own the weighting is not
+precise, and a calibrated scorer over ring features supplies most of the
+precision. Given the same scorer, the
 degree-capped rules reach F1 \ECapTenSF{} against \EPropF{} for the full
 pipeline, so the scorer accounts for most of the gain over the original rules,
 and at the best operating point on shared-attribute rings the weight and the
