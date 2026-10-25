@@ -27,15 +27,16 @@ from fraudsim.detectors.ensemble import EnsembleConfig, RingTracker
 from fraudsim.detectors.runner import hub_degrees
 from fraudsim.experiments.provenance import recorded, repo_relative
 from fraudsim.graph.store import InMemoryGraphStore
-from fraudsim.metrics.evaluation import EvalConfig, evaluate_run
+from fraudsim.metrics.evaluation import EvalConfig, all_members, evaluate_run, true_rings
 from fraudsim.scoring.early_warning import lead_times
 from fraudsim.scoring.scorer import RingScorer
 from fraudsim.scoring.stage import ScoringStage
 from fraudsim.simulator.event_generator import EventGenerator
 from fraudsim.simulator.scenario_loader import load_scenario
-from fraudsim.types import Event, config_hash
+from fraudsim.types import Event, EventType, config_hash
 
-DEFAULT_MODEL = Path(__file__).resolve().parents[3] / "models" / "ring_scorer_lr.joblib"
+ROOT = Path(__file__).resolve().parents[3]
+DEFAULT_MODEL = ROOT / "models" / "ring_scorer_lr.joblib"
 
 STATIC_ONLY = {
     "hub_aware": {"enabled": False},
@@ -58,9 +59,12 @@ class Method:
     scored: bool = True
     family: str = "proposed"
     alert_threshold: float | None = None  # None = AlertPolicy default (0.5)
+    # A scorer of its own (repo-relative path); None = the grid's model. Left out of
+    # config() when None, so existing methods keep their method_hash.
+    model_path: str | None = None
 
     def config(self) -> dict[str, Any]:
-        return {
+        out: dict[str, Any] = {
             "name": self.name,
             "overrides": self.overrides,
             "engine": self.engine,
@@ -68,6 +72,9 @@ class Method:
             "scored": self.scored,
             "alert_threshold": self.alert_threshold,
         }
+        if self.model_path is not None:
+            out["model_path"] = self.model_path
+        return out
 
 
 def _merge(base: dict[str, dict[str, Any]], extra: dict[str, dict[str, Any]]) -> dict:
@@ -295,7 +302,35 @@ def run_method(
         "detected_by_evasion": json.dumps(
             {k: [sum(v), len(v)] for k, v in sorted(by_evasion.items())}
         ),
+        "node_auc": node_auc(stream, engine, stage is not None),
     }
+
+
+def node_auc(stream: Stream, engine: DetectionEngine, scored: bool) -> float | None:
+    """
+    Node-level ROC-AUC over every account in the stream. A node's score is the
+    highest risk of a flagged ring containing it (scored methods: alerted rings;
+    unscored: confirmed rings, score 1), else 0; its label is membership of any
+    true ring. Not comparable to YelpChi/Amazon/Elliptic numbers (P12 protocol).
+    """
+    from sklearn.metrics import roc_auc_score
+
+    users = sorted(
+        {e.payload["user_id"] for e in stream.events if e.event_type == EventType.USER_JOIN}
+    )
+    true = {u for r in true_rings(stream.generator.ledger) for u in all_members(r)}
+    score: dict[str, float] = {}
+    for ring in engine.tracker.rings.values():
+        flagged = ring.alerted_at is not None if scored else ring.confirmed_at is not None
+        if not flagged:
+            continue
+        risk = float(ring.risk if (scored and ring.risk is not None) else 1.0)
+        for u in ring.members:
+            score[u] = max(score.get(u, 0.0), risk)
+    labels = [u in true for u in users]
+    if len(set(labels)) < 2:
+        return None
+    return round(float(roc_auc_score(labels, [score.get(u, 0.0) for u in users])), 6)
 
 
 def run_grid(
@@ -319,6 +354,7 @@ def run_grid(
     scenarios = list(scenarios)
     seeds = list(seeds)
     scorer = RingScorer.load(model_path) if Path(model_path).exists() else None
+    own = {m.model_path: RingScorer.load(ROOT / m.model_path) for m in methods if m.model_path}
     path = out_dir / "results.csv"
     details = _grid_details(scenarios, seeds, methods, scenario_overrides, model_path)
     t0 = time.perf_counter()
@@ -327,7 +363,13 @@ def run_grid(
             for seed in seeds:
                 stream = make_stream(scenario, seed, scenario_overrides)
                 for method in methods:
-                    row = run_method(stream, method, scorer, experiment, eval_cfg=eval_cfg)
+                    row = run_method(
+                        stream,
+                        method,
+                        own[method.model_path] if method.model_path else scorer,
+                        experiment,
+                        eval_cfg=eval_cfg,
+                    )
                     row.update(extra_columns or {})
                     _append(path, row)
                     log(
