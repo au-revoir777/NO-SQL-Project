@@ -1,0 +1,45 @@
+# Milestone P12 test report (2026-10-25, Windows 11, Python 3.11.9)
+# Local runs on branch feat/p12-baselines; CI recorded below once pushed. Web app unchanged in P12.
+
+## ruff / format / mypy strict (Phase 2 packages) / evidence snapshot
+All checks passed!
+181 files already formatted
+Success: no issues found in 51 source files
+28 files in snapshot; 0 changed, 0 missing, 38 new; 0 stale tables
+
+## pytest tests/test_evasion_params.py tests/test_learned_baselines.py tests/test_experiments.py -v
+tests/test_evasion_params.py::test_parsing_validates_modes_keys_and_values PASSED
+tests/test_evasion_params.py::test_overrides_apply_only_to_their_mode PASSED
+tests/test_evasion_params.py::test_absent_or_default_overrides_leave_the_stream_unchanged PASSED
+tests/test_evasion_params.py::test_more_decoys_mean_more_decoy_transfers PASSED
+tests/test_learned_baselines.py::test_paired_statistics_on_known_values PASSED
+tests/test_learned_baselines.py::test_baseline_is_rule_free_and_its_candidates_are_deterministic PASSED
+tests/test_learned_baselines.py::test_node_auc_is_reported_for_scored_and_unscored_methods PASSED
+tests/test_learned_baselines.py::test_sweep_overrides_target_only_the_swept_mode PASSED
+tests/test_experiments.py::test_baselines_registry PASSED               
+tests/test_experiments.py::test_ablations_registry PASSED               
+tests/test_experiments.py::test_experiment_run PASSED                   
+tests/test_experiments.py::test_figures_and_tables_skip_without_results PASSED
+tests/test_experiments.py::test_figures_and_tables_from_real_runs PASSED
+============================= 13 passed in 9.87s ==============================
+
+## pytest (full suite; skipped = Neo4j/Redis integration tests, run in CI)
+408 passed, 26 skipped, 54 warnings in 280.46s (0:04:40)
+
+## Experiment runs (commit 26a99f1, clean tree)
+- e13_train: first run failed (42 rows, 0 positives: plain_cc candidates degenerate) and is kept in the
+  manifest; protocol amendment 1 (Louvain candidates) committed before the rerun; rerun complete.
+- e13_tuning: 90 runs (6 thresholds x 5 scenarios x 3 validation seeds); selected 0.7.
+- e13_learned_baselines: 100 runs; stream digests equal to E1's 100/100; the proposed method's re-run
+  reproduces E1 (mean F1 0.731).
+- e14_evasion_strength: 600 runs (3 modes x 5 values x 10 seeds x 4 methods), 15 manifest entries.
+
+## Acceptance criteria
+- Unit tests: the baseline runs on a small stream and its candidate rows are identical across runs
+  (grouping deterministic); paired statistics on known values; evasion_params validated, applied per
+  mode, and leave streams unchanged when absent.
+- Same stream digests across all methods per (scenario, seed): every E13/E14 grid runs all methods on one
+  generated stream per (scenario, seed, sweep value); E13 digests equal E1's.
+- A baseline better than the proposed method anywhere is reported in README and results: precision and
+  user-level F1 (E13), low-and-slow recall of static cap 10 and F1 of tabular_gb (E14).
+- GraphSAGE (optional): not run; stated as not done.
