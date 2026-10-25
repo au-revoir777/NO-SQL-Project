@@ -28,7 +28,13 @@ from fraudsim.detectors.ensemble import EnsembleConfig, RingTracker
 from fraudsim.detectors.runner import hub_degrees
 from fraudsim.experiments.provenance import recorded, repo_relative
 from fraudsim.graph.store import InMemoryGraphStore
-from fraudsim.metrics.evaluation import EvalConfig, all_members, evaluate_run, true_rings
+from fraudsim.metrics.evaluation import (
+    EvalConfig,
+    all_members,
+    detect_ms,
+    evaluate_run,
+    true_rings,
+)
 from fraudsim.scoring.early_warning import lead_times
 from fraudsim.scoring.scorer import RingScorer
 from fraudsim.scoring.stage import ScoringStage
@@ -308,6 +314,9 @@ def run_method(
         # Users in the evaluated region per batch (E5b); 0 when nothing ran incrementally.
         "region_p50": float(median(regions)) if regions else 0.0,
         "region_max": max(regions) if regions else 0,
+        # Total detection time over the run and the simulated span it covers (E4b cost).
+        "detect_ms_sum": round(sum(detect_ms(r) for r in engine.reports), 3),
+        "sim_s": round(end_t - start_t, 3),
     }
 
 

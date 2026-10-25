@@ -46,6 +46,9 @@ class EngineConfig:
     window_s: float = 900.0  # rolling window for transactions in views
     incremental: bool = True  # False = full recomputation every batch (ablation)
     hub_crossing: str = "fanout"  # "bound": cross over-cap hubs by weight bound (E5b)
+    # With incremental=False: run the incremental detectors on the whole graph only
+    # every full_timer_s simulated seconds (timer baseline, E4b); None = every batch.
+    full_timer_s: float | None = None
     full_interval_s: float = 30.0  # cadence of full-graph detectors (sim seconds)
     ttl_s: float | None = None  # prune links/transactions older than this
     prune_interval_s: float = 30.0
@@ -137,6 +140,7 @@ class DetectionEngine:
         self._last_prune_t: float | None = None
         self._last_sweep_t: float | None = None
         self._last_stats_t: float | None = None
+        self._last_timer_t: float | None = None
         for d in detectors:
             if d.store is None:
                 d.store = store
@@ -177,6 +181,11 @@ class DetectionEngine:
 
         region: set[str] = set()
         inc = self.incremental_detectors
+        if inc and not cfg.incremental and cfg.full_timer_s is not None:
+            if self._due(self._last_timer_t, cfg.full_timer_s, now_t):
+                self._last_timer_t = now_t
+            else:
+                inc = []  # timer baseline: nothing runs between passes
         if inc:
             t = time.perf_counter()
             if cfg.incremental:

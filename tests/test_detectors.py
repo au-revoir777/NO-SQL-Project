@@ -446,6 +446,19 @@ def test_incremental_matches_full_recompute() -> None:
     assert inc_region < full_region
 
 
+def test_full_timer_runs_incremental_detectors_only_on_the_timer() -> None:
+    events = EventGenerator(seed=5, run_id="t", config=load_scenario("baseline")).generate()
+    only_inc = {"static_cypher": {"enabled": False}, "community": {"enabled": False}}
+    every = run_engine(events, overrides=only_inc, incremental=False)
+    timer = run_engine(events, overrides=only_inc, incremental=False, full_timer_s=20.0)
+    ran = [r for r in timer.reports if r.detector_ms]
+    assert 0 < len(ran) < len(timer.reports)
+    gaps = [b.now.timestamp() - a.now.timestamp() for a, b in itertools.pairwise(ran)]
+    assert all(g >= 20.0 for g in gaps)
+    assert all(r.detector_ms for r in every.reports)
+    assert timer.tracker.confirmed()  # rings are not dissolved between passes
+
+
 def test_engine_detector_flags_and_timers() -> None:
     events = EventGenerator(seed=1, run_id="t", config=load_scenario("baseline")).generate()
     engine = run_engine(
