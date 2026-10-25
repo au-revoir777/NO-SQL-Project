@@ -174,7 +174,25 @@ contributions to the score, the subgraph of shared attributes and transfers
 that formed it, and counterfactuals (for the leading features, the value at which
 the risk would fall below the threshold, and for hub-aware rings the degree the
 shared attribute would need before the rule stops firing). The model is trained on
-seeds disjoint from all evaluation seeds.
+seeds disjoint from all evaluation seeds (Fig.~\ref{fig:training}): the detector
+runs on six scenarios with seeds 101--110, each confirmed or changed ring
+becomes a row of its 19 features, labelled from the hidden ledger, and within
+each run the first 70\% of rows fit the regression and the last 30\% the
+calibrator.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{\figpath/training_pipeline.pdf}
+\caption{Training and use of the ring scorer. (a)--(b) The simulator and
+detector run on training seeds, and ring snapshots are labelled from the
+ground-truth ledger, which the detector never reads. (c) Each snapshot is a row
+of 19 ring features. (d) Within each run, rows in time order are split 70/30
+between logistic regression and isotonic calibration. (e) Held-out test seeds
+(values from \texttt{models/ring\_scorer\_lr.json}). Below: in detection, each
+changed ring is scored every batch, and an alert carries its explanation;
+analyst feedback adjusts the threshold.}
+\label{fig:training}
+\end{figure*}
 
 \section{Experimental Setup}
 \label{sec:setup}
@@ -189,7 +207,20 @@ chain and smurfing fan-in/fan-out. Evasion strategies are hub hiding (the ring
 shares a busy benign hub), low-and-slow activity, identity rotation, decoy edges
 to benign users, and an adaptive attacker that shifts its strategy mix away
 from strategies that were flagged.
+Fig.~\ref{fig:simulator} shows the generator and its two outputs, and
 Table~\ref{tab:scenario-def} lists the scenarios.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{\figpath/simulator_design.pdf}
+\caption{Simulator design. (a) A scenario file and a seed fix the whole run.
+(b) One seeded generator combines a benign population, benign hubs, planted
+rings and an evasion layer. (c) Observable events go to the detector, with a
+digest of the sequence recorded with every result; ring lifecycle events go
+only to the ground-truth ledger used for evaluation and the Oracle view. In
+closed-loop runs, flags are returned to the adaptive attacker.}
+\label{fig:simulator}
+\end{figure*}
 
 \begin{table}[t]
 \centering

@@ -96,7 +96,7 @@
       "rows": null
     },
     "docs/paper/tables/numbers.tex": {
-      "sha256": "518090a7d98dc6e3cedaa0ad2dfe42c114ec0d5ccb6807b2e50d383627606214",
+      "sha256": "4ebad89d33e10a72b05d08113c5c9e97ab1d84fda127ecfa9187624c93852ac5",
       "rows": null
     },
     "docs/paper/tables/tab1_baselines.tex": {
@@ -127,5 +127,14 @@
     "tab2_ablation.tex": true,
     "tab3_scale.tex": true,
     "tab4_public.tex": true
-  }
+  },
+  "amendments": [
+    {
+      "file": "docs/paper/tables/numbers.tex",
+      "old_sha256": "518090a7d98dc6e3cedaa0ad2dfe42c114ec0d5ccb6807b2e50d383627606214",
+      "new_sha256": "4ebad89d33e10a72b05d08113c5c9e97ab1d84fda127ecfa9187624c93852ac5",
+      "commit": "ba46dbd",
+      "reason": "Phase 2 macros (E8, E10-E14) appended by latex_export._phase2_numbers for the paper refinement; no existing macro changed (diff is additions only)."
+    }
+  ]
 }

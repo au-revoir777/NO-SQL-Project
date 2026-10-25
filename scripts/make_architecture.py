@@ -94,7 +94,7 @@ text(
     10.5,
     bold=True,
 )
-edge((1118, 118), (1118, 32), (10, 32), (10, 326), (22, 326), dashed=True)
+edge((1126, 128), (1196, 128), (1196, 32), (10, 32), (10, 326), (22, 326), dashed=True)
 
 # ── Stage separators and titles ─────────────────────────────────────────────
 for x in (232, 488, 708, 900):
@@ -134,7 +134,7 @@ for k, (x, y) in pts.items():
     node(x, y, 8, BENIGN if k.startswith("u") else FRAUD)
 text(120, 190, "users, hubs, planted rings", 8.5)
 # event stream
-text(120, 214, "event stream", 9, italic=True)
+text(120, 214, "event stream, 50 / batch", 8.5, italic=True)
 for i in range(8):
     rect(
         36 + i * 18,
@@ -147,7 +147,6 @@ for i in range(8):
         lw=0.6,
     )
 edge((182, 235), (258, 235))
-text(206, 214, "50 / batch", 8)
 rect(
     22,
     300,
@@ -198,13 +197,13 @@ node(648, 130, 9, FRAUD)
 node(598, 112, 7, NEUTRAL, stroke=LINE)
 edge((548, 130), (598, 112), arrow=False, lw=2.6)
 edge((598, 112), (648, 130), arrow=False, lw=2.6)
-text(598, 96, "device, d = 3: w = 0.72", 8.5)
+text(598, 96, "device, d = 3: w = 0.72", 8)
 node(548, 196, 9, BENIGN)
 node(648, 196, 9, BENIGN)
 node(598, 178, 9, HUB, stroke=LINE)
 edge((548, 196), (598, 178), arrow=False, lw=0.7)
 edge((598, 178), (648, 196), arrow=False, lw=0.7)
-text(598, 216, "office IP, d = 50: w = 0.25", 8.5)
+text(598, 216, "office, d = 50: w = 0.25", 8)
 text(598, 244, "W = Σ h(d)·δ(t) + β·T", 9, italic=True)
 text(598, 262, "h(d) = 1 / ln(1 + d)", 9, italic=True)
 text(598, 284, "W ≥ θe, peel cores", 9)
@@ -230,15 +229,15 @@ for y in (97, 133, 169):
     edge((882, y), (892, y), (892, 248), (812, 255), arrow=True, lw=0.8)
 rect(
     726,
-    284,
+    280,
     156,
-    54,
+    62,
     "ring tracker\nconfirm 2 hits\ndrop 3 misses",
     fill="#ffffff",
     stroke=LINE,
     size=8.5,
 )
-edge((804, 266), (804, 284))
+edge((804, 266), (804, 280))
 edge((804, 230), (804, 250), dashed=True)
 edge((882, 311), (922, 311), (922, 150), (936, 150))
 
@@ -295,13 +294,13 @@ x = 60
 for color, label in items:
     node(x, ly, 7, color, stroke=LINE if color == NEUTRAL else "none")
     text(x + 14, ly, label, 10, align="left")
-    x += 180
+    x += 176
 edge((x, ly), (x + 34, ly))
 text(x + 42, ly, "data flow", 10, align="left")
 x += 150
 edge((x, ly), (x + 34, ly), dashed=True)
 text(x + 42, ly, "labels / feedback", 10, align="left")
-x += 190
+x += 205
 rect(x, ly - 8, 22, 16, fill="none", stroke="#d1242f", dashed=True)
 text(x + 30, ly, "dirty region", 10, align="left")
 
@@ -313,7 +312,7 @@ def _style_font(s: Shape) -> str:
     return f"fontFamily={FONT};fontSize={s.size};fontStyle={fs};"
 
 
-def write_drawio(path: Path) -> None:
+def write_drawio(path: Path, name: str = "architecture") -> None:
     cells = ['<mxCell id="0"/>', '<mxCell id="1" parent="0"/>']
     for i, s in enumerate(S):
         cid = f"s{i}"
@@ -352,7 +351,7 @@ def write_drawio(path: Path) -> None:
                 + "</mxGeometry></mxCell>"
             )
     xml = (
-        '<mxfile host="fraudsim"><diagram name="architecture">'
+        f'<mxfile host="fraudsim"><diagram name="{name}">'
         f'<mxGraphModel dx="{W}" dy="{H}" grid="1" gridSize="10" pageWidth="{W}" pageHeight="{H}" background="#ffffff">'
         "<root>" + "".join(cells) + "</root></mxGraphModel></diagram></mxfile>\n"
     )
