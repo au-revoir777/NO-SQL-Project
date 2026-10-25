@@ -139,6 +139,10 @@ def test_hub_weight_and_decay_functions() -> None:
     assert hub_weight(50, "inverse_log_degree") == pytest.approx(0.2543, abs=1e-4)
     assert hub_weight(50, "none") == 1.0
     assert hub_weight(4, "inverse_degree") == pytest.approx(1 / 3)
+    assert hub_weight(4, "inverse_degree_plain") == pytest.approx(1 / 4)
+    assert hub_weight(4, "inverse_sqrt_degree") == pytest.approx(0.5)
+    assert hub_weight(10, "soft_cap") == pytest.approx(0.5)
+    assert hub_weight(3, "soft_cap") > 0.95 > 0.05 > hub_weight(20, "soft_cap")
     assert decay(300, 300) == pytest.approx(0.5)
     assert decay(10_000, None) == 1.0
     with pytest.raises(ValueError):

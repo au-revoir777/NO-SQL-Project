@@ -32,7 +32,17 @@ from fraudsim.detectors.base import BaseDetector, DetectorConfig
 from fraudsim.graph.store import Attr, GraphStore, GraphView
 from fraudsim.types import DetectorType, RingCandidate, RingType
 
-HUB_WEIGHTS = ("inverse_log_degree", "adamic_adar", "inverse_degree", "none")
+HUB_WEIGHTS = (
+    "inverse_log_degree",
+    "adamic_adar",
+    "inverse_degree",
+    "none",
+    # Compared in E2c (docs/research/e2b_protocol.md):
+    "inverse_degree_plain",
+    "inverse_sqrt_degree",
+    "soft_cap",
+)
+SOFT_CAP_CENTRE, SOFT_CAP_WIDTH = 10.0, 2.0  # logistic step at the Review II cap of 10
 _KIND_TYPE = {
     "device": RingType.SHARED_DEVICE,
     "card": RingType.SHARED_CARD,
@@ -51,6 +61,12 @@ def hub_weight(degree: int, method: str) -> float:
         return 1.0 / (d - 1)
     if method == "none":  # ablation: no hub weighting
         return 1.0
+    if method == "inverse_degree_plain":
+        return 1.0 / d
+    if method == "inverse_sqrt_degree":
+        return 1.0 / math.sqrt(d)
+    if method == "soft_cap":
+        return 1.0 / (1.0 + math.exp((d - SOFT_CAP_CENTRE) / SOFT_CAP_WIDTH))
     raise ValueError(f"unknown hub weight method {method!r}; expected one of {HUB_WEIGHTS}")
 
 
