@@ -188,6 +188,15 @@ def generate_ablation_table(output_dir: Path, results_dir: Path = Path("results"
     labels = df.drop_duplicates("method").set_index("method")["method_label"]
     s = summarize(df, ["method"])
     tests = paired_vs(df, "proposed", "f1").set_index("method")
+    from fraudsim.experiments.scored_baselines import holm
+
+    adj = holm(
+        {
+            m: float(tests.loc[m, "wilcoxon_p"])
+            for m in tests.index
+            if pd.notna(tests.loc[m, "wilcoxon_p"])
+        }
+    )
     lines = []
     for _, r in s.iterrows():
         m = r["method"]
@@ -197,12 +206,13 @@ def generate_ablation_table(output_dir: Path, results_dir: Path = Path("results"
             delta = "0.00" if abs(d) < 0.005 else f"{d:+.2f}"
             dz = _num(t["cohens_dz"], 2)
             p = _p(t["wilcoxon_p"])
+            ph = _p(adj[m]) if m in adj else "--"
         else:
-            delta = dz = p = "--"
+            delta = dz = p = ph = "--"
         lines.append(
             f"{_esc(labels.get(m, m))} & {fmt_ci(r['precision_mean'], r['precision_ci95'])}"
             f" & {fmt_ci(r['recall_mean'], r['recall_ci95'])} & {fmt_ci(r['f1_mean'], r['f1_ci95'])}"
-            f" & {delta} & {dz} & {p} & {_num(r['detect_ms_p50_mean'])} \\\\"
+            f" & {delta} & {dz} & {p} & {ph} & {_num(r['detect_ms_p50_mean'])} \\\\"
         )
     body = (
         header
@@ -210,11 +220,12 @@ def generate_ablation_table(output_dir: Path, results_dir: Path = Path("results"
 \centering
 \caption{{Ablations on {", ".join(_esc(x) for x in dict.fromkeys(df["scenario"]))}
 ($\times$ {df["seed"].nunique()} test seeds). $\Delta$F1: paired mean difference to the full system;
-$d_z$: paired effect size of the full system over the variant; $p$: Wilcoxon signed-rank.}}
+$d_z$: paired effect size of the full system over the variant; $p$: Wilcoxon signed-rank,
+uncorrected and Holm-corrected over the {len(adj)} tested comparisons.}}
 \label{{tab:ablation}}
-\begin{{tabular}}{{lccccccc}}
+\begin{{tabular}}{{lcccccccc}}
 \toprule
-Variant & Precision & Recall & F1 & $\Delta$F1 & $d_z$ & $p$ & Latency (ms) \\
+Variant & Precision & Recall & F1 & $\Delta$F1 & $d_z$ & $p$ & $p_{{\mathrm{{Holm}}}}$ & Latency (ms) \\
 \midrule
 {chr(10).join(lines)}
 \bottomrule

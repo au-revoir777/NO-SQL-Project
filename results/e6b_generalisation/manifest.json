@@ -1,0 +1,57 @@
+{
+  "grids": [
+    {
+      "experiment": "e6b_generalisation",
+      "protocol": "docs/research/e6b_protocol.md",
+      "training_id": "dd98f740ea8c",
+      "rows_sha256": {
+        "train_rows.csv": "4feefa23a8a3d3fc3635bcb13230996dac43ac0e432d66bb6cf489190814cf87",
+        "test_rows.csv": "2538f117ab077652bb8c0bc4a346767d32928c8a4463bb65193c6cf5298c4b60"
+      },
+      "fit_fraction": 0.7,
+      "sanity_check": {
+        "refit": {
+          "snap_n": 4516,
+          "snap_pos": 984,
+          "snap_roc_auc": 0.981661,
+          "snap_pr_auc": 0.907582,
+          "snap_ece": 0.029343,
+          "snap_brier": 0.046133,
+          "ring_n": 1961,
+          "ring_pos": 209,
+          "ring_roc_auc": 0.981986,
+          "ring_pr_auc": 0.848605
+        },
+        "shipped_test": {
+          "n": 4516,
+          "positives": 984,
+          "brier": 0.046133,
+          "roc_auc": 0.981661,
+          "pr_auc": 0.907582,
+          "ece": 0.029343
+        },
+        "reproduces": true
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-25T19:07:15.912206+00:00",
+      "ended_at": "2026-10-25T19:07:17.305954+00:00",
+      "wall_s": 1.394,
+      "rows": 13,
+      "git_commit": "b51a1ed95a39ba5bcdd658a58c689f6d9356877c",
+      "git_dirty": false,
+      "python": "3.11.9",
+      "platform": "Windows-10",
+      "cpu_count": 4,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    }
+  ]
+}
