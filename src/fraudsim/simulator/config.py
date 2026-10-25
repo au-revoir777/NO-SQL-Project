@@ -158,6 +158,9 @@ class SimulationConfig:
     random_rings: RandomRingSpec = field(default_factory=RandomRingSpec)
     adaptive: AdaptiveSpec = field(default_factory=AdaptiveSpec)
     start_ts: datetime = DEFAULT_START_TS
+    # Per-mode overrides of the evasion strategy parameters (rings.StrategyParams),
+    # e.g. {"decoy_edges": {"decoys_per_action": 4}}; empty = the built-in defaults.
+    evasion_params: dict[str, dict[str, float]] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -242,6 +245,37 @@ def _parse_ring(raw: dict[str, Any], index: int) -> RingSpec:
         mutate_prob=_as_float(raw.get("mutate_prob", 0.05), "mutate_prob"),
         intensity=_as_float(raw.get("intensity", 1.0), "intensity"),
     )
+
+
+EVASION_PARAM_KEYS = {
+    "grow_mult": float,
+    "action_mult": float,
+    "amount_mult": float,
+    "rotate_every": int,
+    "decoys_per_action": int,
+}
+
+
+def _parse_evasion_params(raw: dict[str, Any] | None) -> dict[str, dict[str, float]]:
+    """Validate simulation.evasion_params: {evasion mode: {strategy parameter: value}}."""
+    out: dict[str, dict[str, float]] = {}
+    for mode, params in (raw or {}).items():
+        EvasionMode(mode)  # unknown modes are an error
+        if not isinstance(params, dict):
+            raise ValueError(f"evasion_params.{mode} must be a mapping")
+        clean: dict[str, float] = {}
+        for key, value in params.items():
+            if key not in EVASION_PARAM_KEYS:
+                raise ValueError(
+                    f"evasion_params.{mode}.{key} is not a strategy parameter "
+                    f"(one of {', '.join(sorted(EVASION_PARAM_KEYS))})"
+                )
+            v = EVASION_PARAM_KEYS[key](value)
+            if v < 0 or (key.endswith("_mult") and v == 0):
+                raise ValueError(f"evasion_params.{mode}.{key} must be positive, got {value!r}")
+            clean[key] = v
+        out[str(mode)] = clean
+    return out
 
 
 def _parse_random_rings(raw: dict[str, Any] | None) -> RandomRingSpec:
@@ -342,6 +376,7 @@ def parse_simulation_config(scenario: dict[str, Any]) -> SimulationConfig:
         random_rings=_parse_random_rings(scenario.get("random_rings")),
         adaptive=_parse_adaptive(scenario.get("adaptive_attacker")),
         start_ts=start_ts,
+        evasion_params=_parse_evasion_params(sim.get("evasion_params")),
     )
     if cfg.target_event_rate <= 0:
         raise ValueError("target_event_rate must be > 0")

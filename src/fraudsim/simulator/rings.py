@@ -13,7 +13,7 @@ import itertools
 import math
 import random
 from dataclasses import dataclass, replace
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from fraudsim.simulator.config import SHARED_ATTRIBUTE_KIND, AdaptiveSpec, RingSpec
 from fraudsim.types import EvasionMode, RingLifecycle, RingType
@@ -49,6 +49,13 @@ STRATEGIES: dict[EvasionMode, StrategyParams] = {
 }
 
 
+def strategy_params(strategy: EvasionMode, config: Any) -> StrategyParams:
+    """The mode's strategy, with simulation.evasion_params overrides applied."""
+    base = STRATEGIES[strategy]
+    overrides = (getattr(config, "evasion_params", None) or {}).get(strategy.value)
+    return replace(base, **overrides) if overrides else base
+
+
 class RingAgent:
     """One simulated fraud ring."""
 
@@ -63,7 +70,7 @@ class RingAgent:
         self.spec = spec
         self.rng = rng
         self.strategy = strategy
-        self.params = STRATEGIES[strategy]
+        self.params = strategy_params(strategy, gen.config)
         self.members: list[str] = []  # ordered: position encodes role (cycle order, collector)
         self.anchors: dict[str, str] = {}  # kind -> attribute id the ring coordinates on
         self.cover_hub: str | None = None  # (kind:attr) hub every member also uses as cover
