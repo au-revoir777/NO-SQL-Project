@@ -31,7 +31,7 @@ import structlog
 
 from fraudsim.detectors.base import BaseDetector
 from fraudsim.detectors.ensemble import RingTracker, RingUpdate
-from fraudsim.graph.store import GraphStore
+from fraudsim.graph.store import GraphStore, OverCapBound
 from fraudsim.types import Event, RingCandidate
 
 logger = structlog.get_logger(__name__)
@@ -45,6 +45,7 @@ class EngineConfig:
     far_fanout: int = 20  # later hops only cross attributes at most this busy
     window_s: float = 900.0  # rolling window for transactions in views
     incremental: bool = True  # False = full recomputation every batch (ablation)
+    hub_crossing: str = "fanout"  # "bound": cross over-cap hubs by weight bound (E5b)
     full_interval_s: float = 30.0  # cadence of full-graph detectors (sim seconds)
     ttl_s: float | None = None  # prune links/transactions older than this
     prune_interval_s: float = 30.0
@@ -180,7 +181,12 @@ class DetectionEngine:
             t = time.perf_counter()
             if cfg.incremental:
                 region = self.store.expand(
-                    seeds, cfg.k_hop, cfg.max_fanout, since_t, far_fanout=cfg.far_fanout
+                    seeds,
+                    cfg.k_hop,
+                    cfg.max_fanout,
+                    since_t,
+                    far_fanout=cfg.far_fanout,
+                    over_cap=self._over_cap(),
                 )
                 timings["dirty"] = _ms(t)
                 t = time.perf_counter()
@@ -266,6 +272,27 @@ class DetectionEngine:
         )
         self.reports.append(report)
         return report
+
+    def _over_cap(self) -> OverCapBound | None:
+        """The "bound" crossing rule, derived from the enabled hub-aware detector's config."""
+        if self.cfg.hub_crossing == "fanout":
+            return None
+        if self.cfg.hub_crossing != "bound":
+            raise ValueError(f"unknown hub_crossing {self.cfg.hub_crossing!r}")
+        from fraudsim.detectors.hubaware import HubAwareSharedAttribute, hub_weight
+
+        hub = next(
+            (d for d in self.detectors if d.enabled and isinstance(d, HubAwareSharedAttribute)),
+            None,
+        )
+        if hub is None:
+            return None
+        hcfg = hub.config
+        method = str(getattr(hcfg, "weight_method", "inverse_log_degree"))
+        return OverCapBound(
+            weight=lambda d: hub_weight(d, method),
+            min_weight=float(getattr(hcfg, "edge_threshold", 0.5)),
+        )
 
     @staticmethod
     def _due(last: float | None, interval: float, now_t: float) -> bool:

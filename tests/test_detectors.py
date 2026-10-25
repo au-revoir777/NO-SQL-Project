@@ -101,6 +101,23 @@ def ids(prefix: str, n: int, start: int = 1) -> list[str]:
 # ─── Store ────────────────────────────────────────────────────────────
 
 
+def test_expand_bound_crosses_large_hubs_only_for_pairs_that_could_link() -> None:
+    from fraudsim.graph.store import OverCapBound
+
+    hub1, hub2 = ids("h", 30), ids("k", 30)
+    g = G().users(*hub1, *hub2, "a", "b", "c")
+    g.share([*hub1, "a", "b", "c"], "ip", "office").share([*hub2, "a", "b"], "ip", "nat")
+    s = g.store()
+    log_w = OverCapBound(weight=lambda d: hub_weight(d, "inverse_log_degree"), min_weight=0.5)
+    # Both hubs exceed max_fanout: the plain rule never crosses them.
+    assert s.expand({"a"}, k=1, max_fanout=10, since_t=0) == {"a"}
+    # b shares both hubs with a (2 x 1/ln(34) = 0.57 >= 0.5); c and the others share one.
+    assert s.expand({"a"}, k=1, max_fanout=10, since_t=0, over_cap=log_w) == {"a", "b"}
+    # A constant weight reaches its threshold through one hub: every co-member joins.
+    const = OverCapBound(weight=lambda d: 1.0, min_weight=1.0)
+    assert len(s.expand({"a"}, k=1, max_fanout=10, since_t=0, over_cap=const)) == 63
+
+
 def test_store_degree_expand_view_and_prune() -> None:
     hub = ids("h", 30)
     g = G().users(*hub, "a", "b", "c", "x").share(hub, "ip", "ip_hub")

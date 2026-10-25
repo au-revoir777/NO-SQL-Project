@@ -8,7 +8,7 @@ Cypher round trips, regardless of how many detectors run on the region.
 from __future__ import annotations
 
 from fraudsim.graph.neo4j_client import Neo4jClient
-from fraudsim.graph.store import GraphStore, GraphView, Link, Txn, touched_users
+from fraudsim.graph.store import GraphStore, GraphView, Link, OverCapBound, Txn, touched_users
 from fraudsim.types import Event
 
 _ATTR_RELS = "USED_DEVICE|HAS_CARD|LOGGED_IN_FROM"
@@ -109,7 +109,10 @@ class Neo4jGraphStore(GraphStore):
         max_fanout: int,
         since_t: float,
         far_fanout: int | None = None,
+        over_cap: OverCapBound | None = None,
     ) -> set[str]:
+        if over_cap is not None:
+            raise NotImplementedError("bound crossing is implemented for the in-memory store only")
         region = self._active(seeds) if seeds else set()
         frontier = set(region)
         for hop in range(k):

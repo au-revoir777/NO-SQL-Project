@@ -20,6 +20,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from collections import defaultdict
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Any
@@ -132,6 +133,14 @@ def touched_users(events: list[Event]) -> set[str]:
     return touched
 
 
+@dataclass(frozen=True, slots=True)
+class OverCapBound:
+    """First-hop crossing of attributes above the fan-out limit (E5b "bound")."""
+
+    weight: Callable[[int], float]
+    min_weight: float
+
+
 class GraphStore(ABC):
     """Contract shared by the Neo4j and in-memory stores."""
 
@@ -149,6 +158,7 @@ class GraphStore(ABC):
         max_fanout: int,
         since_t: float,
         far_fanout: int | None = None,
+        over_cap: OverCapBound | None = None,
     ) -> set[str]:
         """
         Active users within k user-hops of seeds (seeds included if active).
@@ -158,6 +168,11 @@ class GraphStore(ABC):
         max_fanout (so a hub's co-members are in reach); later hops only cross
         attributes with degree <= far_fanout (default max_fanout), so hubs do
         not pull in the whole graph.
+
+        With `over_cap` (weight function h, minimum weight), the first hop does
+        not ignore attributes above max_fanout: a co-member v of seed u joins the
+        region when the sum of h(degree) over the over-cap attributes u and v
+        share reaches the minimum (docs/research/e5b_protocol.md, "bound").
         """
 
     @abstractmethod
@@ -240,6 +255,7 @@ class InMemoryGraphStore(GraphStore):
         max_fanout: int,
         since_t: float,
         far_fanout: int | None = None,
+        over_cap: OverCapBound | None = None,
     ) -> set[str]:
         region = {u for u in seeds if self.active.get(u)}
         frontier = set(region)
@@ -248,12 +264,19 @@ class InMemoryGraphStore(GraphStore):
             cap = max_fanout if hop == 0 or far_fanout is None else far_fanout
             nxt: set[str] = set()
             for u in frontier:
+                bound: dict[str, float] = defaultdict(float)
                 for attr in self.user_links.get(u, {}):
                     if attr not in degree_cache:
                         degree_cache[attr] = self._degree(attr)
                     if degree_cache[attr] > cap:
+                        if hop == 0 and over_cap is not None:
+                            w = over_cap.weight(degree_cache[attr])
+                            for v in self.attr_users[attr]:
+                                bound[v] += w
                         continue
                     nxt.update(self.attr_users[attr])
+                if over_cap is not None:
+                    nxt.update(v for v, w in bound.items() if w >= over_cap.min_weight and v != u)
                 for txn in self.out_txns.get(u, ()):
                     if txn.t >= since_t:
                         nxt.add(txn.receiver)

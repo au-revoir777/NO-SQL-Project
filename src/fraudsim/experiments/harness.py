@@ -20,6 +20,7 @@ import time
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
 from pathlib import Path
+from statistics import median
 from typing import Any
 
 from fraudsim.detectors.engine import DetectionEngine, EngineConfig, build_detectors
@@ -255,6 +256,7 @@ def run_method(
         for r in engine.reports
         if r.full_run
     ]
+    regions = [r.region for r in engine.reports if r.region]
     method_hash = config_hash(method.config())
     run_id = f"{experiment}:{stream.scenario}:{stream.seed}:{method.name}"
     by_evasion: dict[str, list[bool]] = {}
@@ -303,6 +305,9 @@ def run_method(
             {k: [sum(v), len(v)] for k, v in sorted(by_evasion.items())}
         ),
         "node_auc": node_auc(stream, engine, stage is not None),
+        # Users in the evaluated region per batch (E5b); 0 when nothing ran incrementally.
+        "region_p50": float(median(regions)) if regions else 0.0,
+        "region_max": max(regions) if regions else 0,
     }
 
 
