@@ -1,0 +1,251 @@
+{
+  "grids": [
+    {
+      "experiment": "e13_train",
+      "protocol": "docs/research/e13_e14_protocol.md",
+      "step": "train",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift",
+        "scale_sweep"
+      ],
+      "train_seeds": [
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110
+      ],
+      "fit_fraction": 0.7,
+      "candidates": {
+        "static_cypher": {
+          "enabled": false
+        },
+        "hub_aware": {
+          "enabled": false
+        },
+        "temporal_cycle": {
+          "enabled": false
+        },
+        "smurfing": {
+          "enabled": false
+        },
+        "community": {
+          "algorithm": "wcc",
+          "min_density": 0.0
+        }
+      },
+      "status": "failed",
+      "error": {
+        "type": "ValueError",
+        "message": "training slice needs both positive and negative rings",
+        "traceback_tail": [
+          "  File \"C:\\Users\\hp\\Desktop\\NoSQL\\src\\fraudsim\\experiments\\learned_baselines.py\", line 147, in train",
+          "    scorer = RingScorer(\"gradient_boosting\").fit(*_matrix(fit), *_matrix(cal))",
+          "             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+          "  File \"C:\\Users\\hp\\Desktop\\NoSQL\\src\\fraudsim\\scoring\\scorer.py\", line 92, in fit",
+          "    raise ValueError(\"training slice needs both positive and negative rings\")",
+          "ValueError: training slice needs both positive and negative rings"
+        ]
+      },
+      "started_at": "2026-10-25T08:16:26.357802+00:00",
+      "ended_at": "2026-10-25T08:17:08.627696+00:00",
+      "wall_s": 42.27,
+      "rows": 0,
+      "git_commit": "80fb382b5fc5c031bcdb9a0b4beb97cc0c2f300a",
+      "git_dirty": false,
+      "python": "3.11.9",
+      "platform": "Windows-10",
+      "cpu_count": 4,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "e13_train",
+      "protocol": "docs/research/e13_e14_protocol.md",
+      "step": "train",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift",
+        "scale_sweep"
+      ],
+      "train_seeds": [
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110
+      ],
+      "fit_fraction": 0.7,
+      "candidates": {
+        "static_cypher": {
+          "enabled": false
+        },
+        "hub_aware": {
+          "enabled": false
+        },
+        "temporal_cycle": {
+          "enabled": false
+        },
+        "smurfing": {
+          "enabled": false
+        },
+        "community": {
+          "algorithm": "louvain",
+          "min_density": 0.0
+        }
+      },
+      "model": {
+        "path": "results/e13_learned_baselines/tabular_gb_scorer.joblib",
+        "rows": 3506
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-25T08:18:30.353946+00:00",
+      "ended_at": "2026-10-25T08:20:32.373659+00:00",
+      "wall_s": 122.018,
+      "rows": 0,
+      "git_commit": "26a99f117c3cda6fbb0c774e669e5a0ea4814c4f",
+      "git_dirty": false,
+      "python": "3.11.9",
+      "platform": "Windows-10",
+      "cpu_count": 4,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "e13_learned_baselines",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        1001,
+        1002,
+        1003,
+        1004,
+        1005,
+        1006,
+        1007,
+        1008,
+        1009,
+        1010
+      ],
+      "methods": [
+        {
+          "name": "proposed",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "Hub-aware incremental (proposed)",
+          "hash": "66e56ec6065dad98"
+        },
+        {
+          "name": "tabular_gb",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "min_density": 0.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/e13_learned_baselines/tabular_gb_scorer.joblib",
+          "label": "Gradient boosting on candidate groups (no rule stage)",
+          "hash": "174f710c5f1759b2"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-25T08:25:50.945713+00:00",
+      "ended_at": "2026-10-25T08:30:49.938943+00:00",
+      "wall_s": 298.991,
+      "rows": 100,
+      "git_commit": "26a99f117c3cda6fbb0c774e669e5a0ea4814c4f",
+      "git_dirty": false,
+      "python": "3.11.9",
+      "platform": "Windows-10",
+      "cpu_count": 4,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    }
+  ]
+}

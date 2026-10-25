@@ -388,7 +388,8 @@ Phase 2 (web app and research extensions, [plan](docs/phase2/phase2_prompt.md)):
 | P7 Report generator | done |
 | P10/E8 latency on the real stack (Redis Streams → engine → Neo4j) | done (`docs/research/e8_results.md`) |
 | P11/E12 explanation quality; what-if panel on alert pages | done (`docs/research/e12_results.md`) |
-| P12 Learned baselines and evasion-strength sweeps | next |
+| P12/E13–E14 learned baseline and evasion-strength sweeps | done (`docs/research/e13_e14_results.md`) |
+| Paper refinement | next |
 | P8, P9, P13–P16 | planned (after P12 and paper refinement, by agreement) |
 
 Research results added in Phase 2 (each with a protocol committed before its
@@ -405,6 +406,20 @@ first result):
     (Spearman 0.92), but the proposed counterfactual changes with the model
     (29% the same).
   - For correct alerts the evidence is the true ring (Oracle).
+- **E13, learned baseline:** gradient boosting on rule-free Louvain groups,
+  with the same 19 features and the same training and tuning protocol, reaches
+  F1 0.555 against the proposed method's 0.731 (Wilcoxon p < 0.001). The rule
+  stage earns its place, most in `hub_heavy` and `adversarial`. The learned
+  baseline **is better on precision** (0.94 against 0.76, with fewer alerts)
+  and on user-level F1 in `high_noise` and `drift`.
+- **E14, evasion strength:**
+  - Decoy edges (0–8 per action) leave the proposed method's recall at
+    0.74–0.82 but drive Louvain and the learned baseline to about 0.
+  - Under low-and-slow, **static Cypher (cap 10) recovers more of those rings**
+    (0.42–0.75 against 0.17–0.25, at precision 0.04). The learned baseline's
+    F1 exceeds the proposed method's at ×2 and ×4 (not significant).
+  - The low-and-slow and rotation sweeps are underpowered in 60-second
+    streams (see the results' limitations).
 
 Known open items:
 - Paper: check the bibliography entries against the publishers' pages before submission.

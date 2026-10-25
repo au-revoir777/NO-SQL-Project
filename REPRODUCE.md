@@ -95,9 +95,17 @@ NEO4J_PASSWORD=<random> python -m fraudsim.experiments.stack_latency --run --res
     --neo4j-uri bolt://localhost:17687 --redis-url redis://localhost:16379/0
 python -m fraudsim.experiments.stack_latency --report docs/research/e8_tables.md
 docker rm -f -v e8-neo4j e8-redis
+
+# E13 learned baseline and E14 evasion strength (protocol docs/research/e13_e14_protocol.md)
+python -m fraudsim.experiments.learned_baselines train   # GB on Louvain candidates, seeds 101-110
+python -m fraudsim.experiments.learned_baselines tune    # alert threshold, seeds 301-303
+python -m fraudsim.experiments.learned_baselines e13     # vs proposed, seeds 1001-1010
+python -m fraudsim.experiments.learned_baselines e14     # evasion-strength sweeps
+python -m fraudsim.experiments.learned_baselines report  # docs/research/e13_tables.md, e14_tables.md
 ```
 
-On the test laptop: E12 collection 5 min, the second scorer about 25 min, the
+On the test laptop: E13 training 2 min, tuning 5 min, E13 5 min, E14 14 min;
+E12 collection 5 min, the second scorer about 25 min, the
 analysis under a minute; E8 about 60 min.
 
 ## 4. Tables, figures, paper

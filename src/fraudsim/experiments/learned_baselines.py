@@ -282,7 +282,7 @@ def paired(a: Sequence[float], b: Sequence[float]) -> dict[str, Any]:
     return {
         "n": len(d),
         "median_diff": round(float(np.median(d)), 4),
-        "p": round(p, 4) if p is not None else None,
+        "p": ("<0.001" if p < 0.001 else round(p, 4)) if p is not None else None,
         "rank_biserial": round(float(rb), 3),
     }
 

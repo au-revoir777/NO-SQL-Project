@@ -1,0 +1,24 @@
+{
+  "alert_threshold": 0.7,
+  "mean_f1_by_threshold": {
+    "0.2": 0.4321933333333333,
+    "0.3": 0.42552666666666666,
+    "0.5": 0.43354,
+    "0.7": 0.43984,
+    "0.8": 0.3938133333333333,
+    "0.9": 0.3938133333333333
+  },
+  "validation_seeds": [
+    301,
+    302,
+    303
+  ],
+  "scenarios": [
+    "baseline",
+    "high_noise",
+    "hub_heavy",
+    "adversarial",
+    "drift"
+  ],
+  "results": "results/e13_tuning/results.csv"
+}
