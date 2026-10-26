@@ -482,7 +482,7 @@ def test_engine_detector_flags_and_timers() -> None:
 
 def test_unknown_override_rejected() -> None:
     with pytest.raises(ValueError, match="unknown detector"):
-        build_detectors(InMemoryGraphStore(), {"gnn": {}})
+        build_detectors(InMemoryGraphStore(), {"no_such_detector": {}})
 
 
 def test_closed_loop_run_writes_artefacts_and_feeds_attacker(tmp_path) -> None:
