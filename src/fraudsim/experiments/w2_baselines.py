@@ -35,6 +35,7 @@ SCENARIOS = ("baseline", "high_noise", "hub_heavy", "adversarial", "drift")
 TRAIN_SEEDS = tuple(range(101, 111))
 VALIDATION_SEEDS = (301, 302, 303)
 TEST_SEEDS = tuple(range(2101, 2121))
+HYBRID_TEST_SEEDS = tuple(range(2301, 2321))  # W3b (docs/research/w3b_hybrid_protocol.md)
 ALERT_GRID = (0.2, 0.3, 0.5, 0.7, 0.8, 0.9)
 FIT_FRACTION = 0.7
 OUT = ROOT / "results"
@@ -51,6 +52,8 @@ STRUCT: dict[str, tuple[str, tuple, Any]] = {
     "leiden": ("resolution", (0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 5.0, 8.0, 12.0), 1.0),
     "louvain": ("resolution", (0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 5.0, 8.0, 12.0), 1.0),
     "gnn": ("node_threshold", (0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95), 0.5),
+    # hybrid (W3b): proposed pipeline + GraphSAGE as a fourth detector; same budget as proposed
+    "hybrid": ("node_threshold", (0.5, 0.7, 0.8, 0.9, 0.95), 0.5),
     # rules: cap x cycle rule on/off, 7 x 2 = 14 structural configurations
     "rules": ("cap_cycle", tuple(f"{c}_{q}" for c in (3, 5, 10, 20, 50, 100, 200) for q in (1, 0)), "10_1"),
 }
@@ -65,6 +68,14 @@ def overrides(method: str, value: Any) -> tuple[dict, dict]:
         return {**OFF, "community": {"algorithm": "louvain", "resolution": float(value)}}, {}
     if method == "gnn":
         return {**OFF, "gnn": {"node_threshold": float(value), "model_path": GNN_MODEL}}, WHOLE
+    if method == "hybrid":
+        from fraudsim.experiments.tuning import load_tuned
+
+        edge = float(load_tuned()["edge_threshold"])
+        ov = _merge(PROPOSED, {"hub_aware": {"edge_threshold": edge},
+                               "gnn": {"node_threshold": float(value), "model_path": GNN_MODEL,
+                                       "as_full_detector": True}})
+        return ov, {"full_interval_s": 0.0}
     if method == "rules":
         cap, cyc = str(value).split("_")
         return {**OFF, "static_cypher": {"enabled": True, "max_degree_cap": int(cap),
@@ -271,7 +282,20 @@ def _parse(name: str) -> tuple[str, Any, float | None, bool]:
     return m, value, float(tail[1:]), True
 
 
-def run(methods: list[str]) -> None:
+def skip_explanations() -> None:
+    """
+    Skip per-alert contributions and counterfactuals. Risk is computed before them and does
+    not depend on them, so alerts and metrics are unchanged; only wall time drops (gradient
+    boosting needs about 20 model calls per explanation). Checked against recorded E13 runs.
+    """
+    from fraudsim.scoring import explanations
+    from fraudsim.scoring.scorer import RingScorer
+
+    RingScorer.contributions = lambda self, x: {}  # type: ignore[method-assign]
+    explanations.counterfactuals = lambda *a, **k: []  # type: ignore[assignment]
+
+
+def run(methods: list[str], seeds: tuple[int, ...] = TEST_SEEDS, tag: str = "w2_eval") -> None:
     sel = json.loads(SELECTION.read_text())
     for m in methods:
         if m == "proposed":
@@ -292,25 +316,26 @@ def run(methods: list[str]) -> None:
         elif m == "gb_louvain":
             from fraudsim.experiments.learned_baselines import selected_threshold, tabular_gb
 
+            skip_explanations()
             meth = [tabular_gb(selected_threshold())]
         elif m == "rules_per_scenario":
             for sc, name in sel["rules_per_scenario"].items():
                 mm, v, a, s = _parse(name)
                 x = make(mm, v, a, s)
                 x.name, x.label = "w2_rules_per_scenario", f"rules per-scenario ({name})"
-                run_grid("w2_eval/rules_per_scenario", [sc], TEST_SEEDS, [x], OUT)
+                run_grid(f"{tag}/rules_per_scenario", [sc], seeds, [x], OUT)
             continue
         else:
             key = "gnn_unscored" if m == "gnn_unscored" else m
             mm, v, a, s = _parse(sel[key]["method"])
             meth = [make(mm, v, a, s)]
             meth[0].name = f"w2_{key}"
-        run_grid(f"w2_eval/{m}", SCENARIOS, TEST_SEEDS, meth, OUT)
+        run_grid(f"{tag}/{m}", SCENARIOS, seeds, meth, OUT)
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("step", choices=["train-gnn", "train-scorers", "tune", "select", "run"])
+    ap.add_argument("step", choices=["train-gnn", "train-scorers", "tune", "select", "run", "run-w3b"])
     ap.add_argument("--methods", default=",".join(STRUCT))
     a = ap.parse_args()
     ms = a.methods.split(",")
@@ -323,6 +348,8 @@ def main() -> None:
         tune(ms)
     elif a.step == "select":
         select()
+    elif a.step == "run-w3b":
+        run(ms, HYBRID_TEST_SEEDS, "w3b_eval")
     else:
         run(ms)
 

@@ -280,6 +280,9 @@ class GnnConfig(DetectorConfig):
     name: str = "GraphSAGE"
     model_path: str = "results/w2_gnn/graphsage.pt"
     node_threshold: float = 0.5  # tuned
+    # Inside the incremental pipeline (hybrid), run on the whole graph as a full-graph
+    # detector instead of on the dirty region (the GNN needs 2-hop context of every node).
+    as_full_detector: bool = False
     min_ring_size: int = 3
     max_ring_size: int = 25
     extra: dict[str, Any] = field(default_factory=dict)
@@ -292,6 +295,8 @@ class GnnDetector(BaseDetector):
         super().__init__(config or GnnConfig(), store)
         self.cfg: GnnConfig = self._config  # type: ignore[assignment]
         self._model = None
+        if self.cfg.as_full_detector:
+            self.incremental = False
 
     def _load(self):
         if self._model is None:
