@@ -281,6 +281,14 @@ def run(methods: list[str]) -> None:
             ov = _merge(PROPOSED, {"hub_aware": {"edge_threshold": float(t["edge_threshold"])}})
             meth = [Method("proposed", "proposed (shipped)", ov, family="proposed",
                            alert_threshold=float(t["alert_threshold"]))]
+        elif m == "proposed_const":  # amendment 2: exploratory arm (constant weight, R1 selection)
+            from fraudsim.experiments.tuning import load_tuned
+
+            t = load_tuned()
+            edge = json.loads((ROOT / "results/r1_tuning/selected.json").read_text())["edge_threshold"]["const"]
+            ov = _merge(PROPOSED, {"hub_aware": {"weight_method": "none", "edge_threshold": float(edge)}})
+            meth = [Method("proposed_const", "proposed, constant weight", ov, family="proposed",
+                           alert_threshold=float(t["alert_threshold"]))]
         elif m == "gb_louvain":
             from fraudsim.experiments.learned_baselines import selected_threshold, tabular_gb
 

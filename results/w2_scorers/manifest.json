@@ -1,0 +1,224 @@
+{
+  "grids": [
+    {
+      "experiment": "w2_scorer_rules",
+      "method": "rules",
+      "train_seeds": [
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110
+      ],
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift",
+        "scale_sweep"
+      ],
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-26T14:46:31.403096+00:00",
+      "ended_at": "2026-10-26T14:47:12.204362+00:00",
+      "wall_s": 40.801,
+      "rows": 0,
+      "git_commit": "dee69eab804d9459601566e721956dae16e4efcf",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v153-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "w2_scorer_louvain",
+      "method": "louvain",
+      "train_seeds": [
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110
+      ],
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift",
+        "scale_sweep"
+      ],
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-26T14:47:12.246689+00:00",
+      "ended_at": "2026-10-26T14:49:47.971519+00:00",
+      "wall_s": 155.725,
+      "rows": 0,
+      "git_commit": "dee69eab804d9459601566e721956dae16e4efcf",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v153-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "w2_scorer_leiden",
+      "method": "leiden",
+      "train_seeds": [
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110
+      ],
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift",
+        "scale_sweep"
+      ],
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-26T14:49:48.003978+00:00",
+      "ended_at": "2026-10-26T15:06:48.888553+00:00",
+      "wall_s": 1020.885,
+      "rows": 0,
+      "git_commit": "5f1b2a337c7e32a5099a8fe7a6a344d495f22078",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v153-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "w2_scorer_peeling",
+      "method": "peeling",
+      "train_seeds": [
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110
+      ],
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift",
+        "scale_sweep"
+      ],
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-26T15:06:48.921794+00:00",
+      "ended_at": "2026-10-26T15:11:30.446945+00:00",
+      "wall_s": 281.525,
+      "rows": 0,
+      "git_commit": "5f1b2a337c7e32a5099a8fe7a6a344d495f22078",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v153-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "w2_scorer_gnn",
+      "method": "gnn",
+      "train_seeds": [
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110
+      ],
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift",
+        "scale_sweep"
+      ],
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-26T15:22:06.297044+00:00",
+      "ended_at": "2026-10-26T15:28:19.900309+00:00",
+      "wall_s": 373.603,
+      "rows": 0,
+      "git_commit": "5f1b2a337c7e32a5099a8fe7a6a344d495f22078",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v153-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    }
+  ]
+}

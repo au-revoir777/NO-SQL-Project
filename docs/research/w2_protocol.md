@@ -68,3 +68,4 @@ GraphSAGE training:
 ## Amendments
 
 1. (2026-10-26, process) This protocol's first commit attempt failed silently: `results/r1_*` was gitignored, so the combined `git add` aborted. GraphSAGE and scorer training (seeds 101–110 only) had started about one minute before this file was committed. No tuning (301–303) or evaluation (2101–2120) run had started. Nothing in the design was changed.
+2. (2026-10-26, before any evaluation run on 2101–2120) Added one **exploratory** arm, `proposed_const`: the full pipeline with a constant attribute weight. θ_e = 1.0 is the R1 validation selection; θ_a = 0.8; shipped scorer. It was added because R1 (seeds 2001–2010) found the constant at least as good as 1/ln(1+d). Choosing it used R1's test block, so it is tested here on a different block and reported as exploratory, outside the confirmatory family. The confirmatory comparison stays `proposed` (shipped) minus the strongest baseline.

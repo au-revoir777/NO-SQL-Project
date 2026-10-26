@@ -1,0 +1,497 @@
+{
+  "model_type": "logistic_regression",
+  "feature_names": [
+    "size",
+    "density",
+    "share_device",
+    "share_card",
+    "share_ip",
+    "hub_adjusted_weight",
+    "cycle_present",
+    "cycle_length",
+    "temporal_burstiness",
+    "account_age_similarity",
+    "account_age_min",
+    "internal_txns_per_member",
+    "amount_mean_log",
+    "amount_cv",
+    "near_threshold_frac",
+    "growth_rate",
+    "risk_signal_fraction",
+    "hub_exposure",
+    "n_detectors"
+  ],
+  "train": {
+    "method": "leiden",
+    "structural_default": 1.0,
+    "scenarios": [
+      "baseline",
+      "high_noise",
+      "hub_heavy",
+      "adversarial",
+      "drift",
+      "scale_sweep"
+    ],
+    "train_seeds": [
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110
+    ],
+    "rows": {
+      "fit": 3535,
+      "calibration": 1115
+    },
+    "runs": [
+      {
+        "scenario": "baseline",
+        "seed": 101,
+        "stream_digest": "51f2d3b856ba334a",
+        "rows": 54,
+        "positives": 9
+      },
+      {
+        "scenario": "baseline",
+        "seed": 102,
+        "stream_digest": "34583d9256a72822",
+        "rows": 53,
+        "positives": 6
+      },
+      {
+        "scenario": "baseline",
+        "seed": 103,
+        "stream_digest": "fedd7c10872dacb0",
+        "rows": 67,
+        "positives": 8
+      },
+      {
+        "scenario": "baseline",
+        "seed": 104,
+        "stream_digest": "1fc7521ea043e972",
+        "rows": 71,
+        "positives": 14
+      },
+      {
+        "scenario": "baseline",
+        "seed": 105,
+        "stream_digest": "7c3f545fb9a7c93d",
+        "rows": 77,
+        "positives": 14
+      },
+      {
+        "scenario": "baseline",
+        "seed": 106,
+        "stream_digest": "8d53367d8070c92a",
+        "rows": 49,
+        "positives": 9
+      },
+      {
+        "scenario": "baseline",
+        "seed": 107,
+        "stream_digest": "47f1a03426241c38",
+        "rows": 64,
+        "positives": 16
+      },
+      {
+        "scenario": "baseline",
+        "seed": 108,
+        "stream_digest": "30e9516b8295eae0",
+        "rows": 66,
+        "positives": 9
+      },
+      {
+        "scenario": "baseline",
+        "seed": 109,
+        "stream_digest": "9cfd451e597cc1a8",
+        "rows": 62,
+        "positives": 10
+      },
+      {
+        "scenario": "baseline",
+        "seed": 110,
+        "stream_digest": "af748ab1df0e0301",
+        "rows": 55,
+        "positives": 12
+      },
+      {
+        "scenario": "high_noise",
+        "seed": 101,
+        "stream_digest": "5f8f96486a2bf3f2",
+        "rows": 38,
+        "positives": 0
+      },
+      {
+        "scenario": "high_noise",
+        "seed": 102,
+        "stream_digest": "05a79799e615d16a",
+        "rows": 38,
+        "positives": 4
+      },
+      {
+        "scenario": "high_noise",
+        "seed": 103,
+        "stream_digest": "c7af7e81cfb5b94c",
+        "rows": 47,
+        "positives": 20
+      },
+      {
+        "scenario": "high_noise",
+        "seed": 104,
+        "stream_digest": "44f9961d9f991593",
+        "rows": 31,
+        "positives": 15
+      },
+      {
+        "scenario": "high_noise",
+        "seed": 105,
+        "stream_digest": "bb9ff2b4fb5b6d27",
+        "rows": 45,
+        "positives": 11
+      },
+      {
+        "scenario": "high_noise",
+        "seed": 106,
+        "stream_digest": "be7e4367652a259d",
+        "rows": 43,
+        "positives": 22
+      },
+      {
+        "scenario": "high_noise",
+        "seed": 107,
+        "stream_digest": "b1c95a0dab6e499c",
+        "rows": 45,
+        "positives": 16
+      },
+      {
+        "scenario": "high_noise",
+        "seed": 108,
+        "stream_digest": "371767638b2c288a",
+        "rows": 46,
+        "positives": 13
+      },
+      {
+        "scenario": "high_noise",
+        "seed": 109,
+        "stream_digest": "36e94463e9bfcb83",
+        "rows": 57,
+        "positives": 7
+      },
+      {
+        "scenario": "high_noise",
+        "seed": 110,
+        "stream_digest": "2ab281b5448f2152",
+        "rows": 39,
+        "positives": 11
+      },
+      {
+        "scenario": "hub_heavy",
+        "seed": 101,
+        "stream_digest": "ccb126631fb99b56",
+        "rows": 52,
+        "positives": 4
+      },
+      {
+        "scenario": "hub_heavy",
+        "seed": 102,
+        "stream_digest": "d0d319abf970605b",
+        "rows": 60,
+        "positives": 2
+      },
+      {
+        "scenario": "hub_heavy",
+        "seed": 103,
+        "stream_digest": "c42f1ad6c66476cd",
+        "rows": 34,
+        "positives": 2
+      },
+      {
+        "scenario": "hub_heavy",
+        "seed": 104,
+        "stream_digest": "0a0d33ba76547b96",
+        "rows": 64,
+        "positives": 2
+      },
+      {
+        "scenario": "hub_heavy",
+        "seed": 105,
+        "stream_digest": "76df451f26af0c02",
+        "rows": 55,
+        "positives": 6
+      },
+      {
+        "scenario": "hub_heavy",
+        "seed": 106,
+        "stream_digest": "1586d9ff88c11a86",
+        "rows": 83,
+        "positives": 3
+      },
+      {
+        "scenario": "hub_heavy",
+        "seed": 107,
+        "stream_digest": "5daef4e0d310f50b",
+        "rows": 53,
+        "positives": 7
+      },
+      {
+        "scenario": "hub_heavy",
+        "seed": 108,
+        "stream_digest": "6b314b03514b5e88",
+        "rows": 51,
+        "positives": 3
+      },
+      {
+        "scenario": "hub_heavy",
+        "seed": 109,
+        "stream_digest": "4644c6c83fcdf8e5",
+        "rows": 52,
+        "positives": 3
+      },
+      {
+        "scenario": "hub_heavy",
+        "seed": 110,
+        "stream_digest": "3d22bc95c453b252",
+        "rows": 54,
+        "positives": 7
+      },
+      {
+        "scenario": "adversarial",
+        "seed": 101,
+        "stream_digest": "98cdbff500cdabf0",
+        "rows": 69,
+        "positives": 3
+      },
+      {
+        "scenario": "adversarial",
+        "seed": 102,
+        "stream_digest": "b43ded3eb5ab4663",
+        "rows": 22,
+        "positives": 3
+      },
+      {
+        "scenario": "adversarial",
+        "seed": 103,
+        "stream_digest": "e3dba57cc1e7de43",
+        "rows": 57,
+        "positives": 6
+      },
+      {
+        "scenario": "adversarial",
+        "seed": 104,
+        "stream_digest": "1b27887d511fc92c",
+        "rows": 63,
+        "positives": 11
+      },
+      {
+        "scenario": "adversarial",
+        "seed": 105,
+        "stream_digest": "62577d568fa498c6",
+        "rows": 54,
+        "positives": 11
+      },
+      {
+        "scenario": "adversarial",
+        "seed": 106,
+        "stream_digest": "409f75dd332f8f66",
+        "rows": 60,
+        "positives": 3
+      },
+      {
+        "scenario": "adversarial",
+        "seed": 107,
+        "stream_digest": "c338134ec9f399c0",
+        "rows": 49,
+        "positives": 1
+      },
+      {
+        "scenario": "adversarial",
+        "seed": 108,
+        "stream_digest": "d5eeae4ea1bc17dc",
+        "rows": 84,
+        "positives": 8
+      },
+      {
+        "scenario": "adversarial",
+        "seed": 109,
+        "stream_digest": "4f13ad63eb673cc2",
+        "rows": 45,
+        "positives": 0
+      },
+      {
+        "scenario": "adversarial",
+        "seed": 110,
+        "stream_digest": "06e70fdb87ad6e82",
+        "rows": 49,
+        "positives": 0
+      },
+      {
+        "scenario": "drift",
+        "seed": 101,
+        "stream_digest": "b6868c3c1614fd8e",
+        "rows": 59,
+        "positives": 7
+      },
+      {
+        "scenario": "drift",
+        "seed": 102,
+        "stream_digest": "a07f3ed1845901f6",
+        "rows": 59,
+        "positives": 12
+      },
+      {
+        "scenario": "drift",
+        "seed": 103,
+        "stream_digest": "a6d5d8ecc71438e3",
+        "rows": 44,
+        "positives": 9
+      },
+      {
+        "scenario": "drift",
+        "seed": 104,
+        "stream_digest": "1724c8903479ac0b",
+        "rows": 49,
+        "positives": 18
+      },
+      {
+        "scenario": "drift",
+        "seed": 105,
+        "stream_digest": "3bd55d0115a1a025",
+        "rows": 39,
+        "positives": 9
+      },
+      {
+        "scenario": "drift",
+        "seed": 106,
+        "stream_digest": "84f8c1e5d02a855e",
+        "rows": 53,
+        "positives": 18
+      },
+      {
+        "scenario": "drift",
+        "seed": 107,
+        "stream_digest": "084006ad4466e2eb",
+        "rows": 54,
+        "positives": 14
+      },
+      {
+        "scenario": "drift",
+        "seed": 108,
+        "stream_digest": "1d70d391f44e5c6c",
+        "rows": 42,
+        "positives": 9
+      },
+      {
+        "scenario": "drift",
+        "seed": 109,
+        "stream_digest": "6a758dbf179be33f",
+        "rows": 61,
+        "positives": 11
+      },
+      {
+        "scenario": "drift",
+        "seed": 110,
+        "stream_digest": "089d1c098c803ea5",
+        "rows": 71,
+        "positives": 33
+      },
+      {
+        "scenario": "scale_sweep",
+        "seed": 101,
+        "stream_digest": "e0af23bc328da668",
+        "rows": 197,
+        "positives": 19
+      },
+      {
+        "scenario": "scale_sweep",
+        "seed": 102,
+        "stream_digest": "8dcf9910c0d215c0",
+        "rows": 181,
+        "positives": 47
+      },
+      {
+        "scenario": "scale_sweep",
+        "seed": 103,
+        "stream_digest": "285495ae20cc88c3",
+        "rows": 187,
+        "positives": 54
+      },
+      {
+        "scenario": "scale_sweep",
+        "seed": 104,
+        "stream_digest": "fe1f65d7f39c5274",
+        "rows": 230,
+        "positives": 51
+      },
+      {
+        "scenario": "scale_sweep",
+        "seed": 105,
+        "stream_digest": "101318b8445d7cdf",
+        "rows": 165,
+        "positives": 73
+      },
+      {
+        "scenario": "scale_sweep",
+        "seed": 106,
+        "stream_digest": "ccfc8bbb8f0cce6e",
+        "rows": 173,
+        "positives": 49
+      },
+      {
+        "scenario": "scale_sweep",
+        "seed": 107,
+        "stream_digest": "537d92d7a25ea2db",
+        "rows": 187,
+        "positives": 54
+      },
+      {
+        "scenario": "scale_sweep",
+        "seed": 108,
+        "stream_digest": "9facbf24026766eb",
+        "rows": 260,
+        "positives": 123
+      },
+      {
+        "scenario": "scale_sweep",
+        "seed": 109,
+        "stream_digest": "05381846b2248c8b",
+        "rows": 157,
+        "positives": 46
+      },
+      {
+        "scenario": "scale_sweep",
+        "seed": 110,
+        "stream_digest": "aa1e9ad76f6d76df",
+        "rows": 225,
+        "positives": 62
+      }
+    ]
+  },
+  "metrics": {},
+  "reliability": [],
+  "coefficients": {
+    "size": -0.803422,
+    "density": 0.278962,
+    "share_device": 0.260198,
+    "share_card": -0.696298,
+    "share_ip": -1.155118,
+    "hub_adjusted_weight": 1.685282,
+    "cycle_present": -0.593001,
+    "cycle_length": 1.125269,
+    "temporal_burstiness": 0.199055,
+    "account_age_similarity": -0.589792,
+    "account_age_min": 0.56845,
+    "internal_txns_per_member": 0.032604,
+    "amount_mean_log": 1.801069,
+    "amount_cv": -1.480173,
+    "near_threshold_frac": 0.218354,
+    "growth_rate": 0.31637,
+    "risk_signal_fraction": -0.107914,
+    "hub_exposure": 0.619781,
+    "n_detectors": 0.0
+  }
+}
