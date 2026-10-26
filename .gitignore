@@ -8,6 +8,8 @@ __pycache__/
 /webapp/runs/
 results/*
 !results/e[0-9]*_*/
+!results/r1_*/
+!results/w2_*/
 !results/tuning/
 !results/public/
 !results/public/runs/

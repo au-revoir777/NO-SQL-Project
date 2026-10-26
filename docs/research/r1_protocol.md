@@ -62,3 +62,7 @@ Reference arm, not tuned again: `static_cap10_scored` (the rules with the shippe
 
 - The shipped scorer was trained on candidates of the `log` arm, which may favour it slightly (W3 addresses per-method scorers).
 - Hubs in the accuracy scenarios are at most 50 users. A cap of 10 removes them all; a cap of 100 would remove none, so it is not run.
+
+## Amendments
+
+1. (2026-10-26, process) The tuning results and `selected.json` were produced before the test runs, but their commit failed for the same `.gitignore` reason. They are committed together with the test results; the file timestamps show the order. The selection rule was not changed.

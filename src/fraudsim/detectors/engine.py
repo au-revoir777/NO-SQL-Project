@@ -387,6 +387,8 @@ def build_detectors(
 
     overrides = overrides or {}
     known = {"static_cypher", "hub_aware", "temporal_cycle", "smurfing", "community"}
+    external = {"peeling", "leiden", "gnn"}  # W2 baselines, off unless overridden
+    known |= external
     unknown = set(overrides) - known
     if unknown:
         raise ValueError(
@@ -402,4 +404,29 @@ def build_detectors(
         TemporalCycleDetector(cfg(TemporalCycleConfig, "temporal_cycle"), store),
         SmurfingDetector(cfg(SmurfingConfig, "smurfing"), store),
         CommunityDetector(cfg(CommunityConfig, "community"), store),
+        *_external(store, overrides),
     ]
+
+
+def _external(store: GraphStore, overrides: dict[str, dict[str, Any]]) -> list[BaseDetector]:
+    """W2 baselines (detectors/external.py), built only when named in the overrides."""
+    if not ({"peeling", "leiden", "gnn"} & set(overrides)):
+        return []
+    from fraudsim.detectors.external import (
+        GnnConfig,
+        GnnDetector,
+        LeidenConfig,
+        LeidenDetector,
+        PeelingConfig,
+        PeelingDetector,
+    )
+
+    out: list[BaseDetector] = []
+    for key, cls, det in (
+        ("peeling", PeelingConfig, PeelingDetector),
+        ("leiden", LeidenConfig, LeidenDetector),
+        ("gnn", GnnConfig, GnnDetector),
+    ):
+        if key in overrides:
+            out.append(det(cls(**overrides[key]), store))
+    return out

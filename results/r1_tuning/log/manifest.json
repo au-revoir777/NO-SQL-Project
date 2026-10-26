@@ -1,0 +1,263 @@
+{
+  "grids": [
+    {
+      "experiment": "r1_tuning/log",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "r1_log_e0.1",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.1
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "log, edge 0.1",
+          "hash": "9bb9f219ae61e670"
+        },
+        {
+          "name": "r1_log_e0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.2
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "log, edge 0.2",
+          "hash": "6b9fec81d04a347c"
+        },
+        {
+          "name": "r1_log_e0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.3
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "log, edge 0.3",
+          "hash": "5f270c26d4313920"
+        },
+        {
+          "name": "r1_log_e0.4",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.4
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "log, edge 0.4",
+          "hash": "123a6d7c17b892ed"
+        },
+        {
+          "name": "r1_log_e0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.5
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "log, edge 0.5",
+          "hash": "bdbfb28015e42e43"
+        },
+        {
+          "name": "r1_log_e0.6",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.6
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "log, edge 0.6",
+          "hash": "09ad29ced35988ff"
+        },
+        {
+          "name": "r1_log_e0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 0.8
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "log, edge 0.8",
+          "hash": "395b78c257a1fff8"
+        },
+        {
+          "name": "r1_log_e1.0",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 1.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "log, edge 1.0",
+          "hash": "f160010be6164e1d"
+        },
+        {
+          "name": "r1_log_e1.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 1.2
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "log, edge 1.2",
+          "hash": "ea8a6e4deacc2330"
+        },
+        {
+          "name": "r1_log_e1.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "weight_method": "inverse_log_degree",
+              "edge_threshold": 1.5
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "label": "log, edge 1.5",
+          "hash": "d8d4c05733ec912d"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-26T14:15:17.903430+00:00",
+      "ended_at": "2026-10-26T14:20:10.707938+00:00",
+      "wall_s": 292.805,
+      "rows": 150,
+      "git_commit": "c99575b68b272db5e703c336bf8a5ee4314f6692",
+      "git_dirty": true,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v153-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    }
+  ]
+}

@@ -63,6 +63,7 @@ class CommunityConfig(DetectorConfig):
     max_community_size: int = 25
     min_density: float = 0.5
     seed: int = 0
+    resolution: float = 1.0  # Louvain resolution (W2 tunes it; 1.0 = networkx default)
     extra: dict[str, Any] = field(default_factory=dict)
 
 
@@ -129,7 +130,9 @@ class CommunityDetector(BaseDetector):
             return [set(c) for c in nx.connected_components(graph)]
         return [
             set(c)
-            for c in nx.community.louvain_communities(graph, weight="weight", seed=self.cfg.seed)
+            for c in nx.community.louvain_communities(
+                graph, weight="weight", seed=self.cfg.seed, resolution=self.cfg.resolution
+            )
         ]
 
     def _gds(self, since_t: float) -> list[set[str]]:
