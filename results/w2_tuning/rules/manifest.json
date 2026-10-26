@@ -1,0 +1,2489 @@
+{
+  "grids": [
+    {
+      "experiment": "w2_tuning/rules",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "w2_rules_3_1_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 3,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_3_1_a0.2",
+          "hash": "c88ac3b65b485851"
+        },
+        {
+          "name": "w2_rules_3_1_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 3,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_3_1_a0.3",
+          "hash": "a638cadea5bed8ad"
+        },
+        {
+          "name": "w2_rules_3_1_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 3,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_3_1_a0.5",
+          "hash": "2fe3c6f680cc1815"
+        },
+        {
+          "name": "w2_rules_3_1_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 3,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_3_1_a0.7",
+          "hash": "aa1d49fa3fd39fd9"
+        },
+        {
+          "name": "w2_rules_3_1_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 3,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_3_1_a0.8",
+          "hash": "9b1143cc61273fa1"
+        },
+        {
+          "name": "w2_rules_3_1_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 3,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_3_1_a0.9",
+          "hash": "885a2cec118a967a"
+        },
+        {
+          "name": "w2_rules_3_0_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 3,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_3_0_a0.2",
+          "hash": "0e5b0fe55634fc13"
+        },
+        {
+          "name": "w2_rules_3_0_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 3,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_3_0_a0.3",
+          "hash": "d3baa6ae7f7f17fa"
+        },
+        {
+          "name": "w2_rules_3_0_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 3,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_3_0_a0.5",
+          "hash": "c1c9f67c539ddfa6"
+        },
+        {
+          "name": "w2_rules_3_0_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 3,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_3_0_a0.7",
+          "hash": "23538cc1f78d9284"
+        },
+        {
+          "name": "w2_rules_3_0_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 3,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_3_0_a0.8",
+          "hash": "28e500147b5c1dec"
+        },
+        {
+          "name": "w2_rules_3_0_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 3,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_3_0_a0.9",
+          "hash": "55b089979fad974e"
+        },
+        {
+          "name": "w2_rules_5_1_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 5,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_5_1_a0.2",
+          "hash": "dd125afcf96ad451"
+        },
+        {
+          "name": "w2_rules_5_1_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 5,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_5_1_a0.3",
+          "hash": "14f24227f4a8de89"
+        },
+        {
+          "name": "w2_rules_5_1_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 5,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_5_1_a0.5",
+          "hash": "3011c0c96b8ffd25"
+        },
+        {
+          "name": "w2_rules_5_1_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 5,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_5_1_a0.7",
+          "hash": "61db5e9e6b9bf040"
+        },
+        {
+          "name": "w2_rules_5_1_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 5,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_5_1_a0.8",
+          "hash": "29e056db858f520f"
+        },
+        {
+          "name": "w2_rules_5_1_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 5,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_5_1_a0.9",
+          "hash": "0181afb1070adfd6"
+        },
+        {
+          "name": "w2_rules_5_0_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 5,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_5_0_a0.2",
+          "hash": "ba85d4ac2dfce65e"
+        },
+        {
+          "name": "w2_rules_5_0_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 5,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_5_0_a0.3",
+          "hash": "7f7d15a9d1c4f52a"
+        },
+        {
+          "name": "w2_rules_5_0_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 5,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_5_0_a0.5",
+          "hash": "5aebd22cdb7a3a1c"
+        },
+        {
+          "name": "w2_rules_5_0_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 5,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_5_0_a0.7",
+          "hash": "4006e92f724a4970"
+        },
+        {
+          "name": "w2_rules_5_0_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 5,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_5_0_a0.8",
+          "hash": "5371bd9872c4f189"
+        },
+        {
+          "name": "w2_rules_5_0_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 5,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_5_0_a0.9",
+          "hash": "d2c159b26e165508"
+        },
+        {
+          "name": "w2_rules_10_1_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 10,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_10_1_a0.2",
+          "hash": "127e0ddf630e8a37"
+        },
+        {
+          "name": "w2_rules_10_1_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 10,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_10_1_a0.3",
+          "hash": "649bee2a67008b80"
+        },
+        {
+          "name": "w2_rules_10_1_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 10,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_10_1_a0.5",
+          "hash": "9cae1349a0b11f35"
+        },
+        {
+          "name": "w2_rules_10_1_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 10,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_10_1_a0.7",
+          "hash": "f83423e97250ebac"
+        },
+        {
+          "name": "w2_rules_10_1_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 10,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_10_1_a0.8",
+          "hash": "4ba0892130cc4c72"
+        },
+        {
+          "name": "w2_rules_10_1_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 10,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_10_1_a0.9",
+          "hash": "d9c01cb065e057c1"
+        },
+        {
+          "name": "w2_rules_10_0_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 10,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_10_0_a0.2",
+          "hash": "4c666c1e63355f03"
+        },
+        {
+          "name": "w2_rules_10_0_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 10,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_10_0_a0.3",
+          "hash": "28dfd8b9e8cf4247"
+        },
+        {
+          "name": "w2_rules_10_0_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 10,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_10_0_a0.5",
+          "hash": "3b87fac56a187cc8"
+        },
+        {
+          "name": "w2_rules_10_0_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 10,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_10_0_a0.7",
+          "hash": "9b2af17ae281df7c"
+        },
+        {
+          "name": "w2_rules_10_0_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 10,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_10_0_a0.8",
+          "hash": "23dd9fbab3234c46"
+        },
+        {
+          "name": "w2_rules_10_0_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 10,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_10_0_a0.9",
+          "hash": "85df35d6c4348354"
+        },
+        {
+          "name": "w2_rules_20_1_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 20,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_20_1_a0.2",
+          "hash": "4fba7b292a7a91e4"
+        },
+        {
+          "name": "w2_rules_20_1_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 20,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_20_1_a0.3",
+          "hash": "5b39ee70fcbfe2c8"
+        },
+        {
+          "name": "w2_rules_20_1_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 20,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_20_1_a0.5",
+          "hash": "f7eacec3f1b86b00"
+        },
+        {
+          "name": "w2_rules_20_1_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 20,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_20_1_a0.7",
+          "hash": "45b7cda8431e790a"
+        },
+        {
+          "name": "w2_rules_20_1_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 20,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_20_1_a0.8",
+          "hash": "8387447c41657bf8"
+        },
+        {
+          "name": "w2_rules_20_1_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 20,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_20_1_a0.9",
+          "hash": "8d5109d521b7d35e"
+        },
+        {
+          "name": "w2_rules_20_0_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 20,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_20_0_a0.2",
+          "hash": "40c0da87b8ba43de"
+        },
+        {
+          "name": "w2_rules_20_0_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 20,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_20_0_a0.3",
+          "hash": "de88d15b87b682f9"
+        },
+        {
+          "name": "w2_rules_20_0_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 20,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_20_0_a0.5",
+          "hash": "3fb4bee5284cb613"
+        },
+        {
+          "name": "w2_rules_20_0_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 20,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_20_0_a0.7",
+          "hash": "293d4bfde08613a3"
+        },
+        {
+          "name": "w2_rules_20_0_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 20,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_20_0_a0.8",
+          "hash": "c10a704b9c9b2971"
+        },
+        {
+          "name": "w2_rules_20_0_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 20,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_20_0_a0.9",
+          "hash": "3d31cacc01c70128"
+        },
+        {
+          "name": "w2_rules_50_1_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 50,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_50_1_a0.2",
+          "hash": "c0459c30a6bf8e96"
+        },
+        {
+          "name": "w2_rules_50_1_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 50,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_50_1_a0.3",
+          "hash": "88309f6f73a30661"
+        },
+        {
+          "name": "w2_rules_50_1_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 50,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_50_1_a0.5",
+          "hash": "1158b35d3dadfea2"
+        },
+        {
+          "name": "w2_rules_50_1_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 50,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_50_1_a0.7",
+          "hash": "3c857b760922d659"
+        },
+        {
+          "name": "w2_rules_50_1_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 50,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_50_1_a0.8",
+          "hash": "d4729e20a8987ea8"
+        },
+        {
+          "name": "w2_rules_50_1_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 50,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_50_1_a0.9",
+          "hash": "e4042a871e2e259f"
+        },
+        {
+          "name": "w2_rules_50_0_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 50,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_50_0_a0.2",
+          "hash": "8822e2e4ec1cdd47"
+        },
+        {
+          "name": "w2_rules_50_0_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 50,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_50_0_a0.3",
+          "hash": "a997c862f4b3cb3d"
+        },
+        {
+          "name": "w2_rules_50_0_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 50,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_50_0_a0.5",
+          "hash": "eac3ad53e4f1266e"
+        },
+        {
+          "name": "w2_rules_50_0_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 50,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_50_0_a0.7",
+          "hash": "187983ae267b42a9"
+        },
+        {
+          "name": "w2_rules_50_0_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 50,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_50_0_a0.8",
+          "hash": "ddedc031cd81b618"
+        },
+        {
+          "name": "w2_rules_50_0_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 50,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_50_0_a0.9",
+          "hash": "0c60aee8e2101c0b"
+        },
+        {
+          "name": "w2_rules_100_1_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 100,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_100_1_a0.2",
+          "hash": "4f8c6cdad6f58b48"
+        },
+        {
+          "name": "w2_rules_100_1_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 100,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_100_1_a0.3",
+          "hash": "1780703d859bd246"
+        },
+        {
+          "name": "w2_rules_100_1_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 100,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_100_1_a0.5",
+          "hash": "a6e9b32328a94d6f"
+        },
+        {
+          "name": "w2_rules_100_1_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 100,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_100_1_a0.7",
+          "hash": "b96ce96dc93706bd"
+        },
+        {
+          "name": "w2_rules_100_1_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 100,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_100_1_a0.8",
+          "hash": "6ddef2e8e98dd0af"
+        },
+        {
+          "name": "w2_rules_100_1_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 100,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_100_1_a0.9",
+          "hash": "d4258e27da731db0"
+        },
+        {
+          "name": "w2_rules_100_0_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 100,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_100_0_a0.2",
+          "hash": "914620ccaafe210d"
+        },
+        {
+          "name": "w2_rules_100_0_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 100,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_100_0_a0.3",
+          "hash": "528230eca196768a"
+        },
+        {
+          "name": "w2_rules_100_0_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 100,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_100_0_a0.5",
+          "hash": "d22c89dce0217069"
+        },
+        {
+          "name": "w2_rules_100_0_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 100,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_100_0_a0.7",
+          "hash": "8332339af42b8b08"
+        },
+        {
+          "name": "w2_rules_100_0_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 100,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_100_0_a0.8",
+          "hash": "cb344e505c81354c"
+        },
+        {
+          "name": "w2_rules_100_0_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 100,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_100_0_a0.9",
+          "hash": "d97430c77aadd7c2"
+        },
+        {
+          "name": "w2_rules_200_1_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 200,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_200_1_a0.2",
+          "hash": "1c109d8e392df97b"
+        },
+        {
+          "name": "w2_rules_200_1_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 200,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_200_1_a0.3",
+          "hash": "56ea37d2572bcd7c"
+        },
+        {
+          "name": "w2_rules_200_1_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 200,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_200_1_a0.5",
+          "hash": "17283ee4199c24b6"
+        },
+        {
+          "name": "w2_rules_200_1_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 200,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_200_1_a0.7",
+          "hash": "8b79c66a17578c2c"
+        },
+        {
+          "name": "w2_rules_200_1_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 200,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_200_1_a0.8",
+          "hash": "723212cde2a5460c"
+        },
+        {
+          "name": "w2_rules_200_1_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 200,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_200_1_a0.9",
+          "hash": "ec04ce3d478d3ec1"
+        },
+        {
+          "name": "w2_rules_200_0_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 200,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_200_0_a0.2",
+          "hash": "2b494e1cfc10f1f2"
+        },
+        {
+          "name": "w2_rules_200_0_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 200,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_200_0_a0.3",
+          "hash": "ac6c8c3eb7fa0a93"
+        },
+        {
+          "name": "w2_rules_200_0_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 200,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_200_0_a0.5",
+          "hash": "ce300431093f3262"
+        },
+        {
+          "name": "w2_rules_200_0_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 200,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_200_0_a0.7",
+          "hash": "7cbece62da196f60"
+        },
+        {
+          "name": "w2_rules_200_0_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 200,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_200_0_a0.8",
+          "hash": "20a83e72334c3ad2"
+        },
+        {
+          "name": "w2_rules_200_0_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 200,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "w2_rules_200_0_a0.9",
+          "hash": "8bed7bf75066e9f6"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-26T15:11:23.449102+00:00",
+      "ended_at": "2026-10-26T15:16:55.422755+00:00",
+      "wall_s": 331.974,
+      "rows": 1260,
+      "git_commit": "5f1b2a337c7e32a5099a8fe7a6a344d495f22078",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v153-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    }
+  ]
+}

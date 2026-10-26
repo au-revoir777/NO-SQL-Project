@@ -1,0 +1,1733 @@
+{
+  "grids": [
+    {
+      "experiment": "w2_tuning/louvain",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "w2_louvain_0.25_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 0.25
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_0.25_a0.2",
+          "hash": "6783216aaad4e011"
+        },
+        {
+          "name": "w2_louvain_0.25_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 0.25
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_0.25_a0.3",
+          "hash": "8fc08a9ce231acfd"
+        },
+        {
+          "name": "w2_louvain_0.25_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 0.25
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_0.25_a0.5",
+          "hash": "8b0f04ebea602924"
+        },
+        {
+          "name": "w2_louvain_0.25_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 0.25
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_0.25_a0.7",
+          "hash": "92e11f7ac4f3d107"
+        },
+        {
+          "name": "w2_louvain_0.25_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 0.25
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_0.25_a0.8",
+          "hash": "6269fc3257d1bba3"
+        },
+        {
+          "name": "w2_louvain_0.25_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 0.25
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_0.25_a0.9",
+          "hash": "46cdbf4a8354f2df"
+        },
+        {
+          "name": "w2_louvain_0.5_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 0.5
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_0.5_a0.2",
+          "hash": "9b3b9d2738d43804"
+        },
+        {
+          "name": "w2_louvain_0.5_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 0.5
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_0.5_a0.3",
+          "hash": "fde34f26d5e439a7"
+        },
+        {
+          "name": "w2_louvain_0.5_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 0.5
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_0.5_a0.5",
+          "hash": "d9c11600de3a153e"
+        },
+        {
+          "name": "w2_louvain_0.5_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 0.5
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_0.5_a0.7",
+          "hash": "bca8d1f16d26b6d1"
+        },
+        {
+          "name": "w2_louvain_0.5_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 0.5
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_0.5_a0.8",
+          "hash": "4a4124f23fdd8af9"
+        },
+        {
+          "name": "w2_louvain_0.5_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 0.5
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_0.5_a0.9",
+          "hash": "f6055ef8f2eb3687"
+        },
+        {
+          "name": "w2_louvain_0.75_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 0.75
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_0.75_a0.2",
+          "hash": "0cf0c667edc17172"
+        },
+        {
+          "name": "w2_louvain_0.75_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 0.75
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_0.75_a0.3",
+          "hash": "c0a71fe0bc162685"
+        },
+        {
+          "name": "w2_louvain_0.75_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 0.75
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_0.75_a0.5",
+          "hash": "f6f998fcc238684d"
+        },
+        {
+          "name": "w2_louvain_0.75_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 0.75
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_0.75_a0.7",
+          "hash": "cc14fcc897477d95"
+        },
+        {
+          "name": "w2_louvain_0.75_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 0.75
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_0.75_a0.8",
+          "hash": "e83bbe73d4b5be98"
+        },
+        {
+          "name": "w2_louvain_0.75_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 0.75
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_0.75_a0.9",
+          "hash": "cb025a08e3126aaf"
+        },
+        {
+          "name": "w2_louvain_1.0_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 1.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_1.0_a0.2",
+          "hash": "b57a806673dacc88"
+        },
+        {
+          "name": "w2_louvain_1.0_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 1.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_1.0_a0.3",
+          "hash": "d9d61640bc790242"
+        },
+        {
+          "name": "w2_louvain_1.0_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 1.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_1.0_a0.5",
+          "hash": "b61e8e1da8ddebec"
+        },
+        {
+          "name": "w2_louvain_1.0_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 1.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_1.0_a0.7",
+          "hash": "9508875449ce4755"
+        },
+        {
+          "name": "w2_louvain_1.0_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 1.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_1.0_a0.8",
+          "hash": "5405e1fa1f5dbffb"
+        },
+        {
+          "name": "w2_louvain_1.0_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 1.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_1.0_a0.9",
+          "hash": "8a500e97bdaeaf60"
+        },
+        {
+          "name": "w2_louvain_1.5_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 1.5
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_1.5_a0.2",
+          "hash": "e1bfde4ea43238ef"
+        },
+        {
+          "name": "w2_louvain_1.5_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 1.5
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_1.5_a0.3",
+          "hash": "3414316768080ccb"
+        },
+        {
+          "name": "w2_louvain_1.5_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 1.5
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_1.5_a0.5",
+          "hash": "3cb127fcda46ba6c"
+        },
+        {
+          "name": "w2_louvain_1.5_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 1.5
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_1.5_a0.7",
+          "hash": "8d9a6758c30cca11"
+        },
+        {
+          "name": "w2_louvain_1.5_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 1.5
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_1.5_a0.8",
+          "hash": "8691aac65a72cac0"
+        },
+        {
+          "name": "w2_louvain_1.5_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 1.5
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_1.5_a0.9",
+          "hash": "59040232dde0b65f"
+        },
+        {
+          "name": "w2_louvain_2.0_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 2.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_2.0_a0.2",
+          "hash": "0d2cc083975af94e"
+        },
+        {
+          "name": "w2_louvain_2.0_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 2.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_2.0_a0.3",
+          "hash": "fff174f7b20b000b"
+        },
+        {
+          "name": "w2_louvain_2.0_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 2.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_2.0_a0.5",
+          "hash": "832a03c8264c62d7"
+        },
+        {
+          "name": "w2_louvain_2.0_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 2.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_2.0_a0.7",
+          "hash": "3a83f373ceb72169"
+        },
+        {
+          "name": "w2_louvain_2.0_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 2.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_2.0_a0.8",
+          "hash": "6a89da25e6d3c630"
+        },
+        {
+          "name": "w2_louvain_2.0_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 2.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_2.0_a0.9",
+          "hash": "999f2f00e6907e11"
+        },
+        {
+          "name": "w2_louvain_3.0_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 3.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_3.0_a0.2",
+          "hash": "a161b0de86ea6419"
+        },
+        {
+          "name": "w2_louvain_3.0_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 3.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_3.0_a0.3",
+          "hash": "e664c65597102919"
+        },
+        {
+          "name": "w2_louvain_3.0_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 3.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_3.0_a0.5",
+          "hash": "709020bebdc75844"
+        },
+        {
+          "name": "w2_louvain_3.0_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 3.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_3.0_a0.7",
+          "hash": "0901192a6565e92a"
+        },
+        {
+          "name": "w2_louvain_3.0_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 3.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_3.0_a0.8",
+          "hash": "948455a193257e48"
+        },
+        {
+          "name": "w2_louvain_3.0_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 3.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_3.0_a0.9",
+          "hash": "fca21182743016aa"
+        },
+        {
+          "name": "w2_louvain_5.0_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 5.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_5.0_a0.2",
+          "hash": "a8ace2aa93ff3de4"
+        },
+        {
+          "name": "w2_louvain_5.0_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 5.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_5.0_a0.3",
+          "hash": "15ac33ca315b8acb"
+        },
+        {
+          "name": "w2_louvain_5.0_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 5.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_5.0_a0.5",
+          "hash": "3bb94a9d0907ed9b"
+        },
+        {
+          "name": "w2_louvain_5.0_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 5.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_5.0_a0.7",
+          "hash": "3124389d3000f52b"
+        },
+        {
+          "name": "w2_louvain_5.0_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 5.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_5.0_a0.8",
+          "hash": "8af4d35ad85cb407"
+        },
+        {
+          "name": "w2_louvain_5.0_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 5.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_5.0_a0.9",
+          "hash": "8387ec058c85730f"
+        },
+        {
+          "name": "w2_louvain_8.0_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 8.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_8.0_a0.2",
+          "hash": "5482681aff9903f8"
+        },
+        {
+          "name": "w2_louvain_8.0_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 8.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_8.0_a0.3",
+          "hash": "3aef268c17e73029"
+        },
+        {
+          "name": "w2_louvain_8.0_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 8.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_8.0_a0.5",
+          "hash": "8a33b4f7b2bf74e7"
+        },
+        {
+          "name": "w2_louvain_8.0_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 8.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_8.0_a0.7",
+          "hash": "2892c1a0e4ea9e9e"
+        },
+        {
+          "name": "w2_louvain_8.0_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 8.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_8.0_a0.8",
+          "hash": "cbb2012920d3312e"
+        },
+        {
+          "name": "w2_louvain_8.0_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 8.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_8.0_a0.9",
+          "hash": "7d2a1c1381fb861a"
+        },
+        {
+          "name": "w2_louvain_12.0_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 12.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_12.0_a0.2",
+          "hash": "ca4af8f49e1dceb4"
+        },
+        {
+          "name": "w2_louvain_12.0_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 12.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_12.0_a0.3",
+          "hash": "26c939f301d1ee97"
+        },
+        {
+          "name": "w2_louvain_12.0_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 12.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_12.0_a0.5",
+          "hash": "8662fcd24a2c5acb"
+        },
+        {
+          "name": "w2_louvain_12.0_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 12.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_12.0_a0.7",
+          "hash": "a3c8c4bacbd25554"
+        },
+        {
+          "name": "w2_louvain_12.0_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 12.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_12.0_a0.8",
+          "hash": "759ce2207a6538d4"
+        },
+        {
+          "name": "w2_louvain_12.0_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "algorithm": "louvain",
+              "resolution": 12.0
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/louvain.joblib",
+          "label": "w2_louvain_12.0_a0.9",
+          "hash": "36a4ad5f0f92c1c9"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-26T15:16:55.544710+00:00",
+      "ended_at": "2026-10-26T15:25:30.366685+00:00",
+      "wall_s": 514.822,
+      "rows": 900,
+      "git_commit": "5f1b2a337c7e32a5099a8fe7a6a344d495f22078",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v153-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    }
+  ]
+}

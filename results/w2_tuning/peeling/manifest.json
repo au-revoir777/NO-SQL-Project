@@ -1,0 +1,1973 @@
+{
+  "grids": [
+    {
+      "experiment": "w2_tuning/peeling",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "w2_peeling_0.3_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.3
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.3_a0.2",
+          "hash": "a5fef8ca48bee5e0"
+        },
+        {
+          "name": "w2_peeling_0.3_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.3
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.3_a0.3",
+          "hash": "8f228872dcedbbc0"
+        },
+        {
+          "name": "w2_peeling_0.3_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.3
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.3_a0.5",
+          "hash": "08026efd3bd78e57"
+        },
+        {
+          "name": "w2_peeling_0.3_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.3
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.3_a0.7",
+          "hash": "a018fe12a3eb1b0e"
+        },
+        {
+          "name": "w2_peeling_0.3_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.3
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.3_a0.8",
+          "hash": "91abf14d65a12929"
+        },
+        {
+          "name": "w2_peeling_0.3_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.3
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.3_a0.9",
+          "hash": "96d033909a8b6c45"
+        },
+        {
+          "name": "w2_peeling_0.4_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.4
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.4_a0.2",
+          "hash": "5bc743beebd69498"
+        },
+        {
+          "name": "w2_peeling_0.4_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.4
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.4_a0.3",
+          "hash": "9e6e016dc0601be6"
+        },
+        {
+          "name": "w2_peeling_0.4_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.4
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.4_a0.5",
+          "hash": "c664c3b134bfec18"
+        },
+        {
+          "name": "w2_peeling_0.4_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.4
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.4_a0.7",
+          "hash": "eed7269faa2d1fe3"
+        },
+        {
+          "name": "w2_peeling_0.4_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.4
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.4_a0.8",
+          "hash": "e0a295bed5f58b1e"
+        },
+        {
+          "name": "w2_peeling_0.4_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.4
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.4_a0.9",
+          "hash": "8062d7f0298a9103"
+        },
+        {
+          "name": "w2_peeling_0.45_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.45
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.45_a0.2",
+          "hash": "a432a8b642896624"
+        },
+        {
+          "name": "w2_peeling_0.45_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.45
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.45_a0.3",
+          "hash": "90f5fec0393b1dc8"
+        },
+        {
+          "name": "w2_peeling_0.45_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.45
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.45_a0.5",
+          "hash": "3f5c9738bcb86513"
+        },
+        {
+          "name": "w2_peeling_0.45_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.45
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.45_a0.7",
+          "hash": "ccd61a38d2f03b1e"
+        },
+        {
+          "name": "w2_peeling_0.45_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.45
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.45_a0.8",
+          "hash": "84999325d6a0524b"
+        },
+        {
+          "name": "w2_peeling_0.45_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.45
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.45_a0.9",
+          "hash": "8f43ad216d54582e"
+        },
+        {
+          "name": "w2_peeling_0.5_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.5
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.5_a0.2",
+          "hash": "7b40f97fed93b24c"
+        },
+        {
+          "name": "w2_peeling_0.5_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.5
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.5_a0.3",
+          "hash": "57971858dea1bee3"
+        },
+        {
+          "name": "w2_peeling_0.5_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.5
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.5_a0.5",
+          "hash": "e3500a63453bc70b"
+        },
+        {
+          "name": "w2_peeling_0.5_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.5
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.5_a0.7",
+          "hash": "dbec52a89890f9fe"
+        },
+        {
+          "name": "w2_peeling_0.5_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.5
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.5_a0.8",
+          "hash": "42c5499e0f1554aa"
+        },
+        {
+          "name": "w2_peeling_0.5_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.5
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.5_a0.9",
+          "hash": "92034a94462d4f23"
+        },
+        {
+          "name": "w2_peeling_0.55_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.55
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.55_a0.2",
+          "hash": "a585bbddc50a318e"
+        },
+        {
+          "name": "w2_peeling_0.55_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.55
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.55_a0.3",
+          "hash": "22d00c7b11cd3c36"
+        },
+        {
+          "name": "w2_peeling_0.55_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.55
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.55_a0.5",
+          "hash": "7ef8b5c5af7d7207"
+        },
+        {
+          "name": "w2_peeling_0.55_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.55
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.55_a0.7",
+          "hash": "da6dcfd560df1443"
+        },
+        {
+          "name": "w2_peeling_0.55_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.55
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.55_a0.8",
+          "hash": "57f3c80989dd2cdf"
+        },
+        {
+          "name": "w2_peeling_0.55_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.55
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.55_a0.9",
+          "hash": "6ca100f60771317c"
+        },
+        {
+          "name": "w2_peeling_0.6_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.6
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.6_a0.2",
+          "hash": "756891aa1f043f9b"
+        },
+        {
+          "name": "w2_peeling_0.6_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.6
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.6_a0.3",
+          "hash": "d2b53f9c821270f0"
+        },
+        {
+          "name": "w2_peeling_0.6_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.6
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.6_a0.5",
+          "hash": "521ef86011c4e01a"
+        },
+        {
+          "name": "w2_peeling_0.6_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.6
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.6_a0.7",
+          "hash": "bc563e1fa8fccf4a"
+        },
+        {
+          "name": "w2_peeling_0.6_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.6
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.6_a0.8",
+          "hash": "13ca40be6e220ce4"
+        },
+        {
+          "name": "w2_peeling_0.6_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.6
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.6_a0.9",
+          "hash": "65567d49e133567f"
+        },
+        {
+          "name": "w2_peeling_0.7_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.7
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.7_a0.2",
+          "hash": "77528e43436d5e07"
+        },
+        {
+          "name": "w2_peeling_0.7_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.7
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.7_a0.3",
+          "hash": "c0e41ff85725a82d"
+        },
+        {
+          "name": "w2_peeling_0.7_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.7
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.7_a0.5",
+          "hash": "0f963150fdafbb30"
+        },
+        {
+          "name": "w2_peeling_0.7_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.7
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.7_a0.7",
+          "hash": "003a82ad8c20c837"
+        },
+        {
+          "name": "w2_peeling_0.7_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.7
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.7_a0.8",
+          "hash": "23b58faa1b4a6c54"
+        },
+        {
+          "name": "w2_peeling_0.7_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.7
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.7_a0.9",
+          "hash": "d1bdab1dcdbdc551"
+        },
+        {
+          "name": "w2_peeling_0.8_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.8
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.8_a0.2",
+          "hash": "4414c5501efe0f0b"
+        },
+        {
+          "name": "w2_peeling_0.8_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.8
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.8_a0.3",
+          "hash": "a6139c47bf62e891"
+        },
+        {
+          "name": "w2_peeling_0.8_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.8
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.8_a0.5",
+          "hash": "eb21378b3a9d3187"
+        },
+        {
+          "name": "w2_peeling_0.8_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.8
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.8_a0.7",
+          "hash": "6982bcb4de9dbb7c"
+        },
+        {
+          "name": "w2_peeling_0.8_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.8
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.8_a0.8",
+          "hash": "65acefa3aefc1def"
+        },
+        {
+          "name": "w2_peeling_0.8_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 0.8
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_0.8_a0.9",
+          "hash": "4ee94aecf3f2c9df"
+        },
+        {
+          "name": "w2_peeling_1.0_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 1.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_1.0_a0.2",
+          "hash": "b9dade2198e3f257"
+        },
+        {
+          "name": "w2_peeling_1.0_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 1.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_1.0_a0.3",
+          "hash": "dac5e638bf7f637e"
+        },
+        {
+          "name": "w2_peeling_1.0_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 1.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_1.0_a0.5",
+          "hash": "900ebc22d8b5918f"
+        },
+        {
+          "name": "w2_peeling_1.0_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 1.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_1.0_a0.7",
+          "hash": "a4657b2be9525443"
+        },
+        {
+          "name": "w2_peeling_1.0_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 1.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_1.0_a0.8",
+          "hash": "af113e33678b7772"
+        },
+        {
+          "name": "w2_peeling_1.0_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 1.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_1.0_a0.9",
+          "hash": "96923d2339cee9ce"
+        },
+        {
+          "name": "w2_peeling_1.3_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 1.3
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_1.3_a0.2",
+          "hash": "4ddbf01f8bdbae36"
+        },
+        {
+          "name": "w2_peeling_1.3_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 1.3
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_1.3_a0.3",
+          "hash": "d390f45d26fb8543"
+        },
+        {
+          "name": "w2_peeling_1.3_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 1.3
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_1.3_a0.5",
+          "hash": "37dc45caf09fa42a"
+        },
+        {
+          "name": "w2_peeling_1.3_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 1.3
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_1.3_a0.7",
+          "hash": "58ea1dcd18975468"
+        },
+        {
+          "name": "w2_peeling_1.3_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 1.3
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_1.3_a0.8",
+          "hash": "457ea89179eaaedc"
+        },
+        {
+          "name": "w2_peeling_1.3_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "peeling": {
+              "min_block_score": 1.3
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/peeling.joblib",
+          "label": "w2_peeling_1.3_a0.9",
+          "hash": "4505a7758721cbb9"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-26T15:28:21.738201+00:00",
+      "ended_at": "2026-10-26T15:40:25.011948+00:00",
+      "wall_s": 723.274,
+      "rows": 900,
+      "git_commit": "5f1b2a337c7e32a5099a8fe7a6a344d495f22078",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v153-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    }
+  ]
+}

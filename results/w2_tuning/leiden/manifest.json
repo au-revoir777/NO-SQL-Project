@@ -1,0 +1,1973 @@
+{
+  "grids": [
+    {
+      "experiment": "w2_tuning/leiden",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "w2_leiden_0.25_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 0.25
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_0.25_a0.2",
+          "hash": "039bd5e3e4d539f4"
+        },
+        {
+          "name": "w2_leiden_0.25_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 0.25
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_0.25_a0.3",
+          "hash": "4c98650fbf146a45"
+        },
+        {
+          "name": "w2_leiden_0.25_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 0.25
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_0.25_a0.5",
+          "hash": "051069db794ad659"
+        },
+        {
+          "name": "w2_leiden_0.25_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 0.25
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_0.25_a0.7",
+          "hash": "2880c450650f0452"
+        },
+        {
+          "name": "w2_leiden_0.25_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 0.25
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_0.25_a0.8",
+          "hash": "36d3d81bb3940d7e"
+        },
+        {
+          "name": "w2_leiden_0.25_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 0.25
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_0.25_a0.9",
+          "hash": "f100d7df01ab0a41"
+        },
+        {
+          "name": "w2_leiden_0.5_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 0.5
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_0.5_a0.2",
+          "hash": "4e1d30878c5b0ba1"
+        },
+        {
+          "name": "w2_leiden_0.5_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 0.5
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_0.5_a0.3",
+          "hash": "607757a87f86df67"
+        },
+        {
+          "name": "w2_leiden_0.5_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 0.5
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_0.5_a0.5",
+          "hash": "e2982d6b7c23a764"
+        },
+        {
+          "name": "w2_leiden_0.5_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 0.5
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_0.5_a0.7",
+          "hash": "64c746bea181183a"
+        },
+        {
+          "name": "w2_leiden_0.5_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 0.5
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_0.5_a0.8",
+          "hash": "ecf7d6a195006e30"
+        },
+        {
+          "name": "w2_leiden_0.5_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 0.5
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_0.5_a0.9",
+          "hash": "b10c8585b94a0700"
+        },
+        {
+          "name": "w2_leiden_0.75_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 0.75
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_0.75_a0.2",
+          "hash": "02b89c45ba128e97"
+        },
+        {
+          "name": "w2_leiden_0.75_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 0.75
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_0.75_a0.3",
+          "hash": "bae9076dea44b6f0"
+        },
+        {
+          "name": "w2_leiden_0.75_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 0.75
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_0.75_a0.5",
+          "hash": "95bdefa6737290c5"
+        },
+        {
+          "name": "w2_leiden_0.75_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 0.75
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_0.75_a0.7",
+          "hash": "c1923d07d33cf855"
+        },
+        {
+          "name": "w2_leiden_0.75_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 0.75
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_0.75_a0.8",
+          "hash": "b30e6a8c96e38006"
+        },
+        {
+          "name": "w2_leiden_0.75_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 0.75
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_0.75_a0.9",
+          "hash": "ee2b4bc8a3f7184d"
+        },
+        {
+          "name": "w2_leiden_1.0_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 1.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_1.0_a0.2",
+          "hash": "033e240b2e192e2a"
+        },
+        {
+          "name": "w2_leiden_1.0_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 1.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_1.0_a0.3",
+          "hash": "e89addd307aceaa8"
+        },
+        {
+          "name": "w2_leiden_1.0_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 1.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_1.0_a0.5",
+          "hash": "60d212be6b88d149"
+        },
+        {
+          "name": "w2_leiden_1.0_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 1.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_1.0_a0.7",
+          "hash": "7da085645761df34"
+        },
+        {
+          "name": "w2_leiden_1.0_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 1.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_1.0_a0.8",
+          "hash": "7aa7d8475cfb3954"
+        },
+        {
+          "name": "w2_leiden_1.0_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 1.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_1.0_a0.9",
+          "hash": "b3da65eec5135507"
+        },
+        {
+          "name": "w2_leiden_1.5_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 1.5
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_1.5_a0.2",
+          "hash": "6fbb62fe48afcdf0"
+        },
+        {
+          "name": "w2_leiden_1.5_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 1.5
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_1.5_a0.3",
+          "hash": "5fb326fc25c70b52"
+        },
+        {
+          "name": "w2_leiden_1.5_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 1.5
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_1.5_a0.5",
+          "hash": "7c7c011f17bec678"
+        },
+        {
+          "name": "w2_leiden_1.5_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 1.5
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_1.5_a0.7",
+          "hash": "1f2fd326f8488d17"
+        },
+        {
+          "name": "w2_leiden_1.5_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 1.5
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_1.5_a0.8",
+          "hash": "62a55d8b3e26308a"
+        },
+        {
+          "name": "w2_leiden_1.5_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 1.5
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_1.5_a0.9",
+          "hash": "ef220f9b26cfddb7"
+        },
+        {
+          "name": "w2_leiden_2.0_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 2.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_2.0_a0.2",
+          "hash": "45daa9c87253f47f"
+        },
+        {
+          "name": "w2_leiden_2.0_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 2.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_2.0_a0.3",
+          "hash": "bd8bbf775d005e45"
+        },
+        {
+          "name": "w2_leiden_2.0_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 2.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_2.0_a0.5",
+          "hash": "08349e60b1929017"
+        },
+        {
+          "name": "w2_leiden_2.0_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 2.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_2.0_a0.7",
+          "hash": "ef41542a7e91fc65"
+        },
+        {
+          "name": "w2_leiden_2.0_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 2.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_2.0_a0.8",
+          "hash": "8474cbae0b0e36cb"
+        },
+        {
+          "name": "w2_leiden_2.0_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 2.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_2.0_a0.9",
+          "hash": "1504916a76f33d05"
+        },
+        {
+          "name": "w2_leiden_3.0_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 3.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_3.0_a0.2",
+          "hash": "8c017b1203f29a25"
+        },
+        {
+          "name": "w2_leiden_3.0_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 3.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_3.0_a0.3",
+          "hash": "f25013e5223ad4dc"
+        },
+        {
+          "name": "w2_leiden_3.0_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 3.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_3.0_a0.5",
+          "hash": "581b8a0985fec041"
+        },
+        {
+          "name": "w2_leiden_3.0_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 3.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_3.0_a0.7",
+          "hash": "ce2201f2833d3199"
+        },
+        {
+          "name": "w2_leiden_3.0_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 3.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_3.0_a0.8",
+          "hash": "cb7e8604e217c44b"
+        },
+        {
+          "name": "w2_leiden_3.0_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 3.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_3.0_a0.9",
+          "hash": "24aa8d0633b7553b"
+        },
+        {
+          "name": "w2_leiden_5.0_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 5.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_5.0_a0.2",
+          "hash": "3871a34e40f99fc3"
+        },
+        {
+          "name": "w2_leiden_5.0_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 5.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_5.0_a0.3",
+          "hash": "4038ef1d5ae1cd77"
+        },
+        {
+          "name": "w2_leiden_5.0_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 5.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_5.0_a0.5",
+          "hash": "beba3ce61b8cd09b"
+        },
+        {
+          "name": "w2_leiden_5.0_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 5.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_5.0_a0.7",
+          "hash": "2a2ccc0c9ecd6724"
+        },
+        {
+          "name": "w2_leiden_5.0_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 5.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_5.0_a0.8",
+          "hash": "1e0a12f652644a85"
+        },
+        {
+          "name": "w2_leiden_5.0_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 5.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_5.0_a0.9",
+          "hash": "83e413d9fa466335"
+        },
+        {
+          "name": "w2_leiden_8.0_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 8.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_8.0_a0.2",
+          "hash": "2df801a91a10d4fe"
+        },
+        {
+          "name": "w2_leiden_8.0_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 8.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_8.0_a0.3",
+          "hash": "86ec9f96aafe5175"
+        },
+        {
+          "name": "w2_leiden_8.0_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 8.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_8.0_a0.5",
+          "hash": "60ca22621387fe9e"
+        },
+        {
+          "name": "w2_leiden_8.0_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 8.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_8.0_a0.7",
+          "hash": "4a38278e99e4e4b8"
+        },
+        {
+          "name": "w2_leiden_8.0_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 8.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_8.0_a0.8",
+          "hash": "55cd030c2eadc88c"
+        },
+        {
+          "name": "w2_leiden_8.0_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 8.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_8.0_a0.9",
+          "hash": "85c339914b367ef9"
+        },
+        {
+          "name": "w2_leiden_12.0_a0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 12.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_12.0_a0.2",
+          "hash": "d45722cb174fcd1b"
+        },
+        {
+          "name": "w2_leiden_12.0_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 12.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_12.0_a0.3",
+          "hash": "abdb6791e8012fbc"
+        },
+        {
+          "name": "w2_leiden_12.0_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 12.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_12.0_a0.5",
+          "hash": "6e8e3a1da79dbc95"
+        },
+        {
+          "name": "w2_leiden_12.0_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 12.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_12.0_a0.7",
+          "hash": "228eb78a6a982971"
+        },
+        {
+          "name": "w2_leiden_12.0_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 12.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_12.0_a0.8",
+          "hash": "f82101154cf53c80"
+        },
+        {
+          "name": "w2_leiden_12.0_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "leiden": {
+              "resolution": 12.0
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/w2_scorers/leiden.joblib",
+          "label": "w2_leiden_12.0_a0.9",
+          "hash": "2feb3cded1932f21"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-26T15:32:09.681755+00:00",
+      "ended_at": "2026-10-26T16:18:22.554145+00:00",
+      "wall_s": 2772.872,
+      "rows": 900,
+      "git_commit": "5f1b2a337c7e32a5099a8fe7a6a344d495f22078",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v153-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    }
+  ]
+}
