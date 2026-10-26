@@ -90,6 +90,9 @@ class HubAwareConfig(DetectorConfig):
     # Optional hard degree cap (R1 control): attributes shared by more than this many
     # users contribute nothing, as in rule-based systems. None = keep every link.
     max_attr_degree: int | None = None
+    # Optional cap on one attribute's contribution h(d) (N-D, two-evidence rule): with a cap
+    # below edge_threshold no single attribute can link a pair on its own. None = off.
+    max_attr_weight: float | None = None
     min_ring_size: int = 3
     max_ring_size: int = 25
     min_edge_density: float = 0.75
@@ -130,6 +133,8 @@ class HubAwareSharedAttribute(BaseDetector):
             if cfg.max_attr_degree is not None and degree > cfg.max_attr_degree:
                 continue
             h = hub_weight(degree, cfg.weight_method)
+            if cfg.max_attr_weight is not None:
+                h = min(h, cfg.max_attr_weight)
             ordered = sorted(links, key=lambda lk: lk.user)
             for i, a in enumerate(ordered):
                 for b in ordered[i + 1 :]:

@@ -10,6 +10,11 @@ results/*
 !results/e[0-9]*_*/
 !results/r1_*/
 !results/w2_*/
+!results/w3b_*/
+!results/nd_*/
+!results/r2_*/
+!results/r5_*/
+!results/r6_*/
 !results/tuning/
 !results/public/
 !results/public/runs/
