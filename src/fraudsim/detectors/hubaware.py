@@ -87,6 +87,9 @@ class HubAwareConfig(DetectorConfig):
     txn_weight: float = 0.15  # beta: weight per (decayed) transaction between the pair
     max_txn_weight: float = 0.6  # cap on the transaction part of one pair
     edge_threshold: float = 0.5
+    # Optional hard degree cap (R1 control): attributes shared by more than this many
+    # users contribute nothing, as in rule-based systems. None = keep every link.
+    max_attr_degree: int | None = None
     min_ring_size: int = 3
     max_ring_size: int = 25
     min_edge_density: float = 0.75
@@ -123,7 +126,10 @@ class HubAwareSharedAttribute(BaseDetector):
         for attr, links in view.links_by_attr().items():
             if len(links) < 2:
                 continue
-            h = hub_weight(view.attr_degree.get(attr, len(links)), cfg.weight_method)
+            degree = view.attr_degree.get(attr, len(links))
+            if cfg.max_attr_degree is not None and degree > cfg.max_attr_degree:
+                continue
+            h = hub_weight(degree, cfg.weight_method)
             ordered = sorted(links, key=lambda lk: lk.user)
             for i, a in enumerate(ordered):
                 for b in ordered[i + 1 :]:
