@@ -8,8 +8,14 @@ the command shown next to it.)
 ## 0. Setup
 
 ```bash
-python -m pip install -e ".[dev]"
+python -m pip install -r requirements-lock.txt   # exact versions behind the recorded results
+python -m pip install -e ".[dev]" --no-deps
 ```
+
+Use the lock file to reproduce the tables: with newer library versions the event
+streams are identical (same digest) but detection results can differ (for example
+`e5b_large_hubs`, hub 500, seed 1002: F1 0.75 with the locked versions, 0.89 with
+NumPy 2.5 / scikit-learn 1.9 / NetworkX 3.7).
 
 Python 3.11, no database needed (all experiments use the in-memory graph store).
 Neo4j (Docker) is only needed for `--backend neo4j` runs and the live demo's Neo4j mode.
