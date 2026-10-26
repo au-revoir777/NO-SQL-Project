@@ -1,0 +1,5 @@
+# Extra packages for the W2/W3 baselines (GraphSAGE, Leiden). Install after requirements-lock.txt:
+#   python -m pip install -r requirements-w2.txt --extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.5.1+cpu
+leidenalg==0.12.0
+igraph==1.0.0

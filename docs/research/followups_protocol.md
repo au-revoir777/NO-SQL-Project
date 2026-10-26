@@ -52,3 +52,13 @@ The E4b-2 growing-hub `scale_sweep` at 10,000 users, seeds **2501–2505**, incr
 On validation seeds 301–303, extend the edge-threshold grid for 1/d to {0.02, 0.05} and for the soft cap to {1.2, 1.5, 2.0}.
 - If the selection moves, those two weights are re-run on the E2c and E2b test seeds (1001–1010, 1001–1030), paired with the recorded shipped arm, and the RQ5 text is updated.
 - If it does not move, the text states that the optima are interior or at the end of a meaningful range.
+
+## Amendment R9 (before running): evidence deletion test
+
+On the E12 test streams (5 scenarios × seeds 1001–1010), at the moment each alert of the shipped pipeline fires:
+- delete each evidence group of its evidence subgraph in turn: member links to shared devices, cards and IPs, then transfers among members;
+- recompute features and risk;
+- compare the group with the largest risk drop against the group behind the explanation's top-ranked feature (chance = 1 / number of groups present);
+- control: delete as many member links to unlisted attributes (held by one member).
+
+Expected limitation, stated in advance: the features are computed from the same structure the evidence lists, so "listed versus unlisted" mainly checks the implementation. The group-agreement rate is the informative number.

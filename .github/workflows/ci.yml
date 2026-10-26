@@ -35,7 +35,8 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
-      - run: pip install -e ".[dev,redis]"
+      # Locked versions: detection results depend on NumPy / scikit-learn / NetworkX versions.
+      - run: pip install -e ".[dev,redis]" -c requirements-lock.txt
       - name: Existing evidence unchanged (results, models, paper tables regenerate)
         run: python scripts/baseline_snapshot.py --check docs/audit/m0_baseline.json
       - name: Unit tests (no services)
