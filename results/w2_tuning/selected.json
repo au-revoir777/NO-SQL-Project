@@ -36,5 +36,9 @@
     "rule": "highest validation F1 among baselines (w2_protocol.md)",
     "note": "gnn_unscored threshold 0.95 is the top of its grid; gnn (scored) val F1 0.7802 is within 0.0001"
   },
-  "proposed_validation_f1": 0.7215
+  "proposed_validation_f1": 0.7215,
+  "hybrid": {
+    "method": "w2_hybrid_0.9_a0.5",
+    "val_f1": 0.7557
+  }
 }
