@@ -1,0 +1,439 @@
+{
+  "grids": [
+    {
+      "experiment": "w2_eval/rules_per_scenario",
+      "scenarios": [
+        "baseline"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb"
+      },
+      "seeds": [
+        2101,
+        2102,
+        2103,
+        2104,
+        2105,
+        2106,
+        2107,
+        2108,
+        2109,
+        2110,
+        2111,
+        2112,
+        2113,
+        2114,
+        2115,
+        2116,
+        2117,
+        2118,
+        2119,
+        2120
+      ],
+      "methods": [
+        {
+          "name": "w2_rules_per_scenario",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 100,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "rules per-scenario (w2_rules_100_1_a0.7)",
+          "hash": "3c97f3d30d39fccc"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-26T17:42:04.442030+00:00",
+      "ended_at": "2026-10-26T17:42:07.071903+00:00",
+      "wall_s": 2.63,
+      "rows": 20,
+      "git_commit": "5f39eb797e3f56a5b251012559876c0d6813252d",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v153-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "w2_eval/rules_per_scenario",
+      "scenarios": [
+        "high_noise"
+      ],
+      "scenario_hashes": {
+        "high_noise": "7f768d989b7d51e6"
+      },
+      "seeds": [
+        2101,
+        2102,
+        2103,
+        2104,
+        2105,
+        2106,
+        2107,
+        2108,
+        2109,
+        2110,
+        2111,
+        2112,
+        2113,
+        2114,
+        2115,
+        2116,
+        2117,
+        2118,
+        2119,
+        2120
+      ],
+      "methods": [
+        {
+          "name": "w2_rules_per_scenario",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 100,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "rules per-scenario (w2_rules_100_0_a0.7)",
+          "hash": "ee4260f1d4cb1e0d"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-26T17:42:07.114657+00:00",
+      "ended_at": "2026-10-26T17:42:14.812645+00:00",
+      "wall_s": 7.698,
+      "rows": 20,
+      "git_commit": "5f39eb797e3f56a5b251012559876c0d6813252d",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v153-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "w2_eval/rules_per_scenario",
+      "scenarios": [
+        "hub_heavy"
+      ],
+      "scenario_hashes": {
+        "hub_heavy": "031690a6797d4592"
+      },
+      "seeds": [
+        2101,
+        2102,
+        2103,
+        2104,
+        2105,
+        2106,
+        2107,
+        2108,
+        2109,
+        2110,
+        2111,
+        2112,
+        2113,
+        2114,
+        2115,
+        2116,
+        2117,
+        2118,
+        2119,
+        2120
+      ],
+      "methods": [
+        {
+          "name": "w2_rules_per_scenario",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 3,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "rules per-scenario (w2_rules_3_1_a0.3)",
+          "hash": "66948280e06bb9b5"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-26T17:42:14.843861+00:00",
+      "ended_at": "2026-10-26T17:42:19.931644+00:00",
+      "wall_s": 5.088,
+      "rows": 20,
+      "git_commit": "5f39eb797e3f56a5b251012559876c0d6813252d",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v153-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "w2_eval/rules_per_scenario",
+      "scenarios": [
+        "adversarial"
+      ],
+      "scenario_hashes": {
+        "adversarial": "e348c3eccc50e4bb"
+      },
+      "seeds": [
+        2101,
+        2102,
+        2103,
+        2104,
+        2105,
+        2106,
+        2107,
+        2108,
+        2109,
+        2110,
+        2111,
+        2112,
+        2113,
+        2114,
+        2115,
+        2116,
+        2117,
+        2118,
+        2119,
+        2120
+      ],
+      "methods": [
+        {
+          "name": "w2_rules_per_scenario",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 100,
+              "enable_q3_money_cycle": true
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "rules per-scenario (w2_rules_100_1_a0.2)",
+          "hash": "502289d05124f115"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-26T17:42:19.966629+00:00",
+      "ended_at": "2026-10-26T17:42:31.053826+00:00",
+      "wall_s": 11.087,
+      "rows": 20,
+      "git_commit": "5f39eb797e3f56a5b251012559876c0d6813252d",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v153-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "w2_eval/rules_per_scenario",
+      "scenarios": [
+        "drift"
+      ],
+      "scenario_hashes": {
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        2101,
+        2102,
+        2103,
+        2104,
+        2105,
+        2106,
+        2107,
+        2108,
+        2109,
+        2110,
+        2111,
+        2112,
+        2113,
+        2114,
+        2115,
+        2116,
+        2117,
+        2118,
+        2119,
+        2120
+      ],
+      "methods": [
+        {
+          "name": "w2_rules_per_scenario",
+          "overrides": {
+            "static_cypher": {
+              "enabled": true,
+              "max_degree_cap": 100,
+              "enable_q3_money_cycle": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            }
+          },
+          "engine": {},
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.2,
+          "model_path": "results/w2_scorers/rules.joblib",
+          "label": "rules per-scenario (w2_rules_100_0_a0.2)",
+          "hash": "cb02c778654fed4e"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-26T17:42:31.088638+00:00",
+      "ended_at": "2026-10-26T17:42:39.321043+00:00",
+      "wall_s": 8.232,
+      "rows": 20,
+      "git_commit": "5f39eb797e3f56a5b251012559876c0d6813252d",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v153-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    }
+  ]
+}

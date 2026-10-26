@@ -195,7 +195,7 @@ def collect_rows(method: str, scenario: str, seed: int) -> tuple[list[Row], dict
     store = InMemoryGraphStore()
     stage = ScoringStage(scorer=None, record=True)
     engine = DetectionEngine(store, build_detectors(store, ov), tracker=RingTracker(EnsembleConfig()),
-                             config=EngineConfig(batch_size=50, full_interval_s=5.0, **eng_cfg),
+                             config=EngineConfig(batch_size=50, **({"full_interval_s": 5.0} | eng_cfg)),
                              scorer=stage)
     engine.run(stream.events)
     gen = stream.generator

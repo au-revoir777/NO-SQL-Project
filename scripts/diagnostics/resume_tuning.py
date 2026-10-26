@@ -33,6 +33,7 @@ def main() -> None:
     mine = todo[shard::n_shards]
     print(f"{len(done)} done, {len(todo)} to do, shard {shard}: {len(mine)}", flush=True)
     scorer = RingScorer.load(w.ROOT / f"{w.SCORERS}/{method}.joblib")
+    base.mkdir(parents=True, exist_ok=True)
     out = base / f"results_shard{shard}.csv"
     streams: dict = {}
     for sc, seed, m in mine:
