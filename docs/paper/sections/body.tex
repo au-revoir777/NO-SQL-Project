@@ -12,10 +12,11 @@ kiosk, links many unrelated accounts. Linking accounts by shared properties
 produces sparse links through strongly identifying entities and over-linkage
 through widely shared ones such as IP addresses \cite{yin2022behavioral}. The
 usual remedy in rule-based systems is a hard degree cap: attributes shared by
-more than $c$ accounts are ignored. The cap removes the noise but also opens an
-evasion path, because a ring that shares a busy attribute becomes invisible to
-it, much as fraudsters elsewhere hide by connecting to benign entities
-\cite{liu2025robust}.
+more than $c$ accounts are ignored. The cap removes the noise but also removes
+the evidence that a group shares a busy attribute, which opens an evasion path,
+much as fraudsters elsewhere hide by connecting to benign entities
+\cite{liu2025robust}. Keeping such links is not enough either: if one busy
+attribute can link two accounts on its own, every co-user of the hub is linked.
 
 \textbf{Latency on a stream.} Accounts, links and transfers arrive
 continuously. Re-running whole-graph queries on a timer delays detection, and
@@ -23,30 +24,33 @@ the cost of each pass grows with the graph rather than with the change, a
 problem that incremental community detection addresses for clustering
 \cite{zhang2026incremental,abughofa2021incremental}.
 
-We make four contributions.
+We make one contribution and support it with a system and an evaluation.
 \begin{itemize}
-\item \textbf{C1, hub-aware weighting.} We replace the degree cap with a
-continuous weight: each shared attribute contributes $1/\ln(1+d)$, where $d$ is
-its degree, with exponential time decay, and transfers inside the pair add
-weight. The discount itself is FRAUDAR's column weighting
-\cite{hooi2016fraudar}; our contribution is its use for shared-attribute ring
-detection on a stream. Busy hubs count for little on their own, but a group that shares a hub
-and also trades among itself still accumulates weight (Section~\ref{sec:method}).
-What we can show is that keeping hub links is what matters: a constant weight
-with its own threshold performs as well, and caps lose rings hidden behind hubs
-(Section~\ref{sec:results}).
-\item \textbf{C2, incremental detection.} A micro-batch engine re-evaluates only
-the $k$-hop region touched by each batch, with fan-out limits that keep that
-region bounded when it reaches a hub. Against a timer-driven full pass it pays
-off only as the graph grows (Section~\ref{sec:results}).
-\item \textbf{C3, calibrated, explained alerts.} Candidate rings are scored by a
-calibrated classifier, and each alert carries feature contributions, an
-evidence subgraph and counterfactuals. The scorer supplies most of the
-precision, for our candidates and for the baselines' (Section~\ref{sec:results}).
-\item \textbf{C4, evaluation under evasion.} A deterministic simulator with
-ring-level ground truth and five evasion strategies, including an attacker that
-adapts to the detector's flags, lets us measure each component on identical
-event streams (a paired design) with confidence intervals.
+\item \textbf{Contribution: keep hub links, but never let a hub link a pair
+alone.} Pairs of accounts accumulate decayed evidence from shared attributes
+and from transfers between them, and a pair is linked only when a busy
+attribute is joined by a second piece of evidence. Isolation experiments on
+fresh test seeds show that this condition, not the shape of the degree
+discount, is what matters: within the same pipeline a degree cap costs
+\RfCapD{} ring F1 (95\% CI \RfCapLo{} to \RfCapHi{}) and most hub-hiding rings
+(\RfCapHHCap{} against \RfCapHHNo{}), a weight that lets one attribute suffice
+costs \RfNdOneD{} (\RfNdOneHub{} on the hub-hiding scenario), and two different
+weights that satisfy the condition are indistinguishable (\RfNdShapeD{}, CI
+\RfNdShapeLo{} to \RfNdShapeHi{}) (Section~\ref{sec:attribution}). The degree
+discount we use is FRAUDAR's column weighting \cite{hooi2016fraudar}; we do not
+claim it as new.
+\item \textbf{System.} A micro-batch engine re-evaluates only the region each
+batch touches, with fan-out limits; we state when it misses no pair that a full
+pass would link, and show that ring-level equality with full recomputation
+holds for small hubs only (Section~\ref{sec:method}). Candidate rings are scored
+by a calibrated classifier, and alerts carry feature contributions, an evidence
+subgraph and, where one exists, a counterfactual.
+\item \textbf{Evaluation.} A deterministic simulator with ring-level ground
+truth and five evasion strategies; preregistered protocols with fresh test
+seeds for every new experiment; and a comparison with five existing methods
+(tuned rules, Louvain, Leiden, FRAUDAR-style peeling and a GraphSAGE
+classifier), each with a scorer trained on its own candidates and at least the
+same tuning budget (Section~\ref{sec:existing}).
 \end{itemize}
 
 \section{Related Work}
@@ -57,8 +61,10 @@ fraudulent nodes connect mostly to benign ones \cite{hu2025hhgfd,lv2026mandate};
 camouflage, by reweighting neighbours adversarially \cite{liu2025robust}; scarce
 or unreliable labels, with one-class and semi-supervised training
 \cite{li2025ocgfd,giles2023suspicious,peng2023csocan}; and interpretability
-\cite{yu2024ingfd}. These methods output per-node scores and need labelled
-training graphs. GB-FRD \cite{pan2025gbfrd} targets fraud rings in peer-to-peer
+\cite{yu2024ingfd}, usually on GraphSAGE-style neighbourhood aggregation
+\cite{hamilton2017graphsage}. These methods output per-node scores and need
+labelled training graphs; we compare with a GraphSAGE classifier and a fixed
+rule that turns flagged nodes into rings (Section~\ref{sec:existing}). GB-FRD \cite{pan2025gbfrd} targets fraud rings in peer-to-peer
 payment graphs, as we do, and Yin et al.\ \cite{yin2022behavioral} replace hard
 shared-property links with behavioural similarity because of over-linkage
 through shared entities. We keep shared-attribute links, which are cheap and
@@ -74,18 +80,22 @@ adversarial annotators \cite{karaaslanli2025crowd}. FRAUDAR
 edge by a decreasing function of the degree of the object it points to,
 recommending $1/\log(x+c)$ and arguing that $1/x$ shrinks too fast; Spade
 \cite{jiang2022spade} maintains such peeling-based dense subgraphs
-incrementally under edge insertions on transaction graphs. Core decomposition,
-the peeling primitive we use to extract dense cores, has efficient parallel and
-GPU implementations \cite{ahmad2023gpukcore,li2021graphblas} and is related to
-densest-subgraph approximation \cite{dhulipala2022dp}. Our degree discount is
-therefore not new: it is FRAUDAR's column weighting, and close to
-Adamic--Adar. What we study is applying it to shared-attribute ring detection
-on a stream, as a replacement for the degree cap of rule-based systems, with
-incremental detection, ring tracking and calibrated alerts around it.
+incrementally under edge insertions on transaction graphs, with FRAUDAR's
+weighting and the same peeling sequence as a full recomputation. Core
+decomposition, the peeling primitive we use to extract dense cores, has
+efficient parallel and GPU implementations \cite{ahmad2023gpukcore,li2021graphblas},
+and greedy peeling by minimum degree is the classical approximation of the
+densest subgraph \cite{charikar2000greedy}. Our degree discount is therefore
+not new: it is FRAUDAR's column weighting, and close to Adamic--Adar. What we
+study is different from Spade's setting: pairwise evidence between accounts
+from shared attributes and internal transfers, and the condition under which a
+busy shared attribute helps rather than hides a ring. We run FRAUDAR-style
+peeling, whose output Spade maintains incrementally, as a baseline.
 
 \textbf{Community detection on dynamic graphs.} Louvain modularity optimisation
-\cite{blondel2008louvain} remains a standard way to find groups and is still
-being refined \cite{li2023dplouvain}; we use it as a baseline. Incremental community
+\cite{blondel2008louvain} remains a standard way to find groups, and Leiden
+\cite{traag2019leiden} refines it so that communities are guaranteed to be
+connected; we use both as baselines. Incremental community
 detection avoids repartitioning a changing graph by updating only the
 affected communities \cite{zhang2026incremental,abughofa2021incremental}.
 Community structure, however, is not ring structure: a benign hub joins
@@ -94,8 +104,11 @@ thousands of users into one community.
 \textbf{Similarity weighting.} Local similarity indices such as Jaccard and
 Adamic--Adar \cite{adamic2003friends}, which discounts a shared neighbour by
 the logarithm of its degree, are standard in link prediction
-\cite{varma2022jaccard}. Our hub weight applies a similar discount to shared
-attributes, and we match flagged rings to true ones by Jaccard overlap.
+\cite{libennowell2007link}. Our hub weight applies a similar discount to shared
+attributes, and we match flagged rings to true ones by Jaccard overlap. Entity
+resolution faces the same choice between discounting and capping: meta-blocking
+weights candidate pairs by the inverse size of the blocks they share, and block
+purging drops oversized blocks \cite{papadakis2014metablocking}.
 
 \textbf{AML on public data.} Work on the Elliptic Bitcoin graph compares tabular
 ensembles with GNNs under temporal splits
@@ -145,7 +158,7 @@ the in-memory store. In live runs, events reach the engine through an
 in-process queue or Redis Streams, whose consumer settings (batch size,
 blocking timeout) trade throughput against latency \cite{bora2026hyades}.
 
-\subsection{Hub-aware weighting (C1)}
+\subsection{Pairwise evidence and hub weighting}
 For two users $u,v$ the edge weight is
 \begin{equation}
 \begin{split}
@@ -159,12 +172,16 @@ half-life $\tau=300$\,s, $t_a$ is the age of the older of the two links to
 attribute $a$, and $T(u,v)$ are the transfers between $u$ and $v$ in the
 window, with $\beta=0.15$ and $\beta_{\max}=0.6$. A device shared by three
 accounts weighs $0.72$; an office address shared by fifty weighs $0.25$.
+At $\theta_e=0.3$ an attribute shared by more than about 27 accounts cannot
+link a pair on its own: it needs a second shared attribute or transfers between
+the two accounts. A rarely shared attribute can ($h(2)\approx0.91$).
+Section~\ref{sec:attribution} tests which part of this rule matters.
 Candidate rings are the connected components of the graph of pairs with
 $W\ge\theta_e$ (and a non-zero attribute term), peeled to cores of edge density
 at least $0.75$ and size 3--25. The edge threshold $\theta_e$ is selected on
 validation seeds (Section~\ref{sec:protocol}).
 
-\subsection{Incremental detection (C2)}
+\subsection{Incremental detection}
 Events are grouped into micro-batches of 50. For each batch the engine takes
 the users it touched, expands them by $k=2$ hops through shared attributes and
 transfers, and builds a view of that region over a 900\,s window, together with
@@ -172,17 +189,23 @@ the \emph{global} degree of every attribute in it, so $h(\deg a)$ is the same as
 in a full pass. The first hop may cross attributes with up to 250 users (so the
 co-members of a hub are re-examined); later hops cross only attributes with at
 most 20 users, which stops the region from spreading through hubs. The first-hop
-limit is itself a degree cap on the region: a pair whose only link is an
-attribute shared by more than 250 users never enters the same region. For the
-hub-aware weight this costs nothing, since one such attribute contributes at most
-$1/\ln 252\approx0.18$, below the edge threshold, so a full pass would not link
-the pair either; a weight that lets one busy attribute reach the threshold, such
-as a constant, does lose such pairs (Section~\ref{sec:results}). Incremental
+limit is itself a degree cap on the region. Transfers are always crossed, so a
+touched account $u$ and a partner $v$ can end up in different regions only if
+every attribute they share has more than 250 users and they have no transfer in
+the window; their weight is then at most $k\,h(251)$ for $k$ such attributes.
+With $h(d)=1/\ln(1+d)$ and $\theta_e=0.3$ (and equally for a constant weight at
+$\theta_e=1.0$, since a single link decays below 1) a missed pair needs $k\ge2$.
+A variant that crosses an over-limit attribute whenever the shared over-limit
+weight could reach $\theta_e$ closes this gap exactly; in our runs it never
+added a user. Equality with full recomputation is a property of pairs, not of
+rings: candidate rings come from greedy peeling of connected components, which
+is not local, so at hubs of 500 or more accounts individual rings differed
+between the two modes in both directions (Section~\ref{sec:results}). Incremental
 detectors (hub-aware shared attribute, temporal cycle, smurfing) run on the
 view; whole-graph detectors (the static Cypher rules and community detection)
 run on a timer.
 
-\subsection{Ensemble, tracking and scoring (C3)}
+\subsection{Ensemble, tracking and scoring}
 Candidates from different detectors are merged when their Jaccard overlap is at
 least $0.5$, or when one contains $80\%$ of the other and they differ in size by
 at most a factor of two. A tracker matches candidates to existing rings across
@@ -196,21 +219,25 @@ the number of agreeing detectors), calibrated with isotonic regression
 \cite{zadrozny2002transforming}. A ring becomes an alert when its calibrated risk
 reaches the alert threshold $\theta_a$. Each alert carries the per-feature
 contributions to the score, the subgraph of shared attributes and transfers
-that formed it, and counterfactuals (for the leading features, the value at which
-the risk would fall below the threshold, and for hub-aware rings the degree the
-shared attribute would need before the rule stops firing). The model is trained on
+that formed it, and, where one exists, a counterfactual (for the leading
+features, the value at which the risk would fall below the threshold, and for
+hub-aware rings the degree the shared attribute would need before the rule
+stops firing). The model is trained on
 seeds disjoint from all evaluation seeds (Fig.~\ref{fig:training}): the detector
 runs on six scenarios with seeds 101--110, each confirmed or changed ring
 becomes a row of its 19 features, labelled from the hidden ledger, and within
 each run the first 70\% of rows fit the regression and the last 30\% the
-calibrator. On the held-out test seeds 201--205 it reaches ROC AUC
-\GenRingAUC{} and PR AUC \GenRingPR{} over \GenRingUnits{} ring units (a unit's
-score is its highest calibrated score); over the \GenSnapUnits{} correlated
-snapshots of those rings the figures are \GenSnapAUC{} and \GenSnapPR{}.
+calibrator. On the scorer hold-out seeds 201--205 (six scenarios) it reaches
+ROC AUC \GenRingAUC{} and PR AUC \GenRingPR{} over \GenRingUnits{} ring units
+(a unit is one tracked ring in one run, scored by its highest calibrated
+score); over the \GenSnapUnits{} correlated snapshots of those rings the
+figures are \GenSnapAUC{} and \GenSnapPR{}.
 Trained without one scenario and tested on it, the scorer loses at most
 \GenDropSnapAUC{} ROC AUC (\texttt{\GenDropSnapAUCWhere}) and at most
-\GenDropRingPR{} ring-level PR AUC (\texttt{\GenDropRingPRWhere}), but all
-scenarios come from the same generator.
+\GenDropRingPR{} ring-level PR AUC (\texttt{\GenDropRingPRWhere};
+Table~\ref{tab:loso}), but all scenarios come from the same generator.
+
+\input{tables/tab_loso.tex}
 
 \begin{figure*}[t]
 \centering
@@ -219,8 +246,10 @@ scenarios come from the same generator.
 detector run on training seeds, and ring snapshots are labelled from the
 ground-truth ledger, which the detector never reads. (c) Each snapshot is a row
 of 19 ring features. (d) Within each run, rows in time order are split 70/30
-between logistic regression and isotonic calibration. (e) Held-out test seeds
-(values from \texttt{models/ring\_scorer\_lr.json}). Below: in detection, each
+between logistic regression and isotonic calibration. (e) Scorer hold-out
+seeds 201--205: snapshot ROC AUC \GenSnapAUC{}, PR AUC \GenSnapPR{}; ring level
+\GenRingAUC{} and \GenRingPR{} (values from \texttt{models/ring\_scorer\_lr.json}
+and \texttt{results/e6b\_generalisation}). Below: in detection, each
 changed ring is scored every batch, and an alert carries its explanation;
 analyst feedback adjusts the threshold in the product; that loop is not part
 of any experiment in this paper.}
@@ -278,8 +307,15 @@ scale\_sweep & $10^3$+ & 120 & 100 & latency benchmark (RQ2) \\
 
 \subsection{Protocol}
 \label{sec:protocol}
-Seeds are split three ways: scorer training (101--110, test 201--205),
-threshold selection (validation, 301--303) and evaluation (test, 1001 and up).
+Seeds are split by purpose: scorer training (101--110) and scorer hold-out
+(201--205), threshold selection (validation, 301--303), and evaluation. The
+original evaluation (Tables~\ref{tab:baselines}--\ref{tab:ablation}) uses test
+seeds 1001 and up. Every experiment added in revision uses a block of fresh
+test seeds declared, with its hypotheses, in a protocol committed before its
+first run (\texttt{docs/research/}): 2001--2010 for the degree-cap control,
+2101--2120 for the comparison with existing methods, 2301--2320 for the hybrid,
+2401--2420 for the evidence condition and 2501--2505 for scale. Each block is
+used once.
 On the validation seeds we evaluated a grid of alert thresholds
 $\theta_a\in\{0.2,0.3,0.5,0.7,0.8,0.9\}$ and edge thresholds
 $\theta_e\in\{0.2,0.3,0.4,0.5,0.6\}$ on the five accuracy scenarios; the grid was
@@ -290,9 +326,20 @@ the a-priori values $\theta_a=\theta_e=0.5$.
 
 Every method in an experiment processes the \emph{identical} event stream for a
 given scenario and seed (the attacker does not receive feedback in these runs),
-so differences between methods are paired. We report the mean and 95\%
-$t$-interval over runs, and test differences with the Wilcoxon signed-rank test
-on paired runs, with Cohen's $d_z$ as effect size.
+so differences between methods are paired. In the original tables we report
+the mean and 95\% $t$-interval over runs and test differences with the
+Wilcoxon signed-rank test on paired runs (\texttt{zsplit} handling of ties),
+with Cohen's $d_z$ as effect size. Because the paired difference depends on the
+scenario, the revision experiments report the scenario-weighted mean difference
+with a 95\% cluster bootstrap interval (seeds resampled within scenario,
+10{,}000 resamples), a scenario-stratified sign-flip permutation test, per-scenario
+differences, and win/tie/loss counts. Four comparisons are confirmatory and
+form one family with Holm correction: the degree-cap control, the comparison
+with the strongest existing method, the hybrid against that method, and the
+evidence condition; all other tests are exploratory and uncorrected. We call
+two variants equivalent only when the 90\% interval of their difference lies
+within $\pm0.05$ F1 (about one ring in every two to four runs), and we report
+results on five or fewer seeds as ranges, without $p$-values.
 
 \subsection{Metrics}
 A flagged ring \emph{matches} a true ring when their member sets overlap with
@@ -316,11 +363,30 @@ enough.
 projection, no density filter.
 \end{itemize}
 All baselines use the same two-hit confirmation as the proposed method.
+Section~\ref{sec:existing} adds five existing methods under a common protocol.
+
+\textbf{Fair comparison.} All methods process identical event streams, emit
+candidate rings of 3--25 accounts, pass them through the same tracker and are
+matched to true rings by Jaccard overlap of at least 0.5. Each method is scored
+by a logistic-regression model with isotonic calibration trained on that
+method's own candidates (seeds 101--110, the protocol of
+Section~\ref{sec:method}). Each method's structural parameter (degree cap and
+cycle rule for the rules; resolution for Louvain and Leiden; minimum block
+score for peeling; node threshold for GraphSAGE) and its alert threshold are
+selected jointly on the validation seeds over at least as many grid points as
+the proposed method received (60 to 84 against 30). Peeling, Leiden and
+GraphSAGE recompute on the whole graph after every micro-batch; the rules and
+Louvain keep their 5\,s timer.
 
 \subsection{Environment}
 All runs used one laptop (Intel Core i3-1115G4, 2 cores / 4 threads, 7.7\,GB
 RAM, Windows 11), Python 3.11.9, NumPy 2.2.6, scikit-learn 1.7.2,
-NetworkX 3.5, with experiments run one at a time.
+NetworkX 3.5, with experiments run one at a time. The revision experiments ran
+on a 2-core Linux container with the same library versions (pinned in
+\texttt{requirements-lock.txt}; PyTorch 2.5.1 and leidenalg 0.12 for the new
+baselines), several at a time, so we report no latencies from them. With newer
+library versions the event streams are identical but detection results can
+differ, so the lock file is part of the result.
 
 \input{sections/results.tex}
 \input{sections/phase2.tex}
@@ -330,7 +396,11 @@ NetworkX 3.5, with experiments run one at a time.
 \textbf{Simulator realism.} All main results come from our simulator. Hub
 sizes, ring behaviour and evasion strategies follow our configuration, not
 observed fraud. A detector tuned to this generator may do worse on real
-traffic, and the absolute numbers should not be read as field performance.
+traffic, and the absolute numbers should not be read as field performance. The
+same authors wrote the generator, its evasion strategies and the detector, so
+hub hiding is defined in a way the pairwise detector can, in principle, catch;
+the GraphSAGE baseline, which learns the generator's regularities from labels,
+is the better guide to what is learnable from these streams.
 
 \textbf{Synthetic labels.} Ground truth is the set of rings the simulator
 planted. Benign groups that happen to look like rings count as false
@@ -354,9 +424,11 @@ ring recall.
 
 \textbf{Tuning.} Thresholds were selected on validation seeds of the same
 generator; the test seeds are independent draws but from the same
-distribution. In the weight-function comparison, three of the five selected
-edge thresholds lie on the edge of the grid, so those functions might do
-somewhat better with a wider grid. The scorer was trained on the same
+distribution. The original test seeds (1001 and up) were reused across many
+experiments, some designed after earlier results on them were seen; every
+experiment added in revision therefore uses its own block of fresh seeds,
+declared before its first run. In the weight-function comparison the grid was
+widened until every selection was interior. The scorer was trained on the same
 generator and scenarios it is tested on; leaving one scenario out costs little
 (Section~\ref{sec:method}), but a scenario type the generator cannot produce is
 not covered by that test.
@@ -367,27 +439,28 @@ less than 0.3\,GB of memory was free and one full recomputation already took
 over 20\,s per batch. In the scale scenario, attribute counts grow with the
 number of users while hub sizes stay fixed; graphs whose hubs grow with the
 population would give larger dirty regions. The 250-user first-hop limit was
-tested with hubs of up to 10,000 accounts, five seeds per size, on one scenario;
-its harmlessness rests on the hub-aware weight keeping a single busy attribute
-below the edge threshold, and would not hold for a weight or threshold that
-does not.
+tested with hubs of up to 10,000 accounts, five seeds per size, on one scenario.
+It misses no pair that shares at most one over-limit attribute with the
+weights and thresholds we use, but ring-level equality with full recomputation
+holds only for small hubs: candidate extraction by greedy peeling is not local,
+so at 500 and 2,000 accounts individual rings differed in both directions.
 
 \textbf{Latency.} The latencies of Section~\ref{sec:results} come from the
 in-memory store on a laptop. Section~\ref{sec:phase2} repeats the measurement on
 Neo4j and Redis Streams. The detected rings are identical, but detection is
 several times slower and throughput is bounded by the store. Both figures
-describe one laptop running Docker, not a server.
+describe one laptop running Docker, not a server. Experiments added in
+revision ran several at a time on a two-core container; we report no latency
+from them except the 10{,}000-user scale point, which ran alone.
 
-\textbf{Baselines.} The scored baselines of Table~\ref{tab:baselines} use the
-shipped scorer, which was trained on candidates of the proposed pipeline; a
-scorer trained on each baseline's own candidates might do better for it. The
-learned baseline of Section~\ref{sec:phase2} is a
-tabular model over Louvain groups, so its weakness under decoy edges is partly
-the grouping's. We did not run a graph neural network. A GraphSAGE node
-classifier with a fixed rule for turning node scores into rings, as used by
-Badjie et al.~\cite{badjie2026ensembles} and Kumar et al.~\cite{kumar2026tagat},
-is the obvious next comparison, together with node-level AUC on public
-benchmarks. Our node-level numbers are not comparable to those benchmarks.
+\textbf{Baselines.} Table~\ref{tab:baselines} uses the shipped scorer for
+the scored baselines; Table~\ref{tab:existing} gives every method its own. All
+baselines are our implementations or library calls configured to emit our ring
+object: FRAUDAR and Spade were designed for review and transaction graphs, and
+we reproduce Spade's output, not its latency. GraphSAGE is one architecture with
+fixed training settings and a simple node-to-ring rule; a temporal GNN, another
+grouping rule or more tuning could do better, and the pipeline is already
+behind it on F1. Node-level numbers are not comparable to published benchmarks.
 
 \textbf{Calibration.} The shipped scorer is miscalibrated at the ring level
 (Section~\ref{sec:phase2}). Its scores rank alerts well but should not be read
@@ -406,6 +479,16 @@ under the cap $\beta_{\max}$ of the transaction term, or one distinct hub per
 pair of members. Each of these would bypass a fixed rule of our detector, so
 the evasion results are a lower bound on what an informed attacker achieves.
 
+\textbf{Explanations.} The deletion test (Section~\ref{sec:phase2}) shows
+that the explanation's top-ranked evidence is no better than always naming
+transfers; the explanations should be read as descriptions of the model, not of
+the ring.
+
+\textbf{Reproducibility.} With newer versions of NumPy, scikit-learn or
+NetworkX, the event streams are identical but detection results can change, so
+the reported numbers hold for the pinned versions in
+\texttt{requirements-lock.txt}, which the continuous-integration check uses.
+
 \textbf{Streaming load.} ``Streaming'' here means micro-batches on a paced
 simulated stream. Accuracy falls as the event rate rises (F1 \SwRateLoF{} at
 \SwRateLo{} events/s, \SwRateHiF{} at \SwRateHi{}), and on Neo4j the store
@@ -415,35 +498,40 @@ one batched query instead of several round trips, and caching attribute degrees
 between batches.
 
 \section{Conclusion}
-Keeping links through busy shared attributes, instead of capping them, lets a
-streaming detector reach a recall on rings that share busy infrastructure that
-no cap reaches. The shape of the discount matters little: a constant weight
-with its own threshold did as well as $1/\ln(1+d)$, while strong discounts and
-soft caps lost the rings hidden behind hubs. On its own the weighting is not
-precise, and a calibrated scorer over ring features supplies most of the
-precision. Given the same scorer, the
-degree-capped rules reach F1 \ECapTenSF{} against \EPropF{} for the full
-pipeline, so the scorer accounts for most of the gain over the original rules,
-and at the best operating point on shared-attribute rings the weight and the
-cap are not distinguishable on F1. Restricting detection to the region a
-micro-batch touches gave the same rings as full recomputation in every
-accuracy run. On small graphs it is no cheaper than recomputing on a 1\,s
-timer, and it detects no faster; its value is at scale, where at 20{,}000
-users with growing hubs it costs \GhIncCostC{}\,ms per simulated second against
-\GhTimerCostC{}\,ms for a 5\,s timer, which can no longer keep up. Rings that
-rotate identities or act slowly evade all methods we tested, and all of our
-positive results are on synthetic data. On Neo4j and Redis Streams the detector flags exactly the same rings, at the
-cost of slower detection and a throughput bounded by the store. A learned model
-over rule-free groups is more precise but finds half as many rings, and it
-collapses under decoy edges, which the hub-aware rules withstand. Measuring
-the explanations found and fixed a calibration defect that had made every
-counterfactual invalid; after the fix every counterfactual flips the decision,
-but only \TwelveCfAlerts{} of \TwelveAlerts{} alerts have one, and a retrained
-model usually proposes a different one. The evidence shows the flagged
-accounts; whether it explains the score is untested. The next steps are data
-with real shared-attribute links, a ring-level calibrator, a GraphSAGE
-baseline, multi-feature counterfactuals, a deletion test of the evidence, and
-longer runs for slow and identity-rotating rings.
+Keeping links through busy shared attributes helps a streaming ring detector
+only if no busy attribute can link two accounts on its own. Within the same
+pipeline, a degree cap costs \RfCapD{} ring F1 and most hub-hiding rings, a
+weight that lets one attribute suffice costs \RfNdOneD{}, and two weights that
+both meet the condition are indistinguishable; the degree discount we started
+from is one way to meet it, not the source of the gain. Against tuned rules,
+Louvain, Leiden and FRAUDAR-style peeling, each with its own calibrated scorer,
+the pipeline improves ring F1 on fresh test seeds, by \RfExrulesperscenarioDA{}
+against the strongest of them. A GraphSAGE classifier trained on ring labels
+from the same generator is ahead on F1 (\RfExgnnunscoredF{} against
+\RfExproposedF{}), mainly where the pipeline's precision drops under drift and
+noise, while the pipeline ranks rings better and finds more adaptive and decoy
+rings; \RfHySentence{} Restricting detection to the region a micro-batch
+touches misses no pair a full pass would link under a simple condition, but
+ring-level equality holds only for small hubs; the engine is no cheaper than a
+1\,s timer on small graphs; at 10{,}000 users it is cheaper than a 5\,s
+timer in \RfScaleTenWins{} of 5 seeds and at 20{,}000 in all 3. Slow and
+identity-rotating rings are rarely found by any method, the explanations
+describe the model more than the ring, and all positive results are synthetic.
+On Neo4j and Redis Streams the detector flags exactly the same rings, at the
+cost of slower detection. The next steps are data with real shared-attribute
+links, a ring-level and time-aware calibrator, evidence that persists across
+identity rotation, and a white-box attacker.
 
-Code, scenarios, models and the scripts that regenerate every table and figure
-are in the project repository (\texttt{REPRODUCE.md}).
+\textbf{Data and code availability.} All data are synthetic and generated by
+the code. The repository contains the simulator, scenarios, detectors, the
+trained scorers and GraphSAGE model, every result file (each row records the
+scenario hash, seed and a digest of the event stream; each run records the git
+commit and library versions), the preregistered protocols with their
+amendments (\texttt{docs/research/}), and the scripts that regenerate every
+table and number in this paper from those files (\texttt{make tables};
+\texttt{scripts/make\_refine\_tables.py}). \texttt{REPRODUCE.md} gives the
+commands; \texttt{requirements-lock.txt} pins the library versions with which
+the results reproduce exactly, and a test reruns a recorded run and compares
+it. Wall-clock latencies depend on the machine and are not reproducible by
+design. We will deposit the version used for this paper as a citable archive
+with a DOI at camera-ready.

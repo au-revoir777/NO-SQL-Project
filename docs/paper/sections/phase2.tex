@@ -28,9 +28,10 @@ The scorer's isotonic calibration was fitted on snapshot rows, but analysts read
 scores of ring-level alerts. On \TenUnits{} ring-level units from the test seeds
 its expected calibration error is \TenEce{}, and rings scored in the 0.8--0.9
 and 0.9--1.0 bins were true rings \TenBinEight\% and \TenBinNine\% of the time.
-A calibrator refitted on ring-level units of separate seeds, in the manner
-compared by Azbergen et al.~\cite{azbergen2026calibration} and Ding et
-al.~\cite{ding2021temperature}, lowers the Brier score from \TenBrier{} to
+An isotonic calibrator \cite{zadrozny2002transforming} refitted on
+ring-level units of the validation seeds (301--303), a post-hoc recalibration
+of the kind Azbergen et al.~\cite{azbergen2026calibration} compare for AML risk
+scores, lowers the Brier score from \TenBrier{} to
 \TenBrierRefit{}. Ranking holds up better than calibration: precision at the top
 5\% of units is \TenPAtFive{}. Early warning, measured without look-ahead, is
 rare. Of \ElevenEligible{} true rings with a forming phase, \ElevenWarned{}
@@ -69,10 +70,20 @@ the evidence subgraph of a correct alert are the true ring's (median precision
 \TwelveFidPrec{}, coverage \TwelveFidCov{}). Because that subgraph is built from
 the flagged ring's members, this checks that the evidence shows the right
 accounts; it does not test whether the evidence explains the score. A
-deletion test would: remove the shared-attribute links or the internal
-transfers that the evidence lists, recompute the ring's features and score, and
-compare the drop with removing as many links of the same members that the
-evidence does not list. We have not run it.
+deletion test checks whether the evidence explains the score: when each alert
+fires, we removed each group of the evidence in turn (member links to shared
+devices, cards or IPs, and transfers among members), recomputed the features
+and the risk, and compared the group whose removal lowers the risk most with
+the group behind the explanation's top-ranked feature. Over the \RfDelAlerts{}
+alerts they agree in \RfDelAgree{} of cases (chance \RfDelChance{}). That
+agreement is no better than always naming transfers: the explanation ranks a
+transfer feature first for \RfDelTopTransfers{} alerts, and transfers are the
+group with the largest effect in a share of \RfDelMajority{}. For the other
+\RfDelOtherN{} alerts the score depends more on shared devices or cards than
+the explanation's ranking suggests. Removing all listed evidence lowers the
+risk by a median of \RfDelListed{}, removing as many unlisted links by
+\RfDelUnlisted{}; since the features are computed from the listed structure,
+that contrast checks the implementation rather than the explanation.
 
 \subsection{RQ9: a learned baseline and evasion strength}
 To test whether the rule stage is needed, we trained gradient boosting on the

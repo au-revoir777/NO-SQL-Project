@@ -6,7 +6,7 @@
 a run with no flags has undefined precision and counts as F1 $=0$). TTD: median time from ring activation to
 first flag. Latency: median per-batch detection time on the in-memory store; $^\dagger$full-graph
 methods run on a 5\,s timer, not per batch, so their entry is the median time of one full-graph pass. $p$: paired Wilcoxon signed-rank
-test of F1 against the proposed method on identical streams. Scored baselines use the shipped scorer (\texttt{models/ring\_scorer\_lr.json}), with the alert threshold selected per method on the validation seeds; the proposed method includes the same scorer, so only rows within a group isolate the candidate generator. $p$ values are Holm-corrected.}
+test of F1 against the proposed method on identical streams. Scored baselines use the shipped scorer (\texttt{models/ring\_scorer\_lr.json}), with the alert threshold selected per method on the validation seeds; the proposed method includes the same scorer, so only rows within a group isolate the candidate generator. $p$ values are Holm-corrected over the eight comparisons of this table. Section~\ref{sec:existing} gives every method its own scorer.}
 \label{tab:baselines}
 \begin{tabular}{lcccccc}
 \toprule

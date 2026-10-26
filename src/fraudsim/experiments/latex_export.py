@@ -113,7 +113,8 @@ def generate_baseline_table(output_dir: Path, results_dir: Path = Path("results"
             " Scored baselines use the shipped scorer (\\texttt{models/ring\\_scorer\\_lr.json}),"
             " with the alert threshold selected per method on the validation seeds; the proposed"
             " method includes the same scorer, so only rows within a group isolate the candidate"
-            " generator. $p$ values are Holm-corrected."
+            " generator. $p$ values are Holm-corrected over the eight comparisons of this table."
+            " Section~\\ref{sec:existing} gives every method its own scorer."
         )
     else:
         lines = [line(m) for m in unscored + proposed]
@@ -221,7 +222,9 @@ def generate_ablation_table(output_dir: Path, results_dir: Path = Path("results"
 \caption{{Ablations on {", ".join(_esc(x) for x in dict.fromkeys(df["scenario"]))}
 ($\times$ {df["seed"].nunique()} test seeds). $\Delta$F1: paired mean difference to the full system;
 $d_z$: paired effect size of the full system over the variant; $p$: Wilcoxon signed-rank,
-uncorrected and Holm-corrected over the {len(adj)} tested comparisons.}}
+uncorrected and Holm-corrected over the {len(adj)} tested comparisons. Four scenarios and five seeds,
+so the full system's F1 differs from Table~\\ref{{tab:baselines}}; the hub-weighting row averages
+effects of opposite sign across scenarios (Section~\\ref{{sec:results}}).}}
 \label{{tab:ablation}}
 \begin{{tabular}}{{lcccccccc}}
 \toprule
@@ -264,7 +267,8 @@ def generate_scale_table(output_dir: Path, results_dir: Path = Path("results")) 
         + rf"""\begin{{table*}}[t]
 \centering
 \caption{{Per-batch detection latency (median, ms; mean $\pm$ 95\% CI over {df["seed"].nunique()} seeds)
-and users examined per batch, incremental vs full recomputation, in-memory store.}}
+and users examined per batch, incremental vs full recomputation, in-memory store. With three seeds
+the $t$-interval can exceed the mean; the text uses ranges over seeds.}}
 \label{{tab:scale}}
 \begin{{tabular}}{{rccccc}}
 \toprule

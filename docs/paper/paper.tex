@@ -13,6 +13,7 @@
 % Every number in the text comes from tables/numbers.tex, generated from
 % results/*/results.csv by `make tables` (fraudsim.experiments.latex_export).
 \input{tables/numbers.tex}
+\input{tables/numbers_refine.tex}
 % Claims that still need a source. Never replace with a reference that has not been read.
 \newcommand{\TODOcite}[1]{\textcolor{red}{[cite: #1]}}
 \newcommand{\TBD}[1]{\textcolor{red}{[TBD: #1]}}
@@ -20,7 +21,7 @@
 
 \begin{document}
 
-\title{Hub-Aware Incremental Fraud Ring Detection on Streaming Transaction Graphs}
+\title{Keeping Hub Links: Pairwise Evidence for Fraud Ring Detection on Streaming Transaction Graphs}
 
 \author{\IEEEauthorblockN{Roshan Parveen}
 \IEEEauthorblockA{\textit{School of Computer Science and Engineering} \\
@@ -40,7 +41,7 @@ sanjaykumar.s2023@vitstudent.ac.in}
 \input{sections/abstract.tex}
 
 \begin{IEEEkeywords}
-fraud rings, property graphs, streaming graph analytics, incremental detection, hub-aware weighting, explainability
+fraud rings, property graphs, streaming graph analytics, incremental detection, pairwise evidence, graph neural network baselines
 \end{IEEEkeywords}
 
 \input{sections/body.tex}

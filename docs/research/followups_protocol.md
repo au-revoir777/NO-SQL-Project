@@ -62,3 +62,10 @@ On the E12 test streams (5 scenarios × seeds 1001–1010), at the moment each a
 - control: delete as many member links to unlisted attributes (held by one member).
 
 Expected limitation, stated in advance: the features are computed from the same structure the evidence lists, so "listed versus unlisted" mainly checks the implementation. The group-agreement rate is the informative number.
+
+### R6 outcome (validation, before any re-run)
+- **1/d:** the wider grid selects θ_e = 0.05 (validation F1 0.712, against 0.609 at the old edge 0.1; 0.02 gives 0.679, so 0.05 is interior). As declared, 1/d at 0.05 is re-run on the E2c (5 scenarios × 1001–1010) and E2b (hub_heavy × 1001–1030) streams.
+- **Soft cap:** θ_e stays at 1.0, now interior (1.2 gives 0.510).
+
+### R5 amendment (process)
+The first R5 run shared the two cores with W3b runs, so its timings are contended: incremental 237–1,594 and timer 1,738–2,364 ms per simulated second. As stated in the paper ("no latency from revision runs except the scale point, which ran alone"), R5 is re-run alone on the same seeds 2501–2505, and only the re-run is reported. The contended file is kept outside `results/` for the record.

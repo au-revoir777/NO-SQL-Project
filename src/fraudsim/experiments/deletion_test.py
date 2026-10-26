@@ -73,8 +73,8 @@ class DeletionStage(ScoringStage):
                               first_seen_t=ring.first_seen.timestamp(), member_history=ring.size_history,
                               other_flagged_users=set(),
                               cycle_evidence=(ring.evidence.get("by_detector") or {}).get("temporal_cycle"))
-            base = float(self.scorer.predict(np.array([feats.to_vector()]))[0])
-            contrib = self.scorer.contributions(np.array([feats.to_vector()]))
+            base = float(self.scorer.predict(np.asarray(feats.to_vector(), dtype=float))[0])
+            contrib = self.scorer.contributions(np.asarray(feats.to_vector(), dtype=float))
             top = next((GROUP_OF_FEATURE[f] for f in contrib if f in GROUP_OF_FEATURE), None)
             drops, sizes = {}, {}
             for g in ("device", "card", "ip", "transfers"):
@@ -83,7 +83,7 @@ class DeletionStage(ScoringStage):
                 if removed == 0:
                     continue
                 f2 = extract_features(ctx, v2, joined)
-                drops[g] = base - float(self.scorer.predict(np.array([f2.to_vector()]))[0])
+                drops[g] = base - float(self.scorer.predict(np.asarray(f2.to_vector(), dtype=float))[0])
                 sizes[g] = removed
             listed_n = sum(sizes.values())
             v3 = _view_without(view, ring.members, "unlisted", self.rng, listed_n)
@@ -98,8 +98,8 @@ class DeletionStage(ScoringStage):
                 "drop_by_group": {g: round(d, 4) for g, d in drops.items()},
                 "removed_by_group": sizes, "explanation_top_group": top,
                 "max_drop_group": max(drops, key=drops.get) if drops else None,
-                "drop_all_listed": round(base - float(self.scorer.predict(np.array([f4.to_vector()]))[0]), 4),
-                "drop_unlisted_control": round(base - float(self.scorer.predict(np.array([f3.to_vector()]))[0]), 4),
+                "drop_all_listed": round(base - float(self.scorer.predict(np.asarray(f4.to_vector(), dtype=float))[0]), 4),
+                "drop_unlisted_control": round(base - float(self.scorer.predict(np.asarray(f3.to_vector(), dtype=float))[0]), 4),
                 "unlisted_removed": unl_removed, "listed_removed": listed_n,
             })
         return extra

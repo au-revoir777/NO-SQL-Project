@@ -16,9 +16,11 @@ validation seeds, the static rules reach \ECapTenSF{} (cap 10) and
 \ECapHundredSF{} (cap 100) and Louvain \ELouvainSF{}, against \EPropF{}
 ($\pm$\EPropFCI{}) for the proposed method; every difference to the proposed
 method remains significant after Holm correction ($p<0.001$). Within the
-scored group the differences isolate the candidate generator, the hub-aware
-rule and incremental detection; between a generator's unscored and scored rows
-they isolate the scorer. For the rules with cap 10, the scorer raises F1
+scored group the differences isolate the candidate generator as a whole
+(Section~\ref{sec:attribution} separates its parts); between a generator's
+unscored and scored rows they isolate the scorer. The shipped scorer was
+trained on the proposed pipeline's candidates, which favours it;
+Section~\ref{sec:existing} gives every method its own scorer. For the rules with cap 10, the scorer raises F1
 from \ECapTenF{} to \ECapTenSF{}, through precision (\ECapTenP{} to
 \ECapTenSP{}) at some cost in recall (\ECapTenR{} to \ECapTenSR{}); the
 candidate generator raises it further to \EPropF{}, mostly through recall
@@ -31,28 +33,40 @@ remove them. Connected components never produce a group within the ring size
 limits, because benign hubs join almost all users into one component; Louvain
 splits that component, but its communities rarely coincide with a ring. The
 thresholds selected on validation seeds improve on the a-priori ones (F1
-\EPropF{} vs.\ \EPropDefaultF{}, $p=0.03$).
+\EPropF{} vs.\ \EPropDefaultF{}, $p=0.034$, Holm over the eight comparisons
+of Table~\ref{tab:baselines}).
 
 Per scenario (Table~\ref{tab:scenarios}), the gap to the static rules is
 largest on \texttt{drift} and \texttt{high\_noise}, where many benign groups
 satisfy the rules and their precision collapses, and smallest on the clean
 \texttt{baseline} scenario and on \texttt{adversarial}, which is the hardest
-scenario for every method.
+scenario for every method. Against the scored rules the difference depends on
+the scenario: \RfOldNoiseD{} on \texttt{high\_noise}, but only \RfOldHubD{}
+(95\% CI \RfOldHubLo{} to \RfOldHubHi{}, wins/ties/losses \RfOldHubWTL{}) on
+\texttt{hub\_heavy}, the scenario built for hub hiding. With their own scorer
+the rules reach \RfScRulesTabF{} on these streams.
 
 \textbf{Degree cap vs.\ hub weighting.} Fig.~\ref{fig:frontier} isolates the
 mechanism this paper replaces. Only shared-attribute and mixed rings count as
 ground truth here (flags that match only other ring types are ignored), the
 static rules run without the cycle rule, and the hub-aware detector runs alone.
-Without the scorer, no degree cap reaches a recall above \FrCapMaxR{}: rings
-that share a busy attribute are invisible to every cap. Hub weighting reaches
+Without the scorer, the rules' recall is \FrCapMaxR{} for every cap from 5 to
+200, although caps of 50 and more exceed every benign hub in these scenarios: the
+rules miss these rings because each rule returns all users of one attribute,
+so a ring inside a larger group fails the Jaccard match, whatever the cap.
+Section~\ref{sec:attribution} tests the cap where it does act, inside the
+pairwise detector. Hub weighting reaches
 recall \FrHubMaxR{}, but on its own at precision \FrHubPAtMaxR{}. With the
-calibrated scorer on top, hub weighting reaches recall \FrHubSMaxR{} (precision
-\FrHubSPAtMaxR{}) and its best F1 is \FrHubSBestF{} (alert threshold
-\FrHubSBestFAt{}); the cap with the scorer stays below recall \FrCapSMaxR{} and
+calibrated scorer on top, hub weighting reaches recall \FrHubSMaxR{} (95\%
+bootstrap interval \RfFrHubSRLo{}--\RfFrHubSRHi{}; precision \FrHubSPAtMaxR{}) and its best F1 is \FrHubSBestF{} (alert threshold
+\FrHubSBestFAt{}); the cap with the scorer stays below recall \FrCapSMaxR{}
+(\RfFrCapSRLo{}--\RfFrCapSRHi{}) and
 its best F1 is \FrCapSBestF{}. The difference in best F1, \FrDiff{}, has a
 95\% bootstrap interval of \FrDiffLo{} to \FrDiffHi{} over the 20 runs (the best
-threshold re-selected in every resample), so at the best operating point the
-two mechanisms are not distinguishable on F1. At low recall the cap with the scorer is the
+threshold re-selected in every resample; whole runs resampled within scenario),
+so at the best operating point the two mechanisms are not distinguishable on
+F1. The best operating point is chosen on these test runs for both arms, so
+both best-F1 values are optimistic. At low recall the cap with the scorer is the
 more precise of the two (\FrCapSBestFP{} at recall \FrCapSBestFR{}). Hub
 weighting therefore does not dominate the cap everywhere; it extends the
 frontier to recall levels the cap cannot reach, and the scorer is what makes
@@ -65,10 +79,81 @@ those levels usable.
 4 scenarios $\times$ 5 test seeds). Solid: detector alone, swept over the
 degree cap or the edge threshold $\theta_e$. Dashed: with the calibrated scorer,
 swept over the alert threshold $\theta_a$ (cap 10; $\theta_e=\TunedEdge$).
-Best-F1 difference with the scorer (hub minus cap): \FrDiff{}, 95\% bootstrap
+Best-F1 difference with the scorer (hub minus cap), each at the best alert
+threshold on these test runs (an oracle choice): \FrDiff{}, 95\% bootstrap
 interval \FrDiffLo{} to \FrDiffHi{} (\texttt{results/e3b\_frontier\_ci}).}
 \label{fig:frontier}
 \end{figure}
+
+\subsection{Comparison with existing methods}
+\label{sec:existing}
+\input{tables/tab5_existing.tex}
+Table~\ref{tab:existing} compares the pipeline with five existing methods under
+the protocol of Section~\ref{sec:setup}, on test seeds no experiment had used.
+Against every non-learned method it is ahead: by \RfExrulesperscenarioDA{} ring
+F1 (95\% CI \RfExrulesperscenarioLo{} to \RfExrulesperscenarioHi{}) against the
+rules with a cap and cycle rule tuned per scenario, which is the strongest rule
+baseline and uses the scenario's identity, by \RfExrulesDA{} against the rules
+tuned globally, and by \RfExlouvainDA{}, \RfExleidenDA{} and \RfExpeelingDA{}
+against Louvain, Leiden and FRAUDAR-style peeling. With their own scorers the
+rules come much closer than in Table~\ref{tab:baselines} (F1 \RfExrulesF{}
+against \ECapTenSF{} with the shipped scorer). Peeling and Leiden are precise
+but find few rings, and peeling and Leiden find almost no decoy rings
+(\RfExpeelingDecoy{} and \RfExleidenDecoy{}).
+
+A GraphSAGE classifier trained on ring-membership labels is the one method
+ahead of the pipeline: F1 \RfExgnnunscoredF{} against \RfExproposedF{}
+(difference \RfExgnnunscoredD{}, 95\% CI \RfExgnnunscoredLo{} to
+\RfExgnnunscoredHi{}, confirmatory). With a ring scorer of its own GraphSAGE
+reaches \RfExgnnF{}, and the difference (\RfExgnnD{}) is not significant. The
+gap is not uniform: GraphSAGE is ahead on \texttt{drift} (\RfExgnnunscoredDrift{})
+and \texttt{high\_noise} (\RfExgnnunscoredNoise{}), behind on
+\texttt{adversarial} (\RfExgnnunscoredAdv{}), and the pipeline finds more
+adaptive rings (\RfExproposedAdapt{} against \RfExgnnunscoredAdapt{}) and decoy
+rings (\RfExproposedDecoy{} against \RfExgnnunscoredDecoy{}). Ranked by their
+calibrated scores, the pipeline's rings have the highest ring-level PR AUC of
+all scored methods (\RfExproposedPR{} against \RfExgnnPR{} for GraphSAGE with a
+scorer), so GraphSAGE's advantage lies in its operating point, not in ranking.
+All of these data come from one generator, and GraphSAGE learns its regularities
+from about 320{,}000 labelled user snapshots.
+
+\textbf{Hybrid.} Adding the GraphSAGE classifier as a fourth detector inside the
+pipeline, with a ring scorer trained on the combined candidates, was decided
+after this comparison, so we tested it on another fresh block (2301--2320,
+bottom of Table~\ref{tab:existing}). The hybrid reaches F1 \RfHyhybridF{}
+against \RfHygnnunscoredF{} for GraphSAGE alone (hybrid minus GraphSAGE
+\RfHygnnunscoredD{}, 95\% CI \RfHygnnunscoredLo{} to \RfHygnnunscoredHi{}) and
+\RfHyproposedF{} for the pipeline alone. Any gain of the hybrid belongs to the
+combination, not to a single element of the pipeline.
+
+\subsection{What the advantage depends on}
+\label{sec:attribution}
+\input{tables/tab6_attribution.tex}
+Table~\ref{tab:attribution} isolates the parts of the pairwise rule inside the
+full pipeline, on fresh seeds. Removing hub links with a degree cap of 10 costs
+\RfCapD{} F1 (95\% CI \RfCapLo{} to \RfCapHi{}, confirmatory, $p=\RfCapP$),
+\RfCapHub{} on \texttt{hub\_heavy}, where recall of hub-hiding rings falls from
+\RfCapHHNo{} to \RfCapHHCap{}. Keeping hub links but letting a single attribute
+link a pair (a constant weight with $\theta_e=0.5$) costs \RfNdOneD{}, and
+\RfNdOneHub{} on \texttt{hub\_heavy}: every co-user of the hub is linked and the
+ring cannot be separated from them. Under the condition that a busy attribute
+cannot suffice alone, the weight's shape does not matter: $1/\ln(1+d)$ and a
+constant weight differ by \RfLogConstD{} (CI \RfLogConstLo{} to \RfLogConstHi{})
+without a cap, and by \RfNdShapeD{} (CI \RfNdShapeLo{} to \RfNdShapeHi{}) when
+both also bar rare attributes from linking alone. That last restriction
+(the confirmatory test of the evidence condition) changes nothing overall
+(\RfNdPrimD{}, CI \RfNdPrimLo{} to \RfNdPrimHi{}) but trades scenarios: it removes
+almost all false rings on \texttt{drift} (\RfNdDriftFalseOne{} to
+\RfNdDriftFalseTwo{} per run; F1 \RfNdDriftD{}) and loses adaptive rings
+(\RfNdAdaptOne{} to \RfNdAdaptTwo{}; \texttt{adversarial} \RfNdAdvD{}), which
+often link through one rarely shared device. Finally, with the same cap the
+pairwise pipeline and the scored rules tie overall (\RfPairCapVsRulesD{}) but
+trade sharply: the pipeline wins under benign noise (\RfPairCapVsRulesNoise{} on
+\texttt{high\_noise}) and the rules win on hub hiding
+(\RfPairCapVsRulesHub{} on \texttt{hub\_heavy}). The gain over the rules in
+Table~\ref{tab:baselines} therefore has two sources: pairwise evidence with
+several detectors, which helps under noise, and keeping hub links, which helps
+under hub hiding.
 
 \subsection{RQ2: latency and scale}
 \input{tables/tab3_scale.tex}
@@ -118,10 +203,21 @@ population (15\% and 8\% of users, other hubs up to 10\%; \GhSeeds{} seeds), the
 cost per simulated second is \GhIncCostA{}, \GhIncCostB{} and \GhIncCostC{}\,ms
 for incremental detection at 1{,}000, 5{,}000 and 20{,}000 users, against
 \GhTimerCostA{}, \GhTimerCostB{} and \GhTimerCostC{}\,ms for a 5\,s timer
-(\GhFullCostC{}\,ms for recomputing every batch at 20{,}000). Above a few
-thousand users the timer needs more than one second of computation per
-simulated second, so it cannot keep up, while the incremental region stays
-near \GhIncRegionC{} users even though the hubs grow. The static rules run on
+(\GhFullCostC{}\,ms for recomputing every batch at 20{,}000). At 5{,}000 users
+the two overlap across seeds; at 20{,}000 users the timer needs more than one
+second of computation per simulated second in all three seeds, so it cannot
+keep up, while the incremental region stays near \GhIncRegionC{} users even
+though the hubs grow. On five fresh seeds at 10{,}000 users (revision
+container, run alone) the 5\,s timer needs \RfScaleTenTimerLo{}--\RfScaleTenTimerHi{}\,ms
+per simulated second, more than one second in \RfScaleTenTimerOver{} of 5 seeds;
+the incremental engine is cheaper in \RfScaleTenWins{} of 5 (median
+\RfScaleTenIncMed{}\,ms), but in one seed it costs \RfScaleTenIncHi{}\,ms, more
+than the timer. The incremental
+cost is not monotone in size (\GhIncCostB{} at 5{,}000, \GhIncCostC{} at
+20{,}000); a likely cause, which we did not isolate, is that the region is
+bounded by the fan-out limits while the number of touched users per batch
+falls as the graph grows at a fixed event rate. We did not run 50{,}000 users
+with a timer. The static rules run on
 the same 5\,s timer, which is why their time to detect is similar to ours on the
 accuracy scenarios (\EPropTTD{}\,s vs.\ \ECapTenTTD{}\,s).
 
@@ -137,8 +233,9 @@ rings; right: ring F1 (mean, 95\% CI).}
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{\figpath/fig5_evasion.pdf}
-\caption{Ring recall by evasion strategy, pooled over all runs of Table~
-ef{tab:baselines}.}
+\caption{Ring recall by evasion strategy, pooled over all runs of
+Table~\ref{tab:baselines} (static rules without a scorer; Table~\ref{tab:existing}
+gives the recall by strategy for every method with its own scorer).}
 \label{fig:evasion}
 \end{figure*}
 
@@ -149,7 +246,8 @@ cap 10 \HubSizeCapTenHidden{} over all sizes). The static rules do not find
 these rings through the shared hub: with the 3-cycle rule switched off, cap 10
 finds \HubSizeCapTenNoCycleHidden{}, because the rings also move money among
 themselves in short cycles. What separates the methods is precision, and so
-F1 (\HubSizePropF{} vs.\ \HubSizeCapTenF{}).
+F1 (\HubSizePropF{} vs.\ \HubSizeCapTenF{} for the unscored rules;
+\RfScRulesHubSizeF{} for the rules with their own scorer).
 
 \textbf{Hubs above the fan-out limit.} Fig.~\ref{fig:hubsize} stops at 200
 accounts, below the 250-user first-hop limit. We therefore resized the office
@@ -158,23 +256,29 @@ engine with full recomputation and with a ``bound'' rule that does cross an
 over-limit attribute, towards those co-members whose attribute weight with the
 touched user could reach the edge threshold. At every size the bound rule
 flagged the same rings as the 250-user limit, with identical precision, recall
-and region size (\LhBoundSame{} runs): it never added a user. Full
-recomputation does not give identical runs, since it sees groups outside the
-region, but it found no more hub-hiding rings (\LhLogFullHHA{} vs.\
+and region size (\LhBoundSame{} runs): it never added a user, so no pair in these
+streams shared two over-limit attributes. Full recomputation does not give
+identical runs. Tracing them showed two causes, neither of them the limit: a
+ring none of whose members is touched enters a region only partly, and greedy
+peeling of a connected component of several hundred users can return the ring
+on the whole graph but not on the region's part of it. In total it found no
+more hub-hiding rings (\LhLogFullHHA{} vs.\
 \LhLogFanHHA{} at 500, \LhLogFullHHB{} vs.\ \LhLogFanHHB{} at 2,000) and its F1
 was not higher (\LhLogFullFA{} vs.\ \LhLogFanFA{}, \LhLogFullFB{} vs.\
 \LhLogFanFB{}), while the incremental region stayed at a median of
 \LhRegionInc{} users against up to \LhRegionFullMax{}. At 10,000 accounts one
 full-recomputation run did not finish within 3.5\,h on the test laptop, so
-there is no full-recomputation reference at that size. The test does exercise
-the limit: on the same streams a constant weight (edge threshold 1.0, as
-selected in RQ5) found fewer hub-hiding rings with the limit than with full
-recomputation at 500 accounts (\LhConstFanHHA{} vs.\ \LhConstFullHHA{}; F1
-\LhConstFanFA{} vs.\ \LhConstFullFA{}, lower in 3 of 5 runs; with 5 seeds not
-significant), and one full run of it took about \LhConstFullWallB{} minutes at
-2,000 accounts. So, for hubs up to 10,000 accounts, the limit did not hide
-hub-sharing rings for the hub-aware weight; for a constant weight it can. The
-static rules stay well behind (F1 \LhCapTenFA{}, \LhCapTenFB{}, \LhCapTenFC{}).
+there is no full-recomputation reference at that size. A constant weight (edge threshold 1.0, as selected in RQ5) found fewer
+hub-hiding rings incrementally than with full recomputation at 500 accounts
+(\LhConstFanHHA{} vs.\ \LhConstFullHHA{}; F1 \LhConstFanFA{} vs.\
+\LhConstFullFA{}, lower in 3 of 5 runs; five seeds cannot reach significance),
+by the same two mechanisms; a single busy attribute cannot reach this threshold
+on its own. One full run of it took about \LhConstFullWallB{} minutes at 2,000
+accounts. So, for hubs up to 10,000 accounts, the 250-user limit itself hid no
+pair for either weight, but ring-level equality with full recomputation does
+not hold at these sizes. The static rules stay behind (F1 \LhCapTenFA{},
+\LhCapTenFB{}, \LhCapTenFC{} without a scorer; \RfScRulesLhA{},
+\RfScRulesLhB{}, \RfScRulesLhC{} with their own scorer).
 
 \textbf{Evasion strategies.} Fig.~\ref{fig:evasion} breaks recall down by the
 strategy each planted or random ring uses. The proposed method's advantage in
@@ -191,18 +295,22 @@ inside one window.
 which of its rings were alerted and shifts its strategy mix. Over
 \AdaptSeeds{} test seeds it switched strategy \AdaptOnSwitches{} times and
 launched \AdaptOnRings{} adaptive rings, of which \AdaptOnFound{} were
-detected; without feedback, \AdaptOffFound{} of \AdaptOffRings{}. Adaptation
-did not lower the detection rate in our simulator, although its strategies are
-limited to the four we implemented.
+detected; without feedback, \AdaptOffFound{} of \AdaptOffRings{}. We saw no
+change in the detection rate (difference 0.00, 95\% interval \RfAdaptLo{} to
+\RfAdaptHi{}), an interval too wide to rule out an effect, and the attacker's
+strategies are limited to the four we implemented.
 
 \subsection{RQ4: sensitivity}
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{\figpath/fig6_sweeps.pdf}
-\caption{Ring F1 of the proposed method and of the static rules (cap 10) when
-the event rate (\texttt{adversarial}), the planted ring size
-(\texttt{baseline}) and the view window (\texttt{drift}, proposed only)
-change; 5 test seeds per point.}
+\caption{Ring F1 of the proposed method and of the static rules (cap 10,
+without a scorer) when the event rate (\texttt{adversarial}), the planted ring
+size (\texttt{baseline}) and the view window (\texttt{drift}, proposed only)
+change; 5 test seeds per point. With their own scorer the rules reach F1
+\RfScRulesRateLo{} at the lowest and \RfScRulesRateHi{} at the highest event
+rate, and \RfScRulesSizeLo{} at the smallest and \RfScRulesSizeHi{} at the
+largest ring size.}
 \label{fig:sweeps}
 \end{figure*}
 Raising the event rate from \SwRateLo{} to \SwRateHi{} events/s lowers the
@@ -229,10 +337,10 @@ the validation seeds over a $6\times6$ grid, the best pair was the shipped
 single threshold (0.8, 0.8), so the refinement gains nothing here. Removing the cycle or the
 smurfing detector costs \AblNoCycleF{} and \AblNoSmurfingF{}. Replacing the hub
 weight by a constant at the same edge threshold collapses \texttt{hub\_heavy}
-(\AblFullFHubHeavy{} to \AblNoHubWeightFHubHeavy{}) but slightly helps
-\texttt{high\_noise} (\AblFullFHighNoise{} to \AblNoHubWeightFHighNoise{}), so
-over all four scenarios the difference is not significant
-($p=\AblNoHubWeightPval{}$). That ablation keeps the edge threshold tuned for
+(\AblFullFHubHeavy{} to \AblNoHubWeightFHubHeavy{}) but helps
+\texttt{high\_noise} (\AblFullFHighNoise{} to \AblNoHubWeightFHighNoise{}). The
+effect depends on the scenario (heterogeneity $p=\RfAblHubWHet$), so the pooled
+test ($p=\AblNoHubWeightPval{}$) is not informative either way. That ablation keeps the edge threshold tuned for
 $1/\ln(1+d)$, which is unfair to the constant; the next paragraph gives each
 weight its own threshold.
 
@@ -240,22 +348,32 @@ weight its own threshold.
 threshold selected on the validation seeds and the alert threshold fixed at
 \TunedAlert{}: the shipped $1/\ln(1+d)$ ($\theta_e=\WShipEdge{}$), $1/d$
 (\WInvEdge{}), $1/\sqrt{d}$ (\WSqrtEdge{}), a soft cap
-$1/(1+e^{(d-10)/2})$ (\WSoftEdge{}) and a constant (\WConstEdge{}); for $1/d$,
-the soft cap and the constant the selected value lies on the edge of the grid.
+$1/(1+e^{(d-10)/2})$ (\WSoftEdge{}) and a constant (\WConstEdge{}); for $1/d$ and the soft cap the selected value lies on the edge of this grid
+(\RfGridNote{}); for the constant, a wider grid in Section~\ref{sec:attribution}
+selects 1.0 again as an interior optimum (1.2 is worse).
 On \texttt{hub\_heavy} with \WbSeeds{} paired seeds, the shipped weight reaches
 F1 \WbShipF{} and recall \WbShipHH{} of the rings hidden behind hubs; the
 constant reaches \WbConstF{} and \WbConstHH{} ($p=\WbConstPval{}$), $1/\sqrt{d}$
 \WbSqrtF{}, while $1/d$ (\WbInvF{}) and the soft cap (\WbSoftF{}, hidden-ring
 recall \WbSoftHH{} at precision \WbSoftP{}) are worse ($p$ \WbSoftPval{}). Over
 the five scenarios the picture is the same: \WcShipF{} for the shipped weight,
-\WcConstF{} for the constant and \WcSqrtF{} for $1/\sqrt{d}$, none
-significantly different even before correction, and \WcInvF{} for $1/d$ and
-\WcSoftF{} for the soft cap. Discounting busy attributes too strongly, or
-switching them off, loses rings that share a hub; within the range that keeps
-hub links, the shape of the discount makes no measurable difference once the
-edge threshold is tuned for it.
-Hysteresis and time decay make no significant difference here; without decay
-F1 is even slightly higher (\AblNoTimeDecayF{}). The accuracy scenarios last
+\WcConstF{} for the constant and \WcSqrtF{} for $1/\sqrt{d}$, and \WcInvF{} for
+$1/d$ and \WcSoftF{} for the soft cap. With the widened grid, $1/d$ at
+$\theta_e=0.05$ reaches \RfInvFiveF{} over the five scenarios (\RfInvFiveD{}
+against the shipped weight, 95\% CI \RfInvFiveLo{} to \RfInvFiveHi{}) and
+\RfInvHubF{} on \texttt{hub\_heavy} (\RfInvHubD{}, CI \RfInvHubLo{} to
+\RfInvHubHi{}), so most of its earlier deficit came from the grid edge.
+$1/\sqrt{d}$ is equivalent to the shipped
+weight within 0.05 F1 (90\% interval \RfWSqrtLo{} to \RfWSqrtHi{}); the constant
+is not significantly different but not shown equivalent (\RfWConstLo{} to
+\RfWConstHi{}). Switching hub links off loses rings that share a hub
+(Section~\ref{sec:attribution}); a strong discount costs little once the edge
+threshold is tuned for it, and the soft cap, which nearly switches busy
+attributes off, stays behind.
+Hysteresis makes no difference beyond 0.05 F1 (90\% interval \RfAblHystLo{} to
+\RfAblHystHi{}); time decay makes no significant difference but is not shown
+equivalent (\RfAblDecayLo{} to \RfAblDecayHi{}), and without decay F1 is even
+slightly higher (\AblNoTimeDecayF{}). The accuracy scenarios last
 60--90\,s, short against the 300\,s half-life, so decay has little to act on
 here; its value on long streams is untested.
 
