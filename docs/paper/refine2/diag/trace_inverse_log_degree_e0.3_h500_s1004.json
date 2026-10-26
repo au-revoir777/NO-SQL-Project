@@ -1,0 +1,58 @@
+{
+ "digest": "7c116e4c98e9d2e1",
+ "detected": {
+  "inc": {
+   "mixed_behind_hub": [
+    true,
+    "hub_hiding",
+    null,
+    0.8
+   ],
+   "ring_behind_kiosk": [
+    true,
+    "hub_hiding",
+    null,
+    1.0
+   ],
+   "ring_in_hub": [
+    false,
+    "hub_hiding",
+    "hidden_behind_hub",
+    null
+   ],
+   "standard_ring": [
+    true,
+    "none",
+    null,
+    1.0
+   ]
+  },
+  "full": {
+   "mixed_behind_hub": [
+    true,
+    "hub_hiding",
+    null,
+    0.8
+   ],
+   "ring_behind_kiosk": [
+    true,
+    "hub_hiding",
+    null,
+    1.0
+   ],
+   "ring_in_hub": [
+    false,
+    "hub_hiding",
+    "hidden_behind_hub",
+    null
+   ],
+   "standard_ring": [
+    true,
+    "none",
+    null,
+    1.0
+   ]
+  }
+ },
+ "full_only_batches": []
+}

@@ -1,0 +1,1022 @@
+{
+ "digest": "78fc953bfe979087",
+ "detected": {
+  "inc": {
+   "mixed_behind_hub": [
+    true,
+    "hub_hiding",
+    null,
+    0.8
+   ],
+   "ring_behind_kiosk": [
+    true,
+    "hub_hiding",
+    null,
+    0.75
+   ],
+   "ring_in_hub": [
+    true,
+    "hub_hiding",
+    null,
+    1.0
+   ],
+   "standard_ring": [
+    true,
+    "none",
+    null,
+    1.0
+   ]
+  },
+  "full": {
+   "mixed_behind_hub": [
+    true,
+    "hub_hiding",
+    null,
+    0.8
+   ],
+   "ring_behind_kiosk": [
+    true,
+    "hub_hiding",
+    null,
+    0.75
+   ],
+   "ring_in_hub": [
+    true,
+    "hub_hiding",
+    null,
+    1.0
+   ],
+   "standard_ring": [
+    true,
+    "none",
+    null,
+    1.0
+   ]
+  }
+ },
+ "full_only_batches": [
+  {
+   "batch": 78,
+   "ring": "ring_in_hub",
+   "jac_full": 1.0,
+   "jac_inc": 0.0,
+   "cand_size": 4,
+   "cand_in_region": 1,
+   "ring_size": 4,
+   "seeds_in_cand": 0,
+   "pairs": [
+    {
+     "u": "u000553",
+     "v": "u000554",
+     "attr": 2.818,
+     "txn": 0.149,
+     "shared_degrees": [
+      2,
+      2,
+      502
+     ],
+     "n_over_250": 1,
+     "u_in_region": true,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000553",
+     "v": "u000555",
+     "attr": 0.939,
+     "txn": 0.439,
+     "shared_degrees": [
+      502
+     ],
+     "n_over_250": 1,
+     "u_in_region": true,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000553",
+     "v": "u000558",
+     "attr": 0.939,
+     "txn": 0.146,
+     "shared_degrees": [
+      502
+     ],
+     "n_over_250": 1,
+     "u_in_region": true,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000554",
+     "v": "u000555",
+     "attr": 1.879,
+     "txn": 0.0,
+     "shared_degrees": [
+      2,
+      502
+     ],
+     "n_over_250": 1,
+     "u_in_region": false,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000554",
+     "v": "u000558",
+     "attr": 0.939,
+     "txn": 0.141,
+     "shared_degrees": [
+      502
+     ],
+     "n_over_250": 1,
+     "u_in_region": false,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000555",
+     "v": "u000558",
+     "attr": 0.94,
+     "txn": 0.297,
+     "shared_degrees": [
+      502
+     ],
+     "n_over_250": 1,
+     "u_in_region": false,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    }
+   ]
+  },
+  {
+   "batch": 79,
+   "ring": "ring_in_hub",
+   "jac_full": 1.0,
+   "jac_inc": 0.0,
+   "cand_size": 4,
+   "cand_in_region": 1,
+   "ring_size": 4,
+   "seeds_in_cand": 0,
+   "pairs": [
+    {
+     "u": "u000553",
+     "v": "u000554",
+     "attr": 2.807,
+     "txn": 0.148,
+     "shared_degrees": [
+      2,
+      2,
+      501
+     ],
+     "n_over_250": 1,
+     "u_in_region": true,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000553",
+     "v": "u000555",
+     "attr": 0.936,
+     "txn": 0.437,
+     "shared_degrees": [
+      501
+     ],
+     "n_over_250": 1,
+     "u_in_region": true,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000553",
+     "v": "u000558",
+     "attr": 0.936,
+     "txn": 0.145,
+     "shared_degrees": [
+      501
+     ],
+     "n_over_250": 1,
+     "u_in_region": true,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000554",
+     "v": "u000555",
+     "attr": 1.872,
+     "txn": 0.0,
+     "shared_degrees": [
+      2,
+      501
+     ],
+     "n_over_250": 1,
+     "u_in_region": false,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000554",
+     "v": "u000558",
+     "attr": 0.936,
+     "txn": 0.141,
+     "shared_degrees": [
+      501
+     ],
+     "n_over_250": 1,
+     "u_in_region": false,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000555",
+     "v": "u000558",
+     "attr": 0.937,
+     "txn": 0.296,
+     "shared_degrees": [
+      501
+     ],
+     "n_over_250": 1,
+     "u_in_region": false,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    }
+   ]
+  },
+  {
+   "batch": 81,
+   "ring": "ring_in_hub",
+   "jac_full": 1.0,
+   "jac_inc": 0.0,
+   "cand_size": 4,
+   "cand_in_region": 1,
+   "ring_size": 4,
+   "seeds_in_cand": 0,
+   "pairs": [
+    {
+     "u": "u000553",
+     "v": "u000554",
+     "attr": 2.782,
+     "txn": 0.296,
+     "shared_degrees": [
+      2,
+      2,
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": true,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000553",
+     "v": "u000555",
+     "attr": 0.927,
+     "txn": 0.433,
+     "shared_degrees": [
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": true,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000553",
+     "v": "u000558",
+     "attr": 0.927,
+     "txn": 0.144,
+     "shared_degrees": [
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": true,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000554",
+     "v": "u000555",
+     "attr": 1.855,
+     "txn": 0.0,
+     "shared_degrees": [
+      2,
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": false,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000554",
+     "v": "u000558",
+     "attr": 0.927,
+     "txn": 0.14,
+     "shared_degrees": [
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": false,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000555",
+     "v": "u000558",
+     "attr": 0.928,
+     "txn": 0.293,
+     "shared_degrees": [
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": false,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    }
+   ]
+  },
+  {
+   "batch": 82,
+   "ring": "ring_in_hub",
+   "jac_full": 1.0,
+   "jac_inc": 0.0,
+   "cand_size": 4,
+   "cand_in_region": 1,
+   "ring_size": 4,
+   "seeds_in_cand": 0,
+   "pairs": [
+    {
+     "u": "u000553",
+     "v": "u000554",
+     "attr": 2.767,
+     "txn": 0.294,
+     "shared_degrees": [
+      2,
+      2,
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": true,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000553",
+     "v": "u000555",
+     "attr": 0.922,
+     "txn": 0.431,
+     "shared_degrees": [
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": true,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000553",
+     "v": "u000558",
+     "attr": 0.922,
+     "txn": 0.143,
+     "shared_degrees": [
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": true,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000554",
+     "v": "u000555",
+     "attr": 1.844,
+     "txn": 0.0,
+     "shared_degrees": [
+      2,
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": false,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000554",
+     "v": "u000558",
+     "attr": 0.922,
+     "txn": 0.139,
+     "shared_degrees": [
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": false,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000555",
+     "v": "u000558",
+     "attr": 0.923,
+     "txn": 0.292,
+     "shared_degrees": [
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": false,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    }
+   ]
+  },
+  {
+   "batch": 83,
+   "ring": "ring_in_hub",
+   "jac_full": 1.0,
+   "jac_inc": 0.0,
+   "cand_size": 4,
+   "cand_in_region": 2,
+   "ring_size": 4,
+   "seeds_in_cand": 0,
+   "pairs": [
+    {
+     "u": "u000553",
+     "v": "u000554",
+     "attr": 2.755,
+     "txn": 0.293,
+     "shared_degrees": [
+      2,
+      2,
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": true,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000553",
+     "v": "u000555",
+     "attr": 0.918,
+     "txn": 0.429,
+     "shared_degrees": [
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": true,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000553",
+     "v": "u000558",
+     "attr": 0.918,
+     "txn": 0.142,
+     "shared_degrees": [
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": true,
+     "v_in_region": true,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000554",
+     "v": "u000555",
+     "attr": 1.837,
+     "txn": 0.0,
+     "shared_degrees": [
+      2,
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": false,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000554",
+     "v": "u000558",
+     "attr": 0.918,
+     "txn": 0.138,
+     "shared_degrees": [
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": false,
+     "v_in_region": true,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000555",
+     "v": "u000558",
+     "attr": 0.919,
+     "txn": 0.291,
+     "shared_degrees": [
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": false,
+     "v_in_region": true,
+     "u_seed": false,
+     "v_seed": false
+    }
+   ]
+  },
+  {
+   "batch": 84,
+   "ring": "ring_in_hub",
+   "jac_full": 1.0,
+   "jac_inc": 0.0,
+   "cand_size": 4,
+   "cand_in_region": 2,
+   "ring_size": 4,
+   "seeds_in_cand": 0,
+   "pairs": [
+    {
+     "u": "u000553",
+     "v": "u000554",
+     "attr": 2.743,
+     "txn": 0.291,
+     "shared_degrees": [
+      2,
+      2,
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": true,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000553",
+     "v": "u000555",
+     "attr": 0.914,
+     "txn": 0.427,
+     "shared_degrees": [
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": true,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000553",
+     "v": "u000558",
+     "attr": 0.914,
+     "txn": 0.142,
+     "shared_degrees": [
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": true,
+     "v_in_region": true,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000554",
+     "v": "u000555",
+     "attr": 1.829,
+     "txn": 0.0,
+     "shared_degrees": [
+      2,
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": false,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000554",
+     "v": "u000558",
+     "attr": 0.914,
+     "txn": 0.138,
+     "shared_degrees": [
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": false,
+     "v_in_region": true,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000555",
+     "v": "u000558",
+     "attr": 0.915,
+     "txn": 0.289,
+     "shared_degrees": [
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": false,
+     "v_in_region": true,
+     "u_seed": false,
+     "v_seed": false
+    }
+   ]
+  },
+  {
+   "batch": 85,
+   "ring": "ring_in_hub",
+   "jac_full": 1.0,
+   "jac_inc": 0.0,
+   "cand_size": 4,
+   "cand_in_region": 2,
+   "ring_size": 4,
+   "seeds_in_cand": 0,
+   "pairs": [
+    {
+     "u": "u000553",
+     "v": "u000554",
+     "attr": 2.732,
+     "txn": 0.29,
+     "shared_degrees": [
+      2,
+      2,
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": true,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000553",
+     "v": "u000555",
+     "attr": 0.911,
+     "txn": 0.425,
+     "shared_degrees": [
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": true,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000553",
+     "v": "u000558",
+     "attr": 0.911,
+     "txn": 0.141,
+     "shared_degrees": [
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": true,
+     "v_in_region": true,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000554",
+     "v": "u000555",
+     "attr": 1.821,
+     "txn": 0.0,
+     "shared_degrees": [
+      2,
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": false,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000554",
+     "v": "u000558",
+     "attr": 0.911,
+     "txn": 0.137,
+     "shared_degrees": [
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": false,
+     "v_in_region": true,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000555",
+     "v": "u000558",
+     "attr": 0.911,
+     "txn": 0.288,
+     "shared_degrees": [
+      500
+     ],
+     "n_over_250": 1,
+     "u_in_region": false,
+     "v_in_region": true,
+     "u_seed": false,
+     "v_seed": false
+    }
+   ]
+  },
+  {
+   "batch": 86,
+   "ring": "standard_ring",
+   "jac_full": 1.0,
+   "jac_inc": 0.0,
+   "cand_size": 3,
+   "cand_in_region": 1,
+   "ring_size": 3,
+   "seeds_in_cand": 0,
+   "pairs": [
+    {
+     "u": "u000564",
+     "v": "u000565",
+     "attr": 2.857,
+     "txn": 0.6,
+     "shared_degrees": [
+      2,
+      2,
+      3
+     ],
+     "n_over_250": 0,
+     "u_in_region": false,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000564",
+     "v": "u000566",
+     "attr": 0.988,
+     "txn": 0.6,
+     "shared_degrees": [
+      3
+     ],
+     "n_over_250": 0,
+     "u_in_region": false,
+     "v_in_region": true,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000565",
+     "v": "u000566",
+     "attr": 1.923,
+     "txn": 0.142,
+     "shared_degrees": [
+      2,
+      3
+     ],
+     "n_over_250": 0,
+     "u_in_region": false,
+     "v_in_region": true,
+     "u_seed": false,
+     "v_seed": false
+    }
+   ]
+  },
+  {
+   "batch": 87,
+   "ring": "standard_ring",
+   "jac_full": 1.0,
+   "jac_inc": 0.0,
+   "cand_size": 3,
+   "cand_in_region": 2,
+   "ring_size": 3,
+   "seeds_in_cand": 0,
+   "pairs": [
+    {
+     "u": "u000564",
+     "v": "u000565",
+     "attr": 2.846,
+     "txn": 0.6,
+     "shared_degrees": [
+      2,
+      2,
+      3
+     ],
+     "n_over_250": 0,
+     "u_in_region": true,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000564",
+     "v": "u000566",
+     "attr": 0.984,
+     "txn": 0.6,
+     "shared_degrees": [
+      3
+     ],
+     "n_over_250": 0,
+     "u_in_region": true,
+     "v_in_region": true,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000565",
+     "v": "u000566",
+     "attr": 1.915,
+     "txn": 0.141,
+     "shared_degrees": [
+      2,
+      3
+     ],
+     "n_over_250": 0,
+     "u_in_region": false,
+     "v_in_region": true,
+     "u_seed": false,
+     "v_seed": false
+    }
+   ]
+  },
+  {
+   "batch": 89,
+   "ring": "ring_in_hub",
+   "jac_full": 1.0,
+   "jac_inc": 0.0,
+   "cand_size": 4,
+   "cand_in_region": 2,
+   "ring_size": 4,
+   "seeds_in_cand": 0,
+   "pairs": [
+    {
+     "u": "u000553",
+     "v": "u000554",
+     "attr": 2.685,
+     "txn": 0.433,
+     "shared_degrees": [
+      2,
+      2,
+      498
+     ],
+     "n_over_250": 1,
+     "u_in_region": true,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000553",
+     "v": "u000555",
+     "attr": 0.895,
+     "txn": 0.567,
+     "shared_degrees": [
+      498
+     ],
+     "n_over_250": 1,
+     "u_in_region": true,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000553",
+     "v": "u000558",
+     "attr": 0.895,
+     "txn": 0.139,
+     "shared_degrees": [
+      498
+     ],
+     "n_over_250": 1,
+     "u_in_region": true,
+     "v_in_region": true,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000554",
+     "v": "u000555",
+     "attr": 1.79,
+     "txn": 0.0,
+     "shared_degrees": [
+      2,
+      498
+     ],
+     "n_over_250": 1,
+     "u_in_region": false,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000554",
+     "v": "u000558",
+     "attr": 0.895,
+     "txn": 0.282,
+     "shared_degrees": [
+      498
+     ],
+     "n_over_250": 1,
+     "u_in_region": false,
+     "v_in_region": true,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000555",
+     "v": "u000558",
+     "attr": 0.896,
+     "txn": 0.283,
+     "shared_degrees": [
+      498
+     ],
+     "n_over_250": 1,
+     "u_in_region": false,
+     "v_in_region": true,
+     "u_seed": false,
+     "v_seed": false
+    }
+   ]
+  },
+  {
+   "batch": 89,
+   "ring": "standard_ring",
+   "jac_full": 1.0,
+   "jac_inc": 0.0,
+   "cand_size": 3,
+   "cand_in_region": 2,
+   "ring_size": 3,
+   "seeds_in_cand": 0,
+   "pairs": [
+    {
+     "u": "u000564",
+     "v": "u000565",
+     "attr": 2.82,
+     "txn": 0.6,
+     "shared_degrees": [
+      2,
+      2,
+      3
+     ],
+     "n_over_250": 0,
+     "u_in_region": true,
+     "v_in_region": false,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000564",
+     "v": "u000566",
+     "attr": 0.975,
+     "txn": 0.6,
+     "shared_degrees": [
+      3
+     ],
+     "n_over_250": 0,
+     "u_in_region": true,
+     "v_in_region": true,
+     "u_seed": false,
+     "v_seed": false
+    },
+    {
+     "u": "u000565",
+     "v": "u000566",
+     "attr": 1.898,
+     "txn": 0.14,
+     "shared_degrees": [
+      2,
+      3
+     ],
+     "n_over_250": 0,
+     "u_in_region": false,
+     "v_in_region": true,
+     "u_seed": false,
+     "v_seed": false
+    }
+   ]
+  }
+ ]
+}
