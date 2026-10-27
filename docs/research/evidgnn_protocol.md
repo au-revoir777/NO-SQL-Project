@@ -110,3 +110,6 @@ Gate off still keeps user–attribute links for every attribute, including busy 
 - **H1 null:** "Adding an evidence-gated GNN matches but does not beat GraphSAGE; the pipeline's contribution is robustness (adaptive and decoy rings) and evidence-based rings, not accuracy."
 - **H3 favours EvidGNN:** "The gated model loses less when a scenario is unseen." Otherwise: "Both models depend on having seen the scenario."
 - **GraphSAGE wins everywhere:** a complementarity and negative result. The paper keeps the evidence condition as its contribution and reports that a GNN trained on generator labels is the stronger detector on synthetic data.
+
+## Amendment 1 (2026-10-27, before any model was saved or any tuning run)
+PyTorch's default of two intra-op threads on this two-core container, with other jobs running, made one training step about 250 times slower (1.08 s vs 4.3 ms on the same snapshot; the first training run was stopped by the time limit at epoch 1). EvidGNN training and inference are therefore fixed to one thread (`torch.set_num_threads(1)`). This changes speed only; floating-point reduction order can differ in the last bits. Training also now caches snapshots on disk and checkpoints every epoch. The GraphSAGE baseline is unchanged (its saved model and recorded results stay as they are).

@@ -259,6 +259,7 @@ class EvidGnnDetector(BaseDetector):
 
             from fraudsim.experiments.harness import ROOT
 
+            torch.set_num_threads(1)  # see docs/research/evidgnn_protocol.md, amendment 1
             st = torch.load(ROOT / self.cfg.model_path, weights_only=False)
             m = make_evid(**st["hparams"])
             m.load_state_dict(st["state_dict"])

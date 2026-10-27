@@ -92,6 +92,7 @@ def train(gate: bool = True, fold: str = "all", tag: str = "evidgnn", epochs: in
     the RNG state, which is saved and restored with the checkpoint."""
     import torch
 
+    torch.set_num_threads(1)  # protocol amendment 1: 2-thread runs were ~250x slower (oversubscription)
     torch.manual_seed(0)
     np.random.seed(0)
     gcfg = EvidGraphConfig(gate=gate)
