@@ -482,6 +482,10 @@ def main() -> None:
     a = ap.parse_args()
     if a.step == "train":
         train(bool(a.gate), a.fold, a.tag)
+    elif a.step == "train-loso":  # H3: one model per left-out accuracy scenario
+        for left in SCEN:
+            if not (ROOT / D / f"evidgnn_loso_{left}_all.pt").exists():
+                train(True, "all", f"evidgnn_loso_{left}", scenarios=tuple(x for x in TRAIN_SCEN if x != left))
     elif a.step == "fused-train":
         fused_train(tag=a.tag)
     elif a.step == "tune":
