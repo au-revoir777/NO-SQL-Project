@@ -37,8 +37,8 @@ discount, is what matters: within the same pipeline a degree cap costs
 costs \RfNdOneD{} (\RfNdOneHub{} on the hub-hiding scenario), and two different
 weights that satisfy the condition are equivalent within 0.05 F1 (\RfNdShapeD{}, CI
 \RfNdShapeLo{} to \RfNdShapeHi{}) (Section~\ref{sec:attribution}). The degree
-discount we use is FRAUDAR's column weighting \cite{hooi2016fraudar}; we do not
-claim it as new.
+discount we use, $1/\ln(1+d)$, is a variant of FRAUDAR's column weighting
+$1/\log(d+c)$ \cite{hooi2016fraudar} (with $c=5$ in its experiments); we do not claim it as new.
 \item \textbf{System.} A micro-batch engine re-evaluates only the region each
 batch touches, with fan-out limits; we state when it misses no pair that a full
 pass would link, and show that ring-level equality with full recomputation
@@ -86,7 +86,8 @@ decomposition, the peeling primitive we use to extract dense cores, has
 efficient parallel and GPU implementations \cite{ahmad2023gpukcore,li2021graphblas},
 and greedy peeling by minimum degree is the classical approximation of the
 densest subgraph \cite{charikar2000greedy}. Our degree discount is therefore
-not new: it is FRAUDAR's column weighting, and close to Adamic--Adar. What we
+not new: it is a variant of FRAUDAR's column weighting (which uses $c=5$
+rather than our $c=1$), and close to Adamic--Adar. What we
 study is different from Spade's setting: pairwise evidence between accounts
 from shared attributes and internal transfers, and the condition under which a
 busy shared attribute helps rather than hides a ring. We run FRAUDAR-style
@@ -122,8 +123,8 @@ scores are not comparable with our ring-level metrics
 regression \cite{zadrozny2002transforming} and its comparison with Platt
 scaling \cite{niculescu2005predicting} make classifier scores usable as
 probabilities; Azbergen et al.\ \cite{azbergen2026calibration} compare such
-calibrators for AML risk scores, and learned calibration has been studied
-beyond classification \cite{ding2021temperature}. Counterfactual explanations
+calibrators for AML risk scores, and input-dependent (local) temperature scaling
+extends calibration to per-pixel predictions \cite{ding2021temperature}. Counterfactual explanations
 state what would have to change for a different decision; their robustness
 \cite{artelt2021robustness}, consistency across model updates
 \cite{movin2025acdc} and per-feature importance \cite{meulemeester2026cfi} are
@@ -421,7 +422,7 @@ Elliptic and the AMLSim samples turned out to be outside what the transaction
 rules can detect, for structural reasons we describe. A real-world test of
 hub-aware weighting would need data with shared-attribute links, which we did
 not find in public form with group labels. The IEEE-CIS fraud data
-(\url{https://ieee-dataport.org/documents/ieee-cis-fraud-detection}) comes
+(\url{https://www.kaggle.com/c/ieee-fraud-detection}) comes
 closest: e-commerce transactions with card, address and e-mail-domain fields
 and masked identity and device fields, labelled per transaction. It would let
 the shared-attribute detectors and the hub weight run on real links and measure

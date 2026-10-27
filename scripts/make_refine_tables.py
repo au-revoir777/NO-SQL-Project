@@ -461,6 +461,23 @@ def round3() -> None:
         mac("RtLogAdapt", _evasion(st, "log_shipped", "adaptive"))
 
 
+def pr_auc_ci() -> None:
+    """R4: cluster-bootstrap CI for the W3 ring PR AUC difference (no new runs)."""
+    import numpy as np
+
+    df = c.load("results/w2_eval/*/results.csv")
+    j = c.pair(df, "proposed", "w2_gnn", col="pr_auc").dropna()
+    rng = np.random.default_rng(0)
+    groups = [g.d.to_numpy() for _, g in j.groupby("scenario")]
+    w = np.array([len(g) for g in groups], float) / len(j)
+    boot = np.array([sum(wk * rng.choice(g, len(g)).mean() for wk, g in zip(w, groups, strict=True))
+                     for _ in range(10000)])
+    d = sum(wk * g.mean() for wk, g in zip(w, groups, strict=True))
+    mac("RtPrD", f"{d:+.3f}")
+    mac("RtPrLo", f"{np.percentile(boot, 2.5):+.3f}")
+    mac("RtPrHi", f"{np.percentile(boot, 97.5):+.3f}")
+
+
 def main() -> None:
     loso()
     attribution()
@@ -470,6 +487,7 @@ def main() -> None:
     r6()
     holm_family()
     round3()
+    pr_auc_ci()
     (T / "numbers_refine.tex").write_text("\n".join(macros) + "\n")
     print(f"{len(macros) - 1} macros; tables written")
 
