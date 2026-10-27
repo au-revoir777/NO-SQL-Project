@@ -1,0 +1,393 @@
+{
+  "grids": [
+    {
+      "experiment": "evidgnn_tuning/evidgnn",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "evidgnn_0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.5,
+              "ring_rule": "evidence",
+              "gate": true
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "EvidGNN",
+          "hash": "f6024265200a9a8d"
+        },
+        {
+          "name": "evidgnn_0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.7,
+              "ring_rule": "evidence",
+              "gate": true
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "EvidGNN",
+          "hash": "4ea3897050113d93"
+        },
+        {
+          "name": "evidgnn_0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.8,
+              "ring_rule": "evidence",
+              "gate": true
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "EvidGNN",
+          "hash": "ba6944eb73fbf94a"
+        },
+        {
+          "name": "evidgnn_0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.9,
+              "ring_rule": "evidence",
+              "gate": true
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "EvidGNN",
+          "hash": "a83d0e27352cb19a"
+        },
+        {
+          "name": "evidgnn_0.95",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.95,
+              "ring_rule": "evidence",
+              "gate": true
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "EvidGNN",
+          "hash": "222c8d4991f78e67"
+        },
+        {
+          "name": "evidgnn_any_0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.5,
+              "ring_rule": "any",
+              "gate": true
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "EvidGNN",
+          "hash": "f86cb8bb67f7584a"
+        },
+        {
+          "name": "evidgnn_any_0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.7,
+              "ring_rule": "any",
+              "gate": true
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "EvidGNN",
+          "hash": "2a78cd249e0b445f"
+        },
+        {
+          "name": "evidgnn_any_0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.8,
+              "ring_rule": "any",
+              "gate": true
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "EvidGNN",
+          "hash": "51d7400c3ada7fa0"
+        },
+        {
+          "name": "evidgnn_any_0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.9,
+              "ring_rule": "any",
+              "gate": true
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "EvidGNN",
+          "hash": "9af6203533be7e8c"
+        },
+        {
+          "name": "evidgnn_any_0.95",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.95,
+              "ring_rule": "any",
+              "gate": true
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "EvidGNN",
+          "hash": "c611df42ebed4ae1"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T05:05:42.981108+00:00",
+      "ended_at": "2026-10-27T05:06:38.812972+00:00",
+      "wall_s": 55.832,
+      "rows": 150,
+      "git_commit": "c042b2b19534a11f7628a0cc1e5deabe6835bdcf",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    }
+  ]
+}
