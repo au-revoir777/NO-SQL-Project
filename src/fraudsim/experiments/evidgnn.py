@@ -85,8 +85,14 @@ def cached_snapshots(scenario: str, seed: int, gcfg: EvidGraphConfig) -> list:
     return out
 
 
+def label_subsample(n: int, frac: float, seed: int = 7001) -> np.ndarray:
+    """H4: the same snapshot indices for every model (snapshot k is the same stream and time)."""
+    rng = np.random.default_rng(seed)
+    return np.sort(rng.choice(n, size=max(1, round(frac * n)), replace=False))
+
+
 def train(gate: bool = True, fold: str = "all", tag: str = "evidgnn", epochs: int = 40,
-          scenarios: tuple[str, ...] = TRAIN_SCEN) -> Path:
+          scenarios: tuple[str, ...] = TRAIN_SCEN, frac: float = 1.0) -> Path:
     """Identical settings to the GraphSAGE baseline. Checkpoints every epoch and resumes, so a
     stopped run continues from where it was; the result equals an uninterrupted run except for
     the RNG state, which is saved and restored with the checkpoint."""
@@ -102,6 +108,9 @@ def train(gate: bool = True, fold: str = "all", tag: str = "evidgnn", epochs: in
         for seed in FOLDS[fold]:
             graphs += cached_snapshots(sc, seed, gcfg)
         print(f"[evidgnn train {tag}/{fold}] {sc}: {len(graphs)} snapshots", flush=True)
+    if frac < 1.0:
+        graphs = [graphs[i] for i in label_subsample(len(graphs), frac)]
+        print(f"[evidgnn train {tag}/{fold}] label budget {frac}: {len(graphs)} snapshots", flush=True)
     xs = np.concatenate([g[0] for g in graphs])
     mean, std = xs.mean(0), xs.std(0) + 1e-6
     n_pos = sum(float(g[2].sum()) for g in graphs)
@@ -493,6 +502,111 @@ def test(block: str, names: list[str]) -> None:
         run_methods(f"evidgnn_{block}/{m.name}", SCEN, seeds, [m])
 
 
+def train_sage_subsample(frac: float = 0.1, tag: str = "graphsage_lab10") -> Path:
+    """H4: GraphSAGE retrained exactly as W2 (round-3 LOSO code path) on the same snapshot subsample."""
+    import torch
+
+    from fraudsim.detectors.external import make_sage
+    from fraudsim.experiments.w2_baselines import gnn_snapshots
+
+    torch.set_num_threads(1)
+    torch.manual_seed(0)
+    np.random.seed(0)
+    graphs = []
+    for sc in TRAIN_SCEN:
+        for seed in TRAIN_SEEDS:
+            graphs += gnn_snapshots(sc, seed)[0]
+    n_all = len(graphs)
+    graphs = [graphs[i] for i in label_subsample(n_all, frac)]
+    xs = np.concatenate([g[0] for g in graphs])
+    mean, std = xs.mean(0), xs.std(0) + 1e-6
+    n_pos = sum(float(g[2].sum()) for g in graphs)
+    n = sum(g[3] for g in graphs)
+    model = make_sage(hidden=64)
+    opt = torch.optim.Adam(model.parameters(), lr=0.005, weight_decay=5e-4)
+    loss_fn = torch.nn.BCEWithLogitsLoss(pos_weight=torch.tensor((n - n_pos) / max(n_pos, 1.0)))
+    tens = [(torch.from_numpy((x - mean) / std), torch.from_numpy(ei), torch.from_numpy(y), k) for x, ei, y, k in graphs]
+    for _ in range(40):
+        model.train()
+        for i in np.random.permutation(len(tens)):
+            x, ei, y, k = tens[i]
+            opt.zero_grad()
+            loss_fn(model(x, ei)[:k], y).backward()
+            opt.step()
+    path = ROOT / D / f"{tag}.pt"
+    torch.save({"state_dict": model.state_dict(), "hparams": {"hidden": 64, "dropout": 0.2},
+                "mean": mean.astype(np.float32), "std": std.astype(np.float32)}, path)
+    path.with_suffix(".json").write_text(json.dumps({"frac": frac, "subsample_seed": 7001, "snapshots": len(graphs),
+                                                     "of": n_all, "positive_rows": int(n_pos)}))
+    print(f"[h4] GraphSAGE trained on {len(graphs)}/{n_all} snapshots", flush=True)
+    return path
+
+
+LOSO_BLOCK = tuple(range(4401, 4421))
+LAB_BLOCK = tuple(range(4301, 4311))
+HUB_BLOCKS = {500: tuple(range(4201, 4206)), 2000: tuple(range(4211, 4216)), 10000: tuple(range(4221, 4226))}
+
+
+def test_loso() -> None:
+    """H3: EvidGNN alone vs GraphSAGE alone, each with its all-scenario and leave-X-out model."""
+    from fraudsim.experiments.w2_baselines import skip_explanations
+
+    skip_explanations()
+    sel = json.loads(SELECTED.read_text())
+    te, tg = _sel_threshold(sel, "evidgnn")[0], _sel_threshold(sel, "gnn_unscored")[0]
+    for sc in SCEN:
+        ms = [method("evidgnn", te, name="evidgnn_all"),
+              method("evidgnn", te, tag=f"evidgnn_loso_{sc}", name="evidgnn_loso"),
+              gnn_method(tg, name="gnn_all"), gnn_method(tg, name="gnn_loso")]
+        ms[1].overrides["evidgnn"]["model_path"] = f"{D}/evidgnn_loso_{sc}_all.pt"
+        ms[3].overrides["gnn"]["model_path"] = f"results/round3_gnn/graphsage_loso_{sc}.pt"
+        run_methods("evidgnn_loso", [sc], LOSO_BLOCK, ms)
+
+
+def test_label() -> None:
+    """H4: both models retrained on the same 10% snapshot subsample, at their selected thresholds."""
+    from fraudsim.experiments.w2_baselines import skip_explanations
+
+    skip_explanations()
+    sel = json.loads(SELECTED.read_text())
+    te, tg = _sel_threshold(sel, "evidgnn")[0], _sel_threshold(sel, "gnn_unscored")[0]
+    a = method("evidgnn", te, name="evidgnn_lab10")
+    a.overrides["evidgnn"]["model_path"] = f"{D}/evidgnn_lab10_all.pt"
+    b = gnn_method(tg, name="gnn_lab10")
+    b.overrides["gnn"]["model_path"] = f"{D}/graphsage_lab10.pt"
+    run_methods("evidgnn_label", SCEN, LAB_BLOCK, [a, b])
+
+
+def test_hub(sizes=(500, 2000, 10000)) -> None:
+    """Exploratory hub-size sweep (ranges only)."""
+    from fraudsim.experiments.large_hubs import overrides as hub_ov
+    from fraudsim.experiments.w2_baselines import skip_explanations
+
+    skip_explanations()
+    sel = json.loads(SELECTED.read_text())
+    for size in sizes:
+        for m in systems(sel, ["evidpipe", "gnn_unscored", "proposed", "hybrid"]):
+            _run_hub(size, m, hub_ov(size))
+
+
+def _run_hub(size: int, m: Method, ov: dict) -> None:
+    from fraudsim.detectors import evidgnn as det
+    from fraudsim.experiments import harness
+
+    fused = m.model_path and "fused" in m.model_path
+    orig_stage, orig_load = harness.ScoringStage, harness.RingScorer.load
+    if fused:
+        harness.ScoringStage = FusedStage  # type: ignore[misc]
+        harness.RingScorer.load = staticmethod(  # type: ignore[method-assign]
+            lambda p: load_fused(p) if "fused_" in str(p) else orig_load(p))
+    det.SCORE_CACHE = None
+    try:
+        run_grid(f"evidgnn_hub/{m.name}", ["hub_heavy"], HUB_BLOCKS[size], [m], OUT,
+                 scenario_overrides=ov, extra_columns={"hub_size": size})
+    finally:
+        harness.ScoringStage, harness.RingScorer.load = orig_stage, orig_load  # type: ignore[misc]
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("step")
@@ -515,7 +629,17 @@ def main() -> None:
     elif a.step == "select":
         select()
     elif a.step == "test":
-        test(a.arg, a.methods.split(","))
+        if a.arg == "loso":
+            test_loso()
+        elif a.arg == "label":
+            test_label()
+        elif a.arg == "hub":
+            test_hub(tuple(int(x) for x in a.methods.split(",")) if a.methods[0].isdigit() else (500, 2000, 10000))
+        else:
+            test(a.arg, a.methods.split(","))
+    elif a.step == "train-label":  # H4
+        train(True, "all", "evidgnn_lab10", frac=0.1)
+        train_sage_subsample(0.1)
 
 
 if __name__ == "__main__":
