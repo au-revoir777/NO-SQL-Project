@@ -516,6 +516,7 @@ def gnnpipe() -> None:
         mac(f"EgMain{key}F", f"{g.f1.mean():.3f}")
     k = c.contrast(mn, "evidpipe", "gnn_unscored")
     mac("EgHoneD", sgn(k["diff"], 3))
+    mac("EgHoneA", f"{abs(k['diff']):.3f}")
     mac("EgHoneLo", sgn(k["ci95_cluster_boot"][0], 3))
     mac("EgHoneHi", sgn(k["ci95_cluster_boot"][1], 3))
     mac("EgHoneNoise", sgn(k["per_scenario"]["high_noise"]["d"], 3))
