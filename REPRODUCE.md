@@ -166,3 +166,12 @@ python scripts/make_refine_tables.py                                 # tables an
 ```
 
 `tests/test_reproducibility.py::test_recorded_evidpipe_row_is_reproduced` reruns one recorded EvidPipe row under the locked versions.
+
+## AnchorPipe (docs/research/anchor_protocol.md)
+
+```bash
+A="python -m fraudsim.experiments.anchor"
+$A reference; $A fused-train; $A tune; $A select; $A dev
+for b in T1 T2 T3 T4; do $A test $b; done
+python scripts/make_refine_tables.py        # Table VIII and macros
+```

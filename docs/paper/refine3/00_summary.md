@@ -2,7 +2,15 @@
 
 Branch `feat/round3-evidgnn`. Write-ups 01–06 in this folder. Protocols: `docs/research/round3_protocol.md` and `docs/research/evidgnn_protocol.md` (amendments 1–3); commit hashes are in `docs/research/PROTOCOL_LOG.md`.
 
-## Headline
+## Headline (updated): AnchorPipe
+
+AnchorPipe is a GNN pipeline with a label-free shift guard (`07_anchorpipe.md`). All three confirmatory tests are supported:
+
+- **In distribution:** +0.099 over GraphSAGE, 95% CI [0.075, 0.123].
+- **Under amount overlap:** +0.239 over the unguarded GNN pipeline.
+- **Against the rule-based pipeline under shift:** non-inferior (−0.008, 90% CI [−0.018, 0.001]).
+
+## Earlier headline
 
 A GNN-inclusive pipeline beats every existing method on this benchmark. It adds a GNN as a detector and uses a ring scorer that reads the GNN's member probabilities, trained out of fold. Its gain over GraphSAGE, the strongest existing method:
 
