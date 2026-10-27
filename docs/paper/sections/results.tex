@@ -155,6 +155,24 @@ Table~\ref{tab:baselines} therefore has two sources: pairwise evidence with
 several detectors, which helps under noise, and keeping hub links, which helps
 under hub hiding.
 
+Two exploratory follow-ups on further fresh seeds (protocol in
+\texttt{docs/research/round3\_protocol.md}) sharpen this. First, the cost of a cap
+does not come only from attributes that could link a pair alone. A cap of 27
+removes exactly the attributes that, at $\theta_e=0.3$, can never link a pair
+without a second piece of evidence, and still costs \RtCapTwentySevenD{} F1 (CI
+\RtCapTwentySevenLo{} to \RtCapTwentySevenHi{}; cap 50: \RtCapFiftyD{}; cap 10:
+\RtCapTenD{}). Hub-hiding rings found fall from \RtCapHHNo{} to
+\RtCapHHTwentySeven{}. Busy attributes therefore help as \emph{supporting}
+evidence, added to a transfer or a rarer attribute. Second, the property that
+rare attributes link alone is what the adaptive rings need, but a step function
+with that property is not a substitute for the discount: $h(d)=1$ for $d\le27$ and
+0.2 above costs \RtStepD{} (CI \RtStepLo{} to \RtStepHi{}), mostly on
+\texttt{hub\_heavy}, where the flat 0.2 lets busy attributes add up. A constant
+weight that requires two pieces of evidence ($\theta_e=1.0$, the constant row of
+Table~\ref{tab:existing}) differs by \RtConstTwoD{} (CI \RtConstTwoLo{} to \RtConstTwoHi{}),
+with fewer false rings, but finds \RtConstTwoAdapt{} adaptive rings against
+\RtLogAdapt{} for $1/\ln(1+d)$.
+
 \subsection{RQ2: latency and scale}
 \input{tables/tab3_scale.tex}
 \begin{figure}[t]

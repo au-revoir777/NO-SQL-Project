@@ -275,7 +275,8 @@ the proposed method's budget. PR AUC: ring-level, threshold-free (not defined wi
 score). $\\Delta$: proposed minus row (scenario-weighted, 95\\% cluster bootstrap), $p$:
 stratified sign-flip; the comparison with the strongest baseline by validation F1 (GraphSAGE, no
 scorer) is confirmatory, the others exploratory. $^\\ddagger$Exploratory variant added after the
-degree-cap control. $^\\S$Selection uses the scenario's identity (an oracle advantage).}
+degree-cap control: the pipeline with $h(d)=1$ for every attribute and $\\theta_e=1.0$ (selected on
+validation), so no single attribute links a pair; same scorer and $\\theta_a$ as the proposed method. $^\\S$Selection uses the scenario's identity (an oracle advantage).}
 \\label{tab:existing}
 \\small
 \\setlength{\\tabcolsep}{2.5pt}
@@ -426,6 +427,40 @@ def holm_family() -> None:
         mac(f"RfHolm{k}", f"{adj[k]:.3f}" if adj[k] < 1 else "1.00")
 
 
+def _evasion(df: pd.DataFrame, method: str, kind: str) -> str:
+    tot = [0, 0]
+    for x in df[df.method == method].detected_by_evasion.map(json.loads):
+        a, b = x.get(kind, [0, 0])
+        tot[0] += a
+        tot[1] += b
+    return f"{tot[0]}/{tot[1]}"
+
+
+def round3() -> None:
+    """Round 3 R1 (cap sweep) and R3 (step weight); exploratory."""
+    p = ROOT / "results/round3/capsweep/results.csv"
+    if p.exists():
+        cs = c.load("results/round3/capsweep/*.csv")
+        for arm, nm in (("cap10", "Ten"), ("cap27", "TwentySeven"), ("cap50", "Fifty")):
+            r = c.contrast(cs, "keep_links", arm)
+            mac(f"RtCap{nm}D", f"{-r['diff']:.3f}")
+            mac(f"RtCap{nm}Lo", f"{-r['ci95_cluster_boot'][1]:.3f}")
+            mac(f"RtCap{nm}Hi", f"{-r['ci95_cluster_boot'][0]:.3f}")
+        mac("RtCapHHNo", _evasion(cs, "keep_links", "hub_hiding"))
+        mac("RtCapHHTwentySeven", _evasion(cs, "cap27", "hub_hiding"))
+    p = ROOT / "results/round3/step/results.csv"
+    if p.exists():
+        st = c.load("results/round3/step/*.csv")
+        for arm, nm in (("step27", "Step"), ("const_two", "ConstTwo")):
+            r = c.contrast(st, arm, "log_shipped")
+            mac(f"Rt{nm}D", f"{r['diff']:.3f}")
+            mac(f"Rt{nm}Lo", f"{r['ci95_cluster_boot'][0]:.3f}")
+            mac(f"Rt{nm}Hi", f"{r['ci95_cluster_boot'][1]:.3f}")
+            mac(f"Rt{nm}P", f"{r['p_signflip']:.3f}")
+            mac(f"Rt{nm}Adapt", _evasion(st, arm, "adaptive"))
+        mac("RtLogAdapt", _evasion(st, "log_shipped", "adaptive"))
+
+
 def main() -> None:
     loso()
     attribution()
@@ -434,6 +469,7 @@ def main() -> None:
     followups()
     r6()
     holm_family()
+    round3()
     (T / "numbers_refine.tex").write_text("\n".join(macros) + "\n")
     print(f"{len(macros) - 1} macros; tables written")
 

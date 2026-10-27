@@ -8,7 +8,8 @@ the proposed method's budget. PR AUC: ring-level, threshold-free (not defined wi
 score). $\Delta$: proposed minus row (scenario-weighted, 95\% cluster bootstrap), $p$:
 stratified sign-flip; the comparison with the strongest baseline by validation F1 (GraphSAGE, no
 scorer) is confirmatory, the others exploratory. $^\ddagger$Exploratory variant added after the
-degree-cap control. $^\S$Selection uses the scenario's identity (an oracle advantage).}
+degree-cap control: the pipeline with $h(d)=1$ for every attribute and $\theta_e=1.0$ (selected on
+validation), so no single attribute links a pair; same scorer and $\theta_a$ as the proposed method. $^\S$Selection uses the scenario's identity (an oracle advantage).}
 \label{tab:existing}
 \small
 \setlength{\tabcolsep}{2.5pt}
