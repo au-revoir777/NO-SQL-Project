@@ -141,3 +141,28 @@ The simulator and the detectors are deterministic for a given scenario file and
 seed: the same `stream_digest` and the same flagged rings come out on every run
 (`tests/test_simulator.py` and `tests/test_detectors.py` check this, including across separate processes). Latency columns are
 wall-clock measurements and vary with the machine and its load.
+
+## GNN-inclusive pipeline (EvidGNN / EvidPipe / SagePipe) and round 3
+
+The protocols are `docs/research/evidgnn_protocol.md` (including amendments 1–2) and `docs/research/round3_protocol.md`. Install the W2 extras (`requirements-w2.txt`, CPU PyTorch 2.5.1). All commands run from the repository root. Use `OMP_NUM_THREADS=1` (amendment 1: speed only).
+
+```bash
+E="python -m fraudsim.experiments.evidgnn"
+$E train --fold all; $E train --fold A; $E train --fold B          # EvidGNN models
+$E train --fold all --gate 0 --tag evidgnn_nogate                    # ablation A1
+$E fused-train                                                       # EvidPipe scorer (out-of-fold)
+$E train-sage-folds; $E fused-train --tag sage                       # SagePipe (amendment 2)
+$E train-loso; python -m fraudsim.experiments.round3 gnn-loso        # H3 models
+$E train-label                                                       # H4 models (10%, seed 7001)
+for t in gnn-wide gnn-evidence evidgnn nogate evidpipe sagepipe; do $E tune $t; done
+$E select                                                            # results/evidgnn_tuning/selected.json
+$E test main      --methods evidpipe,gnn_unscored,evidgnn,gnn_scored,hybrid,proposed,rules   # 4001-4020
+$E test ablation  --methods evidgnn,evidgnn_nogate,evidgnn_any,gnn_evidence,gnn_unscored,evidpipe,evidpipe_shipped_scorer
+$E test loso; $E test label
+$E test follow    --methods sagepipe,evidpipe,gnn_unscored,hybrid,proposed                    # 4801-4820
+$E test overlap   --methods evidpipe,sagepipe,gnn_unscored,proposed,rules                     # 4701-4710
+for s in capsweep step scorers loso decoy prcurve amount latency; do python -m fraudsim.experiments.round3 $s; done
+python scripts/make_refine_tables.py                                 # tables and macros for the paper
+```
+
+`tests/test_reproducibility.py::test_recorded_evidpipe_row_is_reproduced` reruns one recorded EvidPipe row under the locked versions.

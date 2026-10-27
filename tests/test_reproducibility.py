@@ -50,3 +50,28 @@ def test_recorded_e1_row_is_reproduced() -> None:
         assert int(got[k]) == int(rec[k]), k
     for k in ("precision", "recall", "f1"):
         assert abs(float(got[k] or 0) - float(rec[k] or 0)) < 1e-9, k
+
+
+@pytest.mark.skipif(
+    any(version(p) != v for p, v in LOCKED.items()),
+    reason="recorded results are reproducible only with the locked library versions",
+)
+def test_recorded_evidpipe_row_is_reproduced(monkeypatch) -> None:
+    """One row of the GNN-inclusive pipeline's main block (docs/research/evidgnn_protocol.md)."""
+    pytest.importorskip("torch")
+    from fraudsim.experiments import evidgnn, harness
+    from fraudsim.experiments.w2_baselines import skip_explanations
+
+    path = ROOT / "results/evidgnn_main/evidpipe/results.csv"
+    if not path.exists():
+        pytest.skip("EvidGNN results not present")
+    with open(path, newline="", encoding="utf-8") as f:
+        rec = next(r for r in csv.DictReader(f) if r["scenario"] == "hub_heavy" and r["seed"] == "4001")
+    skip_explanations()
+    monkeypatch.setattr(harness, "ScoringStage", evidgnn.FusedStage)
+    sel = __import__("json").loads((ROOT / "results/evidgnn_tuning/selected.json").read_text())
+    m = evidgnn.systems(sel, ["evidpipe"])[0]
+    got = run_method(make_stream("hub_heavy", 4001), m, evidgnn.load_fused(ROOT / m.model_path), "repro")
+    assert got["stream_digest"] == rec["stream_digest"]
+    for k in ("rings_flagged", "rings_detected", "false_rings"):
+        assert int(got[k]) == int(rec[k]), k
