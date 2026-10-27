@@ -339,7 +339,8 @@ def _run_methods(experiment: str, scenarios, seeds, methods: list[Method]) -> No
     if fused:
         orig_stage, orig_load = harness.ScoringStage, harness.RingScorer.load
         harness.ScoringStage = FusedStage  # type: ignore[misc]
-        harness.RingScorer.load = staticmethod(load_fused)  # type: ignore[method-assign]
+        harness.RingScorer.load = staticmethod(  # type: ignore[method-assign]
+            lambda p: load_fused(p) if "fused_" in str(p) else orig_load(p))
         try:
             run_grid(experiment, scenarios, seeds, fused, OUT)
         finally:
