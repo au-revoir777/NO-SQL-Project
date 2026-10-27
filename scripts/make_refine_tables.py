@@ -406,6 +406,26 @@ def r6() -> None:
         mac("RfGridNote", "widened in revision: $1/d$ moves to 0.05, the soft cap stays at 1.0, both now interior")
 
 
+def holm_family() -> None:
+    """Raw and Holm-adjusted p for the declared confirmatory family of four."""
+    r1 = c.load("results/r1_cap_control/*/results.csv")
+    nd = c.load("results/nd_evidence_count/results.csv")
+    w3 = c.load("results/w2_eval/*/results.csv")
+    hy = c.load("results/w3b_eval/*/results.csv")
+    fam = {"Cap": c.contrast(r1, "r1_log", "r1_log_cap10")["p_signflip"],
+           "Gnn": c.contrast(w3, "proposed", "w2_gnn_unscored")["p_signflip"],
+           "Hy": c.contrast(hy, "w2_hybrid", "w2_gnn_unscored")["p_signflip"],
+           "Nd": c.contrast(nd, "nd_log_two", "nd_log_one")["p_signflip"]}
+    order = sorted(fam, key=fam.get)
+    adj, run = {}, 0.0
+    for i, k in enumerate(order):
+        run = max(run, min(1.0, fam[k] * (len(order) - i)))
+        adj[k] = run
+    for k in fam:
+        mac(f"RfRaw{k}", f"{fam[k]:.3f}")
+        mac(f"RfHolm{k}", f"{adj[k]:.3f}" if adj[k] < 1 else "1.00")
+
+
 def main() -> None:
     loso()
     attribution()
@@ -413,6 +433,7 @@ def main() -> None:
     s1()
     followups()
     r6()
+    holm_family()
     (T / "numbers_refine.tex").write_text("\n".join(macros) + "\n")
     print(f"{len(macros) - 1} macros; tables written")
 

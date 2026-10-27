@@ -85,7 +85,7 @@ risk by a median of \RfDelListed{}, removing as many unlisted links by
 \RfDelUnlisted{}; since the features are computed from the listed structure,
 that contrast checks the implementation rather than the explanation.
 
-\subsection{RQ9: a learned baseline and evasion strength}
+\subsection{RQ9: a learned baseline and evasion strength}\label{sec:rq9}
 To test whether the rule stage is needed, we trained gradient boosting on the
 same 19 ring features over rule-free candidate groups (Louvain communities
 without a density filter). Training, calibration and threshold selection used
@@ -93,7 +93,7 @@ the shipped scorer's protocol. On the test streams of RQ1 it reaches F1
 \ThirteenGbF{} against \ThirteenPropF{} (paired Wilcoxon $p\ThirteenP$,
 rank-biserial \ThirteenRb{}). Precision is not the problem: it is \ThirteenGbP{}
 against \ThirteenPropP{}, with a third of the alerts. Recall is:
-\ThirteenGbR{} against \ThirteenPropR{}. The gap is largest where hubs and
+\ThirteenGbR{} against \ThirteenPropR{}. (Table~\ref{tab:existing}, on fresh seeds 2101--2120 with each method's own tuned scorer, reports the same baseline lower, at \RfExtabulargbF{}; the difference is the seed block and the threshold selection.) The gap is largest where hubs and
 evasion matter (\texttt{hub\_heavy}: \ThirteenGbFHub{} against
 \ThirteenPropFHub{}; \texttt{adversarial}: \ThirteenGbFAdv{} against
 \ThirteenPropFAdv{}).

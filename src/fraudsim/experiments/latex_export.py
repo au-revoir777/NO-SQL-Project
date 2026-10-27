@@ -223,8 +223,8 @@ def generate_ablation_table(output_dir: Path, results_dir: Path = Path("results"
 ($\times$ {df["seed"].nunique()} test seeds). $\Delta$F1: paired mean difference to the full system;
 $d_z$: paired effect size of the full system over the variant; $p$: Wilcoxon signed-rank,
 uncorrected and Holm-corrected over the {len(adj)} tested comparisons. Four scenarios and five seeds,
-so the full system's F1 differs from Table~\\ref{{tab:baselines}}; the hub-weighting row averages
-effects of opposite sign across scenarios (Section~\\ref{{sec:results}}).}}
+so the full system's F1 differs from Table~\ref{{tab:baselines}}; the hub-weighting row averages
+effects of opposite sign across scenarios (Section~\ref{{sec:results}}).}}
 \label{{tab:ablation}}
 \begin{{tabular}}{{lcccccccc}}
 \toprule

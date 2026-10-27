@@ -35,7 +35,7 @@ discount, is what matters: within the same pipeline a degree cap costs
 \RfCapD{} ring F1 (95\% CI \RfCapLo{} to \RfCapHi{}) and most hub-hiding rings
 (\RfCapHHCap{} against \RfCapHHNo{}), a weight that lets one attribute suffice
 costs \RfNdOneD{} (\RfNdOneHub{} on the hub-hiding scenario), and two different
-weights that satisfy the condition are indistinguishable (\RfNdShapeD{}, CI
+weights that satisfy the condition are equivalent within 0.05 F1 (\RfNdShapeD{}, CI
 \RfNdShapeLo{} to \RfNdShapeHi{}) (Section~\ref{sec:attribution}). The degree
 discount we use is FRAUDAR's column weighting \cite{hooi2016fraudar}; we do not
 claim it as new.
@@ -46,8 +46,8 @@ holds for small hubs only (Section~\ref{sec:method}). Candidate rings are scored
 by a calibrated classifier, and alerts carry feature contributions, an evidence
 subgraph and, where one exists, a counterfactual.
 \item \textbf{Evaluation.} A deterministic simulator with ring-level ground
-truth and five evasion strategies; preregistered protocols with fresh test
-seeds for every new experiment; and a comparison with five existing methods
+truth and five evasion strategies; protocols committed before the runs, with fresh test
+seeds for every new experiment; and a comparison with six existing methods
 (tuned rules, Louvain, Leiden, FRAUDAR-style peeling and a GraphSAGE
 classifier), each with a scorer trained on its own candidates and at least the
 same tuning budget (Section~\ref{sec:existing}).
@@ -314,8 +314,11 @@ seeds 1001 and up. Every experiment added in revision uses a block of fresh
 test seeds declared, with its hypotheses, in a protocol committed before its
 first run (\texttt{docs/research/}): 2001--2010 for the degree-cap control,
 2101--2120 for the comparison with existing methods, 2301--2320 for the hybrid,
-2401--2420 for the evidence condition and 2501--2505 for scale. Each block is
-used once.
+2401--2420 for the evidence condition and 2501--2505 for scale. The
+weight-function comparison (1001--1030), the hub-size sweep (1001--1005) and
+the timer comparison (1001--1005) reuse the original test seeds and are
+exploratory. Round-three experiments use 3001--3720 (\texttt{docs/research/round3\_protocol.md}).
+Each block is used once.
 On the validation seeds we evaluated a grid of alert thresholds
 $\theta_a\in\{0.2,0.3,0.5,0.7,0.8,0.9\}$ and edge thresholds
 $\theta_e\in\{0.2,0.3,0.4,0.5,0.6\}$ on the five accuracy scenarios; the grid was
@@ -336,7 +339,10 @@ with a 95\% cluster bootstrap interval (seeds resampled within scenario,
 differences, and win/tie/loss counts. Four comparisons are confirmatory and
 form one family with Holm correction: the degree-cap control, the comparison
 with the strongest existing method, the hybrid against that method, and the
-evidence condition; all other tests are exploratory and uncorrected. We call
+evidence condition. Their raw (Holm-adjusted) sign-flip $p$-values are
+\RfRawCap{} (\RfHolmCap{}), \RfRawGnn{} (\RfHolmGnn{}), \RfRawHy{} (\RfHolmHy{})
+and \RfRawNd{} (\RfHolmNd{}). The family was fixed in the protocols before the
+runs; all other tests are exploratory and uncorrected. We call
 two variants equivalent only when the 90\% interval of their difference lies
 within $\pm0.05$ F1 (about one ring in every two to four runs), and we report
 results on five or fewer seeds as ranges, without $p$-values.
@@ -363,7 +369,7 @@ enough.
 projection, no density filter.
 \end{itemize}
 All baselines use the same two-hit confirmation as the proposed method.
-Section~\ref{sec:existing} adds five existing methods under a common protocol.
+Section~\ref{sec:existing} adds six existing methods under a common protocol (gradient boosting, the learned baseline of Section~\ref{sec:rq9}, is the sixth).
 
 \textbf{Fair comparison.} All methods process identical event streams, emit
 candidate rings of 3--25 accounts, pass them through the same tracker and are
@@ -502,7 +508,7 @@ Keeping links through busy shared attributes helps a streaming ring detector
 only if no busy attribute can link two accounts on its own. Within the same
 pipeline, a degree cap costs \RfCapD{} ring F1 and most hub-hiding rings, a
 weight that lets one attribute suffice costs \RfNdOneD{}, and two weights that
-both meet the condition are indistinguishable; the degree discount we started
+both meet the condition are equivalent within 0.05 F1; the degree discount we started
 from is one way to meet it, not the source of the gain. Against tuned rules,
 Louvain, Leiden and FRAUDAR-style peeling, each with its own calibrated scorer,
 the pipeline improves ring F1 on fresh test seeds, by \RfExrulesperscenarioDA{}
@@ -526,7 +532,7 @@ identity rotation, and a white-box attacker.
 the code. The repository contains the simulator, scenarios, detectors, the
 trained scorers and GraphSAGE model, every result file (each row records the
 scenario hash, seed and a digest of the event stream; each run records the git
-commit and library versions), the preregistered protocols with their
+commit and library versions), the protocols (committed to the repository before each run) with their
 amendments (\texttt{docs/research/}), and the scripts that regenerate every
 table and number in this paper from those files (\texttt{make tables};
 \texttt{scripts/make\_refine\_tables.py}). \texttt{REPRODUCE.md} gives the
