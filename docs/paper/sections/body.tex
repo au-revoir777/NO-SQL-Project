@@ -42,16 +42,20 @@ discount we use, $1/\ln(1+d)$, is a variant of FRAUDAR's column weighting
 $1/\log(d+c)$ \cite{hooi2016fraudar} (with $c=5$ in its experiments); we do not claim it as new.
 Even a cap that removes only attributes unable to link a pair alone costs
 \RtCapTwentySevenA{}: busy attributes help as supporting evidence.
-\item \textbf{Contribution: a GNN-inclusive pipeline that beats the existing
-methods.} The pipeline with a GNN as an extra detector, and a ring scorer that
-reads the GNN's member probabilities (trained with out-of-fold scores), outperforms
-the strongest existing method, a GraphSAGE classifier, by \EgHoneD{} F1 (95\% CI
-\EgHoneLo{} to \EgHoneHi{}, confirmatory), and the gain replicates on two further fresh
-blocks. Ablations show that the GNN-aware scorer carries the gain, while gating
-the GNN's message passing around busy attributes, which we designed for this,
-hurts. A plain GraphSAGE inside the pipeline does as well as our gated model.
-The advantage depends on training-like transfer amounts
-(Section~\ref{sec:gnnpipe}).
+\item \textbf{Contribution: a shift-guarded GNN pipeline (AnchorPipe).} A GNN
+added to the pipeline, with a ring scorer that reads its member probabilities,
+beats the strongest existing method, GraphSAGE, by about 0.09--0.10 F1 on four
+fresh blocks (Section~\ref{sec:gnnpipe}), but fails when transfer amounts shift.
+We add a label-free shift guard. It compares the share of users the GNN flags
+with a reference range from unlabelled streams, and falls back to the
+evidence-based scorer outside that range. On fresh blocks this keeps the
+in-distribution gain (\AnTOneVsgnnunscoredD{} over GraphSAGE, 95\% CI
+\AnTOneVsgnnunscoredLo{} to \AnTOneVsgnnunscoredHi{}). Under overlapping amounts it
+holds the rule-based pipeline's level, where GraphSAGE collapses and the
+unguarded GNN pipeline loses \AnTTwoVssagepipeD{}. All three confirmatory tests
+are supported (Section~\ref{sec:anchor}). Two of our design ideas did not help,
+and we report them as rejected: gating the GNN's message passing around busy
+attributes, and anchoring GNN probabilities to evidence edges.
 \item \textbf{System.} A micro-batch engine re-evaluates only the region each
 batch touches, with fan-out limits; we state when it misses no pair that a full
 pass would link, and show that ring-level equality with full recomputation
@@ -131,6 +135,12 @@ provides synthetic laundering attempts with typology labels
 \cite{altman2023amlworld}. These studies classify transactions, so their
 scores are not comparable with our ring-level metrics
 (Section~\ref{sec:public}).
+
+\textbf{Detecting shift.} Dataset shift is commonly detected by comparing the
+distribution of a model's inputs or outputs on new data with a reference sample
+\cite{rabanser2019failing}. Our guard is a minimal instance: one output
+statistic of the GNN, compared with unlabelled reference streams, used to switch
+between a learned scorer and a label-free fallback inside a streaming pipeline.
 
 \textbf{Calibration and explanations.} Post-hoc calibration by isotonic
 regression \cite{zadrozny2002transforming} and its comparison with Platt
@@ -439,6 +449,13 @@ shift (Section~\ref{sec:gnnpipe}). The GNN runs on the whole graph each
 micro-batch, so the GNN-inclusive pipeline does not inherit the engine's
 incremental cost.
 
+\textbf{Shift guard.} The guard detects shifts that change how many users the
+GNN flags. Its reference range comes from unlabelled streams of the same
+generator. A shift that moves the GNN's errors without changing its flag rate
+would pass unnoticed. A hub-size shift did not trigger it, because the GNN did
+not fail there. The guard was designed after the unguarded GNN pipeline had been
+seen to fail, and was then tested only on fresh blocks under its own protocol.
+
 \textbf{Public data.} The public datasets we could obtain carry no device,
 card or IP links, so they cannot test hub-aware weighting at all; on them only
 the transaction detectors run (Section~\ref{sec:public}). Only AMLworld has
@@ -533,10 +550,13 @@ between batches.
 Keeping links through busy shared attributes helps a streaming ring detector
 only if no busy attribute can link two accounts on its own. A GNN added to the
 pipeline, with a ring scorer that reads its member probabilities, outperforms
-every existing method we tested by \EgHoneD{} F1 over GraphSAGE, on three fresh
-blocks. The gain comes from that scorer, not from restricting message passing
-around busy attributes, and it disappears when transfer amounts shift away from
-training, where the rule-based pipeline is more robust. Within the same
+every existing method we tested in distribution. A label-free guard on the GNN's
+flag rate, which falls back to the evidence-based scorer, keeps that gain and
+removes the failure under amount shift (AnchorPipe: \AnTOneanchorF{} in distribution
+against \AnTOnegnnunscoredF{} for GraphSAGE, and \AnTTwoanchorF{} under overlapping
+amounts against \AnTTwognnunscoredF{}). The rule-based scorer it falls back on still
+uses transfer-size features. Under the strongest amount shift, the scored rules are
+slightly ahead. Within the same
 pipeline, a degree cap costs \RfCapD{} ring F1 and most hub-hiding rings, a
 weight that lets one attribute suffice costs \RfNdOneD{}, and two weights that
 both meet the condition are equivalent within 0.05 F1. Shape still matters at the

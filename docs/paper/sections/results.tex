@@ -281,6 +281,64 @@ the GNN's message passing around busy attributes does not help. This mirrors the
 degree-cap result: busy attributes are useful evidence for a learned model as
 well as for the pairwise rule.
 
+\subsection{AnchorPipe: a GNN-inclusive pipeline that survives shift}
+\label{sec:anchor}
+\input{tables/tab8_anchor.tex}
+The GNN-inclusive pipeline wins in distribution and loses under shift. The
+rule-based pipeline is the reverse. \textbf{AnchorPipe} keeps both properties.
+It was specified in a separate protocol committed before any of its code ran
+(\texttt{docs/research/anchor\_protocol.md}), with three confirmatory hypotheses
+under Holm correction and four fresh blocks.
+
+It extends SagePipe with two label-free checks.
+\emph{Evidence anchoring}: a member's GNN probability enters two extra scorer
+features only if the member has a pairwise-evidence edge ($W\ge\theta_e$) to
+another member of the candidate ring.
+A \emph{shift guard}: after every micro-batch the guard records the share of
+active users that the GNN scores at $p\ge 0.5$. When the median of the last five
+values exceeds the 99.5th percentile of the same statistic on unlabelled
+hold-out streams (0.456; median 0.045), rings are scored by the shipped
+rule-based scorer. Its risk is mapped monotonically so that the alert threshold
+keeps its meaning.
+The guard uses no labels at run time and is calibrated without them. Thresholds were
+selected on the validation seeds, where the guard never fired. On separate
+development shifts it was checked but not changed.
+
+In distribution (T1, Table~\ref{tab:anchor}) the guard never fires, and AnchorPipe
+reaches F1 \AnTOneanchorF{} against \AnTOnegnnunscoredF{} for GraphSAGE
+(confirmatory A1: \AnTOneVsgnnunscoredD{}, 95\% CI \AnTOneVsgnnunscoredLo{} to
+\AnTOneVsgnnunscoredHi{}). It also exceeds the hybrid (\AnTOneVshybridD{}), the
+shipped pipeline (\AnTOneVsproposedD{}) and the rules (\AnTOneVsrulesD{}).
+
+With overlapping amounts (T2) the guard fires in every stream. AnchorPipe falls
+to \AnTTwoanchorF{}, against \AnTTwosagepipeF{} for SagePipe (confirmatory A2:
+\AnTTwoVssagepipeD{}, CI \AnTTwoVssagepipeLo{} to \AnTTwoVssagepipeHi{}) and
+\AnTTwognnunscoredF{} for GraphSAGE. It is not worse than the rule-based
+pipeline (\AnTTwoproposedF{}; confirmatory A3, non-inferiority at 0.05:
+\AnTTwoVsproposedD{}, 90\% CI \AnTTwoVsproposedLoNinety{} to
+\AnTTwoVsproposedHiNinety{}) and is above the rules (\AnTTwoVsrulesD{}, CI
+\AnTTwoVsrulesLo{} to \AnTTwoVsrulesHi{}) and the hybrid (\AnTTwohybridF{}).
+
+On a stronger shift not used in development (T3, exploratory) the picture is the
+same: AnchorPipe \AnTThreeanchorF{}, SagePipe \AnTThreesagepipeF{}, shipped
+pipeline \AnTThreeproposedF{}. Here the scored rules are slightly ahead
+(\AnTThreerulesF{}; difference \AnTThreeVsrulesD{}, 90\% CI
+\AnTThreeVsrulesLoNinety{} to \AnTThreeVsrulesHiNinety{}, not shown equivalent).
+
+With 500- and 2{,}000-account hubs (T4, exploratory), the GNN does not fail and the
+guard stays silent. AnchorPipe has the highest median F1 (1.00 at both sizes,
+minimum 0.89).
+
+The ablations locate the gain. Without the guard, anchoring alone does not
+repair the shift (T2: \AnTTwoanchoronlyF{}). Without the anchoring features, the
+guard alone gives the same result under shift (\AnTTwoguardonlyF{}); in
+distribution AnchorPipe minus guard-only is \AnTOneVsguardonlyD{} (CI
+\AnTOneVsguardonlyLo{} to \AnTOneVsguardonlyHi{}). The scorer gives the anchoring features little weight.
+The shift guard is therefore the component that matters. The GNN's own output
+statistic, checked against unlabelled reference streams, tells the pipeline when
+to stop trusting it, and the label-free pairwise-evidence pipeline is what it
+falls back on.
+
 \subsection{RQ2: latency and scale}
 \input{tables/tab3_scale.tex}
 \begin{figure}[t]

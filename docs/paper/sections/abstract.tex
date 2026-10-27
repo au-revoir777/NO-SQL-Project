@@ -1,16 +1,16 @@
 \begin{abstract}
 Rule-based fraud-ring detectors hide busy shared attributes behind a degree
-cap. We study a streaming pipeline that keeps these
-links as pairwise evidence, detects incrementally and scores candidate rings.
-On a simulator with ring labels, with protocols committed before
-each run and fresh test seeds, a cap inside the pipeline costs \RfCapD{} ring
-F1, and even a cap that removes only attributes unable to link a pair alone
-costs \RtCapTwentySevenA{} (exploratory). Adding a graph neural network as a
-detector, with a ring scorer that reads its member probabilities, outperforms
-the strongest existing method, a GraphSAGE classifier, by \EgHoneA{} F1 (95\%
-CI \EgHoneLo{} to \EgHoneHi{}), replicated on two further blocks. The gain
-comes from this scorer, not from gating message passing around busy
-attributes; plain GraphSAGE inside the pipeline does as well. The advantage
-needs training-like inputs: when benign and ring amounts overlap, the
-rule-based pipeline is more robust. All data are synthetic.
+cap; learned graph models are more accurate but brittle. We study a streaming
+pipeline that keeps hub links as pairwise evidence, and add a graph neural
+network whose member probabilities feed the ring scorer. A label-free shift
+guard watches the share of users the GNN flags and falls back to the
+evidence-based scorer when that share leaves its reference range. On a
+simulator, with protocols committed before each run and fresh test seeds,
+this pipeline (AnchorPipe) beats the strongest existing method, GraphSAGE, by
+\AnTOneVsgnnunscoredD{} F1 in distribution (95\% CI \AnTOneVsgnnunscoredLo{} to
+\AnTOneVsgnnunscoredHi{}). When benign and ring amounts overlap, GraphSAGE
+collapses and the unguarded GNN pipeline falls to \AnTTwosagepipeF{}, while
+AnchorPipe stays level with the rule-based pipeline (\AnTTwoanchorF{} against
+\AnTTwoproposedF{}). Inside the pipeline, a degree cap costs \RfCapD{} F1. All
+data are synthetic.
 \end{abstract}
