@@ -1,0 +1,12 @@
+{
+ "found_by_query": {
+  "unknown": 41
+ },
+ "ring_type": {
+  "money_cycle": 27,
+  "shared_device": 6,
+  "shared_card": 8
+ },
+ "missed": 19,
+ "note": "ring_type identifies the rule: money_cycle = Q3 (3-cycle), shared_device = Q1, shared_card = Q2; hub_heavy, seeds 3001-3020, rules cap 10 + cycle + own scorer (alert 0.7); 60 hub-hiding rings"
+}

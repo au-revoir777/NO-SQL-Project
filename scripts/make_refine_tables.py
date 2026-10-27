@@ -455,6 +455,7 @@ def round3() -> None:
         for arm, nm in (("step27", "Step"), ("const_two", "ConstTwo")):
             r = c.contrast(st, arm, "log_shipped")
             mac(f"Rt{nm}D", f"{r['diff']:.3f}")
+            mac(f"Rt{nm}A", f"{abs(r['diff']):.3f}")
             mac(f"Rt{nm}Lo", f"{r['ci95_cluster_boot'][0]:.3f}")
             mac(f"Rt{nm}Hi", f"{r['ci95_cluster_boot'][1]:.3f}")
             mac(f"Rt{nm}P", f"{r['p_signflip']:.3f}")

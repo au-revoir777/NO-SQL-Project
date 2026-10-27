@@ -36,7 +36,8 @@ discount, is what matters: within the same pipeline a degree cap costs
 (\RfCapHHCap{} against \RfCapHHNo{}), a weight that lets one attribute suffice
 costs \RfNdOneD{} (\RfNdOneHub{} on the hub-hiding scenario), and two different
 weights that satisfy the condition are equivalent within 0.05 F1 (\RfNdShapeD{}, CI
-\RfNdShapeLo{} to \RfNdShapeHi{}) (Section~\ref{sec:attribution}). The degree
+\RfNdShapeLo{} to \RfNdShapeHi{}), though not every such weight is (a step weight
+costs \RtStepA{}; Section~\ref{sec:attribution}). The degree
 discount we use, $1/\ln(1+d)$, is a variant of FRAUDAR's column weighting
 $1/\log(d+c)$ \cite{hooi2016fraudar} (with $c=5$ in its experiments); we do not claim it as new.
 Even a cap that removes only attributes unable to link a pair alone costs
@@ -538,11 +539,13 @@ around busy attributes, and it disappears when transfer amounts shift away from
 training, where the rule-based pipeline is more robust. Within the same
 pipeline, a degree cap costs \RfCapD{} ring F1 and most hub-hiding rings, a
 weight that lets one attribute suffice costs \RfNdOneD{}, and two weights that
-both meet the condition are equivalent within 0.05 F1; the degree discount we started
-from is one way to meet it, not the source of the gain. Against tuned rules,
+both meet the condition are equivalent within 0.05 F1. Shape still matters at the
+margin: a step weight that meets the condition costs \RtStepA{}, and only weights
+that let rare attributes link alone find most adaptive rings. Against tuned rules,
 Louvain, Leiden and FRAUDAR-style peeling, each with its own calibrated scorer,
 the pipeline improves ring F1 on fresh test seeds, by \RfExrulesperscenarioDA{}
-against the strongest of them. Without a GNN, a GraphSAGE classifier trained on ring labels
+against the strongest of them (rules tuned per scenario, an oracle selection;
+exploratory). Without a GNN, a GraphSAGE classifier trained on ring labels
 from the same generator is ahead of the rule-based pipeline on one block
 (\RfExgnnunscoredF{} against \RfExproposedF{}) and level on another; it loses
 \RtLosoSageDrop{} F1 when a scenario is left out of training while the

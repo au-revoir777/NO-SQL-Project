@@ -127,8 +127,13 @@ after this comparison, so we tested it on another fresh block (2301--2320,
 bottom of Table~\ref{tab:existing}). The hybrid reaches F1 \RfHyhybridF{}
 against \RfHygnnunscoredF{} for GraphSAGE alone (hybrid minus GraphSAGE
 \RfHygnnunscoredD{}, 95\% CI \RfHygnnunscoredLo{} to \RfHygnnunscoredHi{}) and
-\RfHyproposedF{} for the pipeline alone. Any gain of the hybrid belongs to the
-combination, not to a single element of the pipeline.
+\RfHyproposedF{} for the pipeline alone. At the same F1 it finds many more
+hub-hiding rings than GraphSAGE alone (89/107 against 68/107), at lower
+precision (0.76 against 0.88). Any gain of the hybrid belongs to the
+combination, not to a single element of the pipeline. At matched recall of about
+0.67 the pipeline, GraphSAGE and GraphSAGE with a scorer have the same precision
+(0.86--0.89, seeds 3401--3405, descriptive). GraphSAGE reaches no recall above
+0.69 at any threshold, while the pipeline and the hybrid reach 0.78--0.80.
 
 \subsection{What the advantage depends on}
 \label{sec:attribution}
@@ -154,7 +159,12 @@ often link through one rarely shared device. Finally, with the same cap the
 pairwise pipeline and the scored rules tie overall (\RfPairCapVsRulesD{}) but
 trade sharply: the pipeline wins under benign noise (\RfPairCapVsRulesNoise{} on
 \texttt{high\_noise}) and the rules win on hub hiding
-(\RfPairCapVsRulesHub{} on \texttt{hub\_heavy}). The gain over the rules in
+(\RfPairCapVsRulesHub{} on \texttt{hub\_heavy}). The capped rules do not find these
+rings through the hub. On \texttt{hub\_heavy} (seeds 3001--3020) they detect 41 of
+60 hub-hiding rings: 27 through the 3-cycle transfer rule and 14 through a device
+or card that only the ring shares. A cap therefore hides rings from a detector
+that relies on the hub link, the pairwise rule, and not from rules that use
+other evidence the ring leaves. The gain over the rules in
 Table~\ref{tab:baselines} therefore has two sources: pairwise evidence with
 several detectors, which helps under noise, and keeping hub links, which helps
 under hub hiding.
