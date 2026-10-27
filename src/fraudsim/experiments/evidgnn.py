@@ -40,7 +40,7 @@ SCEN = ("baseline", "high_noise", "hub_heavy", "adversarial", "drift")
 TRAIN_SCEN = (*SCEN, "scale_sweep")
 TRAIN_SEEDS = tuple(range(101, 111))
 FOLDS = {"A": tuple(range(101, 106)), "B": tuple(range(106, 111)), "all": TRAIN_SEEDS}
-VAL_SEEDS = (301, 302, 303, *range(311, 321))
+VAL_SEEDS = (301, 302, 303)  # protocol S2: 311-320 stays reserved and unused
 ALERT_GRID = (0.3, 0.5, 0.7, 0.8, 0.9)
 NODE_GRID = (0.5, 0.7, 0.8, 0.9, 0.95)
 GNN_STATS = ("gnn_mean_p", "gnn_min_p", "gnn_frac_flagged")
@@ -256,7 +256,26 @@ def method(kind: str, node_threshold: float, alert: float | None = None, tag: st
 
 
 def run_methods(experiment: str, scenarios, seeds, methods: list[Method]) -> None:
-    """Like run_grid, but EvidPipe methods use the FusedStage and the fused scorer."""
+    """Like run_grid, but EvidPipe methods use the FusedStage and the fused scorer.
+    GNN node scores are cached per stream (they do not depend on any threshold)."""
+    from fraudsim.detectors import evidgnn as det
+    from fraudsim.experiments import harness
+
+    orig_stream = harness.make_stream
+
+    def fresh_stream(*a, **k):
+        det.SCORE_CACHE = {}
+        return orig_stream(*a, **k)
+
+    harness.make_stream = fresh_stream  # type: ignore[assignment]
+    try:
+        _run_methods(experiment, scenarios, seeds, methods)
+    finally:
+        harness.make_stream = orig_stream  # type: ignore[assignment]
+        det.SCORE_CACHE = None
+
+
+def _run_methods(experiment: str, scenarios, seeds, methods: list[Method]) -> None:
     from fraudsim.experiments import harness
 
     fused = [m for m in methods if m.family == "evidgnn" and m.model_path and "fused" in m.model_path]
@@ -274,6 +293,151 @@ def run_methods(experiment: str, scenarios, seeds, methods: list[Method]) -> Non
             harness.RingScorer.load = orig_load  # type: ignore[method-assign]
 
 
+# ─── Tuning (validation 301-303) and selection ────────────────────────────────
+
+GNN_WIDE = (0.97, 0.98, 0.99, 0.995)  # S0C fairness fix for the GraphSAGE baseline
+TUNE = "evidgnn_tuning"
+SELECTED = OUT / TUNE / "selected.json"
+
+
+def gnn_method(threshold: float, ring_rule: str = "any", name: str | None = None) -> Method:
+    from fraudsim.experiments.w2_baselines import make
+
+    m = make("gnn", threshold, None, scored=False)
+    if ring_rule != "any":
+        m.overrides["gnn"]["ring_rule"] = ring_rule
+    if name:
+        m.name = m.label = name
+    return m
+
+
+def tune(what: str) -> None:
+    if what == "gnn-wide":
+        run_grid(f"{TUNE}/gnn_wide", SCEN, VAL_SEEDS, [gnn_method(v) for v in GNN_WIDE], OUT)
+    elif what == "evidgnn":  # A0 and A2 (same scores, two ring rules)
+        ms = [method("evidgnn", v) for v in NODE_GRID]
+        ms += [method("evidgnn", v, ring_rule="any", name=f"evidgnn_any_{v}") for v in NODE_GRID]
+        run_methods(f"{TUNE}/evidgnn", SCEN, VAL_SEEDS, ms)
+    elif what == "nogate":  # A1
+        ms = [method("evidgnn", v, tag="evidgnn_nogate", gate=False, name=f"evidgnn_nogate_{v}") for v in NODE_GRID]
+        run_methods(f"{TUNE}/nogate", SCEN, VAL_SEEDS, ms)
+    elif what == "gnn-evidence":  # A3: GraphSAGE with the evidence ring rule
+        grid = (0.5, 0.7, 0.8, 0.9, 0.95, *GNN_WIDE)
+        run_grid(f"{TUNE}/gnn_evidence", SCEN, VAL_SEEDS,
+                 [gnn_method(v, "evidence", f"gnn_evidence_{v}") for v in grid], OUT)
+    elif what == "evidpipe":
+        ms = [method("evidpipe", v, a) for v in NODE_GRID for a in ALERT_GRID]
+        run_methods(f"{TUNE}/evidpipe", SCEN, VAL_SEEDS, ms)
+    else:
+        raise ValueError(what)
+
+
+def _best(df: pd.DataFrame, prefix: str | None = None) -> tuple[str, float]:
+    df = df.assign(f1=df["f1"].fillna(0))
+    if prefix:
+        df = df[df["method"].str.startswith(prefix)]
+    f = df.groupby("method")["f1"].mean()
+    # ties go to the lower threshold: names sort by threshold within a family
+    best = max(sorted(f.index, key=_thr), key=lambda m: round(float(f[m]), 6))
+    return best, round(float(f[best]), 4)
+
+
+def _thr(name: str) -> tuple[float, ...]:
+    out = []
+    for tok in name.replace("_a", "_").split("_"):
+        try:
+            out.append(float(tok))
+        except ValueError:
+            pass
+    return tuple(out)
+
+
+def select() -> dict:
+    """Selection on validation F1 only; written before any test-block run."""
+    read = lambda d: pd.read_csv(OUT / TUNE / d / "results.csv")  # noqa: E731
+    w2 = json.loads((OUT / "w2_tuning/selected.json").read_text())
+    w2gnn = pd.read_csv(OUT / "w2_tuning/gnn/results.csv")
+    un = pd.concat([w2gnn[w2gnn["method"].str.endswith("_unscored")], read("gnn_wide")])
+    out: dict[str, Any] = {"protocol": "docs/research/evidgnn_protocol.md"}
+    out["gnn_unscored"] = dict(zip(("method", "val_f1"), _best(un), strict=True))
+    out["gnn_scored"] = w2["gnn"]
+    out["rules"] = w2["rules"]
+    out["hybrid"] = w2["hybrid"]
+    ev = read("evidgnn")
+    out["evidgnn"] = dict(zip(("method", "val_f1"), _best(ev[~ev["method"].str.startswith("evidgnn_any")]), strict=True))
+    out["evidgnn_any"] = dict(zip(("method", "val_f1"), _best(ev, "evidgnn_any"), strict=True))
+    for key, d in (("evidgnn_nogate", "nogate"), ("gnn_evidence", "gnn_evidence"), ("evidpipe", "evidpipe")):
+        if (OUT / TUNE / d / "results.csv").exists():
+            out[key] = dict(zip(("method", "val_f1"), _best(read(d)), strict=True))
+    cands = {k: out[k]["val_f1"] for k in ("gnn_unscored", "gnn_scored", "rules")}
+    out["strongest_existing"] = max(cands, key=cands.get)
+    SELECTED.parent.mkdir(parents=True, exist_ok=True)
+    SELECTED.write_text(json.dumps(out, indent=1))
+    print(json.dumps(out, indent=1))
+    return out
+
+
+# ─── Test blocks ──────────────────────────────────────────────────────────────
+
+MAIN = tuple(range(4001, 4021))
+ABL = tuple(range(4101, 4121))
+
+
+def _sel_threshold(sel: dict, key: str) -> tuple[float, ...]:
+    return _thr(sel[key]["method"])
+
+
+def systems(sel: dict, names: list[str]) -> list[Method]:
+    from fraudsim.experiments.w2_baselines import _parse, make, overrides
+
+    out = []
+    for n in names:
+        if n == "evidpipe":
+            v, a = _sel_threshold(sel, "evidpipe")
+            out.append(method("evidpipe", v, a, name="evidpipe"))
+        elif n == "evidpipe_shipped_scorer":  # A6
+            v, _ = _sel_threshold(sel, "evidpipe")
+            t = load_tuned()
+            m = method("evidpipe", v, float(t["alert_threshold"]), name=n)
+            m.model_path = None
+            out.append(m)
+        elif n == "evidgnn":
+            out.append(method("evidgnn", _sel_threshold(sel, "evidgnn")[0], name=n))
+        elif n == "evidgnn_any":  # A2
+            out.append(method("evidgnn", _sel_threshold(sel, "evidgnn_any")[0], ring_rule="any", name=n))
+        elif n == "evidgnn_nogate":  # A1
+            out.append(method("evidgnn", _sel_threshold(sel, "evidgnn_nogate")[0], tag="evidgnn_nogate",
+                              gate=False, name=n))
+        elif n == "gnn_evidence":  # A3
+            out.append(gnn_method(_sel_threshold(sel, "gnn_evidence")[0], "evidence", n))
+        elif n == "gnn_unscored":  # A4 / existing
+            out.append(gnn_method(_sel_threshold(sel, "gnn_unscored")[0], name=n))
+        elif n in ("gnn_scored", "rules", "hybrid"):
+            mm, v, a, s_ = _parse(sel[n]["method"])
+            m = make(mm, v, a, s_)
+            m.name = n
+            out.append(m)
+        elif n == "proposed":
+            t = load_tuned()
+            ov = _merge(PROPOSED, {"hub_aware": {"edge_threshold": float(t["edge_threshold"])}})
+            out.append(Method("proposed", "proposed (shipped)", ov, family="proposed",
+                              alert_threshold=float(t["alert_threshold"])))
+        else:
+            raise ValueError(n)
+    _ = overrides
+    return out
+
+
+def test(block: str, names: list[str]) -> None:
+    from fraudsim.experiments.w2_baselines import skip_explanations
+
+    skip_explanations()
+    sel = json.loads(SELECTED.read_text())
+    seeds = {"main": MAIN, "ablation": ABL}[block]
+    for m in systems(sel, names):
+        run_methods(f"evidgnn_{block}/{m.name}", SCEN, seeds, [m])
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("step")
@@ -281,11 +445,18 @@ def main() -> None:
     ap.add_argument("--gate", type=int, default=1)
     ap.add_argument("--fold", default="all")
     ap.add_argument("--tag", default="evidgnn")
+    ap.add_argument("--methods", default="evidpipe,evidgnn,gnn_unscored,gnn_scored,hybrid,proposed,rules")
     a = ap.parse_args()
     if a.step == "train":
         train(bool(a.gate), a.fold, a.tag)
     elif a.step == "fused-train":
         fused_train(tag=a.tag)
+    elif a.step == "tune":
+        tune(a.arg)
+    elif a.step == "select":
+        select()
+    elif a.step == "test":
+        test(a.arg, a.methods.split(","))
 
 
 if __name__ == "__main__":

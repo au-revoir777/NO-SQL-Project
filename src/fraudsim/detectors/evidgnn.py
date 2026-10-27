@@ -189,6 +189,40 @@ def make_evid(hidden: int = 64, dropout: float = 0.2):
     return EvidSage()
 
 
+def evidence_rings(view: GraphView, scores: dict[str, float], flagged: set[str], min_size: int = 3,
+                   max_size: int = 25, density: float = 0.75, pairs: dict | None = None):
+    """Evidence ring rule: components of evidence edges among flagged users, peeled when large."""
+    if pairs is None:
+        pairs = evidence_pairs(view, EvidGraphConfig())
+    adj: dict[str, dict[str, float]] = defaultdict(dict)
+    for (u, v), w in pairs.items():
+        if u in flagged and v in flagged:
+            adj[u][v] = adj[v][u] = w
+    out, seen = [], set()
+    for u in sorted(adj):
+        if u in seen:
+            continue
+        comp, stack = set(), [u]
+        while stack:
+            a = stack.pop()
+            if a not in comp:
+                comp.add(a)
+                stack.extend(set(adj[a]) - comp)
+        seen |= comp
+        if len(comp) > max_size:
+            comp = _peel(adj, comp, density, max_size, min_size) or set()
+        if min_size <= len(comp) <= max_size:
+            out.append((comp, float(np.mean([scores[m] for m in comp]))))
+    return out
+
+
+# Optional per-stream cache of node scores and evidence pairs. Scores depend only on the graph
+# state (events seen so far), the model and the graph settings, never on the node or alert
+# threshold, so a tuning grid over thresholds can reuse them. The experiment runner sets this to
+# {} and clears it whenever a new stream starts; None (default) disables caching.
+SCORE_CACHE: dict | None = None
+
+
 @dataclass(slots=True)
 class EvidGnnConfig(DetectorConfig):
     detector_type: DetectorType = DetectorType.COMMUNITY
@@ -233,6 +267,18 @@ class EvidGnnDetector(BaseDetector):
         return self._model
 
     def node_scores(self, view: GraphView) -> tuple[dict[str, float], dict]:
+        key = None
+        if SCORE_CACHE is not None:
+            key = (self.cfg.model_path, self.cfg.gate, self.cfg.top_k, view.now_t, view.since_t,
+                   len(view.users), len(view.links), len(view.txns))
+            if key in SCORE_CACHE:
+                return SCORE_CACHE[key]
+        out = self._node_scores(view)
+        if key is not None:
+            SCORE_CACHE[key] = out
+        return out
+
+    def _node_scores(self, view: GraphView) -> tuple[dict[str, float], dict]:
         import torch
 
         model, mean, std = self._load()

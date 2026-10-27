@@ -285,6 +285,9 @@ class GnnConfig(DetectorConfig):
     as_full_detector: bool = False
     min_ring_size: int = 3
     max_ring_size: int = 25
+    # "any": components over any shared attribute or transfer (the baseline's rule).
+    # "evidence": the EvidGNN ring rule (ablation A3, docs/research/evidgnn_protocol.md).
+    ring_rule: str = "any"
     extra: dict[str, Any] = field(default_factory=dict)
 
 
@@ -330,6 +333,12 @@ class GnnDetector(BaseDetector):
         flagged = {u for u, p in scores.items() if p >= cfg.node_threshold}
         if len(flagged) < cfg.min_ring_size:
             return []
+        if cfg.ring_rule == "evidence":
+            from fraudsim.detectors.evidgnn import evidence_rings
+
+            return [self._candidate(RingType.MIXED_ATTRIBUTE, comp, view, risk,
+                                    {"algorithm": "graphsage", "rule": "evidence", "mean_node_p": round(risk, 4)})
+                    for comp, risk in evidence_rings(view, scores, flagged, cfg.min_ring_size, cfg.max_ring_size)]
         adj: dict[str, set[str]] = defaultdict(set)
         for links in view.links_by_attr().values():
             us = sorted({lk.user for lk in links} & flagged)
