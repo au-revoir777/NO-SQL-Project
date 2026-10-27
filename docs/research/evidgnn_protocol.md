@@ -113,3 +113,21 @@ Gate off still keeps user–attribute links for every attribute, including busy 
 
 ## Amendment 1 (2026-10-27, before any model was saved or any tuning run)
 PyTorch's default of two intra-op threads on this two-core container, with other jobs running, made one training step about 250 times slower (1.08 s vs 4.3 ms on the same snapshot; the first training run was stopped by the time limit at epoch 1). EvidGNN training and inference are therefore fixed to one thread (`torch.set_num_threads(1)`). This changes speed only; floating-point reduction order can differ in the last bits. Training also now caches snapshots on disk and checkpoints every epoch. The GraphSAGE baseline is unchanged (its saved model and recorded results stay as they are).
+
+## Amendment 2 (2026-10-27, after the main, ablation and H4 blocks; before any run of what follows)
+
+**Why.** The ablations show the gate and the evidence ring rule hurt. The fused ring scorer is what makes the GNN-inclusive pipeline work. The gated model is also a weaker node classifier than GraphSAGE (A2 − A4 = −0.058). The simpler candidate is therefore the pipeline fused with **plain GraphSAGE**. These blocks have been seen, so it is tested only on fresh blocks. Everything in this amendment is **exploratory** and outside the confirmatory family of four.
+
+**System "SagePipe".**
+- **Detectors:** the shipped detectors plus the GraphSAGE detector (W2 model, whole graph each batch, as in the hybrid).
+- **Scorer:** the fused scorer over the 19 ring features plus GraphSAGE member statistics (mean and min probability, fraction flagged), trained on 101–110 with out-of-fold GraphSAGE scores.
+- **Fold models:** GraphSAGE trained on 101–105 and on 106–110, with the W2 settings (one thread).
+- **At test time:** the W2 GraphSAGE model (trained on 101–110).
+
+**Tuning.** On 301–303 × 5: node threshold {0.5, 0.7, 0.8, 0.9, 0.95} × θ_a {0.3, 0.5, 0.7, 0.8, 0.9}, with the same selection rule as EvidPipe. The selection is committed before the test.
+
+**Blocks (fresh; not used before).**
+- **4801–4820 × 5 (comparison):** SagePipe, EvidPipe, GraphSAGE unscored, hybrid and shipped pipeline at their committed selections. Report SagePipe − GraphSAGE, EvidPipe − GraphSAGE and SagePipe − EvidPipe.
+- **4701–4710 × 5 (amount overlap):** scenario override `simulation.amount_median = 2000`, all models trained on the default generator. Arms: EvidPipe, SagePipe, GraphSAGE unscored, shipped pipeline, rules + own scorer.
+
+**Reporting.** Paired differences with 95% CIs and uncorrected p-values, labelled exploratory. If SagePipe is within ±0.05 of EvidPipe (90% CI), the paper presents the simpler system (any GNN + fused scorer) as the method, and EvidGNN's gate as a tested and rejected design.
