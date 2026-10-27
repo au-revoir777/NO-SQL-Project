@@ -318,7 +318,18 @@ cost is not monotone in size (\GhIncCostB{} at 5{,}000, \GhIncCostC{} at
 20{,}000); a likely cause, which we did not isolate, is that the region is
 bounded by the fan-out limits while the number of touched users per batch
 falls as the graph grows at a fixed event rate. We did not run 50{,}000 users
-with a timer. The static rules run on
+with a timer. Because these measurements come from different containers, we
+repeated the comparison in one environment, run alone, on five fresh seeds
+(3701--3705; ranges over seeds). Per simulated second, the incremental engine
+costs \RtLatOneIncLo{}--\RtLatOneIncHi{}\,ms at 1{,}000 users against
+\RtLatOneTimLo{}--\RtLatOneTimHi{}\,ms for the 5\,s timer, so the timer is cheaper on
+small graphs. At 5{,}000 users the costs are \RtLatFiveIncLo{}--\RtLatFiveIncHi{} against
+\RtLatFiveTimLo{}--\RtLatFiveTimHi{}, at 10{,}000 \RtLatTenIncLo{}--\RtLatTenIncHi{} against
+\RtLatTenTimLo{}--\RtLatTenTimHi{}, and at 20{,}000 \RtLatTwentyIncLo{}--\RtLatTwentyIncHi{}
+against \RtLatTwentyTimLo{}--\RtLatTwentyTimHi{}. From 5{,}000 users up the incremental
+engine is cheaper in every seed (\RtLatFiveWins{}, \RtLatTenWins{} and
+\RtLatTwentyWins{} of 5), and the timer needs more than one second per simulated
+second from 10{,}000 users. The static rules run on
 the same 5\,s timer, which is why their time to detect is similar to ours on the
 accuracy scenarios (\EPropTTD{}\,s vs.\ \ECapTenTTD{}\,s).
 

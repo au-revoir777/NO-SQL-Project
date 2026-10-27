@@ -594,6 +594,24 @@ Method & P & R & F1 & PR AUC & Adv & Base & Drift & Noise & Hub & $\Delta$ & 95\
             mac(f"EgOvP{m.replace('_', '')}", f"{g.precision.mean():.2f}")
 
 
+def latency3() -> None:
+    """R6: one environment, run alone (seeds 3701-3705); ranges, no p-values."""
+    p = ROOT / "results/round3/latency/results.csv"
+    if not p.exists():
+        return
+    d = pd.read_csv(p)
+    words = {1000: "One", 5000: "Five", 10000: "Ten", 20000: "Twenty"}
+    for n, w in words.items():
+        for mode, mw in (("incremental", "Inc"), ("timer_5", "Tim")):
+            x = d[(d.users == n) & (d["mode"] == mode)].ms_per_sim_s
+            mac(f"RtLat{w}{mw}Lo", f"{x.min():.0f}")
+            mac(f"RtLat{w}{mw}Hi", f"{x.max():.0f}")
+            mac(f"RtLat{w}{mw}Med", f"{x.median():.0f}")
+        pv = d[d.users == n].pivot_table(index="seed", columns="mode", values="ms_per_sim_s")
+        mac(f"RtLat{w}Wins", str(int((pv.incremental < pv.timer_5).sum())))
+        mac(f"RtLat{w}N", str(len(pv)))
+
+
 def main() -> None:
     loso()
     attribution()
@@ -605,6 +623,7 @@ def main() -> None:
     round3()
     pr_auc_ci()
     gnnpipe()
+    latency3()
     (T / "numbers_refine.tex").write_text("\n".join(macros) + "\n")
     print(f"{len(macros) - 1} macros; tables written")
 

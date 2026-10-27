@@ -549,8 +549,8 @@ from the same generator is ahead of the rule-based pipeline on one block
 pipeline loses nothing, and it fails entirely when amounts shift. Restricting detection to the region a micro-batch
 touches misses no pair a full pass would link under a simple condition, but
 ring-level equality holds only for small hubs; the engine is no cheaper than a
-1\,s timer on small graphs; at 10{,}000 users it is cheaper than a 5\,s
-timer in \RfScaleTenWins{} of 5 seeds and at 20{,}000 in all 3. Slow and
+5\,s timer at 1{,}000 users, and cheaper than it in every seed from 5{,}000
+users up when both run in one environment. Slow and
 identity-rotating rings are rarely found by any method, the explanations
 describe the model more than the ring, and all positive results are synthetic.
 On Neo4j and Redis Streams the detector flags exactly the same rings, at the
