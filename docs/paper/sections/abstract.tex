@@ -2,15 +2,15 @@
 Rule-based fraud-ring detectors hide busy shared attributes, such as office
 gateways, behind a degree cap. We study a streaming pipeline that keeps these
 links as pairwise evidence, detects incrementally and scores candidate rings.
-On a simulator with ring-level ground truth, using protocols committed before
+On a simulator with ring-level ground truth, with protocols committed before
 each run and fresh test seeds, a cap inside the pipeline costs \RfCapD{} ring
-F1. Even a cap that removes only attributes unable to link a pair alone
-costs \RtCapTwentySevenA{} (exploratory). Adding a graph neural network as a detector, with a
-ring scorer that reads its member probabilities, outperforms the strongest
-existing method, a GraphSAGE classifier, by \EgHoneA{} F1 (95\% CI \EgHoneLo{}
-to \EgHoneHi{}); the result replicates on two further blocks. Ablations
-locate the gain in this scorer, not in gating message passing around busy
-attributes. The advantage needs training-like inputs: when benign and ring
-transfer amounts overlap, the GNN-inclusive pipelines lose precision and the
+F1, and even a cap that removes only attributes unable to link a pair alone
+costs \RtCapTwentySevenA{} (exploratory). Adding a graph neural network as a
+detector, with a ring scorer that reads its member probabilities, outperforms
+the strongest existing method, a GraphSAGE classifier, by \EgHoneA{} F1 (95\%
+CI \EgHoneLo{} to \EgHoneHi{}), replicated on two further blocks. The gain
+comes from this scorer, not from gating message passing around busy
+attributes; plain GraphSAGE inside the pipeline does as well. The advantage
+needs training-like inputs: when benign and ring amounts overlap, the
 rule-based pipeline is more robust. All data are synthetic.
 \end{abstract}
