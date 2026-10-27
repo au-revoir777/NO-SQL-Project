@@ -52,7 +52,7 @@ Mean F1 over 10 seeds (min–max), and decoy-ring recall:
 | GraphSAGE | 0.007 | 0.125 | 0.004 | — |
 
 **Reading.**
-- **When benign amounts overlap with ring amounts, the pipeline keeps its recall (0.72) but loses precision** (0.77 → 0.46).
+- **When benign amounts overlap with ring amounts, the pipeline keeps its recall (0.72) but loses precision** (0.69 on the default generator, seeds 3501–3520, to 0.46).
 - **GraphSAGE collapses** (F1 0.007): its node features include transfer amounts, and the shift moves benign accounts out of its training distribution.
 - **The rules with their own scorer degrade least.**
 - **This is the strongest robustness result against GraphSAGE so far.** It also applies to any GNN that uses amount features, EvidGNN included (16 features, 12 shared with GraphSAGE). EvidGNN's overlap block (4701–4710) was declared "not used this round". Running it would need a protocol amendment before the run.
