@@ -153,6 +153,19 @@ def train(gate: bool = True, fold: str = "all", tag: str = "evidgnn", epochs: in
 
 # ─── Fused ring scorer ────────────────────────────────────────────────────────
 
+class _Meta(dict):
+    """Training metadata; `reliability` is empty (explanations then omit the observed rate)."""
+
+    reliability: list = []
+
+
+def load_fused(path) -> "FusedScorer":
+    s = joblib.load(path)
+    if not isinstance(s.meta, _Meta):
+        s.meta = _Meta(s.meta)
+    return s
+
+
 class FusedScorer:
     """Logistic regression + isotonic calibration over 19 ring features + GNN member statistics."""
 
@@ -313,6 +326,11 @@ def run_methods(experiment: str, scenarios, seeds, methods: list[Method]) -> Non
 
 def _run_methods(experiment: str, scenarios, seeds, methods: list[Method]) -> None:
     from fraudsim.experiments import harness
+    from fraudsim.experiments.w2_baselines import skip_explanations
+
+    # Counterfactual explanations assume the 19 shipped features; they never change alerts or
+    # metrics (risk is computed first), so they are skipped for every method, as in W2/W3.
+    skip_explanations()
 
     fused = [m for m in methods if m.family == "evidgnn" and m.model_path and "fused" in m.model_path]
     plain = [m for m in methods if m not in fused]
@@ -321,7 +339,7 @@ def _run_methods(experiment: str, scenarios, seeds, methods: list[Method]) -> No
     if fused:
         orig_stage, orig_load = harness.ScoringStage, harness.RingScorer.load
         harness.ScoringStage = FusedStage  # type: ignore[misc]
-        harness.RingScorer.load = staticmethod(lambda p: joblib.load(p))  # type: ignore[method-assign]
+        harness.RingScorer.load = staticmethod(load_fused)  # type: ignore[method-assign]
         try:
             run_grid(experiment, scenarios, seeds, fused, OUT)
         finally:
