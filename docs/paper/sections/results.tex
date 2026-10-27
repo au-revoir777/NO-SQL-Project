@@ -259,8 +259,23 @@ alarms (F1 \EgOvFevidpipe{} and \EgOvFsagepipe{}, precision \EgOvPevidpipe{} and
 pipeline's own scorer, uses transfer-size features. Without them the shipped
 scorer's ring PR AUC on default data falls from 0.77 to 0.55 (seeds 3501--3520).
 
+Hub size is the second shift. The largest attribute in the training snapshots
+is shared by 176 accounts (\texttt{scale\_sweep}; at most 75 in the other scenarios).
+In the hub-size sweep (\texttt{hub\_heavy} with an office hub of 500, 2{,}000 and
+10{,}000 accounts, five seeds each, ranges; exploratory), EvidPipe raises 58 and
+89 false rings per run at 500 and 2{,}000 accounts (F1 0.10--0.23). Its
+gated GNN gives the benign co-users of an oversized hub high probabilities, and
+the scorer trusts them for Louvain groups inside the hub. SagePipe does not have
+this failure: its median F1 is 1.00, 0.86 and 1.00 at the three sizes
+(ranges 0.92--1.00, 0.67--1.00 and 0.57--1.00), similar to the rule-based
+pipeline (0.86, 1.00, 0.86) and the hybrid. The GNN-inclusive pipelines run the GNN on the whole graph each micro-batch: at 10{,}000
+accounts a stream takes a median 240\,s against 11\,s for the incremental
+pipeline.
+
 The result is a GNN-inclusive pipeline that outperforms every existing method
-on this benchmark when test data resemble training data. The mechanism is the combination of rule-based candidate
+on this benchmark when test data resemble training data. Its simplest form, plain
+GraphSAGE plus the GNN-aware ring scorer, is as accurate as our gated design
+and more robust to hub size. The mechanism is the combination of rule-based candidate
 rings with a ring scorer that reads the GNN's member probabilities. Restricting
 the GNN's message passing around busy attributes does not help. This mirrors the
 degree-cap result: busy attributes are useful evidence for a learned model as

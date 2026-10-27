@@ -141,3 +141,5 @@ PyTorch's default of two intra-op threads on this two-core container, with other
 2. **Per-detector origin of EvidPipe's false rings** on 4201–4203: which detector proposed each alerted false ring, and its fused-scorer inputs. This is a diagnosis, not a test.
 
 The 10,000-account size is run only for arms that are not collapsed at 2,000.
+
+*Correction to amendment 3 (same day).* "Training hubs are at most about 80 accounts" was an estimate. Measured on the training snapshots, the largest attribute degree is 176 (`scale_sweep`). It is at most 75 in the other five scenarios (`docs/research/gnn/` cache, no-gate graphs). The 500–10,000 hubs are still outside the training range.
