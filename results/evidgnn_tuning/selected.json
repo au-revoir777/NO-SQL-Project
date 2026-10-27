@@ -1,0 +1,40 @@
+{
+ "protocol": "docs/research/evidgnn_protocol.md",
+ "gnn_unscored": {
+  "method": "w2_gnn_0.95_unscored",
+  "val_f1": 0.7803
+ },
+ "gnn_scored": {
+  "method": "w2_gnn_0.9_a0.3",
+  "val_f1": 0.7802
+ },
+ "rules": {
+  "method": "w2_rules_10_1_a0.7",
+  "val_f1": 0.6776
+ },
+ "hybrid": {
+  "method": "w2_hybrid_0.9_a0.5",
+  "val_f1": 0.7557
+ },
+ "evidgnn": {
+  "method": "evidgnn_0.9",
+  "val_f1": 0.7411
+ },
+ "evidgnn_any": {
+  "method": "evidgnn_any_0.9",
+  "val_f1": 0.7818
+ },
+ "evidgnn_nogate": {
+  "method": "evidgnn_nogate_0.95",
+  "val_f1": 0.7209
+ },
+ "gnn_evidence": {
+  "method": "gnn_evidence_0.9",
+  "val_f1": 0.751
+ },
+ "evidpipe": {
+  "method": "evidpipe_0.9_a0.3",
+  "val_f1": 0.8853
+ },
+ "strongest_existing": "gnn_unscored"
+}

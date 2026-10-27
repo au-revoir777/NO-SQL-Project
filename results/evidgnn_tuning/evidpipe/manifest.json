@@ -1,0 +1,753 @@
+{
+  "grids": [
+    {
+      "experiment": "evidgnn_tuning/evidpipe",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "evidpipe_0.5_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.5,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/evidgnn/fused_evidgnn.joblib",
+          "label": "EvidGNN pipeline",
+          "hash": "5c432756f5ce372a"
+        },
+        {
+          "name": "evidpipe_0.5_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.5,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/evidgnn/fused_evidgnn.joblib",
+          "label": "EvidGNN pipeline",
+          "hash": "1e46c2e208ecd8c0"
+        },
+        {
+          "name": "evidpipe_0.5_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.5,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/evidgnn/fused_evidgnn.joblib",
+          "label": "EvidGNN pipeline",
+          "hash": "4c2bb103dec3d729"
+        },
+        {
+          "name": "evidpipe_0.5_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.5,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/evidgnn/fused_evidgnn.joblib",
+          "label": "EvidGNN pipeline",
+          "hash": "f327f1075ed7113c"
+        },
+        {
+          "name": "evidpipe_0.5_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.5,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/evidgnn/fused_evidgnn.joblib",
+          "label": "EvidGNN pipeline",
+          "hash": "2471fe2f5b0489ff"
+        },
+        {
+          "name": "evidpipe_0.7_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.7,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/evidgnn/fused_evidgnn.joblib",
+          "label": "EvidGNN pipeline",
+          "hash": "0cb70fa9a524bf09"
+        },
+        {
+          "name": "evidpipe_0.7_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.7,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/evidgnn/fused_evidgnn.joblib",
+          "label": "EvidGNN pipeline",
+          "hash": "15986467a33dbaa1"
+        },
+        {
+          "name": "evidpipe_0.7_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.7,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/evidgnn/fused_evidgnn.joblib",
+          "label": "EvidGNN pipeline",
+          "hash": "ccacc872b1d9429b"
+        },
+        {
+          "name": "evidpipe_0.7_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.7,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/evidgnn/fused_evidgnn.joblib",
+          "label": "EvidGNN pipeline",
+          "hash": "e9c533851d90ce24"
+        },
+        {
+          "name": "evidpipe_0.7_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.7,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/evidgnn/fused_evidgnn.joblib",
+          "label": "EvidGNN pipeline",
+          "hash": "18340827b01efb1e"
+        },
+        {
+          "name": "evidpipe_0.8_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.8,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/evidgnn/fused_evidgnn.joblib",
+          "label": "EvidGNN pipeline",
+          "hash": "cc99b32bb33a94b5"
+        },
+        {
+          "name": "evidpipe_0.8_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.8,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/evidgnn/fused_evidgnn.joblib",
+          "label": "EvidGNN pipeline",
+          "hash": "ca094ccfb28988d3"
+        },
+        {
+          "name": "evidpipe_0.8_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.8,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/evidgnn/fused_evidgnn.joblib",
+          "label": "EvidGNN pipeline",
+          "hash": "ddeeedb154e0fd91"
+        },
+        {
+          "name": "evidpipe_0.8_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.8,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/evidgnn/fused_evidgnn.joblib",
+          "label": "EvidGNN pipeline",
+          "hash": "7b85ebe9b311f568"
+        },
+        {
+          "name": "evidpipe_0.8_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.8,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/evidgnn/fused_evidgnn.joblib",
+          "label": "EvidGNN pipeline",
+          "hash": "e0d8dd49e29db1d2"
+        },
+        {
+          "name": "evidpipe_0.9_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.9,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/evidgnn/fused_evidgnn.joblib",
+          "label": "EvidGNN pipeline",
+          "hash": "47abaa86bf7318c1"
+        },
+        {
+          "name": "evidpipe_0.9_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.9,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/evidgnn/fused_evidgnn.joblib",
+          "label": "EvidGNN pipeline",
+          "hash": "ab9fd3ffd4ed8e1b"
+        },
+        {
+          "name": "evidpipe_0.9_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.9,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/evidgnn/fused_evidgnn.joblib",
+          "label": "EvidGNN pipeline",
+          "hash": "4200b6f5d3f959b3"
+        },
+        {
+          "name": "evidpipe_0.9_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.9,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/evidgnn/fused_evidgnn.joblib",
+          "label": "EvidGNN pipeline",
+          "hash": "9141c13a4e98413f"
+        },
+        {
+          "name": "evidpipe_0.9_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.9,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/evidgnn/fused_evidgnn.joblib",
+          "label": "EvidGNN pipeline",
+          "hash": "a44959449a3b3387"
+        },
+        {
+          "name": "evidpipe_0.95_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.95,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/evidgnn/fused_evidgnn.joblib",
+          "label": "EvidGNN pipeline",
+          "hash": "66f8c5ccad3d3ea0"
+        },
+        {
+          "name": "evidpipe_0.95_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.95,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/evidgnn/fused_evidgnn.joblib",
+          "label": "EvidGNN pipeline",
+          "hash": "26d7a4535149f07b"
+        },
+        {
+          "name": "evidpipe_0.95_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.95,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/evidgnn/fused_evidgnn.joblib",
+          "label": "EvidGNN pipeline",
+          "hash": "863290889bf74af6"
+        },
+        {
+          "name": "evidpipe_0.95_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.95,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/evidgnn/fused_evidgnn.joblib",
+          "label": "EvidGNN pipeline",
+          "hash": "2c25c30231849647"
+        },
+        {
+          "name": "evidpipe_0.95_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.95,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/evidgnn/fused_evidgnn.joblib",
+          "label": "EvidGNN pipeline",
+          "hash": "6bff903012efa280"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T05:35:06.036238+00:00",
+      "ended_at": "2026-10-27T05:45:05.376096+00:00",
+      "wall_s": 599.34,
+      "rows": 375,
+      "git_commit": "6d545f1002cb132ae2d7532298e5d3b8677915c5",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    }
+  ]
+}
