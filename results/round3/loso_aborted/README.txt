@@ -1,0 +1,1 @@
+Aborted: GraphSAGE LOSO models had not been trained (process error, queue order). One row (gnn_all, baseline, seed 3201) was written before the failure. No result was inspected; the full run is repeated in results/round3/loso.

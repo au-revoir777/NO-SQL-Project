@@ -156,6 +156,8 @@ def gnn_loso() -> None:
         cache[sc] = g
         print(f"[gnn-loso] snapshots {sc}: {len(g)}", flush=True)
     for left in SCEN:
+        if (ROOT / GNN_DIR / f"graphsage_loso_{left}.pt").exists():  # resumable
+            continue
         torch.manual_seed(0)
         np.random.seed(0)
         graphs = [x for sc, gs in cache.items() if sc != left for x in gs]
