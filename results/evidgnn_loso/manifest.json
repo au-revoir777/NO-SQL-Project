@@ -189,6 +189,766 @@
         "neo4j": "6.4.1",
         "redis": "7.2.0"
       }
+    },
+    {
+      "experiment": "evidgnn_loso",
+      "scenarios": [
+        "high_noise"
+      ],
+      "scenario_hashes": {
+        "high_noise": "7f768d989b7d51e6"
+      },
+      "seeds": [
+        4401,
+        4402,
+        4403,
+        4404,
+        4405,
+        4406,
+        4407,
+        4408,
+        4409,
+        4410,
+        4411,
+        4412,
+        4413,
+        4414,
+        4415,
+        4416,
+        4417,
+        4418,
+        4419,
+        4420
+      ],
+      "methods": [
+        {
+          "name": "evidgnn_all",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.9,
+              "ring_rule": "evidence",
+              "gate": true
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "EvidGNN",
+          "hash": "5bf95f75c007bbd4"
+        },
+        {
+          "name": "evidgnn_loso",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_loso_high_noise_all.pt",
+              "node_threshold": 0.9,
+              "ring_rule": "evidence",
+              "gate": true
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "EvidGNN",
+          "hash": "43d0ee8f7aec6b46"
+        },
+        {
+          "name": "gnn_all",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "gnn": {
+              "node_threshold": 0.95,
+              "model_path": "results/w2_gnn/graphsage.pt"
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "gnn_all",
+          "hash": "392c385041860187"
+        },
+        {
+          "name": "gnn_loso",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "gnn": {
+              "node_threshold": 0.95,
+              "model_path": "results/round3_gnn/graphsage_loso_high_noise.pt"
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "gnn_loso",
+          "hash": "1b008abf0c8ec556"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T06:28:09.728260+00:00",
+      "ended_at": "2026-10-27T06:29:12.356003+00:00",
+      "wall_s": 62.628,
+      "rows": 80,
+      "git_commit": "17a5150ee5ef8986b496b64a18465eed112c28f2",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "evidgnn_loso",
+      "scenarios": [
+        "hub_heavy"
+      ],
+      "scenario_hashes": {
+        "hub_heavy": "031690a6797d4592"
+      },
+      "seeds": [
+        4401,
+        4402,
+        4403,
+        4404,
+        4405,
+        4406,
+        4407,
+        4408,
+        4409,
+        4410,
+        4411,
+        4412,
+        4413,
+        4414,
+        4415,
+        4416,
+        4417,
+        4418,
+        4419,
+        4420
+      ],
+      "methods": [
+        {
+          "name": "evidgnn_all",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.9,
+              "ring_rule": "evidence",
+              "gate": true
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "EvidGNN",
+          "hash": "5bf95f75c007bbd4"
+        },
+        {
+          "name": "evidgnn_loso",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_loso_hub_heavy_all.pt",
+              "node_threshold": 0.9,
+              "ring_rule": "evidence",
+              "gate": true
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "EvidGNN",
+          "hash": "cde1359da612f1f7"
+        },
+        {
+          "name": "gnn_all",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "gnn": {
+              "node_threshold": 0.95,
+              "model_path": "results/w2_gnn/graphsage.pt"
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "gnn_all",
+          "hash": "392c385041860187"
+        },
+        {
+          "name": "gnn_loso",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "gnn": {
+              "node_threshold": 0.95,
+              "model_path": "results/round3_gnn/graphsage_loso_hub_heavy.pt"
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "gnn_loso",
+          "hash": "32d0c3dcd6d6bb6a"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T06:29:12.383246+00:00",
+      "ended_at": "2026-10-27T06:29:35.890508+00:00",
+      "wall_s": 23.507,
+      "rows": 80,
+      "git_commit": "17a5150ee5ef8986b496b64a18465eed112c28f2",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "evidgnn_loso",
+      "scenarios": [
+        "adversarial"
+      ],
+      "scenario_hashes": {
+        "adversarial": "e348c3eccc50e4bb"
+      },
+      "seeds": [
+        4401,
+        4402,
+        4403,
+        4404,
+        4405,
+        4406,
+        4407,
+        4408,
+        4409,
+        4410,
+        4411,
+        4412,
+        4413,
+        4414,
+        4415,
+        4416,
+        4417,
+        4418,
+        4419,
+        4420
+      ],
+      "methods": [
+        {
+          "name": "evidgnn_all",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.9,
+              "ring_rule": "evidence",
+              "gate": true
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "EvidGNN",
+          "hash": "5bf95f75c007bbd4"
+        },
+        {
+          "name": "evidgnn_loso",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_loso_adversarial_all.pt",
+              "node_threshold": 0.9,
+              "ring_rule": "evidence",
+              "gate": true
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "EvidGNN",
+          "hash": "d76d884f8771c71f"
+        },
+        {
+          "name": "gnn_all",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "gnn": {
+              "node_threshold": 0.95,
+              "model_path": "results/w2_gnn/graphsage.pt"
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "gnn_all",
+          "hash": "392c385041860187"
+        },
+        {
+          "name": "gnn_loso",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "gnn": {
+              "node_threshold": 0.95,
+              "model_path": "results/round3_gnn/graphsage_loso_adversarial.pt"
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "gnn_loso",
+          "hash": "a444921c95b789c3"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T06:29:35.910761+00:00",
+      "ended_at": "2026-10-27T06:30:22.759464+00:00",
+      "wall_s": 46.849,
+      "rows": 80,
+      "git_commit": "17a5150ee5ef8986b496b64a18465eed112c28f2",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "evidgnn_loso",
+      "scenarios": [
+        "drift"
+      ],
+      "scenario_hashes": {
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        4401,
+        4402,
+        4403,
+        4404,
+        4405,
+        4406,
+        4407,
+        4408,
+        4409,
+        4410,
+        4411,
+        4412,
+        4413,
+        4414,
+        4415,
+        4416,
+        4417,
+        4418,
+        4419,
+        4420
+      ],
+      "methods": [
+        {
+          "name": "evidgnn_all",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_all.pt",
+              "node_threshold": 0.9,
+              "ring_rule": "evidence",
+              "gate": true
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "EvidGNN",
+          "hash": "5bf95f75c007bbd4"
+        },
+        {
+          "name": "evidgnn_loso",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "evidgnn": {
+              "model_path": "results/evidgnn/evidgnn_loso_drift_all.pt",
+              "node_threshold": 0.9,
+              "ring_rule": "evidence",
+              "gate": true
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "EvidGNN",
+          "hash": "efe2d815bf4ca3b7"
+        },
+        {
+          "name": "gnn_all",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "gnn": {
+              "node_threshold": 0.95,
+              "model_path": "results/w2_gnn/graphsage.pt"
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "gnn_all",
+          "hash": "392c385041860187"
+        },
+        {
+          "name": "gnn_loso",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "gnn": {
+              "node_threshold": 0.95,
+              "model_path": "results/round3_gnn/graphsage_loso_drift.pt"
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "gnn_loso",
+          "hash": "656188037e5ac091"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T06:30:22.783429+00:00",
+      "ended_at": "2026-10-27T06:33:12.463941+00:00",
+      "wall_s": 169.681,
+      "rows": 80,
+      "git_commit": "17a5150ee5ef8986b496b64a18465eed112c28f2",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
     }
   ]
 }
