@@ -110,7 +110,10 @@ gap is not uniform: GraphSAGE is ahead on \texttt{drift} (\RfExgnnunscoredDrift{
 and \texttt{high\_noise} (\RfExgnnunscoredNoise{}), behind on
 \texttt{adversarial} (\RfExgnnunscoredAdv{}), and the pipeline finds more
 adaptive rings (\RfExproposedAdapt{} against \RfExgnnunscoredAdapt{}) and decoy
-rings (\RfExproposedDecoy{} against \RfExgnnunscoredDecoy{}). Ranked by their
+rings (\RfExproposedDecoy{} against \RfExgnnunscoredDecoy{}). In a separate decoy
+sweep on \texttt{high\_noise} (seeds 3301--3310, exploratory), GraphSAGE finds
+more decoy rings at the default strength. At eight decoys per action its
+decoy-ring recall falls to 16/29, while the pipeline's stays at 20--23 of about 28. Ranked by their
 calibrated scores, the pipeline's rings have the highest ring-level PR AUC of
 all scored methods (\RfExproposedPR{} against \RfExgnnPR{} for GraphSAGE with a
 scorer; difference \RtPrD{}, 95\% CI \RtPrLo{} to \RtPrHi{}, exploratory), so
@@ -223,8 +226,31 @@ rule-based pipeline's scorer, by contrast, loses nothing when a scenario is left
 out (\RtLosoPipeDrop{}, CI \RtLosoPipeLo{} to \RtLosoPipeHi{}), while GraphSAGE loses
 \RtLosoSageDrop{} (CI \RtLosoSageLo{} to \RtLosoSageHi{}; seeds 3201--3220).
 
+Because the gate did not help, we tested the simplest version, declared in a
+protocol amendment before any run, on a third fresh block (4801--4820): the
+shipped pipeline with the plain GraphSAGE baseline as a detector and the same
+GNN-aware ring scorer (\textbf{SagePipe}). It reaches F1 \EgFoFsagepipe{} against
+\EgFoFevidpipe{} for EvidPipe. The two are equivalent within 0.05 F1 (difference
+\EgFoSageVsEvidD{}, 95\% CI \EgFoSageVsEvidLo{} to \EgFoSageVsEvidHi{}). Both beat
+GraphSAGE (\EgFoFgnnunscored{}; SagePipe \EgFoSageVsGnnD{}, CI \EgFoSageVsGnnLo{} to
+\EgFoSageVsGnnHi{}) and the hybrid (\EgFoFhybrid{}; \EgFoSageVsHybridD{}, CI
+\EgFoSageVsHybridLo{} to \EgFoSageVsHybridHi{}). The hybrid uses the same detectors
+but a ring scorer without the GNN statistics, so these statistics account for
+the whole difference between the two.
+
+The advantage holds only while the GNN's inputs look like its training data.
+In a generator variant where benign transfers are as large as ring transfers
+(median raised from 120 to 2{,}000; block 4701--4710; every model trained on
+the default generator), GraphSAGE alone finds no rings
+(F1 \EgOvFgnnunscored{}). EvidPipe and SagePipe keep their recall but raise many false
+alarms (F1 \EgOvFevidpipe{} and \EgOvFsagepipe{}, precision \EgOvPevidpipe{} and
+\EgOvPsagepipe{}). The rule-based pipeline (\EgOvFproposed{}) and the scored rules
+(\EgOvFrules{}) degrade least. Every learned component here, including the
+pipeline's own scorer, uses transfer-size features. Without them the shipped
+scorer's ring PR AUC on default data falls from 0.77 to 0.55 (seeds 3501--3520).
+
 The result is a GNN-inclusive pipeline that outperforms every existing method
-on this benchmark. The mechanism is the combination of rule-based candidate
+on this benchmark when test data resemble training data. The mechanism is the combination of rule-based candidate
 rings with a ring scorer that reads the GNN's member probabilities. Restricting
 the GNN's message passing around busy attributes does not help. This mirrors the
 degree-cap result: busy attributes are useful evidence for a learned model as

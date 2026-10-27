@@ -24,7 +24,7 @@ the cost of each pass grows with the graph rather than with the change, a
 problem that incremental community detection addresses for clustering
 \cite{zhang2026incremental,abughofa2021incremental}.
 
-We make one contribution and support it with a system and an evaluation.
+We make two contributions and support them with a system and an evaluation.
 \begin{itemize}
 \item \textbf{Contribution: keep hub links, but never let a hub link a pair
 alone.} Pairs of accounts accumulate decayed evidence from shared attributes
@@ -39,6 +39,18 @@ weights that satisfy the condition are equivalent within 0.05 F1 (\RfNdShapeD{},
 \RfNdShapeLo{} to \RfNdShapeHi{}) (Section~\ref{sec:attribution}). The degree
 discount we use, $1/\ln(1+d)$, is a variant of FRAUDAR's column weighting
 $1/\log(d+c)$ \cite{hooi2016fraudar} (with $c=5$ in its experiments); we do not claim it as new.
+Even a cap that removes only attributes unable to link a pair alone costs
+\RtCapTwentySevenA{}: busy attributes help as supporting evidence.
+\item \textbf{Contribution: a GNN-inclusive pipeline that beats the existing
+methods.} The pipeline with a GNN as an extra detector, and a ring scorer that
+reads the GNN's member probabilities (trained with out-of-fold scores), outperforms
+the strongest existing method, a GraphSAGE classifier, by \EgHoneD{} F1 (95\% CI
+\EgHoneLo{} to \EgHoneHi{}, confirmatory), and the gain replicates on two further fresh
+blocks. Ablations show that the GNN-aware scorer carries the gain, while gating
+the GNN's message passing around busy attributes, which we designed for this,
+hurts. A plain GraphSAGE inside the pipeline does as well as our gated model.
+The advantage depends on training-like transfer amounts
+(Section~\ref{sec:gnnpipe}).
 \item \textbf{System.} A micro-batch engine re-evaluates only the region each
 batch touches, with fan-out limits; we state when it misses no pair that a full
 pass would link, and show that ring-level equality with full recomputation
@@ -414,6 +426,18 @@ planted. Benign groups that happen to look like rings count as false
 positives, and planted rings that never become visible in the stream still
 count against recall; both directions affect every method equally.
 
+\textbf{Learned components and generator labels.} The GNNs and every ring
+scorer are trained on labels from the same generator they are tested on, so
+their advantage measures how well they learn this generator's regularities.
+The GNN-inclusive pipeline's gain was designed after the comparison with
+existing methods had been seen. We tested it only under a separate protocol on
+fresh blocks, and its simplest form (SagePipe) was added by a protocol
+amendment after the ablations had been seen. All learned parts use
+transfer-size features, and their advantage disappears when benign amounts
+shift (Section~\ref{sec:gnnpipe}). The GNN runs on the whole graph each
+micro-batch, so the GNN-inclusive pipeline does not inherit the engine's
+incremental cost.
+
 \textbf{Public data.} The public datasets we could obtain carry no device,
 card or IP links, so they cannot test hub-aware weighting at all; on them only
 the transaction detectors run (Section~\ref{sec:public}). Only AMLworld has
@@ -506,18 +530,23 @@ between batches.
 
 \section{Conclusion}
 Keeping links through busy shared attributes helps a streaming ring detector
-only if no busy attribute can link two accounts on its own. Within the same
+only if no busy attribute can link two accounts on its own. A GNN added to the
+pipeline, with a ring scorer that reads its member probabilities, outperforms
+every existing method we tested by \EgHoneD{} F1 over GraphSAGE, on three fresh
+blocks. The gain comes from that scorer, not from restricting message passing
+around busy attributes, and it disappears when transfer amounts shift away from
+training, where the rule-based pipeline is more robust. Within the same
 pipeline, a degree cap costs \RfCapD{} ring F1 and most hub-hiding rings, a
 weight that lets one attribute suffice costs \RfNdOneD{}, and two weights that
 both meet the condition are equivalent within 0.05 F1; the degree discount we started
 from is one way to meet it, not the source of the gain. Against tuned rules,
 Louvain, Leiden and FRAUDAR-style peeling, each with its own calibrated scorer,
 the pipeline improves ring F1 on fresh test seeds, by \RfExrulesperscenarioDA{}
-against the strongest of them. A GraphSAGE classifier trained on ring labels
-from the same generator is ahead on F1 (\RfExgnnunscoredF{} against
-\RfExproposedF{}), mainly where the pipeline's precision drops under drift and
-noise, while the pipeline ranks rings better and finds more adaptive and decoy
-rings; \RfHySentence{} Restricting detection to the region a micro-batch
+against the strongest of them. Without a GNN, a GraphSAGE classifier trained on ring labels
+from the same generator is ahead of the rule-based pipeline on one block
+(\RfExgnnunscoredF{} against \RfExproposedF{}) and level on another; it loses
+\RtLosoSageDrop{} F1 when a scenario is left out of training while the
+pipeline loses nothing, and it fails entirely when amounts shift. Restricting detection to the region a micro-batch
 touches misses no pair a full pass would link under a simple condition, but
 ring-level equality holds only for small hubs; the engine is no cheaper than a
 1\,s timer on small graphs; at 10{,}000 users it is cheaper than a 5\,s
@@ -526,7 +555,8 @@ identity-rotating rings are rarely found by any method, the explanations
 describe the model more than the ring, and all positive results are synthetic.
 On Neo4j and Redis Streams the detector flags exactly the same rings, at the
 cost of slower detection. The next steps are data with real shared-attribute
-links, a ring-level and time-aware calibrator, evidence that persists across
+links, GNN inputs that are robust to shifts in transfer amounts, exact
+incremental GNN inference, a ring-level and time-aware calibrator, evidence that persists across
 identity rotation, and a white-box attacker.
 
 \textbf{Data and code availability.} All data are synthetic and generated by

@@ -1,22 +1,16 @@
 \begin{abstract}
-Fraud rings share devices, cards and network addresses and move money among
-themselves. Rule-based graph detectors suppress busy shared attributes such as
-office gateways and carrier NAT with a degree cap. We study a streaming
-pipeline that instead keeps those links as pairwise evidence, detects
-incrementally on the region each micro-batch touches, and scores candidate
-rings with a calibrated model. On a deterministic simulator with ring-level
-ground truth and five evasion strategies, isolation experiments with protocols committed before their runs
-on fresh test seeds show what matters: within the same pipeline a degree cap
-costs \RfCapD{} ring F1 (95\% CI \RfCapLo{} to \RfCapHi{}) and most hub-hiding
-rings, a weight that lets one busy attribute link a pair on its own costs
-\RfNdOneD{}, and, given that no busy attribute can suffice alone, the shape of
-the degree discount makes no difference. Against tuned rules, Louvain, Leiden
-and FRAUDAR-style peeling, each with a scorer trained on its own candidates and
-at least the same tuning budget, the pipeline improves ring F1 by
-\RfExrulesperscenarioDA{} to \RfExpeelingDA{}. A GraphSAGE classifier trained on
-ring labels from the same generator reaches higher F1 (\RfExgnnunscoredF{}
-against \RfExproposedF{}), mainly on drifting and noisy streams, while the
-pipeline ranks rings better and finds more adaptive and decoy rings;
-\RfHySentence{} Slow and identity-rotating rings are rarely found by any
-method, and all results are synthetic.
+Rule-based fraud-ring detectors hide busy shared attributes, such as office
+gateways, behind a degree cap. We study a streaming pipeline that keeps these
+links as pairwise evidence, detects incrementally and scores candidate rings.
+On a simulator with ring-level ground truth, using protocols committed before
+each run and fresh test seeds, a cap inside the pipeline costs \RfCapD{} ring
+F1. Even a cap that removes only attributes unable to link a pair alone
+costs \RtCapTwentySevenA{}. Adding a graph neural network as a detector, with a
+ring scorer that reads its member probabilities, outperforms the strongest
+existing method, a GraphSAGE classifier, by \EgHoneD{} F1 (95\% CI \EgHoneLo{}
+to \EgHoneHi{}); the result replicates on two further blocks. Ablations
+locate the gain in this scorer, not in gating message passing around busy
+attributes. The advantage needs training-like inputs: when benign and ring
+transfer amounts overlap, the GNN-inclusive pipelines lose precision and the
+rule-based pipeline is more robust. All data are synthetic.
 \end{abstract}

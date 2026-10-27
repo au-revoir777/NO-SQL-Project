@@ -444,6 +444,7 @@ def round3() -> None:
         for arm, nm in (("cap10", "Ten"), ("cap27", "TwentySeven"), ("cap50", "Fifty")):
             r = c.contrast(cs, "keep_links", arm)
             mac(f"RtCap{nm}D", f"{-r['diff']:.3f}")
+            mac(f"RtCap{nm}A", f"{abs(r['diff']):.3f}")
             mac(f"RtCap{nm}Lo", f"{-r['ci95_cluster_boot'][1]:.3f}")
             mac(f"RtCap{nm}Hi", f"{-r['ci95_cluster_boot'][0]:.3f}")
         mac("RtCapHHNo", _evasion(cs, "keep_links", "hub_hiding"))
