@@ -1,0 +1,7 @@
+{
+ "coef_of_zeroed_features": {
+  "amount_mean_log": 0.0,
+  "amount_cv": 0.0,
+  "near_threshold_frac": 0.0
+ }
+}

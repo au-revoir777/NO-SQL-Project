@@ -1,0 +1,63 @@
+{
+  "model_type": "logistic_regression",
+  "feature_names": [
+    "size",
+    "density",
+    "share_device",
+    "share_card",
+    "share_ip",
+    "hub_adjusted_weight",
+    "cycle_present",
+    "cycle_length",
+    "temporal_burstiness",
+    "account_age_similarity",
+    "account_age_min",
+    "internal_txns_per_member",
+    "amount_mean_log",
+    "amount_cv",
+    "near_threshold_frac",
+    "growth_rate",
+    "risk_signal_fraction",
+    "hub_exposure",
+    "n_detectors"
+  ],
+  "train": {
+    "protocol": "docs/research/round3_protocol.md",
+    "rows": {
+      "fit": 16918,
+      "cal": 7700
+    },
+    "scenarios": [
+      "adversarial",
+      "baseline",
+      "drift",
+      "high_noise",
+      "hub_heavy",
+      "scale_sweep"
+    ],
+    "zeroed_features": []
+  },
+  "metrics": {},
+  "reliability": [],
+  "coefficients": {
+    "size": -4.498859,
+    "density": -0.076643,
+    "share_device": 0.59549,
+    "share_card": 0.292045,
+    "share_ip": -1.05513,
+    "hub_adjusted_weight": 0.44519,
+    "cycle_present": -3.04144,
+    "cycle_length": 2.593639,
+    "temporal_burstiness": -0.551246,
+    "account_age_similarity": -0.872365,
+    "account_age_min": -2.134786,
+    "internal_txns_per_member": 0.738588,
+    "amount_mean_log": 2.471215,
+    "amount_cv": -1.954971,
+    "near_threshold_frac": 0.004452,
+    "growth_rate": 2.317365,
+    "risk_signal_fraction": -0.300648,
+    "hub_exposure": 0.069353,
+    "n_detectors": 0.156927
+  }
+}
