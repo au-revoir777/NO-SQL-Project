@@ -1,0 +1,11 @@
+{
+ "protocol": "docs/research/anchor_protocol.md",
+ "anchor": {
+  "method": "anchor_0.95_a0.3",
+  "val_f1": 0.8806,
+  "node_threshold": 0.95,
+  "alert": 0.3
+ },
+ "tau": 0.456,
+ "others": "results/evidgnn_tuning/selected.json"
+}

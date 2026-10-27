@@ -1,0 +1,1929 @@
+{
+  "grids": [
+    {
+      "experiment": "anchor_tuning/anchor",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "anchor_0.5_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "node_threshold": 0.5,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/anchor/fused_anchor.joblib",
+          "label": "anchor",
+          "hash": "d2afa45be85d7efe"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T15:04:05.643535+00:00",
+      "ended_at": "2026-10-27T15:05:15.231018+00:00",
+      "wall_s": 69.587,
+      "rows": 15,
+      "git_commit": "c3d92746f939c794f2199a770d70b699365b4680",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "anchor_tuning/anchor",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "anchor_0.5_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "node_threshold": 0.5,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/anchor/fused_anchor.joblib",
+          "label": "anchor",
+          "hash": "554ba5dde5860cf5"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T15:05:15.629144+00:00",
+      "ended_at": "2026-10-27T15:06:18.597972+00:00",
+      "wall_s": 62.969,
+      "rows": 15,
+      "git_commit": "c3d92746f939c794f2199a770d70b699365b4680",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "anchor_tuning/anchor",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "anchor_0.5_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "node_threshold": 0.5,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/anchor/fused_anchor.joblib",
+          "label": "anchor",
+          "hash": "dd2e3b38a66b28be"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T15:06:18.654986+00:00",
+      "ended_at": "2026-10-27T15:07:20.191615+00:00",
+      "wall_s": 61.537,
+      "rows": 15,
+      "git_commit": "c3d92746f939c794f2199a770d70b699365b4680",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "anchor_tuning/anchor",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "anchor_0.5_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "node_threshold": 0.5,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/anchor/fused_anchor.joblib",
+          "label": "anchor",
+          "hash": "a36c04bcaaf289b7"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T15:07:20.253020+00:00",
+      "ended_at": "2026-10-27T15:08:27.125516+00:00",
+      "wall_s": 66.873,
+      "rows": 15,
+      "git_commit": "c3d92746f939c794f2199a770d70b699365b4680",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "anchor_tuning/anchor",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "anchor_0.5_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "node_threshold": 0.5,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/anchor/fused_anchor.joblib",
+          "label": "anchor",
+          "hash": "9007e06ceb2265c8"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T15:08:27.219947+00:00",
+      "ended_at": "2026-10-27T15:09:32.881834+00:00",
+      "wall_s": 65.662,
+      "rows": 15,
+      "git_commit": "c3d92746f939c794f2199a770d70b699365b4680",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "anchor_tuning/anchor",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "anchor_0.7_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "node_threshold": 0.7,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/anchor/fused_anchor.joblib",
+          "label": "anchor",
+          "hash": "55838830362a25a3"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T15:09:32.972753+00:00",
+      "ended_at": "2026-10-27T15:10:34.269165+00:00",
+      "wall_s": 61.296,
+      "rows": 15,
+      "git_commit": "c3d92746f939c794f2199a770d70b699365b4680",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "anchor_tuning/anchor",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "anchor_0.7_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "node_threshold": 0.7,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/anchor/fused_anchor.joblib",
+          "label": "anchor",
+          "hash": "ccb406a2013fb004"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T15:10:34.325873+00:00",
+      "ended_at": "2026-10-27T15:11:33.969380+00:00",
+      "wall_s": 59.644,
+      "rows": 15,
+      "git_commit": "c3d92746f939c794f2199a770d70b699365b4680",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "anchor_tuning/anchor",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "anchor_0.7_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "node_threshold": 0.7,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/anchor/fused_anchor.joblib",
+          "label": "anchor",
+          "hash": "9ff30b8ba8177a75"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T15:11:34.059602+00:00",
+      "ended_at": "2026-10-27T15:12:35.366788+00:00",
+      "wall_s": 61.307,
+      "rows": 15,
+      "git_commit": "c3d92746f939c794f2199a770d70b699365b4680",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "anchor_tuning/anchor",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "anchor_0.7_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "node_threshold": 0.7,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/anchor/fused_anchor.joblib",
+          "label": "anchor",
+          "hash": "61a787e5adda128f"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T15:12:35.471285+00:00",
+      "ended_at": "2026-10-27T15:13:38.547127+00:00",
+      "wall_s": 63.076,
+      "rows": 15,
+      "git_commit": "c3d92746f939c794f2199a770d70b699365b4680",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "anchor_tuning/anchor",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "anchor_0.7_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "node_threshold": 0.7,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/anchor/fused_anchor.joblib",
+          "label": "anchor",
+          "hash": "b56aeb974310c29d"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T15:13:38.637191+00:00",
+      "ended_at": "2026-10-27T15:14:43.260325+00:00",
+      "wall_s": 64.623,
+      "rows": 15,
+      "git_commit": "c3d92746f939c794f2199a770d70b699365b4680",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "anchor_tuning/anchor",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "anchor_0.8_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "node_threshold": 0.8,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/anchor/fused_anchor.joblib",
+          "label": "anchor",
+          "hash": "213e234f26d29352"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T15:14:43.321805+00:00",
+      "ended_at": "2026-10-27T15:15:44.897214+00:00",
+      "wall_s": 61.575,
+      "rows": 15,
+      "git_commit": "c3d92746f939c794f2199a770d70b699365b4680",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "anchor_tuning/anchor",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "anchor_0.8_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "node_threshold": 0.8,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/anchor/fused_anchor.joblib",
+          "label": "anchor",
+          "hash": "c77742aeb22f07dc"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T15:15:44.956096+00:00",
+      "ended_at": "2026-10-27T15:16:49.634739+00:00",
+      "wall_s": 64.679,
+      "rows": 15,
+      "git_commit": "c3d92746f939c794f2199a770d70b699365b4680",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "anchor_tuning/anchor",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "anchor_0.8_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "node_threshold": 0.8,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/anchor/fused_anchor.joblib",
+          "label": "anchor",
+          "hash": "8cf3c8b2b42753b0"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T15:16:49.700038+00:00",
+      "ended_at": "2026-10-27T15:17:48.454686+00:00",
+      "wall_s": 58.755,
+      "rows": 15,
+      "git_commit": "c3d92746f939c794f2199a770d70b699365b4680",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "anchor_tuning/anchor",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "anchor_0.8_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "node_threshold": 0.8,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/anchor/fused_anchor.joblib",
+          "label": "anchor",
+          "hash": "20d2633d82c80b58"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T15:17:48.513257+00:00",
+      "ended_at": "2026-10-27T15:18:48.869405+00:00",
+      "wall_s": 60.356,
+      "rows": 15,
+      "git_commit": "c3d92746f939c794f2199a770d70b699365b4680",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "anchor_tuning/anchor",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "anchor_0.8_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "node_threshold": 0.8,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/anchor/fused_anchor.joblib",
+          "label": "anchor",
+          "hash": "10544c74884a546c"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T15:18:48.926774+00:00",
+      "ended_at": "2026-10-27T15:19:50.104355+00:00",
+      "wall_s": 61.178,
+      "rows": 15,
+      "git_commit": "c3d92746f939c794f2199a770d70b699365b4680",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "anchor_tuning/anchor",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "anchor_0.9_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "node_threshold": 0.9,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/anchor/fused_anchor.joblib",
+          "label": "anchor",
+          "hash": "adedbff9f0fbe1ec"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T15:19:50.168808+00:00",
+      "ended_at": "2026-10-27T15:20:50.329714+00:00",
+      "wall_s": 60.161,
+      "rows": 15,
+      "git_commit": "c3d92746f939c794f2199a770d70b699365b4680",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "anchor_tuning/anchor",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "anchor_0.9_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "node_threshold": 0.9,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/anchor/fused_anchor.joblib",
+          "label": "anchor",
+          "hash": "8cad25fc014d798c"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T15:20:50.409382+00:00",
+      "ended_at": "2026-10-27T15:21:53.566717+00:00",
+      "wall_s": 63.157,
+      "rows": 15,
+      "git_commit": "c3d92746f939c794f2199a770d70b699365b4680",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "anchor_tuning/anchor",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "anchor_0.9_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "node_threshold": 0.9,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/anchor/fused_anchor.joblib",
+          "label": "anchor",
+          "hash": "5215b25e035c7ce2"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T15:21:53.626198+00:00",
+      "ended_at": "2026-10-27T15:22:56.194207+00:00",
+      "wall_s": 62.568,
+      "rows": 15,
+      "git_commit": "c3d92746f939c794f2199a770d70b699365b4680",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "anchor_tuning/anchor",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "anchor_0.9_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "node_threshold": 0.9,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/anchor/fused_anchor.joblib",
+          "label": "anchor",
+          "hash": "9ad8deb144a45a77"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T15:22:56.289510+00:00",
+      "ended_at": "2026-10-27T15:23:57.801154+00:00",
+      "wall_s": 61.512,
+      "rows": 15,
+      "git_commit": "c3d92746f939c794f2199a770d70b699365b4680",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "anchor_tuning/anchor",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "anchor_0.9_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "node_threshold": 0.9,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/anchor/fused_anchor.joblib",
+          "label": "anchor",
+          "hash": "20d076e536155b12"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T15:23:57.856778+00:00",
+      "ended_at": "2026-10-27T15:25:01.628831+00:00",
+      "wall_s": 63.772,
+      "rows": 15,
+      "git_commit": "c3d92746f939c794f2199a770d70b699365b4680",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "anchor_tuning/anchor",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "anchor_0.95_a0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "node_threshold": 0.95,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.3,
+          "model_path": "results/anchor/fused_anchor.joblib",
+          "label": "anchor",
+          "hash": "29de5500fbb88d2b"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T15:25:01.718876+00:00",
+      "ended_at": "2026-10-27T15:25:59.732967+00:00",
+      "wall_s": 58.014,
+      "rows": 15,
+      "git_commit": "c3d92746f939c794f2199a770d70b699365b4680",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "anchor_tuning/anchor",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "anchor_0.95_a0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "node_threshold": 0.95,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/anchor/fused_anchor.joblib",
+          "label": "anchor",
+          "hash": "d67ec784bf9216e1"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T15:25:59.790772+00:00",
+      "ended_at": "2026-10-27T15:26:58.352628+00:00",
+      "wall_s": 58.562,
+      "rows": 15,
+      "git_commit": "c3d92746f939c794f2199a770d70b699365b4680",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "anchor_tuning/anchor",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "anchor_0.95_a0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "node_threshold": 0.95,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.7,
+          "model_path": "results/anchor/fused_anchor.joblib",
+          "label": "anchor",
+          "hash": "bacdb9e8954b8e2f"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T15:26:58.412730+00:00",
+      "ended_at": "2026-10-27T15:27:56.524959+00:00",
+      "wall_s": 58.112,
+      "rows": 15,
+      "git_commit": "c3d92746f939c794f2199a770d70b699365b4680",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "anchor_tuning/anchor",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "anchor_0.95_a0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "node_threshold": 0.95,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.8,
+          "model_path": "results/anchor/fused_anchor.joblib",
+          "label": "anchor",
+          "hash": "1f41f70909206959"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T15:27:56.587078+00:00",
+      "ended_at": "2026-10-27T15:28:53.875505+00:00",
+      "wall_s": 57.288,
+      "rows": 15,
+      "git_commit": "c3d92746f939c794f2199a770d70b699365b4680",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    },
+    {
+      "experiment": "anchor_tuning/anchor",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "anchor_0.95_a0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "node_threshold": 0.95,
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.9,
+          "model_path": "results/anchor/fused_anchor.joblib",
+          "label": "anchor",
+          "hash": "89b556782fb69cd1"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T15:28:53.953587+00:00",
+      "ended_at": "2026-10-27T15:29:52.459642+00:00",
+      "wall_s": 58.506,
+      "rows": 15,
+      "git_commit": "c3d92746f939c794f2199a770d70b699365b4680",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    }
+  ]
+}
