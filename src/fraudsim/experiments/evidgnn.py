@@ -256,7 +256,10 @@ def fused_train(node_threshold: float = 0.5, tag: str = "evidgnn") -> None:
     x = np.array([f for _, f in rows], dtype=float)
     y = np.array([r.label for r, _ in rows])
     t = np.array([r.t_frac for r, _ in rows])
-    s = FusedScorer().fit(x[t < 0.7], y[t < 0.7], x[t >= 0.7], y[t >= 0.7])
+    # instantiate through the package path so the pickle loads outside `python -m` (__main__)
+    from fraudsim.experiments.evidgnn import FusedScorer as _FS
+
+    s = _FS().fit(x[t < 0.7], y[t < 0.7], x[t >= 0.7], y[t >= 0.7])
     s.meta = {"protocol": "docs/research/evidgnn_protocol.md", "rows": len(rows), "positives": int(y.sum()),
               "features": "19 ring features + " + ", ".join(GNN_STATS), "oof": "fold A scored by GNN B, and vice versa",
               "node_threshold_during_training": node_threshold}
