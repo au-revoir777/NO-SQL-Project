@@ -44,3 +44,8 @@ All tests here are **exploratory**. The paper's confirmatory family of four is c
 - **Runs.** Growing-hub `scale_sweep` at 1,000, 5,000, 10,000 and 20,000 users; incremental vs 5 s timer.
 - **Setup.** Revision container, run alone after every other job has finished.
 - **Reporting.** Min–max and median over the five seeds; no p-values.
+
+## Process notes (added during the runs)
+- **Thread count.** The GraphSAGE LOSO models are trained with one PyTorch thread (`OMP_NUM_THREADS=1`), as in EvidGNN amendment 1. On this container two threads made training about 250 times slower. Thread count changes speed and last-bit rounding only; the settings are otherwise the W2 settings.
+- **LOSO run aborted.** The first LOSO test started before its models existed (a queue-order error) and failed after one row. Nothing was inspected. That output is kept in `results/round3/loso_aborted/`, and the full block 3201–3220 is run once the models exist.
+- **Amount-overlap run resumed.** The amount-overlap run (3601–3610) was stopped by a time limit after 169 of 200 rows. The missing 31 rows were completed with `scripts/diagnostics/resume_grid.py`. Streams are deterministic, so the rows equal an uninterrupted run.
