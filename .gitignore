@@ -15,6 +15,9 @@ results/*
 !results/r2_*/
 !results/r5_*/
 !results/r6_*/
+!results/round3/
+!results/round3_*/
+!results/evidgnn*/
 !results/tuning/
 !results/public/
 !results/public/runs/

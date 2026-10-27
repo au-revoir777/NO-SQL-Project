@@ -41,6 +41,9 @@ HUB_WEIGHTS = (
     "inverse_degree_plain",
     "inverse_sqrt_degree",
     "soft_cap",
+    # Round 3 (docs/research/round3_protocol.md): constant weight with an explicit degree
+    # cutoff at the 1/ln(1+d) solo-link point for theta_e = 0.3 (d = 27).
+    "step_27",
 )
 SOFT_CAP_CENTRE, SOFT_CAP_WIDTH = 10.0, 2.0  # logistic step at the Review II cap of 10
 _KIND_TYPE = {
@@ -65,6 +68,8 @@ def hub_weight(degree: int, method: str) -> float:
         return 1.0 / d
     if method == "inverse_sqrt_degree":
         return 1.0 / math.sqrt(d)
+    if method == "step_27":
+        return 1.0 if d <= 27 else 0.2
     if method == "soft_cap":
         return 1.0 / (1.0 + math.exp((d - SOFT_CAP_CENTRE) / SOFT_CAP_WIDTH))
     raise ValueError(f"unknown hub weight method {method!r}; expected one of {HUB_WEIGHTS}")
