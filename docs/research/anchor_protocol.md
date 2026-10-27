@@ -72,3 +72,18 @@ All use their committed selections.
 - **All three supported:** "Anchoring a GNN in label-free pairwise evidence keeps its in-distribution gain and removes its failure under shift."
 - **A1 holds, A2 or A3 fails:** "The guard and anchoring do not repair the shift failure." Report the shift results honestly.
 - **A1 fails:** "Anchoring costs the in-distribution gain."
+
+## Development check (5001–5005), before any test block
+
+| Shift | Guard fallbacks | AnchorPipe | Anchor only | SagePipe | Shipped pipeline |
+|---|---|---|---|---|---|
+| Amount median 1,000 | 2,963 | **0.638** | 0.403 | 0.447 | 0.649 |
+| 300-account hub (hub_heavy) | 0 | 0.907 | 0.907 | 0.894 | 0.804 |
+
+- **The guard did not fire on the 300-account hub,** which formally permits the one allowed change.
+- **No change is made.** The GNN does not fail at this hub size (SagePipe 0.894), so there is nothing for the guard to catch.
+- **The guard stays as declared:** K = 5, q = 0.995, τ = 0.456.
+- **The guard never fired on validation.**
+- **Anchoring alone does not repair the amount shift** (0.403). The scorer gives the anchoring features near-zero weight (−0.42 and +0.02 against +5.9 for the GNN mean probability).
+
+Selections are now locked (`results/anchor/selected.json`).
