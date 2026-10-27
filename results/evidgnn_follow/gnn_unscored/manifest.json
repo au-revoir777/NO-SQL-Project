@@ -1,0 +1,102 @@
+{
+  "grids": [
+    {
+      "experiment": "evidgnn_follow/gnn_unscored",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        4801,
+        4802,
+        4803,
+        4804,
+        4805,
+        4806,
+        4807,
+        4808,
+        4809,
+        4810,
+        4811,
+        4812,
+        4813,
+        4814,
+        4815,
+        4816,
+        4817,
+        4818,
+        4819,
+        4820
+      ],
+      "methods": [
+        {
+          "name": "gnn_unscored",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "gnn": {
+              "node_threshold": 0.95,
+              "model_path": "results/w2_gnn/graphsage.pt"
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "gnn_unscored",
+          "hash": "330a8f64949f887c"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T07:00:04.401206+00:00",
+      "ended_at": "2026-10-27T07:01:09.090572+00:00",
+      "wall_s": 64.689,
+      "rows": 100,
+      "git_commit": "a0c5204e5c09d7a1b5f3e6a295766fb12eb3ad33",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    }
+  ]
+}
