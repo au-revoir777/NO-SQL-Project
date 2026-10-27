@@ -234,8 +234,11 @@ class FusedStage(ScoringStage):
 
     def featurize(self, engine, ring, others, now_t, since_t):
         feats, view, joined = super().featurize(engine, ring, others, now_t, since_t)
-        det = next((d for d in engine.detectors if isinstance(d, EvidGnnDetector) and d.enabled), None)
-        scores = det.last_scores if det is not None else {}
+        from fraudsim.detectors.external import GnnDetector
+
+        det = next((d for d in engine.detectors
+                    if isinstance(d, (EvidGnnDetector, GnnDetector)) and d.enabled), None)
+        scores = getattr(det, "last_scores", {}) if det is not None else {}
         thr = det.cfg.node_threshold if det is not None else 0.5
         ps = [scores.get(m, 0.0) for m in ring.members]
         extra = [float(np.mean(ps)), float(np.min(ps)), float(np.mean([p >= thr for p in ps]))] if ps else [0.0] * 3
@@ -249,19 +252,30 @@ def evidpipe_overrides(model: str, node_threshold: float) -> dict:
                                          "as_full_detector": True}})
 
 
+def sage_overrides(model: str, node_threshold: float) -> dict:
+    t = load_tuned()
+    return _merge(PROPOSED, {"hub_aware": {"edge_threshold": float(t["edge_threshold"])},
+                             "gnn": {"model_path": model, "node_threshold": node_threshold,
+                                     "as_full_detector": True}})
+
+
 def fused_train(node_threshold: float = 0.5, tag: str = "evidgnn") -> None:
-    """Rows from the training seeds; each fold scored by the GNN trained on the other fold."""
+    """Rows from the training seeds; each fold scored by the GNN trained on the other fold.
+    tag "sage": GraphSAGE fold models (amendment 2)."""
     from fraudsim.scoring.train import Row
 
     rows: list[tuple[Row, list[float]]] = []
     for fold, other in (("A", "B"), ("B", "A")):
-        model = f"{D}/{tag}_{other}.pt"
+        if tag == "sage":
+            model, build = f"{D}/graphsage_{other}.pt", sage_overrides
+        else:
+            model, build = f"{D}/{tag}_{other}.pt", evidpipe_overrides
         for sc in TRAIN_SCEN:
             for seed in FOLDS[fold]:
                 stream = make_stream(sc, seed)
                 store = InMemoryGraphStore()
                 stage = FusedStage(scorer=None, record=True)
-                eng = DetectionEngine(store, build_detectors(store, evidpipe_overrides(model, node_threshold)),
+                eng = DetectionEngine(store, build_detectors(store, build(model, node_threshold)),
                                       tracker=RingTracker(EnsembleConfig()),
                                       config=EngineConfig(batch_size=50, full_interval_s=0.0), scorer=stage)
                 eng.run(stream.events)
@@ -304,6 +318,14 @@ def method(kind: str, node_threshold: float, alert: float | None = None, tag: st
                                  "ring_rule": ring_rule, "gate": gate}}
         return Method(name or f"evidgnn_{node_threshold}", "EvidGNN", ov, engine={"incremental": False},
                       scored=False, family="evidgnn")
+    if kind == "sagepipe":
+        from fraudsim.experiments.w2_baselines import GNN_MODEL
+
+        m = Method(name or f"sagepipe_{node_threshold}_a{alert}", "GraphSAGE fused pipeline",
+                   sage_overrides(GNN_MODEL, node_threshold), engine={"full_interval_s": 0.0},
+                   family="evidgnn", alert_threshold=alert, model_path=f"{D}/fused_sage.joblib")
+        m.ensemble = {}
+        return m
     if kind == "evidpipe":
         m = Method(name or f"evidpipe_{node_threshold}_a{alert}", "EvidGNN pipeline",
                    evidpipe_overrides(model, node_threshold), engine={"full_interval_s": 0.0},
@@ -313,7 +335,7 @@ def method(kind: str, node_threshold: float, alert: float | None = None, tag: st
     raise ValueError(kind)
 
 
-def run_methods(experiment: str, scenarios, seeds, methods: list[Method]) -> None:
+def run_methods(experiment: str, scenarios, seeds, methods: list[Method], **kw) -> None:
     """Like run_grid, but EvidPipe methods use the FusedStage and the fused scorer.
     GNN node scores are cached per stream (they do not depend on any threshold)."""
     from fraudsim.detectors import evidgnn as det
@@ -327,13 +349,13 @@ def run_methods(experiment: str, scenarios, seeds, methods: list[Method]) -> Non
 
     harness.make_stream = fresh_stream  # type: ignore[assignment]
     try:
-        _run_methods(experiment, scenarios, seeds, methods)
+        _run_methods(experiment, scenarios, seeds, methods, **kw)
     finally:
         harness.make_stream = orig_stream  # type: ignore[assignment]
         det.SCORE_CACHE = None
 
 
-def _run_methods(experiment: str, scenarios, seeds, methods: list[Method]) -> None:
+def _run_methods(experiment: str, scenarios, seeds, methods: list[Method], **kw) -> None:
     from fraudsim.experiments import harness
     from fraudsim.experiments.w2_baselines import skip_explanations
 
@@ -344,14 +366,14 @@ def _run_methods(experiment: str, scenarios, seeds, methods: list[Method]) -> No
     fused = [m for m in methods if m.family == "evidgnn" and m.model_path and "fused" in m.model_path]
     plain = [m for m in methods if m not in fused]
     if plain:
-        run_grid(experiment, scenarios, seeds, plain, OUT)
+        run_grid(experiment, scenarios, seeds, plain, OUT, **kw)
     if fused:
         orig_stage, orig_load = harness.ScoringStage, harness.RingScorer.load
         harness.ScoringStage = FusedStage  # type: ignore[misc]
         harness.RingScorer.load = staticmethod(  # type: ignore[method-assign]
             lambda p: load_fused(p) if "fused_" in str(p) else orig_load(p))
         try:
-            run_grid(experiment, scenarios, seeds, fused, OUT)
+            run_grid(experiment, scenarios, seeds, fused, OUT, **kw)
         finally:
             harness.ScoringStage = orig_stage  # type: ignore[misc]
             harness.RingScorer.load = orig_load  # type: ignore[method-assign]
@@ -389,6 +411,9 @@ def tune(what: str) -> None:
         grid = (0.5, 0.7, 0.8, 0.9, 0.95, *GNN_WIDE)
         run_grid(f"{TUNE}/gnn_evidence", SCEN, VAL_SEEDS,
                  [gnn_method(v, "evidence", f"gnn_evidence_{v}") for v in grid], OUT)
+    elif what == "sagepipe":  # amendment 2
+        ms = [method("sagepipe", v, a) for v in NODE_GRID for a in ALERT_GRID]
+        run_methods(f"{TUNE}/sagepipe", SCEN, VAL_SEEDS, ms)
     elif what == "evidpipe":
         ms = [method("evidpipe", v, a) for v in NODE_GRID for a in ALERT_GRID]
         run_methods(f"{TUNE}/evidpipe", SCEN, VAL_SEEDS, ms)
@@ -430,7 +455,8 @@ def select() -> dict:
     ev = read("evidgnn")
     out["evidgnn"] = dict(zip(("method", "val_f1"), _best(ev[~ev["method"].str.startswith("evidgnn_any")]), strict=True))
     out["evidgnn_any"] = dict(zip(("method", "val_f1"), _best(ev, "evidgnn_any"), strict=True))
-    for key, d in (("evidgnn_nogate", "nogate"), ("gnn_evidence", "gnn_evidence"), ("evidpipe", "evidpipe")):
+    for key, d in (("evidgnn_nogate", "nogate"), ("gnn_evidence", "gnn_evidence"), ("evidpipe", "evidpipe"),
+                   ("sagepipe", "sagepipe")):
         if (OUT / TUNE / d / "results.csv").exists():
             out[key] = dict(zip(("method", "val_f1"), _best(read(d)), strict=True))
     cands = {k: out[k]["val_f1"] for k in ("gnn_unscored", "gnn_scored", "rules")}
@@ -459,6 +485,9 @@ def systems(sel: dict, names: list[str]) -> list[Method]:
         if n == "evidpipe":
             v, a = _sel_threshold(sel, "evidpipe")
             out.append(method("evidpipe", v, a, name="evidpipe"))
+        elif n == "sagepipe":  # amendment 2
+            v, a = _sel_threshold(sel, "sagepipe")
+            out.append(method("sagepipe", v, a, name="sagepipe"))
         elif n == "evidpipe_shipped_scorer":  # A6
             v, _ = _sel_threshold(sel, "evidpipe")
             t = load_tuned()
@@ -497,13 +526,17 @@ def test(block: str, names: list[str]) -> None:
 
     skip_explanations()
     sel = json.loads(SELECTED.read_text())
-    seeds = {"main": MAIN, "ablation": ABL}[block]
+    seeds = {"main": MAIN, "ablation": ABL, "follow": tuple(range(4801, 4821)),
+             "overlap": tuple(range(4701, 4711))}[block]
+    kw = {"scenario_overrides": {"simulation.amount_median": 2000}} if block == "overlap" else {}
     for m in systems(sel, names):
-        run_methods(f"evidgnn_{block}/{m.name}", SCEN, seeds, [m])
+        run_methods(f"evidgnn_{block}/{m.name}", SCEN, seeds, [m], **kw)
 
 
-def train_sage_subsample(frac: float = 0.1, tag: str = "graphsage_lab10") -> Path:
-    """H4: GraphSAGE retrained exactly as W2 (round-3 LOSO code path) on the same snapshot subsample."""
+def train_sage_subsample(frac: float = 0.1, tag: str = "graphsage_lab10",
+                         seeds: tuple[int, ...] = TRAIN_SEEDS) -> Path:
+    """GraphSAGE retrained exactly as W2 (round-3 LOSO code path). H4: snapshot subsample.
+    Amendment 2: fold models (seeds 101-105 / 106-110, frac 1.0)."""
     import torch
 
     from fraudsim.detectors.external import make_sage
@@ -514,10 +547,11 @@ def train_sage_subsample(frac: float = 0.1, tag: str = "graphsage_lab10") -> Pat
     np.random.seed(0)
     graphs = []
     for sc in TRAIN_SCEN:
-        for seed in TRAIN_SEEDS:
+        for seed in seeds:
             graphs += gnn_snapshots(sc, seed)[0]
     n_all = len(graphs)
-    graphs = [graphs[i] for i in label_subsample(n_all, frac)]
+    if frac < 1.0:
+        graphs = [graphs[i] for i in label_subsample(n_all, frac)]
     xs = np.concatenate([g[0] for g in graphs])
     mean, std = xs.mean(0), xs.std(0) + 1e-6
     n_pos = sum(float(g[2].sum()) for g in graphs)
@@ -637,6 +671,9 @@ def main() -> None:
             test_hub(tuple(int(x) for x in a.methods.split(",")) if a.methods[0].isdigit() else (500, 2000, 10000))
         else:
             test(a.arg, a.methods.split(","))
+    elif a.step == "train-sage-folds":  # amendment 2
+        train_sage_subsample(1.0, "graphsage_A", FOLDS["A"])
+        train_sage_subsample(1.0, "graphsage_B", FOLDS["B"])
     elif a.step == "train-label":  # H4
         train(True, "all", "evidgnn_lab10", frac=0.1)
         train_sage_subsample(0.1)

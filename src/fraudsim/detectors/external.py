@@ -315,6 +315,20 @@ class GnnDetector(BaseDetector):
         return self._model
 
     def node_scores(self, view: GraphView) -> dict[str, float]:
+        from fraudsim.detectors import evidgnn as _eg  # shared per-stream cache (threshold-free)
+
+        key = None
+        if _eg.SCORE_CACHE is not None:
+            key = ("graphsage", self.cfg.model_path, view.now_t, view.since_t,
+                   len(view.users), len(view.links), len(view.txns))
+            if key in _eg.SCORE_CACHE:
+                return _eg.SCORE_CACHE[key]
+        out = self._node_scores(view)
+        if key is not None:
+            _eg.SCORE_CACHE[key] = out
+        return out
+
+    def _node_scores(self, view: GraphView) -> dict[str, float]:
         import torch
 
         model, mean, std = self._load()
@@ -330,6 +344,7 @@ class GnnDetector(BaseDetector):
     def detect(self, view: GraphView) -> list[RingCandidate]:
         cfg = self.cfg
         scores = self.node_scores(view)
+        self.last_scores = scores  # read by the fused ring scorer (evidgnn_protocol.md, amendment 2)
         flagged = {u for u, p in scores.items() if p >= cfg.node_threshold}
         if len(flagged) < cfg.min_ring_size:
             return []
