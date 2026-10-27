@@ -387,7 +387,7 @@ def build_detectors(
 
     overrides = overrides or {}
     known = {"static_cypher", "hub_aware", "temporal_cycle", "smurfing", "community"}
-    external = {"peeling", "leiden", "gnn"}  # W2 baselines, off unless overridden
+    external = {"peeling", "leiden", "gnn", "evidgnn"}  # W2 baselines, off unless overridden
     known |= external
     unknown = set(overrides) - known
     if unknown:
@@ -410,7 +410,7 @@ def build_detectors(
 
 def _external(store: GraphStore, overrides: dict[str, dict[str, Any]]) -> list[BaseDetector]:
     """W2 baselines (detectors/external.py), built only when named in the overrides."""
-    if not ({"peeling", "leiden", "gnn"} & set(overrides)):
+    if not ({"peeling", "leiden", "gnn", "evidgnn"} & set(overrides)):
         return []
     from fraudsim.detectors.external import (
         GnnConfig,
@@ -429,4 +429,8 @@ def _external(store: GraphStore, overrides: dict[str, dict[str, Any]]) -> list[B
     ):
         if key in overrides:
             out.append(det(cls(**overrides[key]), store))
+    if "evidgnn" in overrides:
+        from fraudsim.detectors.evidgnn import EvidGnnConfig, EvidGnnDetector
+
+        out.append(EvidGnnDetector(EvidGnnConfig(**overrides["evidgnn"]), store))
     return out
