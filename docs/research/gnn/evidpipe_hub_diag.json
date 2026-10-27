@@ -1,0 +1,35 @@
+{
+ "4201": {
+  "false_alerted": 59,
+  "by_detectors": {
+   "community": 53,
+   "community+hub_aware": 2,
+   "hub_aware": 4
+  },
+  "size_median": 4.0,
+  "risk_median": 0.8186915887850468,
+  "gnn_mean_p_median_all_scored": 0.943553015589714
+ },
+ "4202": {
+  "false_alerted": 54,
+  "by_detectors": {
+   "hub_aware": 7,
+   "community+hub_aware": 2,
+   "community": 45
+  },
+  "size_median": 4.0,
+  "risk_median": 0.8186915887850468,
+  "gnn_mean_p_median_all_scored": 0.7730954028666019
+ },
+ "4203": {
+  "false_alerted": 48,
+  "by_detectors": {
+   "hub_aware": 6,
+   "community+hub_aware": 2,
+   "community": 40
+  },
+  "size_median": 4.0,
+  "risk_median": 0.8186915887850468,
+  "gnn_mean_p_median_all_scored": 0.748204567624877
+ }
+}
