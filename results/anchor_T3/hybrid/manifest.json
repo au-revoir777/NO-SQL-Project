@@ -1,0 +1,90 @@
+{
+  "grids": [
+    {
+      "experiment": "anchor_T3/hybrid",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        5301,
+        5302,
+        5303,
+        5304,
+        5305,
+        5306,
+        5307,
+        5308,
+        5309,
+        5310
+      ],
+      "methods": [
+        {
+          "name": "hybrid",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "edge_threshold": 0.3
+            },
+            "gnn": {
+              "node_threshold": 0.9,
+              "model_path": "results/w2_gnn/graphsage.pt",
+              "as_full_detector": true
+            }
+          },
+          "engine": {
+            "full_interval_s": 0.0
+          },
+          "ensemble": {},
+          "scored": true,
+          "alert_threshold": 0.5,
+          "model_path": "results/w2_scorers/hybrid.joblib",
+          "label": "w2_hybrid_0.9_a0.5",
+          "hash": "53bf01c7c5c2cca8"
+        }
+      ],
+      "scenario_overrides": {
+        "simulation.amount_median": 5000
+      },
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-27T16:07:52.080684+00:00",
+      "ended_at": "2026-10-27T16:11:25.363420+00:00",
+      "wall_s": 213.283,
+      "rows": 50,
+      "git_commit": "f7c97e1f06ff5a95787552f6d4e82d6027dc44d4",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    }
+  ]
+}
