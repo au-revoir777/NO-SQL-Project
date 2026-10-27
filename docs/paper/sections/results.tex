@@ -174,6 +174,62 @@ Table~\ref{tab:existing}) differs by \RtConstTwoD{} (CI \RtConstTwoLo{} to \RtCo
 with fewer false rings, but finds \RtConstTwoAdapt{} adaptive rings against
 \RtLogAdapt{} for $1/\ln(1+d)$.
 
+\subsection{A GNN-inclusive pipeline}
+\label{sec:gnnpipe}
+\input{tables/tab7_gnnpipe.tex}
+The comparison above shows a learned node classifier ahead of the pipeline on
+some scenarios and behind it on others, and the hybrid shows the two are
+complementary. We therefore designed a GNN-inclusive pipeline under a separate
+protocol committed before any of its models was trained
+(\texttt{docs/research/evidgnn\_protocol.md}), with four confirmatory
+hypotheses under Holm correction and fresh seed blocks.
+\textbf{EvidGNN} is a two-layer relation-aware GraphSAGE over three relations:
+user--attribute links, transfers, and the pipeline's evidence edges ($W\ge\theta_e$,
+top 16 per user). It has a \emph{gate}: an attribute shared by more than 27
+accounts, which cannot link a pair alone, passes no messages. It has 16
+features, the GraphSAGE baseline's 12 plus four evidence statistics, and is trained
+exactly like the baseline. \textbf{EvidPipe} adds EvidGNN as a detector to the
+shipped pipeline (run on the whole graph every micro-batch) and replaces the
+ring scorer with one over the 19 ring features plus three statistics of the
+members' GNN probabilities (mean, minimum, fraction flagged). The scorer is
+trained on the training seeds with \emph{out-of-fold} GNN scores: seeds
+101--105 are scored by a GNN trained on 106--110 and vice versa. Node and alert
+thresholds were selected on the validation seeds, with the GraphSAGE
+baseline's grid widened first so that it did not end on its edge.
+
+On fresh test seeds (Table~\ref{tab:gnnpipe}) EvidPipe reaches F1
+\EgMainevidpipeF{} against \EgMaingnnunscoredF{} for GraphSAGE, the strongest
+existing method: a difference of \EgHoneD{} (95\% CI \EgHoneLo{} to \EgHoneHi{},
+$p<0.001$ after Holm correction, wins/ties/losses \EgHoneWtl{}). It also beats the hybrid
+(\EgVsHybridD{}, CI \EgVsHybridLo{} to \EgVsHybridHi{}) and has the highest ring
+PR AUC. The gain is largest on \texttt{hub\_heavy} (\EgHoneHub{}); on
+\texttt{high\_noise} GraphSAGE remains ahead (\EgHoneNoise{}). The ablations on a
+second fresh block replicate the gain over GraphSAGE (\EgAbRepD{}, CI
+\EgAbRepLo{} to \EgAbRepHi{}). They also show that it does \emph{not} come from what we designed
+the GNN to do. Switching the gate off \emph{improves} EvidGNN (gate on minus off
+\EgAbGateD{} F1, CI \EgAbGateLo{} to \EgAbGateHi{}; the confirmatory test H2 is
+rejected). The evidence ring rule
+costs \EgAbRuleEvD{} for EvidGNN and \EgAbRuleSageD{} for GraphSAGE overall, while
+gaining \EgAbRuleEvHub{} and \EgAbRuleSageHub{} on \texttt{hub\_heavy}. As a node classifier the gated
+model is weaker than GraphSAGE (\EgAbModelD{} with the same ring rule). What
+matters is the scorer: with the shipped 19-feature scorer instead of the
+GNN-aware one, the same detectors fall from \EgAbFevidpipeF{} to
+\EgAbFevidpipeshippedscorerF{}, below GraphSAGE alone (\EgAbFgnnunscoredF{}). The
+two remaining hypotheses are not supported. With only 10\% of the labels the
+gated model is not better than GraphSAGE (\EgHfourD{}, CI \EgHfourLo{} to
+\EgHfourHi{}). When a scenario is left out of training it loses more than
+GraphSAGE, not less (F1 drop \EgLosoEvidDrop{} against \EgLosoSageDrop{}). The
+rule-based pipeline's scorer, by contrast, loses nothing when a scenario is left
+out (\RtLosoPipeDrop{}, CI \RtLosoPipeLo{} to \RtLosoPipeHi{}), while GraphSAGE loses
+\RtLosoSageDrop{} (CI \RtLosoSageLo{} to \RtLosoSageHi{}; seeds 3201--3220).
+
+The result is a GNN-inclusive pipeline that outperforms every existing method
+on this benchmark. The mechanism is the combination of rule-based candidate
+rings with a ring scorer that reads the GNN's member probabilities. Restricting
+the GNN's message passing around busy attributes does not help. This mirrors the
+degree-cap result: busy attributes are useful evidence for a learned model as
+well as for the pairwise rule.
+
 \subsection{RQ2: latency and scale}
 \input{tables/tab3_scale.tex}
 \begin{figure}[t]
