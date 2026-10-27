@@ -71,8 +71,25 @@ def snapshots(scenario: str, seed: int, gcfg: EvidGraphConfig, every_s: float = 
     return out
 
 
+CACHE = ROOT / ".cache" / "evidgnn"
+
+
+def cached_snapshots(scenario: str, seed: int, gcfg: EvidGraphConfig) -> list:
+    """Snapshots per stream, cached on disk (not part of results) so restarts and folds reuse them."""
+    p = CACHE / f"{'gate' if gcfg.gate else 'nogate'}_{scenario}_{seed}.joblib"
+    if p.exists():
+        return joblib.load(p)
+    out = snapshots(scenario, seed, gcfg)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    joblib.dump(out, p)
+    return out
+
+
 def train(gate: bool = True, fold: str = "all", tag: str = "evidgnn", epochs: int = 40,
           scenarios: tuple[str, ...] = TRAIN_SCEN) -> Path:
+    """Identical settings to the GraphSAGE baseline. Checkpoints every epoch and resumes, so a
+    stopped run continues from where it was; the result equals an uninterrupted run except for
+    the RNG state, which is saved and restored with the checkpoint."""
     import torch
 
     torch.manual_seed(0)
@@ -82,7 +99,7 @@ def train(gate: bool = True, fold: str = "all", tag: str = "evidgnn", epochs: in
     graphs = []
     for sc in scenarios:
         for seed in FOLDS[fold]:
-            graphs += snapshots(sc, seed, gcfg)
+            graphs += cached_snapshots(sc, seed, gcfg)
         print(f"[evidgnn train {tag}/{fold}] {sc}: {len(graphs)} snapshots", flush=True)
     xs = np.concatenate([g[0] for g in graphs])
     mean, std = xs.mean(0), xs.std(0) + 1e-6
@@ -93,8 +110,18 @@ def train(gate: bool = True, fold: str = "all", tag: str = "evidgnn", epochs: in
     loss_fn = torch.nn.BCEWithLogitsLoss(pos_weight=torch.tensor((n - n_pos) / max(n_pos, 1.0)))
     tens = [(torch.from_numpy((x - mean) / std), {r: torch.from_numpy(e[r]) for r in REL},
              torch.from_numpy(y), k) for x, e, y, k in graphs]
-    hist = []
-    for ep in range(epochs):
+    hist: list[float] = []
+    ckpt = CACHE / f"ckpt_{tag}_{fold}.pt"
+    if ckpt.exists():
+        st = torch.load(ckpt, weights_only=False)
+        model.load_state_dict(st["model"])
+        opt.load_state_dict(st["opt"])
+        hist = st["hist"]
+        torch.set_rng_state(st["torch_rng"])
+        np.random.set_state(st["np_rng"])
+        print(f"[evidgnn train {tag}/{fold}] resumed at epoch {len(hist)}", flush=True)
+    for ep in range(len(hist), epochs):
+        te = time.perf_counter()
         model.train()
         tot = 0.0
         for i in np.random.permutation(len(tens)):
@@ -105,6 +132,11 @@ def train(gate: bool = True, fold: str = "all", tag: str = "evidgnn", epochs: in
             opt.step()
             tot += float(loss)
         hist.append(round(tot / len(tens), 4))
+        CACHE.mkdir(parents=True, exist_ok=True)
+        torch.save({"model": model.state_dict(), "opt": opt.state_dict(), "hist": hist,
+                    "torch_rng": torch.get_rng_state(), "np_rng": np.random.get_state()}, ckpt)
+        print(f"[evidgnn train {tag}/{fold}] epoch {ep + 1}/{epochs} loss {hist[-1]} "
+              f"({time.perf_counter() - te:.0f}s)", flush=True)
     path = ROOT / D / f"{tag}_{fold}.pt"
     path.parent.mkdir(parents=True, exist_ok=True)
     torch.save({"state_dict": model.state_dict(), "hparams": {"hidden": 64, "dropout": 0.2},
@@ -113,7 +145,7 @@ def train(gate: bool = True, fold: str = "all", tag: str = "evidgnn", epochs: in
         "protocol": "docs/research/evidgnn_protocol.md", "gate": gate, "fold": fold,
         "seeds": FOLDS[fold], "scenarios": scenarios, "snapshots": len(graphs), "user_rows": int(n),
         "positive_rows": int(n_pos), "epochs": epochs, "loss_by_epoch": hist, "n_features": N_FEAT,
-        "wall_s": round(time.perf_counter() - t0, 1), "torch": torch.__version__}, indent=1))
+        "wall_s_last_session": round(time.perf_counter() - t0, 1), "torch": torch.__version__}, indent=1))
     print(f"[evidgnn train {tag}/{fold}] done in {time.perf_counter() - t0:.0f}s", flush=True)
     return path
 

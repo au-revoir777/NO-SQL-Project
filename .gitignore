@@ -45,3 +45,4 @@ docs/paper/*.out
 papers_nosql/
 images/papers_nosql/
 .hypothesis/
+.cache/
