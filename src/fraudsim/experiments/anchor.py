@@ -77,7 +77,7 @@ class AnchorStage(ScoringStage):
                  float(np.mean(a)), len(anchored) / len(members)] if members else [0.0] * 5
         g = guard_stat(det)
         flag = 1.0 if (self.tau is not None and g is not None and g > self.tau) else 0.0
-        return eg._Feats(feats, extra + [flag]), view, joined
+        return eg._Feats(feats, extra + [flag], (*eg.GNN_STATS, *ANCHOR_STATS, "guard_flag")), view, joined
 
 
 class GuardedScorer:

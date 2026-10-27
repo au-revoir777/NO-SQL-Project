@@ -216,8 +216,8 @@ class FusedScorer:
 class _Feats:
     """Proxy: the 19 ring features plus GNN member statistics."""
 
-    def __init__(self, base: Any, extra: list[float]) -> None:
-        self._b, self._e = base, extra
+    def __init__(self, base: Any, extra: list[float], names: tuple[str, ...] = GNN_STATS) -> None:
+        self._b, self._e, self._n = base, extra, names
 
     def __getattr__(self, name: str) -> Any:
         return getattr(self._b, name)
@@ -226,7 +226,7 @@ class _Feats:
         return list(self._b.to_vector()) + list(self._e)
 
     def to_dict(self) -> dict[str, float]:
-        return self._b.to_dict() | dict(zip(GNN_STATS, self._e, strict=True))
+        return self._b.to_dict() | dict(zip(self._n, self._e, strict=True))
 
 
 class FusedStage(ScoringStage):
