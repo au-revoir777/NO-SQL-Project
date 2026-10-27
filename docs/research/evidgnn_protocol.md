@@ -131,3 +131,13 @@ PyTorch's default of two intra-op threads on this two-core container, with other
 - **4701–4710 × 5 (amount overlap):** scenario override `simulation.amount_median = 2000`, all models trained on the default generator. Arms: EvidPipe, SagePipe, GraphSAGE unscored, shipped pipeline, rules + own scorer.
 
 **Reporting.** Paired differences with 95% CIs and uncorrected p-values, labelled exploratory. If SagePipe is within ±0.05 of EvidPipe (90% CI), the paper presents the simpler system (any GNN + fused scorer) as the method, and EvidGNN's gate as a tested and rejected design.
+
+## Amendment 3 (2026-10-27, after the hub-size sweep at 500 and 2,000 for the four declared arms; before any SagePipe hub run)
+
+**What prompted it.** In the exploratory hub-size sweep, EvidPipe flags 58 (500-account hub) and 89 (2,000-account hub) false rings per run. Its F1 falls to 0.10–0.23. GraphSAGE, the hybrid and the shipped pipeline stay at 0.75–1.00. Training hubs are at most about 80 accounts, so this is a second shift weakness besides transfer amounts.
+
+**Added, exploratory, ranges only.**
+1. **SagePipe on the same hub blocks** (4201–4205, 4211–4215). This reuses blocks seen for other arms, so it is labelled "same seeds, added after".
+2. **Per-detector origin of EvidPipe's false rings** on 4201–4203: which detector proposed each alerted false ring, and its fused-scorer inputs. This is a diagnosis, not a test.
+
+The 10,000-account size is run only for arms that are not collapsed at 2,000.
