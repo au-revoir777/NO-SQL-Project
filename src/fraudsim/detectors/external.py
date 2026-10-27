@@ -345,6 +345,9 @@ class GnnDetector(BaseDetector):
         cfg = self.cfg
         scores = self.node_scores(view)
         self.last_scores = scores  # read by the fused ring scorer (evidgnn_protocol.md, amendment 2)
+        if scores:  # share of active users at p >= 0.5, per scoring call (anchor_protocol.md guard)
+            hist = self.__dict__.setdefault("flag_history", [])
+            hist.append(sum(1 for p in scores.values() if p >= 0.5) / len(scores))
         flagged = {u for u, p in scores.items() if p >= cfg.node_threshold}
         if len(flagged) < cfg.min_ring_size:
             return []
