@@ -1,0 +1,15 @@
+{
+ "protocol": "docs/research/round4_protocol.md",
+ "K": 5,
+ "quantile": 0.995,
+ "amount_window": 200,
+ "tau": {
+  "amount": 0.3398630000000001,
+  "score": 0.8227615784008308
+ },
+ "median": {
+  "amount": 0.0758,
+  "score": 0.32728313327177594
+ },
+ "n_batches": 3592
+}
