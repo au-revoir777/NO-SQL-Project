@@ -44,8 +44,8 @@ weights that meet the condition are equivalent within 0.03 F1, but a step weight
 is not (\RtStepA{} worse; Section~\ref{sec:attribution}).
 \item \textbf{Contribution: GNN stacking with a rule fallback (AnchorPipe).} A
 GNN run as an extra detector, whose member probabilities feed the ring scorer
-(trained with out-of-fold scores), beats the strongest method we tested,
-GraphSAGE, by 0.09--0.11 F1 on five fresh blocks (Section~\ref{sec:gnnpipe}). It
+(trained with out-of-fold scores), beats the strongest existing method we
+tested, GraphSAGE, by 0.09--0.11 F1 on five fresh blocks (Section~\ref{sec:gnnpipe}). It
 also beats BWGNN \cite{tang2022bwgnn}, a fraud-specific spectral GNN, by
 \BwAnchorBwD{}. The gain comes from stacking: with the shipped scorer instead of
 the GNN-aware one, the same detectors fall below GraphSAGE. Under a
@@ -429,7 +429,7 @@ enough.
 projection, no density filter.
 \end{itemize}
 All baselines use the same two-hit confirmation as the proposed method.
-Section~\ref{sec:existing} adds six existing methods under a common protocol (gradient boosting, the learned baseline of Section~\ref{sec:rq9}, is the sixth).
+Section~\ref{sec:existing} adds six existing methods under a common protocol (gradient boosting, the learned baseline of Section~\ref{sec:rq9}, is the sixth), and Section~\ref{sec:anchor} adds BWGNN as a seventh.
 
 \textbf{Fair comparison.} All methods process identical event streams, emit
 candidate rings of 3--25 accounts, pass them through the same tracker and are
@@ -516,7 +516,7 @@ fresh blocks. All learned parts, including the fallback scorer, use transfer-siz
 features. The stacked pipeline's advantage disappears when benign amounts shift,
 and the fallback recovers only the rule pipeline's level, not more.
 
-\textbf{Comparators.} ``Strongest'' means strongest among the methods we tested.
+\textbf{Comparators.} ``Strongest'' means strongest among the existing methods we tested.
 We added one fraud-specific GNN (BWGNN, re-implemented from the authors' code), but
 not multi-relation camouflage-aware models such as CARE-GNN or PC-GNN, and every
 GNN sees our twelve generic node features. A GNN with richer features could
@@ -633,10 +633,10 @@ between batches.
 
 \section{Conclusion}
 In our simulator, keeping links through busy shared attributes helps a
-streaming ring detector only if no busy attribute can link two accounts on its
-own: busy attributes are corroborating evidence, and capping them costs F1 even
-when they could not link a pair alone. Stacking a GNN's member probabilities on
-the pipeline's rule candidates beats every method we tested in distribution,
+streaming ring detector, and helps most when no busy attribute can link two
+accounts on its own: busy attributes are corroborating evidence, and capping them
+costs F1 even when they could not link a pair alone (exploratory). Stacking a GNN's member probabilities on
+the pipeline's rule candidates beats every existing method we tested in distribution,
 including GraphSAGE and the fraud-specific BWGNN (AnchorPipe: \AnTOneanchorF{}
 against \AnTOnegnnunscoredF{} for GraphSAGE). The stacked pipeline fails under a
 transfer-amount shift. Falling back to the rule scorer when a drift test fires
@@ -646,8 +646,8 @@ scorer still uses transfer-size features, and under the strongest amount shift
 the scored rules are slightly ahead. Under other shifts we tested the GNN did not
 fail. Within the same
 pipeline, a degree cap costs \RfCapD{} ring F1 and most hub-hiding rings, a
-weight that lets one attribute suffice costs \RfNdOneD{}, and two weights that
-both meet the condition are equivalent within 0.05 F1. Shape still matters at the
+weight that lets one attribute suffice costs \RfNdOneD{} (a secondary contrast), and two weights that
+both meet the condition are equivalent within 0.03 F1. Shape still matters at the
 margin: a step weight that meets the condition costs \RtStepA{}, and only weights
 that let rare attributes link alone find most adaptive rings. Against tuned rules,
 Louvain, Leiden and FRAUDAR-style peeling, each with its own calibrated scorer,
@@ -681,12 +681,13 @@ table and number in this paper from those files (\texttt{make tables};
 \texttt{scripts/make\_refine\_tables.py}). \texttt{REPRODUCE.md} gives the
 commands; \texttt{requirements-lock.txt} pins the library versions with which
 the results reproduce exactly, and a test reruns a recorded run and compares
-it. The first experiments ran on Windows. A sample of 30 of their recorded rows
-(Tables~\ref{tab:baselines} and \ref{tab:ablation}; two seeds per method) reproduces
-exactly on Linux with the same lock file, including event-stream digests
-(\texttt{scripts/check\_reproduction.py}). The latency columns of
-Table~\ref{tab:scale} are machine-dependent and are not expected to reproduce. Wall-clock latencies depend on the
-machine and are not reproducible by design. An anonymised archive of the exact
+it. The first experiments ran on Windows. A sample of 38 of their recorded rows
+(Tables~\ref{tab:baselines} and \ref{tab:ablation}, two seeds per method; and
+Table~\ref{tab:scale} at 1{,}000 and 5{,}000 users, two seeds per size and mode)
+reproduces exactly on Linux with the same lock file, including event-stream
+digests and region sizes (\texttt{scripts/check\_reproduction.py}). The latency
+columns of Table~\ref{tab:scale} are machine-dependent and are not expected to
+reproduce. An anonymised archive of the exact
 version used for this paper (code, protocols, results; built by
 \texttt{scripts/make\_anonymous\_archive.sh}) accompanies the submission. A
 citable deposit with a DOI will follow on acceptance.

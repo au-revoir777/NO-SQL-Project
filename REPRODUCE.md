@@ -185,6 +185,6 @@ $R trigger-ref                                                        # trigger 
 for b in S0 S1 S2 S3 S4 S5 S6; do $R guard $b; done                   # Table IX, seeds 6101-6165
 $R traces                                                             # per-batch trigger traces
 python scripts/make_refine_tables.py && python scripts/make_anchor_figures.py
-python scripts/check_reproduction.py                                  # reruns 30 recorded Windows-era rows
+python scripts/check_reproduction.py                                  # reruns 38 recorded Windows-era rows (Tables of baselines, scale, ablation)
 sh scripts/make_anonymous_archive.sh anonymous_submission.zip         # double-blind archive
 ```

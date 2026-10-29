@@ -219,7 +219,7 @@ baseline's grid widened first so that it did not end on its edge.
 
 On fresh test seeds (Table~\ref{tab:gnnpipe}) EvidPipe reaches F1
 \EgMainevidpipeF{} against \EgMaingnnunscoredF{} for GraphSAGE, the strongest
-existing method: a difference of \EgHoneD{} (95\% CI \EgHoneLo{} to \EgHoneHi{},
+existing method we tested: a difference of \EgHoneD{} (95\% CI \EgHoneLo{} to \EgHoneHi{},
 $p<0.001$ after Holm correction, wins/ties/losses \EgHoneWtl{}). It also beats the hybrid
 (\EgVsHybridD{}, CI \EgVsHybridLo{} to \EgVsHybridHi{}) and has the highest ring
 PR AUC. The gain is largest on \texttt{hub\_heavy} (\EgHoneHub{}); on
@@ -279,7 +279,7 @@ pipeline (0.86, 1.00, 0.86) and the hybrid. The GNN-inclusive pipelines run the 
 accounts a stream takes a median 240\,s against 11\,s for the incremental
 pipeline.
 
-The result is a GNN-inclusive pipeline that is ahead of every method we tested
+The result is a GNN-inclusive pipeline that is ahead of every existing method we tested
 on this benchmark when test data resemble training data (Fig.~\ref{fig:contrasts}
 summarises every paired difference behind these claims). Its simplest form, plain
 GraphSAGE plus the GNN-aware ring scorer, is as accurate as our gated design
@@ -397,8 +397,11 @@ as benign ones (the last chosen to change the GNN's errors without changing its
 flag rate). Under all of them the GNN-inclusive pipeline did not fail. Without a
 guard it stays ahead of the rule-based pipeline (for example \GdSixtrigneverF{}
 against \GdSixproposedF{} with benign-sized ring amounts). Falling back always
-would cost F1 (\GdSixtrigalwaysF{}). The triggers correctly stayed silent, except
-for single early batches. We therefore found no blind spot in which the GNN fails
+would cost F1 (\GdSixtrigalwaysF{}). The flag-rate trigger fired only in two or
+three early batches of single streams, and the input test only in a few late
+batches of the \texttt{drift} scenario, whose amounts do change. The score test fired in about a third of
+the batches of every stream with a 2{,}000-account hub, which left F1 unchanged
+there; a score test can therefore fire on a shift that does not hurt the GNN. We therefore found no blind spot in which the GNN fails
 silently, but the oracle, which picks the better scorer per stream after the fact,
 shows room left: \GdSixoracleF{} against \GdSixtrigflagF{} with benign-sized ring
 amounts. Under every shift we tested, AnchorPipe's level is that of the better of
@@ -410,7 +413,7 @@ detection, with its authors' settings on the same graph, features and labels,
 and selected its threshold on validation (F1 \BwValF{} there). On fresh seeds
 6001--6020 (exploratory), BWGNN reaches \BwFbwgnn{} against \BwFgnnunscored{} for
 GraphSAGE (\BwBwSageD{}, CI \BwBwSageLo{} to \BwBwSageHi{}). GraphSAGE therefore
-remains the strongest method we tested. AnchorPipe reaches \BwFanchor{}, ahead of
+remains the strongest existing method we tested. AnchorPipe reaches \BwFanchor{}, ahead of
 BWGNN by \BwAnchorBwD{} (CI \BwAnchorBwLo{} to \BwAnchorBwHi{}) and of GraphSAGE by
 \BwAnchorSageD{}.
 

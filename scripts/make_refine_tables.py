@@ -534,7 +534,7 @@ def gnnpipe() -> None:
 \caption{GNN-inclusive pipeline against existing methods on fresh test seeds 4001--4020 (100 paired
 streams; selections fixed on validation before the run). F1 per scenario: adversarial, baseline, drift,
 high noise, hub heavy. $\Delta$: EvidPipe minus row (scenario-weighted, 95\% cluster bootstrap), $p$:
-raw stratified sign-flip (the H1 row stays below 0.001 after Holm correction over family~2). $^\dagger$Strongest existing method by validation F1; this comparison (H1) is
+raw stratified sign-flip (the H1 row stays below 0.001 after Holm correction over family~2). $^\dagger$Strongest existing method we tested, by validation F1; this comparison (H1) is
 confirmatory, the others exploratory.}
 \label{tab:gnnpipe}
 \small
@@ -675,7 +675,7 @@ distribution (5101--5120, 100 streams). T2: benign transfer median raised to 2{,
 amounts overlap (5201--5210, 50 streams). T3: median 5{,}000, a shift not used in development
 (5301--5310, 50 streams). T4: \texttt{hub\_heavy} with a 500- or 2{,}000-account office hub (5 seeds
 each; median F1). FR: false rings per run. Every learned model was trained on the default generator.
-$^\dagger$Strongest existing method in distribution.}
+$^\dagger$Strongest existing method we tested, in distribution.}
 \label{tab:anchor}
 \small
 \setlength{\tabcolsep}{3pt}
