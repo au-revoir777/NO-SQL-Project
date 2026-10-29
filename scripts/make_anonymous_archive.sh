@@ -10,9 +10,10 @@ TMP="$(mktemp -d)"
 git archive --format=tar HEAD | tar -x -C "$TMP"
 # paths that identify the authors or are not needed for review
 rm -f "$TMP/docs/paper/paper.pdf"  # compiled with author names; reviewers rebuild it from the anonymised sources
+rm -f "$TMP/scripts/make_anonymous_archive.sh"
 rm -rf "$TMP/.github" "$TMP/docs/paper/refine2" "$TMP/docs/paper/refine3" "$TMP/docs/paper/refine4"
 # identifying strings (add more with ANON_EXTRA="a|b")
-PATTERN="au-revoir777|vitstudent\.ac\.in|Roshan Parveen|Sanjay Kumar S|Vellore Institute of Technology${ANON_EXTRA:+|$ANON_EXTRA}"
+PATTERN="[A-Za-z0-9._%+-]+@vitstudent\.ac\.in|au-revoir777|vitstudent\.ac\.in|roshan\.parveen[0-9]*|sanjaykumar\.s[0-9]*|Roshan Parveen|Sanjay Kumar S|Vellore Institute of Technology|Roshan|Sanjay${ANON_EXTRA:+|$ANON_EXTRA}"
 grep -rlIE "$PATTERN" "$TMP" | while read -r f; do
   sed -i -E "s/$PATTERN/ANONYMOUS/g" "$f"
 done
