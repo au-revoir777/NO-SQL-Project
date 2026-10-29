@@ -9,7 +9,9 @@ score). $\Delta$: proposed minus row (scenario-weighted, 95\% cluster bootstrap)
 stratified sign-flip; the comparison with the strongest baseline by validation F1 (GraphSAGE, no
 scorer) is confirmatory (Holm-adjusted $p=\RfHolmGnn$, not significant), the others exploratory. $^\ddagger$Exploratory variant added after the
 degree-cap control: the pipeline with $h(d)=1$ for every attribute and $\theta_e=1.0$ (selected on
-validation), so no single attribute links a pair; same scorer and $\theta_a$ as the proposed method. $^\S$Selection uses the scenario's identity (an oracle advantage).}
+validation), so no single attribute links a pair; same scorer and $\theta_a$ as the proposed method. $^\S$Selection uses the scenario's identity (an oracle advantage). $^\|$Spade's incremental peeling
+yields the same peeling sequence as static peeling on the updated graph (for insertions), so we compute it
+statically; blocks after the first are extracted by repeated peeling.}
 \label{tab:existing}
 \small
 \setlength{\tabcolsep}{2.5pt}
@@ -27,7 +29,7 @@ Rules, cap tuned per scenario$^\S$ & 0.87 & 0.58 & 0.659 $\pm$ 0.053 & 0.619 & 7
 Rules, cap and cycle rule tuned & 0.91 & 0.55 & 0.646 $\pm$ 0.055 & 0.655 & 54/105 & 23/59 & 18/28 & +0.072 & [+0.037, +0.106] & 0.003 \\
 Louvain, resolution tuned & 0.61 & 0.48 & 0.521 $\pm$ 0.051 & 0.562 & 43/105 & 28/59 & 11/28 & +0.198 & [+0.158, +0.239] & $<$0.001 \\
 Leiden, resolution tuned & 0.86 & 0.40 & 0.507 $\pm$ 0.054 & 0.678 & 5/105 & 4/59 & 4/28 & +0.212 & [+0.172, +0.252] & $<$0.001 \\
-FRAUDAR-style peeling (= Spade output) & 0.85 & 0.37 & 0.456 $\pm$ 0.058 & 0.519 & 58/105 & 2/59 & 5/28 & +0.263 & [+0.221, +0.304] & $<$0.001 \\
+FRAUDAR-style peeling (Spade-equivalent)$^\|$ & 0.85 & 0.37 & 0.456 $\pm$ 0.058 & 0.519 & 58/105 & 2/59 & 5/28 & +0.263 & [+0.221, +0.304] & $<$0.001 \\
 Gradient boosting on Louvain groups & 0.91 & 0.33 & 0.427 $\pm$ 0.062 & 0.510 & 0/105 & 7/59 & 3/28 & +0.291 & [+0.249, +0.334] & $<$0.001 \\
 \midrule
 \multicolumn{11}{l}{\textit{Hybrid, fresh seeds 2301--2320 ($\Delta$: hybrid minus row)}} \\

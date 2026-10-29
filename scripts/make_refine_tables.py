@@ -172,7 +172,7 @@ LABEL = {
     "w2_rules": "Rules, cap and cycle rule tuned",
     "w2_louvain": "Louvain, resolution tuned",
     "w2_leiden": "Leiden, resolution tuned",
-    "w2_peeling": "FRAUDAR-style peeling (= Spade output)",
+    "w2_peeling": "FRAUDAR-style peeling (Spade-equivalent)$^\\|$",
     "tabular_gb": "Gradient boosting on Louvain groups",
     "w2_hybrid": "Proposed + GraphSAGE detector",
 }
@@ -276,7 +276,9 @@ score). $\\Delta$: proposed minus row (scenario-weighted, 95\\% cluster bootstra
 stratified sign-flip; the comparison with the strongest baseline by validation F1 (GraphSAGE, no
 scorer) is confirmatory (Holm-adjusted $p=\\RfHolmGnn$, not significant), the others exploratory. $^\\ddagger$Exploratory variant added after the
 degree-cap control: the pipeline with $h(d)=1$ for every attribute and $\\theta_e=1.0$ (selected on
-validation), so no single attribute links a pair; same scorer and $\\theta_a$ as the proposed method. $^\\S$Selection uses the scenario's identity (an oracle advantage).}
+validation), so no single attribute links a pair; same scorer and $\\theta_a$ as the proposed method. $^\\S$Selection uses the scenario's identity (an oracle advantage). $^\\|$Spade's incremental peeling
+yields the same peeling sequence as static peeling on the updated graph (for insertions), so we compute it
+statically; blocks after the first are extracted by repeated peeling.}
 \\label{tab:existing}
 \\small
 \\setlength{\\tabcolsep}{2.5pt}

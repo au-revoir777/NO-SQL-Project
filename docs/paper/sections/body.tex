@@ -75,7 +75,8 @@ same tuning budget (Section~\ref{sec:existing}).
 \textbf{Graph fraud detection.} Most recent graph fraud detection work trains
 graph neural networks (GNNs) to label nodes. It addresses heterophily, where
 fraudulent nodes connect mostly to benign ones \cite{hu2025hhgfd,lv2026mandate};
-camouflage, by reweighting neighbours adversarially \cite{liu2025robust}; scarce
+camouflage, by aggregating normal and abnormal neighbours separately and
+adversarially reweighting training nodes \cite{liu2025robust}; scarce
 or unreliable labels, with one-class and semi-supervised training
 \cite{li2025ocgfd,giles2023suspicious,peng2023csocan}; and interpretability
 \cite{yu2024ingfd}, usually on GraphSAGE-style neighbourhood aggregation
@@ -98,7 +99,9 @@ edge by a decreasing function of the degree of the object it points to,
 recommending $1/\log(x+c)$ and arguing that $1/x$ shrinks too fast; Spade
 \cite{jiang2022spade} maintains such peeling-based dense subgraphs
 incrementally under edge insertions on transaction graphs, with FRAUDAR's
-weighting and the same peeling sequence as a full recomputation. Core
+weighting; for insertions with fixed edge weights its peeling sequence equals
+that of a static recomputation on the updated graph. It returns the densest
+block; further blocks are only sketched. Core
 decomposition, the peeling primitive we use to extract dense cores, has
 efficient parallel and GPU implementations \cite{ahmad2023gpukcore,li2021graphblas},
 and greedy peeling by minimum degree is the classical approximation of the
@@ -125,12 +128,13 @@ the logarithm of its degree, are standard in link prediction
 \cite{libennowell2007link}. Our hub weight applies a similar discount to shared
 attributes, and we match flagged rings to true ones by Jaccard overlap. Entity
 resolution faces the same choice between discounting and capping: meta-blocking
-weights candidate pairs by the inverse size of the blocks they share, and block
-purging drops oversized blocks \cite{papadakis2014metablocking}.
+weights candidate pairs by the inverse size of the blocks they share
+\cite{papadakis2014metablocking}, and block purging drops oversized blocks
+\cite{papadakis2013blocking}.
 
 \textbf{AML on public data.} Work on the Elliptic Bitcoin graph compares tabular
-ensembles with GNNs under temporal splits
-\cite{badjie2026ensembles,kumar2026tagat,lu2026lagcn,shah2025aml}; AMLworld
+ensembles with GNNs under temporal splits \cite{badjie2026ensembles,kumar2026tagat}
+or trains GNN and classical classifiers on it \cite{lu2026lagcn,shah2025aml}; AMLworld
 provides synthetic laundering attempts with typology labels
 \cite{altman2023amlworld}. These studies classify transactions, so their
 scores are not comparable with our ring-level metrics
