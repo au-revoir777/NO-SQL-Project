@@ -688,6 +688,24 @@ Method & F1 & FR & F1 & FR & F1 & FR & 500 & 2{,}000 \\
 """)
 
 
+def margins() -> None:
+    """I2.7: the key equivalence claims at the declared +-0.05 margin and at +-0.03, with power."""
+    import math
+
+    rows = [("NdPrim", "results/nd_evidence_count/results.csv", "nd_log_two", "nd_log_one"),
+            ("Shape", "results/nd_evidence_count/results.csv", "nd_log_two", "nd_const_two"),
+            ("SageEvid", "results/evidgnn_follow/*/results.csv", "sagepipe", "evidpipe"),
+            ("AnchorPipeT", "results/anchor_T2/*/results.csv", "anchor", "proposed")]
+    for nm, pat, a, b in rows:
+        df = c.load(pat)
+        j = c.pair(df, a, b)
+        k = c.contrast(df, a, b)
+        lo, hi = k["ci90_t"]
+        mac(f"Mg{nm}Lo", sgn(lo, 3))
+        mac(f"Mg{nm}Hi", sgn(hi, 3))
+        mac(f"Mg{nm}Mde", f"{(1.96 + 0.84) * j.d.std(ddof=1) / math.sqrt(len(j)):.3f}")
+
+
 def main() -> None:
     loso()
     attribution()
@@ -701,6 +719,7 @@ def main() -> None:
     gnnpipe()
     latency3()
     anchor()
+    margins()
     (T / "numbers_refine.tex").write_text("\n".join(macros) + "\n")
     print(f"{len(macros) - 1} macros; tables written")
 

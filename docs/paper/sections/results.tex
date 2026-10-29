@@ -104,7 +104,8 @@ but find few rings, and peeling and Leiden find almost no decoy rings
 A GraphSAGE classifier trained on ring-membership labels is the one method
 ahead of the pipeline: F1 \RfExgnnunscoredF{} against \RfExproposedF{}
 (difference \RfExgnnunscoredD{}, 95\% CI \RfExgnnunscoredLo{} to
-\RfExgnnunscoredHi{}, confirmatory). With a ring scorer of its own GraphSAGE
+\RfExgnnunscoredHi{}; confirmatory, raw $p=\RfRawGnn$, Holm-adjusted
+$p=\RfHolmGnn$, so the difference is not significant after correction). With a ring scorer of its own GraphSAGE
 reaches \RfExgnnF{}, and the difference (\RfExgnnD{}) is not significant. The
 gap is not uniform: GraphSAGE is ahead on \texttt{drift} (\RfExgnnunscoredDrift{})
 and \texttt{high\_noise} (\RfExgnnunscoredNoise{}), behind on
@@ -140,18 +141,24 @@ combination, not to a single element of the pipeline. At matched recall of about
 \input{tables/tab6_attribution.tex}
 Table~\ref{tab:attribution} isolates the parts of the pairwise rule inside the
 full pipeline, on fresh seeds. Removing hub links with a degree cap of 10 costs
-\RfCapD{} F1 (95\% CI \RfCapLo{} to \RfCapHi{}, confirmatory, $p=\RfCapP$),
+\RfCapD{} F1 (95\% CI \RfCapLo{} to \RfCapHi{}; confirmatory, Holm-adjusted
+$p=\RfHolmCap$),
 \RfCapHub{} on \texttt{hub\_heavy}, where recall of hub-hiding rings falls from
 \RfCapHHNo{} to \RfCapHHCap{}. Keeping hub links but letting a single attribute
-link a pair (a constant weight with $\theta_e=0.5$) costs \RfNdOneD{}, and
+link a pair (a constant weight with $\theta_e=0.5$; a declared secondary
+contrast, not part of the confirmatory family) costs \RfNdOneD{}. The threshold
+of that arm was not tuned, but on the validation seeds the constant weight gives
+the same F1 at every $\theta_e$ from 0.1 to 0.8, so 0.5 stands for any
+threshold that lets one attribute suffice. The cost is
 \RfNdOneHub{} on \texttt{hub\_heavy}: every co-user of the hub is linked and the
 ring cannot be separated from them. Under the condition that a busy attribute
-cannot suffice alone, the weight's shape does not matter: $1/\ln(1+d)$ and a
+cannot suffice alone, two different weights give the same F1: $1/\ln(1+d)$ and a
 constant weight differ by \RfLogConstD{} (CI \RfLogConstLo{} to \RfLogConstHi{})
 without a cap, and by \RfNdShapeD{} (CI \RfNdShapeLo{} to \RfNdShapeHi{}) when
 both also bar rare attributes from linking alone. That last restriction
 (the confirmatory test of the evidence condition) changes nothing overall
-(\RfNdPrimD{}, CI \RfNdPrimLo{} to \RfNdPrimHi{}) but trades scenarios: it removes
+(\RfNdPrimD{}, CI \RfNdPrimLo{} to \RfNdPrimHi{}; Holm-adjusted $p=\RfHolmNd$; its
+90\% interval, \MgNdPrimLo{} to \MgNdPrimHi{}, excludes effects larger than 0.03) but trades scenarios: it removes
 almost all false rings on \texttt{drift} (\RfNdDriftFalseOne{} to
 \RfNdDriftFalseTwo{} per run; F1 \RfNdDriftD{}) and loses adaptive rings
 (\RfNdAdaptOne{} to \RfNdAdaptTwo{}; \texttt{adversarial} \RfNdAdvD{}), which
@@ -351,8 +358,9 @@ pipeline \AnTThreeproposedF{}. Here the scored rules are slightly ahead
 \AnTThreeVsrulesLoNinety{} to \AnTThreeVsrulesHiNinety{}, not shown equivalent).
 
 With 500- and 2{,}000-account hubs (T4, exploratory), the GNN does not fail and the
-guard stays silent. AnchorPipe has the highest median F1 (1.00 at both sizes,
-minimum 0.89).
+guard stays silent. AnchorPipe, its guard-only variant and SagePipe tie at a
+median F1 of 1.00 at both sizes (AnchorPipe's minimum 0.89, SagePipe's 0.75), above
+GraphSAGE (0.86) and the rule-based pipeline (0.77 and 0.86).
 
 Fig.~\ref{fig:anchor}(b) shows why the guard separates the cases. In
 distribution GraphSAGE flags at most 14\% of active users in this stream. When benign

@@ -339,15 +339,20 @@ scale\_sweep & $10^3$+ & 120 & 100 & latency benchmark (RQ2) \\
 \label{sec:protocol}
 Seeds are split by purpose: scorer training (101--110) and scorer hold-out
 (201--205), threshold selection (validation, 301--303), and evaluation. The
-original evaluation (Tables~\ref{tab:baselines}--\ref{tab:ablation}) uses test
-seeds 1001 and up. Every experiment added in revision uses a block of fresh
-test seeds declared, with its hypotheses, in a protocol committed before its
-first run (\texttt{docs/research/}): 2001--2010 for the degree-cap control,
-2101--2120 for the comparison with existing methods, 2301--2320 for the hybrid,
-2401--2420 for the evidence condition and 2501--2505 for scale. The
-weight-function comparison (1001--1030), the hub-size sweep (1001--1005) and
-the timer comparison (1001--1005) reuse the original test seeds and are
-exploratory. Round-three experiments use 3001--3720 (\texttt{docs/research/round3\_protocol.md}).
+first experiments (Tables~\ref{tab:baselines}, \ref{tab:scenarios},
+\ref{tab:scale} and \ref{tab:ablation}) use test seeds 1001 and up. Every later
+experiment uses a block of fresh test seeds declared, with its hypotheses, in a
+protocol committed before its first run (\texttt{docs/research/}; first commits in
+\texttt{PROTOCOL\_LOG.md}): 2001--2010 for the degree-cap control, 2101--2120 for
+the comparison with existing methods (Table~\ref{tab:existing}), 2301--2320 for
+the hybrid, 2401--2420 for the evidence condition (Table~\ref{tab:attribution}),
+2501--2505 for scale, 3001--3720 for the cap sweep, weight shape,
+leave-one-scenario-out, decoy, operating-point, amount and latency experiments,
+4001--4820 for the GNN-inclusive pipeline (Table~\ref{tab:gnnpipe}), 5001--5415
+for AnchorPipe (development 5001--5005, tests in Table~\ref{tab:anchor}), and
+6001--6165 for the BWGNN baseline and the guard controls. The weight-function
+comparison (1001--1030), the hub-size sweep (1001--1005) and the timer
+comparison (1001--1005) reuse the first test seeds and are exploratory.
 Each block is used once.
 On the validation seeds we evaluated a grid of alert thresholds
 $\theta_a\in\{0.2,0.3,0.5,0.7,0.8,0.9\}$ and edge thresholds
@@ -366,16 +371,30 @@ with Cohen's $d_z$ as effect size. Because the paired difference depends on the
 scenario, the revision experiments report the scenario-weighted mean difference
 with a 95\% cluster bootstrap interval (seeds resampled within scenario,
 10{,}000 resamples), a scenario-stratified sign-flip permutation test, per-scenario
-differences, and win/tie/loss counts. Four comparisons are confirmatory and
-form one family with Holm correction: the degree-cap control, the comparison
-with the strongest existing method, the hybrid against that method, and the
-evidence condition. Their raw (Holm-adjusted) sign-flip $p$-values are
-\RfRawCap{} (\RfHolmCap{}), \RfRawGnn{} (\RfHolmGnn{}), \RfRawHy{} (\RfHolmHy{})
-and \RfRawNd{} (\RfHolmNd{}). The family was fixed in the protocols before the
-runs; all other tests are exploratory and uncorrected. We call
+differences, and win/tie/loss counts. Eleven comparisons are confirmatory, in three families, each fixed in its
+protocol before its runs and each with its own Holm correction. Family~1 has
+four tests: the degree-cap control, the comparison with the strongest existing
+method, the hybrid against that method, and the evidence condition. Their raw
+(Holm-adjusted) sign-flip $p$-values are \RfRawCap{} (\RfHolmCap{}), \RfRawGnn{}
+(\RfHolmGnn{}), \RfRawHy{} (\RfHolmHy{}) and \RfRawNd{} (\RfHolmNd{}). Family~2
+has four tests: the GNN-inclusive pipeline against the strongest existing method,
+the message-passing gate, leave-one-scenario-out and label efficiency
+(Section~\ref{sec:gnnpipe}). Family~3 has three tests: AnchorPipe against
+GraphSAGE, against the unguarded pipeline under shift, and non-inferiority to the
+rule-based pipeline under shift (Section~\ref{sec:anchor}). Every $p$-value in a
+table is raw unless marked Holm. All other tests are exploratory and
+uncorrected. We call
 two variants equivalent only when the 90\% interval of their difference lies
-within $\pm0.05$ F1 (about one ring in every two to four runs), and we report
-results on five or fewer seeds as ranges, without $p$-values.
+within $\pm0.05$ F1. With a median of four true rings per run (range 2--10), 0.05 F1 is about one
+ring in every two to four runs. The margin is close to the effects we study (the
+cap costs \RfCapD{}), so we also report the key equivalences at $\pm0.03$. All of
+them hold there: \MgShapeLo{} to \MgShapeHi{} for the two weights,
+\MgSageEvidLo{} to \MgSageEvidHi{} for SagePipe against EvidPipe, and
+\MgAnchorPipeTLo{} to \MgAnchorPipeTHi{} for AnchorPipe against the rule-based
+pipeline under shift. With 100 paired streams, the smallest difference
+detectable with 80\% power at $\alpha=0.05$ is \MgNdPrimMde{} for the
+evidence-condition test and \MgSageEvidMde{} for SagePipe against EvidPipe.
+Results on five or fewer seeds are reported as ranges, without $p$-values.
 
 \subsection{Metrics}
 A flagged ring \emph{matches} a true ring when their member sets overlap with
@@ -553,8 +572,9 @@ one batched query instead of several round trips, and caching attribute degrees
 between batches.
 
 \section{Conclusion}
-Keeping links through busy shared attributes helps a streaming ring detector
-only if no busy attribute can link two accounts on its own. A GNN added to the
+In our simulator, keeping links through busy shared attributes helps a
+streaming ring detector only if no busy attribute can link two accounts on its
+own. A GNN added to the
 pipeline, with a ring scorer that reads its member probabilities, outperforms
 every existing method we tested in distribution. A label-free guard on the GNN's
 flag rate, which falls back to the evidence-based scorer, keeps that gain and
