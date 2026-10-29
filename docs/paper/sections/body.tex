@@ -368,7 +368,7 @@ so differences between methods are paired. In the original tables we report
 the mean and 95\% $t$-interval over runs and test differences with the
 Wilcoxon signed-rank test on paired runs (\texttt{zsplit} handling of ties),
 with Cohen's $d_z$ as effect size. Because the paired difference depends on the
-scenario, the revision experiments report the scenario-weighted mean difference
+scenario, the later experiments report the scenario-weighted mean difference
 with a 95\% cluster bootstrap interval (seeds resampled within scenario,
 10{,}000 resamples), a scenario-stratified sign-flip permutation test, per-scenario
 differences, and win/tie/loss counts. Eleven comparisons are confirmatory, in three families, each fixed in its
@@ -436,10 +436,13 @@ Louvain keep their 5\,s timer.
 \subsection{Environment}
 All runs used one laptop (Intel Core i3-1115G4, 2 cores / 4 threads, 7.7\,GB
 RAM, Windows 11), Python 3.11.9, NumPy 2.2.6, scikit-learn 1.7.2,
-NetworkX 3.5, with experiments run one at a time. The revision experiments ran
+NetworkX 3.5, with experiments run one at a time. The later experiments ran
 on a 2-core Linux container with the same library versions (pinned in
-\texttt{requirements-lock.txt}; PyTorch 2.5.1 and leidenalg 0.12 for the new
-baselines), several at a time, so we report no latencies from them. With newer
+\texttt{requirements-lock.txt}; PyTorch 2.5.1 with one thread and leidenalg 0.12
+for the GNNs and baselines), usually several at a time. Latencies from that
+container are reported only for runs made alone: the 10{,}000-user scale point
+and the one-environment comparison of Section~\ref{sec:results} (seeds
+3701--3705). With newer
 library versions the event streams are identical but detection results can
 differ, so the lock file is part of the result.
 
@@ -500,8 +503,8 @@ ring recall.
 generator; the test seeds are independent draws but from the same
 distribution. The original test seeds (1001 and up) were reused across many
 experiments, some designed after earlier results on them were seen; every
-experiment added in revision therefore uses its own block of fresh seeds,
-declared before its first run. In the weight-function comparison the grid was
+later experiment therefore uses its own block of fresh seeds, declared before
+its first run. In the weight-function comparison the grid was
 widened until every selection was interior. The scorer was trained on the same
 generator and scenarios it is tested on; leaving one scenario out costs little
 (Section~\ref{sec:method}), but a scenario type the generator cannot produce is
@@ -523,9 +526,12 @@ so at 500 and 2,000 accounts individual rings differed in both directions.
 in-memory store on a laptop. Section~\ref{sec:phase2} repeats the measurement on
 Neo4j and Redis Streams. The detected rings are identical, but detection is
 several times slower and throughput is bounded by the store. Both figures
-describe one laptop running Docker, not a server. Experiments added in
-revision ran several at a time on a two-core container; we report no latency
-from them except the 10{,}000-user scale point, which ran alone.
+describe one laptop running Docker, not a server. The later experiments ran
+several at a time on a two-core container. We report latency from that container
+only for runs made alone: the 10{,}000-user point and the one-environment
+comparison at 1{,}000--20{,}000 users (seeds 3701--3705). Wall-clock times of the
+GNN-inclusive pipelines (Section~\ref{sec:anchor}) come from shared runs and are
+indicative only.
 
 \textbf{Baselines.} Table~\ref{tab:baselines} uses the shipped scorer for
 the scored baselines; Table~\ref{tab:existing} gives every method its own. All

@@ -5,9 +5,9 @@
 seeds, paired). Every method has a scorer trained on its own candidates (seeds 101--110) unless
 noted, and its structural parameter and alert threshold selected on seeds 301--303 with at least
 the proposed method's budget. PR AUC: ring-level, threshold-free (not defined without a ring
-score). $\Delta$: proposed minus row (scenario-weighted, 95\% cluster bootstrap), $p$:
+score). $\Delta$: proposed minus row (scenario-weighted, 95\% cluster bootstrap), $p$: raw
 stratified sign-flip; the comparison with the strongest baseline by validation F1 (GraphSAGE, no
-scorer) is confirmatory, the others exploratory. $^\ddagger$Exploratory variant added after the
+scorer) is confirmatory (Holm-adjusted $p=\RfHolmGnn$, not significant), the others exploratory. $^\ddagger$Exploratory variant added after the
 degree-cap control: the pipeline with $h(d)=1$ for every attribute and $\theta_e=1.0$ (selected on
 validation), so no single attribute links a pair; same scorer and $\theta_a$ as the proposed method. $^\S$Selection uses the scenario's identity (an oracle advantage).}
 \label{tab:existing}

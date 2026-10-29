@@ -146,8 +146,8 @@ def attribution() -> None:
 \\caption{What the pairwise detector's advantage depends on: isolation controls inside the full
 pipeline (same detectors, tracker and scorer; 5 scenarios $\\times$ 10 or 20 fresh test seeds).
 $\\Delta$: scenario-weighted mean paired difference in ring F1 (A minus B) with 95\\% cluster
-bootstrap interval; $p$: stratified sign-flip test; (H): confirmatory comparison (Holm family of
-four); others exploratory. Last column: recall of hub-hiding rings, A / B.}
+bootstrap interval; $p$: raw stratified sign-flip test; (H): confirmatory comparison (family~1 of
+Section~\\ref{sec:protocol}, Holm-adjusted $p$ in the text); others exploratory. Last column: recall of hub-hiding rings, A / B.}
 \\label{tab:attribution}
 \\small
 \\setlength{\\tabcolsep}{3pt}
@@ -272,9 +272,9 @@ def existing() -> None:
 seeds, paired). Every method has a scorer trained on its own candidates (seeds 101--110) unless
 noted, and its structural parameter and alert threshold selected on seeds 301--303 with at least
 the proposed method's budget. PR AUC: ring-level, threshold-free (not defined without a ring
-score). $\\Delta$: proposed minus row (scenario-weighted, 95\\% cluster bootstrap), $p$:
+score). $\\Delta$: proposed minus row (scenario-weighted, 95\\% cluster bootstrap), $p$: raw
 stratified sign-flip; the comparison with the strongest baseline by validation F1 (GraphSAGE, no
-scorer) is confirmatory, the others exploratory. $^\\ddagger$Exploratory variant added after the
+scorer) is confirmatory (Holm-adjusted $p=\\RfHolmGnn$, not significant), the others exploratory. $^\\ddagger$Exploratory variant added after the
 degree-cap control: the pipeline with $h(d)=1$ for every attribute and $\\theta_e=1.0$ (selected on
 validation), so no single attribute links a pair; same scorer and $\\theta_a$ as the proposed method. $^\\S$Selection uses the scenario's identity (an oracle advantage).}
 \\label{tab:existing}
@@ -404,7 +404,7 @@ def r6() -> None:
             mac(f"RfInv{key}D", sgn(-k["diff"]))
             mac(f"RfInv{key}Lo", sgn(-k["ci95_cluster_boot"][1]))
             mac(f"RfInv{key}Hi", sgn(-k["ci95_cluster_boot"][0]))
-        mac("RfGridNote", "widened in revision: $1/d$ moves to 0.05, the soft cap stays at 1.0, both now interior")
+        mac("RfGridNote", "widened until interior: $1/d$ moves to 0.05, the soft cap stays at 1.0, both now interior")
 
 
 def holm_family() -> None:
@@ -532,7 +532,7 @@ def gnnpipe() -> None:
 \caption{GNN-inclusive pipeline against existing methods on fresh test seeds 4001--4020 (100 paired
 streams; selections fixed on validation before the run). F1 per scenario: adversarial, baseline, drift,
 high noise, hub heavy. $\Delta$: EvidPipe minus row (scenario-weighted, 95\% cluster bootstrap), $p$:
-stratified sign-flip. $^\dagger$Strongest existing method by validation F1; this comparison (H1) is
+raw stratified sign-flip (the H1 row stays below 0.001 after Holm correction over family~2). $^\dagger$Strongest existing method by validation F1; this comparison (H1) is
 confirmatory, the others exploratory.}
 \label{tab:gnnpipe}
 \small
