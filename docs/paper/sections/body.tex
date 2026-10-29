@@ -433,6 +433,35 @@ the proposed method received (60 to 84 against 30). Peeling, Leiden and
 GraphSAGE recompute on the whole graph after every micro-batch; the rules and
 Louvain keep their 5\,s timer.
 
+\textbf{Configurations.}
+\begin{itemize}
+\item \emph{Peeling:} FRAUDAR-style greedy peeling on users $\times$ objects,
+where objects are attributes and transfer partners. The column weight is
+$1/\log(x+5)$, at most ten blocks per pass, and a tuned minimum block score
+$g(S)$.
+\item \emph{Louvain and Leiden:} run on the user--user graph whose edge weight
+counts shared attributes and transfers (Leiden: \texttt{leidenalg}
+RBConfiguration, seed 0, minimum density 0.5).
+\item \emph{GraphSAGE:} two layers, hidden size 64, mean aggregation over the
+full neighbourhood (no sampling), dropout 0.2. Adam with learning rate 0.005 and
+weight decay $5\cdot10^{-4}$, 40 epochs, binary cross-entropy weighted by the
+class ratio, seed 0, one thread. It runs on a graph of users and attributes with
+twelve node features (links per attribute kind, transfer counts and amounts in and
+out, account age, node-type flags, attribute kind and log degree). It is trained
+on 879 whole-graph snapshots taken every 5\,s from seeds 101--110 in six
+scenarios. Flagged users become rings as connected components over any shared
+attribute or transfer, keeping components of 3--25 accounts.
+\item \emph{BWGNN} \cite{tang2022bwgnn}: our PyTorch re-implementation of the
+authors' homogeneous model (order 2, hidden size 64, learning rate 0.01,
+class-weighted loss, 100 epochs). It uses the same graph, features, snapshots
+and ring rule as GraphSAGE.
+\end{itemize}
+All models are trained with fixed seeds. GraphSAGE was trained with
+PyTorch's default two threads; the GNNs added later use one. We have not
+tested whether retraining reproduces the saved weights bit for bit, so the
+trained models are distributed with the results, and every test result is
+computed from those saved models.
+
 \subsection{Environment}
 All runs used one laptop (Intel Core i3-1115G4, 2 cores / 4 threads, 7.7\,GB
 RAM, Windows 11), Python 3.11.9, NumPy 2.2.6, scikit-learn 1.7.2,
@@ -625,6 +654,12 @@ table and number in this paper from those files (\texttt{make tables};
 \texttt{scripts/make\_refine\_tables.py}). \texttt{REPRODUCE.md} gives the
 commands; \texttt{requirements-lock.txt} pins the library versions with which
 the results reproduce exactly, and a test reruns a recorded run and compares
-it. Wall-clock latencies depend on the machine and are not reproducible by
-design. We will deposit the version used for this paper as a citable archive
-with a DOI at camera-ready.
+it. The first experiments ran on Windows. A sample of 30 of their recorded rows
+(Tables~\ref{tab:baselines} and \ref{tab:ablation}; two seeds per method) reproduces
+exactly on Linux with the same lock file, including event-stream digests
+(\texttt{scripts/check\_reproduction.py}). The latency columns of
+Table~\ref{tab:scale} are machine-dependent and are not expected to reproduce. Wall-clock latencies depend on the
+machine and are not reproducible by design. An anonymised archive of the exact
+version used for this paper (code, protocols, results; built by
+\texttt{scripts/make\_anonymous\_archive.sh}) accompanies the submission. A
+citable deposit with a DOI will follow on acceptance.
