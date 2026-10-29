@@ -1,16 +1,15 @@
 \begin{abstract}
 Rule-based fraud-ring detectors hide busy shared attributes behind a degree
-cap; learned graph models are more accurate but brittle. We study a streaming
-pipeline that keeps hub links as pairwise evidence, and add a graph neural
-network whose member probabilities feed the ring scorer. A label-free shift
-guard watches the share of users the GNN flags and falls back to the
-evidence-based scorer when that share leaves its reference range. On a
-simulator, with protocols committed before each run and fresh test seeds,
-this pipeline (AnchorPipe) beats the strongest existing method, GraphSAGE, by
-\AnTOneVsgnnunscoredD{} F1 in distribution (95\% CI \AnTOneVsgnnunscoredLo{} to
-\AnTOneVsgnnunscoredHi{}). When benign and ring amounts overlap, GraphSAGE
-collapses and the unguarded GNN pipeline falls to \AnTTwosagepipeF{}, while
-AnchorPipe stays level with the rule-based pipeline (\AnTTwoanchorF{} against
-\AnTTwoproposedF{}). Inside the pipeline, a degree cap costs \RfCapD{} F1. All
-data are synthetic.
+cap. On a simulator with ring labels, pre-committed protocols and fresh test
+seeds, we test what the cap costs and how a graph neural network
+(GNN) can help. Inside a pairwise-evidence pipeline a cap costs \RfCapD{} ring F1;
+removing only attributes unable to link a pair alone still costs
+\RtCapTwentySevenA{} (exploratory), so busy attributes corroborate. Stacking a GNN's member probabilities on the pipeline's rule
+candidates beats the strongest method we tested, GraphSAGE, by \AnTOneVsgnnunscoredA{}
+F1 (95\% CI \AnTOneVsgnnunscoredLo{} to \AnTOneVsgnnunscoredHi{}), and the fraud-specific
+BWGNN by \BwAnchorBwA{} (exploratory). When benign and ring transfer amounts overlap, GraphSAGE fails
+and the stacked pipeline falls to \AnTTwosagepipeF{} F1. Falling back to the rule scorer
+when a drift test fires restores the rule pipeline's level; a standard drift test
+can trigger it. The whole-graph GNN costs roughly 20 times the incremental
+pipeline. All data are synthetic.
 \end{abstract}

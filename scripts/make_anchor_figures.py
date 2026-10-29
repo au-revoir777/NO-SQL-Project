@@ -143,7 +143,7 @@ def fig8() -> None:
         ("Hub links", None, None, None, None),
         ("Keep links − cap 10 (2001–2010)", "results/r1_cap_control/*/results.csv", "r1_log", "r1_log_cap10", True),
         ("Keep links − cap 27 (3001–3020)", "results/round3/capsweep/results.csv", "keep_links", "cap27", False),
-        ("Step weight − 1/ln(1+d) (3101–3120)", "results/round3/step/results.csv", "step27", "log_shipped", False),
+        ("Step − 1/ln(1+d) weight (3101–)", "results/round3/step/results.csv", "step27", "log_shipped", False),
         ("GNN in the pipeline", None, None, None, None),
         ("EvidPipe − GraphSAGE (4001–4020)", "results/evidgnn_main/*/results.csv", "evidpipe", "gnn_unscored", True),
         ("EvidPipe − GraphSAGE (4101–4120)", "results/evidgnn_ablation/*/results.csv", "evidpipe", "gnn_unscored",
@@ -152,17 +152,20 @@ def fig8() -> None:
          False),
         ("Gate on − gate off (4101–4120)", "results/evidgnn_ablation/*/results.csv", "evidgnn", "evidgnn_nogate",
          True),
-        ("GNN-aware − shipped scorer (4101–4120)", "results/evidgnn_ablation/*/results.csv", "evidpipe",
+        ("GNN-aware − shipped scorer (4101–)", "results/evidgnn_ablation/*/results.csv", "evidpipe",
          "evidpipe_shipped_scorer", False),
-        ("AnchorPipe (shift guard)", None, None, None, None),
-        ("AnchorPipe − GraphSAGE, in distribution", "results/anchor_T1/*/results.csv", "anchor", "gnn_unscored",
+        ("AnchorPipe (stacking + fallback)", None, None, None, None),
+        ("AnchorPipe − GraphSAGE, in distr.", "results/anchor_T1/*/results.csv", "anchor", "gnn_unscored",
          True),
-        ("AnchorPipe − SagePipe, amounts overlap", "results/anchor_T2/*/results.csv", "anchor", "sagepipe", True),
-        ("AnchorPipe − pipeline, amounts overlap", "results/anchor_T2/*/results.csv", "anchor", "proposed", True),
+        ("AnchorPipe − SagePipe, overlap", "results/anchor_T2/*/results.csv", "anchor", "sagepipe", True),
+        ("AnchorPipe − pipeline, overlap", "results/anchor_T2/*/results.csv", "anchor", "proposed", True),
         ("AnchorPipe − rules, stronger shift", "results/anchor_T3/*/results.csv", "anchor", "rules", False),
-        ("AnchorPipe − guard only, in distribution", "results/anchor_T1/*/results.csv", "anchor", "guard_only", False),
+        ("AnchorPipe − BWGNN (6001–6020)", "results/round4_bwgnn/*/results.csv", "anchor", "bwgnn", False),
+        ("Flag − KS-amount trigger, overlap", "results/round4_guard/S1/*/results.csv",
+         "trig_flag", "trig_amount", False),
+        ("AnchorPipe − guard only, in distr.", "results/anchor_T1/*/results.csv", "anchor", "guard_only", False),
     ]
-    fig, ax = plt.subplots(figsize=(3.5, 4.3))
+    fig, ax = plt.subplots(figsize=(3.5, 4.8))
     y = 0
     ticks, labels = [], []
     for lab, pat, a, b, conf in rows:
@@ -182,7 +185,7 @@ def fig8() -> None:
     ax.axvline(0, color=MUTED, lw=0.7)
     ax.set_yticks(ticks, labels, fontsize=6.5)
     for t, lab in zip(ax.get_yticklabels(), labels, strict=True):
-        if lab in ("Hub links", "GNN in the pipeline", "AnchorPipe (shift guard)"):
+        if lab in ("Hub links", "GNN in the pipeline", "AnchorPipe (stacking + fallback)"):
             t.set_fontweight("bold")
     ax.tick_params(axis="y", length=0)
     ax.set_xlabel("Paired difference in ring F1 (95% CI)\nshaded: ±0.05 equivalence band")
@@ -191,7 +194,7 @@ def fig8() -> None:
     ax.set_xticks([-0.1, 0.0, 0.1, 0.2])
     ax.plot([], [], "o", mfc=INK, mec=INK, ms=4, label="confirmatory")
     ax.plot([], [], "o", mfc="white", mec=INK, ms=4, label="exploratory")
-    ax.legend(loc="upper right", fontsize=6.5, handletextpad=0.3, bbox_to_anchor=(1.02, 1.0))
+    ax.legend(loc="upper center", fontsize=6.5, handletextpad=0.3, ncol=2, bbox_to_anchor=(0.35, -0.16))
     fig.tight_layout()
     for ext in ("pdf", "png"):
         fig.savefig(OUT / f"fig8_contrasts.{ext}")

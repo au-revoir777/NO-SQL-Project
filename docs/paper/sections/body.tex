@@ -26,48 +26,55 @@ problem that incremental community detection addresses for clustering
 
 We make two contributions and support them with a system and an evaluation.
 \begin{itemize}
-\item \textbf{Contribution: keep hub links, but never let a hub link a pair
-alone.} Pairs of accounts accumulate decayed evidence from shared attributes
-and from transfers between them, and a pair is linked only when a busy
-attribute is joined by a second piece of evidence. Isolation experiments on
-fresh test seeds show that this condition, not the shape of the degree
-discount, is what matters: within the same pipeline a degree cap costs
-\RfCapD{} ring F1 (95\% CI \RfCapLo{} to \RfCapHi{}) and most hub-hiding rings
-(\RfCapHHCap{} against \RfCapHHNo{}), a weight that lets one attribute suffice
-costs \RfNdOneD{} (\RfNdOneHub{} on the hub-hiding scenario), and two different
-weights that satisfy the condition are equivalent within 0.05 F1 (\RfNdShapeD{}, CI
-\RfNdShapeLo{} to \RfNdShapeHi{}), though not every such weight is (a step weight
-costs \RtStepA{}; Section~\ref{sec:attribution}). The degree
-discount we use, $1/\ln(1+d)$, is a variant of FRAUDAR's column weighting
-$1/\log(d+c)$ \cite{hooi2016fraudar} (with $c=5$ in its experiments); we do not claim it as new.
-Even a cap that removes only attributes unable to link a pair alone costs
-\RtCapTwentySevenA{}: busy attributes help as supporting evidence.
-\item \textbf{Contribution: a shift-guarded GNN pipeline (AnchorPipe).} A GNN
-added to the pipeline, with a ring scorer that reads its member probabilities,
-beats the strongest existing method, GraphSAGE, by about 0.09--0.10 F1 on four
-fresh blocks (Section~\ref{sec:gnnpipe}), but fails when transfer amounts shift.
-We add a label-free shift guard. It compares the share of users the GNN flags
-with a reference range from unlabelled streams, and falls back to the
-evidence-based scorer outside that range. On fresh blocks this keeps the
-in-distribution gain (\AnTOneVsgnnunscoredD{} over GraphSAGE, 95\% CI
-\AnTOneVsgnnunscoredLo{} to \AnTOneVsgnnunscoredHi{}). Under overlapping amounts it
-holds the rule-based pipeline's level, where GraphSAGE collapses and the
-unguarded GNN pipeline loses \AnTTwoVssagepipeD{}. All three confirmatory tests
-are supported (Section~\ref{sec:anchor}). Two of our design ideas did not help,
+\item \textbf{Finding: busy shared attributes are corroborating evidence.}
+Pairs of accounts accumulate decayed evidence from shared attributes and from
+transfers between them, and a pair is linked only when a busy attribute is
+joined by a second piece of evidence. This weighting and pruning is not new: it
+follows FRAUDAR's column weighting \cite{hooi2016fraudar} (we use $1/\ln(1+d)$;
+FRAUDAR uses $1/\log(d+5)$) and meta-blocking's pair weighting with edge pruning
+in entity resolution \cite{papadakis2014metablocking}, where a degree cap is
+called block purging \cite{papadakis2013blocking}. What we add is an isolation
+test of the cap. Within the same pipeline a cap of 10 costs \RfCapD{} ring F1 (95\%
+CI \RfCapLo{} to \RfCapHi{}; confirmatory, Holm $p=\RfHolmCap$) and most hub-hiding
+rings (\RfCapHHCap{} against \RfCapHHNo{}). A cap that removes only attributes unable
+to link a pair alone still costs \RtCapTwentySevenA{} (exploratory). Letting one
+attribute link a pair costs \RfNdOneD{} (a declared secondary contrast), while the
+confirmatory test that also bars rare attributes from linking alone is null. Two
+weights that meet the condition are equivalent within 0.03 F1, but a step weight
+is not (\RtStepA{} worse; Section~\ref{sec:attribution}).
+\item \textbf{Contribution: GNN stacking with a rule fallback (AnchorPipe).} A
+GNN run as an extra detector, whose member probabilities feed the ring scorer
+(trained with out-of-fold scores), beats the strongest method we tested,
+GraphSAGE, by 0.09--0.11 F1 on five fresh blocks (Section~\ref{sec:gnnpipe}). It
+also beats BWGNN \cite{tang2022bwgnn}, a fraud-specific spectral GNN, by
+\BwAnchorBwD{}. The gain comes from stacking: with the shipped scorer instead of
+the GNN-aware one, the same detectors fall below GraphSAGE. Under a
+transfer-amount shift the stacked pipeline fails. Falling back to the label-free
+evidence scorer when a drift test fires keeps the in-distribution gain
+(\AnTOneVsgnnunscoredD{} over GraphSAGE, 95\% CI \AnTOneVsgnnunscoredLo{} to
+\AnTOneVsgnnunscoredHi{}) and holds the rule pipeline's level under the shift. All
+three confirmatory tests of this design are supported (Section~\ref{sec:anchor}).
+The trigger is not the contribution: a standard two-sample test on transfer
+amounts works as well as our flag-rate statistic. Under five other shifts the
+GNN did not fail and no trigger was needed. Two of our design ideas did not help,
 and we report them as rejected: gating the GNN's message passing around busy
 attributes, and anchoring GNN probabilities to evidence edges.
 \item \textbf{System.} A micro-batch engine re-evaluates only the region each
-batch touches, with fan-out limits; we state when it misses no pair that a full
+batch touches, with fan-out limits. We state when it misses no pair that a full
 pass would link, and show that ring-level equality with full recomputation
-holds for small hubs only (Section~\ref{sec:method}). Candidate rings are scored
-by a calibrated classifier, and alerts carry feature contributions, an evidence
-subgraph and, where one exists, a counterfactual.
+holds for small hubs only (Section~\ref{sec:method}). The GNN of AnchorPipe is
+not incremental: it runs on the whole graph after every batch. Candidate rings
+are scored by a calibrated classifier, and alerts carry feature contributions,
+an evidence subgraph and, where one exists, a counterfactual. A deletion test
+shows that these explanations name the model's top feature no better than
+always naming a transfer feature would (Section~\ref{sec:phase2}).
 \item \textbf{Evaluation.} A deterministic simulator with ring-level ground
-truth and five evasion strategies; protocols committed before the runs, with fresh test
-seeds for every new experiment; and a comparison with six existing methods
-(tuned rules, Louvain, Leiden, FRAUDAR-style peeling and a GraphSAGE
-classifier), each with a scorer trained on its own candidates and at least the
-same tuning budget (Section~\ref{sec:existing}).
+truth and five evasion strategies. Protocols are committed before the runs,
+with fresh test seeds for every new experiment and eleven confirmatory tests in
+three Holm families. We compare with seven existing methods: tuned rules,
+Louvain, Leiden, FRAUDAR-style peeling, gradient boosting on Louvain groups,
+GraphSAGE and BWGNN. Each scored method has a scorer trained on its own
+candidates and at least the same tuning budget (Section~\ref{sec:existing}).
 \end{itemize}
 
 \section{Related Work}
@@ -174,7 +181,7 @@ little and a rarely shared device for much. (d) Incremental detectors run on
 the region, and a GraphSAGE classifier runs on the whole graph (AnchorPipe,
 Section~\ref{sec:anchor}). A tracker confirms rings across batches. (e) Confirmed
 rings are scored by a GNN-aware scorer that reads the members' GNN
-probabilities. A label-free shift guard switches to the rule-based scorer when
+probabilities. A drift trigger switches to the rule-based scorer when
 the share of users the GNN flags leaves its reference range. Rings are then
 explained and alerted. Solid arrows: data flow; purple: GNN signals; dashed:
 labels (evaluation and offline training only) and, in closed-loop runs, alerts
@@ -377,11 +384,11 @@ with a 95\% cluster bootstrap interval (seeds resampled within scenario,
 10{,}000 resamples), a scenario-stratified sign-flip permutation test, per-scenario
 differences, and win/tie/loss counts. Eleven comparisons are confirmatory, in three families, each fixed in its
 protocol before its runs and each with its own Holm correction. Family~1 has
-four tests: the degree-cap control, the comparison with the strongest existing
-method, the hybrid against that method, and the evidence condition. Their raw
+four tests: the degree-cap control, the comparison with the strongest method
+tested at the time (GraphSAGE), the hybrid against that method, and the evidence condition. Their raw
 (Holm-adjusted) sign-flip $p$-values are \RfRawCap{} (\RfHolmCap{}), \RfRawGnn{}
 (\RfHolmGnn{}), \RfRawHy{} (\RfHolmHy{}) and \RfRawNd{} (\RfHolmNd{}). Family~2
-has four tests: the GNN-inclusive pipeline against the strongest existing method,
+has four tests: the GNN-inclusive pipeline against the strongest tested method,
 the message-passing gate, leave-one-scenario-out and label efficiency
 (Section~\ref{sec:gnnpipe}). Family~3 has three tests: AnchorPipe against
 GraphSAGE, against the unguarded pipeline under shift, and non-inferiority to the
@@ -501,21 +508,35 @@ count against recall; both directions affect every method equally.
 \textbf{Learned components and generator labels.} The GNNs and every ring
 scorer are trained on labels from the same generator they are tested on, so
 their advantage measures how well they learn this generator's regularities.
-The GNN-inclusive pipeline's gain was designed after the comparison with
-existing methods had been seen. We tested it only under a separate protocol on
-fresh blocks, and its simplest form (SagePipe) was added by a protocol
-amendment after the ablations had been seen. All learned parts use
-transfer-size features, and their advantage disappears when benign amounts
-shift (Section~\ref{sec:gnnpipe}). The GNN runs on the whole graph each
-micro-batch, so the GNN-inclusive pipeline does not inherit the engine's
-incremental cost.
+The GNN-inclusive pipeline was designed after the comparison with existing
+methods had been seen. We tested it only under separate protocols on fresh
+blocks; its simplest form (SagePipe) and the fallback (AnchorPipe) were each
+specified after the previous design's results had been seen, then tested only on
+fresh blocks. All learned parts, including the fallback scorer, use transfer-size
+features. The stacked pipeline's advantage disappears when benign amounts shift,
+and the fallback recovers only the rule pipeline's level, not more.
 
-\textbf{Shift guard.} The guard detects shifts that change how many users the
-GNN flags. Its reference range comes from unlabelled streams of the same
-generator. A shift that moves the GNN's errors without changing its flag rate
-would pass unnoticed. A hub-size shift did not trigger it, because the GNN did
-not fail there. The guard was designed after the unguarded GNN pipeline had been
-seen to fail, and was then tested only on fresh blocks under its own protocol.
+\textbf{Comparators.} ``Strongest'' means strongest among the methods we tested.
+We added one fraud-specific GNN (BWGNN, re-implemented from the authors' code), but
+not multi-relation camouflage-aware models such as CARE-GNN or PC-GNN, and every
+GNN sees our twelve generic node features. A GNN with richer features could
+narrow the gap.
+
+\textbf{Cost.} AnchorPipe's GNN runs on the whole graph after every micro-batch,
+so the pipeline does not inherit the engine's incremental cost. At a
+10{,}000-account hub one stream took a median of about 240\,s against 11\,s for
+the incremental rule pipeline, measured in shared runs. Exact incremental GNN
+inference exists in the literature but is not used here.
+
+\textbf{Shift guard.} A guard fires only when its drift statistic leaves the
+range seen on unlabelled reference streams of the same generator. We tested six
+shifts; only the transfer-amount shift broke the GNN, and there a standard input
+test and our output-rate statistic did equally well. A shift that changes the
+GNN's errors without moving either statistic would pass unnoticed. In our tests
+such a shift (benign-sized ring transfers) did not make the GNN fail, but the
+per-stream oracle shows that a better switching rule exists. The fallback was
+designed after the unguarded pipeline had been seen to fail. A white-box attacker
+who knows the guard could stay inside its reference range; we did not test one.
 
 \textbf{Public data.} The public datasets we could obtain carry no device,
 card or IP links, so they cannot test hub-aware weighting at all; on them only
@@ -613,15 +634,17 @@ between batches.
 \section{Conclusion}
 In our simulator, keeping links through busy shared attributes helps a
 streaming ring detector only if no busy attribute can link two accounts on its
-own. A GNN added to the
-pipeline, with a ring scorer that reads its member probabilities, outperforms
-every existing method we tested in distribution. A label-free guard on the GNN's
-flag rate, which falls back to the evidence-based scorer, keeps that gain and
-removes the failure under amount shift (AnchorPipe: \AnTOneanchorF{} in distribution
-against \AnTOnegnnunscoredF{} for GraphSAGE, and \AnTTwoanchorF{} under overlapping
-amounts against \AnTTwognnunscoredF{}). The rule-based scorer it falls back on still
-uses transfer-size features. Under the strongest amount shift, the scored rules are
-slightly ahead. Within the same
+own: busy attributes are corroborating evidence, and capping them costs F1 even
+when they could not link a pair alone. Stacking a GNN's member probabilities on
+the pipeline's rule candidates beats every method we tested in distribution,
+including GraphSAGE and the fraud-specific BWGNN (AnchorPipe: \AnTOneanchorF{}
+against \AnTOnegnnunscoredF{} for GraphSAGE). The stacked pipeline fails under a
+transfer-amount shift. Falling back to the rule scorer when a drift test fires
+restores the rule pipeline's level (\AnTTwoanchorF{} against \AnTTwoproposedF{}).
+A standard input-drift test serves as the trigger as well as ours. The fallback
+scorer still uses transfer-size features, and under the strongest amount shift
+the scored rules are slightly ahead. Under other shifts we tested the GNN did not
+fail. Within the same
 pipeline, a degree cap costs \RfCapD{} ring F1 and most hub-hiding rings, a
 weight that lets one attribute suffice costs \RfNdOneD{}, and two weights that
 both meet the condition are equivalent within 0.05 F1. Shape still matters at the

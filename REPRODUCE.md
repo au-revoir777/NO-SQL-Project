@@ -175,3 +175,16 @@ $A reference; $A fused-train; $A tune; $A select; $A dev
 for b in T1 T2 T3 T4; do $A test $b; done
 python scripts/make_refine_tables.py        # Table VIII and macros
 ```
+
+## Round 4: BWGNN comparator and guard controls (docs/research/round4_protocol.md)
+
+```bash
+R="python -m fraudsim.experiments.round4"
+$R train-bwgnn; $R tune-bwgnn; $R select-bwgnn; $R test-bwgnn        # BWGNN vs AnchorPipe, seeds 6001-6020
+$R trigger-ref                                                        # trigger thresholds on hold-out seeds 201-205
+for b in S0 S1 S2 S3 S4 S5 S6; do $R guard $b; done                   # Table IX, seeds 6101-6165
+$R traces                                                             # per-batch trigger traces
+python scripts/make_refine_tables.py && python scripts/make_anchor_figures.py
+python scripts/check_reproduction.py                                  # reruns 30 recorded Windows-era rows
+sh scripts/make_anonymous_archive.sh anonymous_submission.zip         # double-blind archive
+```
