@@ -28,7 +28,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Circle, FancyArrowPatch, FancyBboxPatch, Rectangle
 
 OUT = Path(__file__).resolve().parents[1] / "docs" / "paper" / "figures"
-W, H = 1200, 440
+W, H = 1200, 480
 FONT = "Times New Roman"
 
 BENIGN = "#2e9e4f"  # green, as in the reference papers
@@ -38,6 +38,8 @@ HUB = "#6b7280"
 BLUE = "#8db4e2"
 LINE = "#1f2328"
 PANEL = "#5b8bd0"
+GNN = "#7b5cc4"  # GNN signal (AnchorPipe)
+GNN_SOFT = "#ece5f8"
 
 
 @dataclass
@@ -87,14 +89,14 @@ def vector(x, y, colors, cell=9):  # type: ignore[no-untyped-def]
 
 
 # ── Layout: five equal-height stage panels, flow left to right at MID ───────
-TOP, BOT, MID = 76, 352, 214
+TOP, BOT, MID = 76, 392, 214
 PANEL_FILL = "#f6f8fb"
 PANELS = [
     (20, 220, "(a) Seeded simulator"),
     (250, 470, "(b) Incremental region"),
     (500, 690, "(c) Hub-aware weighting"),
     (720, 890, "(d) Detect and track"),
-    (920, 1180, "(e) Score and explain"),
+    (920, 1180, "(e) Guarded scoring"),
 ]
 for x0, x1, title in PANELS:
     rect(x0, TOP, x1 - x0, BOT - TOP, fill=PANEL_FILL, stroke=PANEL, lw=1.0)
@@ -104,7 +106,7 @@ for x0, x1 in ((220, 250), (470, 500), (690, 720)):
 
 # ── Closed loop: alerts go back to the adaptive attacker ────────────────────
 text(600, 14, "Closed loop (feedback runs): alerts are returned to the attacker", 10.5, bold=True)
-edge((1160, TOP), (1160, 30), (10, 30), (10, 320), (36, 320), dashed=True)
+edge((1160, TOP), (1160, 30), (10, 30), (10, 349), (36, 349), dashed=True)
 
 # ── (a) Simulator ───────────────────────────────────────────────────────────
 text(120, 88, "scenario + seed", 9, italic=True)
@@ -144,8 +146,8 @@ for i in range(8):
 edge((186, MID), (220, MID), arrow=False, lw=1.2)
 rect(36, 252, 130, 36, "ground-truth\nledger (hidden)", fill="#fbe3d6", stroke=FRAUD, size=8.5)
 edge((44, 130), (28, 130), (28, 270), (36, 270), dashed=True)
-rect(36, 302, 168, 38, "adaptive attacker", fill="#fff4e0", stroke="#d29922", size=9)
-edge((186, 302), (186, 224))
+rect(36, 330, 168, 38, "adaptive attacker", fill="#fff4e0", stroke="#d29922", size=9)
+edge((186, 330), (186, 224))
 
 # ── (b) Graph store and dirty region ────────────────────────────────────────
 text(360, 90, "graph store", 9, italic=True)
@@ -184,81 +186,66 @@ text(595, 320, "peel dense cores", 8.5)
 
 # ── (d) Detectors, ensemble and tracker ─────────────────────────────────────
 for i, label in enumerate(("hub-aware", "money cycle", "smurfing")):
-    rect(736, 90 + i * 34, 130, 28, label, fill="#e3edf9", stroke=PANEL, size=9)
-    edge((866, 104 + i * 34), (878, 104 + i * 34), arrow=False, lw=0.8)
-rect(
-    736, 194, 130, 30, "baselines (timer)", fill="#ffffff", stroke="#9aa0a6", dashed=True, size=8.5
-)
-edge((878, 104), (878, 248), (810, 248), lw=0.8)
-node(801, 248, 9, "#ffffff", "+", stroke=LINE, size=12)
-edge((801, 224), (801, 239), dashed=True)
-text(846, 262, "ensemble", 8, italic=True)
-rect(
-    736,
-    280,
-    130,
-    56,
-    "ring tracker\nconfirm 2 hits\ndrop 3 misses",
-    fill="#ffffff",
-    stroke=LINE,
-    size=8.5,
-)
-edge((801, 257), (801, 280))
-edge((866, 308), (905, 308), (905, 140), (934, 140), lw=1.2)
+    rect(736, 88 + i * 30, 130, 24, label, fill="#e3edf9", stroke=PANEL, size=9)
+    edge((866, 100 + i * 30), (878, 100 + i * 30), arrow=False, lw=0.8)
+rect(736, 178, 130, 34, "GraphSAGE\n(whole graph)", fill=GNN_SOFT, stroke=GNN, size=8.5)
+edge((866, 190), (878, 190), arrow=False, lw=0.8)
+rect(736, 222, 130, 24, "baselines (timer)", fill="#ffffff", stroke="#9aa0a6", dashed=True, size=8.5)
+edge((878, 100), (878, 268), (810, 268), lw=0.8)
+node(801, 268, 9, "#ffffff", "+", stroke=LINE, size=12)
+edge((801, 246), (801, 259), dashed=True)
+text(846, 282, "ensemble", 8, italic=True)
+rect(736, 300, 130, 56, "ring tracker\nconfirm 2 hits\ndrop 3 misses", fill="#ffffff", stroke=LINE, size=8.5)
+edge((801, 277), (801, 300))
+edge((866, 328), (905, 328), (905, 122), (934, 122), lw=1.2)
+# GNN outputs leave (d): member probabilities to the features, flag rate to the guard
+edge((866, 204), (892, 204), (892, 236), (938, 236), lw=1.1, stroke=GNN)
 
-# ── (e) Scoring, explanations, outputs ──────────────────────────────────────
-text(948, 92, "ring features", 9, italic=True, align="left")
-vector(938, 104, [BLUE, BLUE, "#b6d7a8", "#b6d7a8", "#f9cb9c", "#f9cb9c", NEUTRAL, NEUTRAL])
-vector(950, 104, ["#c9d9ee", BLUE, "#b6d7a8", "#d9ead3", "#f9cb9c", "#fce5cd", NEUTRAL, "#d0d4d9"])
-edge((962, 140), (986, 140))
-rect(986, 116, 92, 48, "calibrated\nscorer", fill="#ffffff", stroke=LINE, size=8.5)
-edge((1078, 140), (1100, 140))
-rect(1100, 108, 16, 64, fill="#ffffff", stroke=LINE, rounded=False, lw=0.6)
-rect(1100, 128, 16, 44, fill=FRAUD, stroke="none", rounded=False)
-edge((1094, 136), (1124, 136), arrow=False, dashed=True, lw=0.8, stroke="#d1242f")
-text(1138, 136, "θa", 9, italic=True)
-text(1108, 186, "risk", 8.5)
-rect(
-    938,
-    214,
-    226,
-    44,
-    "explanation: contributions,\nevidence, counterfactual",
-    fill="#ffffff",
-    stroke=PANEL,
-    size=8.5,
-)
-edge((1032, 164), (1032, 214))
+# ── (e) Guarded scoring, explanations, outputs ──────────────────────────────
+text(940, 88, "ring features + GNN stats", 8.5, italic=True, align="left")
+vector(936, 98, [BLUE, BLUE, "#b6d7a8", "#b6d7a8", "#f9cb9c", "#f9cb9c", GNN, GNN], cell=7)
+vector(945, 98, ["#c9d9ee", BLUE, "#b6d7a8", "#d9ead3", "#f9cb9c", "#fce5cd", "#b9a6e3", "#b9a6e3"], cell=7)
+edge((954, 112), (964, 112))
+edge((954, 144), (964, 144))
+rect(964, 98, 104, 28, "GNN-aware\nscorer", fill=GNN_SOFT, stroke=GNN, size=7.5)
+rect(964, 130, 104, 28, "rule-based\nscorer", fill="#ffffff", stroke=LINE, size=7.5)
+node(1084, 128, 7, "#ffffff", "", stroke=LINE)
+edge((1068, 112), (1079, 123), arrow=False, lw=0.9)
+edge((1068, 144), (1079, 133), arrow=False, dashed=True, lw=0.9)
+edge((1091, 128), (1106, 128))
+rect(1106, 98, 16, 64, fill="#ffffff", stroke=LINE, rounded=False, lw=0.6)
+rect(1106, 118, 16, 44, fill=FRAUD, stroke="none", rounded=False)
+edge((1100, 126), (1130, 126), arrow=False, dashed=True, lw=0.8, stroke="#d1242f")
+text(1144, 126, "θa", 9, italic=True)
+text(1114, 174, "risk", 8.5)
+rect(938, 214, 226, 40, "shift guard: GNN flag rate > τ\n→ use the rule-based scorer",
+     fill="#ffffff", stroke=GNN, size=8)
+edge((1084, 214), (1084, 135), lw=1.0, stroke=GNN)
+text(1051, 266, "τ set on unlabelled reference streams", 7.2, italic=True)
+rect(938, 280, 214, 36, "explanation: contributions,\nevidence, counterfactual", fill="#ffffff", stroke=PANEL, size=8.5)
+edge((1122, 150), (1170, 150), (1170, 298), (1152, 298), lw=0.8)
 for x, w, label in ((932, 76, "dashboard"), (1014, 66, "audit log"), (1086, 80, "evaluation")):
-    rect(x, 292, w, 40, label, fill="#ffffff", stroke=LINE, size=8.5)
-    if label != "evaluation":
-        edge((x + w / 2, 258), (x + w / 2, 292))
-edge((1126, 258), (1126, 292))
+    rect(x, 336, w, 40, label, fill="#ffffff", stroke=LINE, size=8.5)
+    edge((x + w / 2, 316), (x + w / 2, 336))
 # labels reach only the evaluation
-edge((166, 270), (212, 270), (212, 372), (1170, 372), (1172, 312), (1166, 312), dashed=True)
-text(690, 384, "labels reach only the evaluation", 8.5, italic=True)
+edge((166, 270), (212, 270), (212, 412), (1172, 412), (1172, 356), (1166, 356), dashed=True)
+text(690, 424, "labels reach only the evaluation (and offline training)", 8.5, italic=True)
 
 # ── Legend ──────────────────────────────────────────────────────────────────
-ly = 420
-items = [
-    (BENIGN, "benign user"),
-    (FRAUD, "ring member"),
-    (NEUTRAL, "device / card / IP"),
-    (HUB, "busy hub"),
-]
-x = 60
-for color, label in items:
+ly = 462
+x = 30
+for color, label, step in ((BENIGN, "benign user", 140), (FRAUD, "ring member", 140),
+                           (NEUTRAL, "device / card / IP", 172), (HUB, "busy hub", 112)):
     node(x, ly, 7, color, stroke=LINE if color == NEUTRAL else "none")
-    text(x + 14, ly, label, 10, align="left")
-    x += 176
-edge((x, ly), (x + 34, ly))
-text(x + 42, ly, "data flow", 10, align="left")
-x += 150
-edge((x, ly), (x + 34, ly), dashed=True)
-text(x + 42, ly, "labels / feedback", 10, align="left")
-x += 205
+    text(x + 14, ly, label, 9.5, align="left")
+    x += step
+for label, kw, step in (("data flow", {}, 122), ("GNN signal", {"stroke": GNN, "lw": 1.1}, 138),
+                        ("labels / feedback", {"dashed": True}, 186)):
+    edge((x, ly), (x + 30, ly), **kw)
+    text(x + 37, ly, label, 9.5, align="left")
+    x += step
 rect(x, ly - 8, 22, 16, fill="none", stroke="#d1242f", dashed=True)
-text(x + 30, ly, "dirty region", 10, align="left")
+text(x + 30, ly, "dirty region", 9.5, align="left")
 
 
 # ── Writers ─────────────────────────────────────────────────────────────────
@@ -315,7 +302,9 @@ def write_drawio(path: Path, name: str = "architecture") -> None:
 
 
 def render(paths: list[Path]) -> None:
-    plt.rcParams["font.family"] = FONT
+    # Times New Roman, or a metric-compatible substitute where it is not installed.
+    plt.rcParams["font.family"] = "serif"
+    plt.rcParams["font.serif"] = [FONT, "Liberation Serif", "TeX Gyre Termes", "Nimbus Roman"]
     plt.rcParams["mathtext.fontset"] = "stix"
     scale = 7.16 / W  # inches per unit at full IEEE text width
     fig, ax = plt.subplots(figsize=(W * scale, H * scale))

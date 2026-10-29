@@ -327,10 +327,91 @@ def simulator_design() -> None:
     _save("simulator_design")
 
 
+def anchor_pipeline() -> None:
+    """AnchorPipe: how its parts are trained and calibrated, and how a ring is scored at run time.
+    Numbers are read from results/anchor/ (scorer metadata, guard reference, validation selection)."""
+    from fraudsim.experiments import evidgnn as eg
+
+    meta = dict(eg.load_fused(ROOT / "results/anchor/fused_anchor.joblib").meta)
+    ref = json.loads((ROOT / "results/anchor/guard_reference.json").read_text(encoding="utf-8"))
+    sel = json.loads((ROOT / "results/anchor/selected.json").read_text(encoding="utf-8"))["anchor"]
+    gnn, gsoft = A.GNN, A.GNN_SOFT
+    _reset(1200, 440)
+
+    A.text(600, 16, "Training and calibration (offline; labels only on training seeds)", 10.5, bold=True)
+    _stage_titles(
+        [250, 500, 750, 975],
+        [(126, "(a) GraphSAGE models"), (375, "(b) Out-of-fold rows"), (625, "(c) GNN-aware scorer"),
+         (862, "(d) Guard reference"), (1088, "(e) Validation")],
+        44, 240, 56,
+    )
+    # (a) fold models
+    A.rect(30, 78, 196, 38, "fold A: seeds 101–105", fill=gsoft, stroke=gnn, size=8.5)
+    A.rect(30, 126, 196, 38, "fold B: seeds 106–110", fill=gsoft, stroke=gnn, size=8.5)
+    A.rect(30, 174, 196, 40, "full: seeds 101–110\n(used at test time)", fill=gsoft, stroke=gnn, size=8.5)
+    # (b) out-of-fold scoring
+    A.rect(268, 78, 214, 50, "101–105 scored by GNN B\n106–110 scored by GNN A", stroke=LINE, size=8)
+    A.edge((226, 97), (250, 97), (250, 116), (268, 116))
+    A.edge((226, 145), (258, 145), (258, 92), (268, 92))
+    A.text(375, 146, "ring rows: 19 ring features", 8)
+    A.text(375, 162, "+ 3 GNN + 2 anchoring", 8)
+    vec = [BLUE, "#c9d9ee", "#b6d7a8", "#f9cb9c", NEUTRAL, gnn, gnn, "#b9a6e3"]
+    for i, col in enumerate(vec):
+        A.rect(319 + i * 14, 176, 12, 12, fill=col, stroke=LINE, rounded=False, lw=0.5)
+    A.text(375, 210, f"{meta['rows']:,} rows", 8)
+    A.text(375, 226, f"{meta['positives']:,} ring matches", 8)
+    A.edge((478, 103), (520, 103))
+    # (c) scorer
+    A.rect(522, 82, 206, 44, "logistic regression (70%)\n+ isotonic calibration (30%)", stroke=LINE, size=8)
+    A.rect(545, 150, 160, 34, "GNN-aware scorer", fill=gsoft, stroke=gnn, size=8.5)
+    A.edge((625, 126), (625, 150))
+    # (d) guard reference
+    A.rect(762, 78, 202, 56, "full GNN, unlabelled hold-out\nseeds 201–205 × 6 scenarios\n→ flag rate per batch",
+           stroke=LINE, size=7.5)
+    A.rect(785, 160, 156, 40, f"τ = q99.5 = {ref['tau']:.3f}\n(median {ref['q50']:.3f})", fill="#ffffff",
+           stroke=gnn, size=8.5)
+    A.edge((863, 134), (863, 160))
+    # (e) validation selection
+    A.rect(995, 78, 186, 50, "seeds 301–303 × 5\n25 settings (node × alert)", stroke=LINE, size=8)
+    A.rect(1010, 150, 156, 40, f"node {sel['node_threshold']}, θa {sel['alert']}\nval. F1 {sel['val_f1']:.3f}",
+           fill=SOFT, stroke=PANEL, size=8.5)
+    A.edge((1088, 128), (1088, 150))
+
+    # Run time
+    A.text(330, 272, "At run time (every micro-batch, test seeds)", 10.5, bold=True)
+    for x, w, lab, fill, stroke, size in (
+        (22, 124, "micro-batch\nof 50 events", "#ffffff", LINE, 8.5),
+        (170, 176, "detectors + GraphSAGE\n→ tracked rings", gsoft, gnn, 8),
+        (370, 140, "ring features\n+ GNN statistics", "#ffffff", LINE, 8.5),
+        (744, 160, "risk ≥ θa → alert\n+ explanation", "#ffffff", LINE, 8.5),
+    ):
+        A.rect(x, 300, w, 52, lab, fill=fill, stroke=stroke, size=size)
+    A.edge((146, 326), (170, 326))
+    A.edge((346, 326), (370, 326))
+    A.rect(552, 292, 150, 30, "GNN-aware scorer", fill=gsoft, stroke=gnn, size=8.5)
+    A.rect(552, 332, 150, 30, "rule-based scorer", fill="#ffffff", stroke=LINE, size=8.5)
+    A.edge((510, 326), (532, 326), (532, 307), (552, 307))
+    A.edge((532, 326), (532, 347), (552, 347), dashed=True)
+    A.edge((702, 307), (722, 307), (722, 326), (744, 326))
+    A.edge((702, 347), (722, 347), (722, 326), arrow=False, dashed=True)
+    A.rect(352, 384, 560, 32, "shift guard: GNN flag rate (5-batch median) > τ  →  use the rule-based scorer",
+           fill="#ffffff", stroke=gnn, size=8)
+    A.edge((627, 384), (627, 362), stroke=gnn, lw=1.1)
+    # offline artefacts feeding the run-time path
+    A.edge((625, 184), (625, 258), (600, 258), (600, 292), dashed=True)
+    A.text(560, 252, "model file", 8, italic=True)
+    A.edge((863, 200), (863, 230), (980, 230), (980, 400), (912, 400), dashed=True, stroke=gnn)
+    A.text(992, 380, "τ", 9, italic=True)
+    A.edge((1088, 190), (1088, 250), (824, 250), (824, 300), dashed=True)
+    A.text(905, 262, "θa, node threshold", 8, italic=True)
+    _save("anchor_pipeline")
+
+
 def main() -> None:
     A.OUT.mkdir(parents=True, exist_ok=True)
     training_pipeline()
     simulator_design()
+    anchor_pipeline()
 
 
 if __name__ == "__main__":

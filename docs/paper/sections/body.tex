@@ -167,9 +167,15 @@ event stream in micro-batches; labels go only to a ledger. (b) Each batch is
 written to the graph store and expanded to the bounded region it touched.
 (c) Shared attributes are weighted by their degree, so a busy hub counts for
 little and a rarely shared device for much. (d) Incremental detectors run on
-the region and a tracker confirms rings across batches. (e) Confirmed rings are
-scored, explained and alerted. Solid arrows: data flow; dashed arrows: labels
-(evaluation only) and, in closed-loop runs, alerts returned to the attacker.}
+the region, and a GraphSAGE classifier runs on the whole graph (AnchorPipe,
+Section~\ref{sec:anchor}). A tracker confirms rings across batches. (e) Confirmed
+rings are scored by a GNN-aware scorer that reads the members' GNN
+probabilities. A label-free shift guard switches to the rule-based scorer when
+the share of users the GNN flags leaves its reference range. Rings are then
+explained and alerted. Solid arrows: data flow; purple: GNN signals; dashed:
+labels (evaluation and offline training only) and, in closed-loop runs, alerts
+returned to the attacker. The shipped pipeline is this system without the GNN
+and the guard.}
 \label{fig:arch}
 \end{figure*}
 

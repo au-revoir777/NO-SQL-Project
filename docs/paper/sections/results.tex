@@ -273,7 +273,8 @@ accounts a stream takes a median 240\,s against 11\,s for the incremental
 pipeline.
 
 The result is a GNN-inclusive pipeline that outperforms every existing method
-on this benchmark when test data resemble training data. Its simplest form, plain
+on this benchmark when test data resemble training data (Fig.~\ref{fig:contrasts}
+summarises every paired difference behind these claims). Its simplest form, plain
 GraphSAGE plus the GNN-aware ring scorer, is as accurate as our gated design
 and more robust to hub size. The mechanism is the combination of rule-based candidate
 rings with a ring scorer that reads the GNN's member probabilities. Restricting
@@ -284,6 +285,30 @@ well as for the pairwise rule.
 \subsection{AnchorPipe: a GNN-inclusive pipeline that survives shift}
 \label{sec:anchor}
 \input{tables/tab8_anchor.tex}
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{\figpath/anchor_pipeline.pdf}
+\caption{AnchorPipe. Training and calibration: (a) GraphSAGE models trained on
+two halves of the training seeds and on all of them. (b) Each half's candidate
+rings are scored by the model trained on the other half (out of fold), giving
+rows of 19 ring features plus GNN statistics. (c) The GNN-aware scorer is fitted
+on these rows. (d) The guard threshold $\tau$ is the 99.5th percentile of the
+GNN's flag rate on unlabelled hold-out streams. (e) Node and alert thresholds
+are selected on validation seeds and committed before testing. At run time the
+guard decides, per micro-batch, which scorer the ring features go to. Numbers are
+read from \texttt{results/anchor/}.}
+\label{fig:anchorpipe}
+\end{figure*}
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{\figpath/fig7_anchor.pdf}
+\caption{(a) Ring F1 on the fresh AnchorPipe test blocks (mean and 95\% interval
+over streams). GraphSAGE's F1 is 0 under the amount shifts. (b) The guard's
+statistic on one \texttt{hub\_heavy} stream per condition: the share of active users
+GraphSAGE flags (median of the last five batches), against the threshold
+$\tau$ set on unlabelled hold-out streams.}
+\label{fig:anchor}
+\end{figure*}
 The GNN-inclusive pipeline wins in distribution and loses under shift. The
 rule-based pipeline is the reverse. \textbf{AnchorPipe} keeps both properties.
 It was specified in a separate protocol committed before any of its code ran
@@ -329,7 +354,11 @@ With 500- and 2{,}000-account hubs (T4, exploratory), the GNN does not fail and 
 guard stays silent. AnchorPipe has the highest median F1 (1.00 at both sizes,
 minimum 0.89).
 
-The ablations locate the gain. Without the guard, anchoring alone does not
+Fig.~\ref{fig:anchor}(b) shows why the guard separates the cases. In
+distribution GraphSAGE flags at most 14\% of active users in this stream. When benign
+amounts overlap ring amounts the share crosses $\tau$ after about 8 simulated
+seconds and reaches nearly everyone by 20, because its amount features place benign accounts outside the training
+range. The ablations locate the gain. Without the guard, anchoring alone does not
 repair the shift (T2: \AnTTwoanchoronlyF{}). Without the anchoring features, the
 guard alone gives the same result under shift (\AnTTwoguardonlyF{}); in
 distribution AnchorPipe minus guard-only is \AnTOneVsguardonlyD{} (CI
@@ -338,6 +367,16 @@ The shift guard is therefore the component that matters. The GNN's own output
 statistic, checked against unlabelled reference streams, tells the pipeline when
 to stop trusting it, and the label-free pairwise-evidence pipeline is what it
 falls back on.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{\figpath/fig8_contrasts.pdf}
+\caption{The paired differences behind the paper's claims (95\% cluster
+bootstrap over streams, scenario-weighted; seed blocks in parentheses or as in
+Table~\ref{tab:anchor}). Filled: confirmatory tests; hollow: exploratory. The
+shaded band is the $\pm0.05$ F1 equivalence margin.}
+\label{fig:contrasts}
+\end{figure}
 
 \subsection{RQ2: latency and scale}
 \input{tables/tab3_scale.tex}
