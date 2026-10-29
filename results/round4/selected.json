@@ -1,0 +1,8 @@
+{
+ "protocol": "docs/research/round4_protocol.md",
+ "bwgnn": {
+  "method": "bwgnn_0.95",
+  "val_f1": 0.8043,
+  "node_threshold": 0.95
+ }
+}

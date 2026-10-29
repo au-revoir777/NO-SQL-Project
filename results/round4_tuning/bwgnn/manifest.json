@@ -1,0 +1,515 @@
+{
+  "grids": [
+    {
+      "experiment": "round4_tuning/bwgnn",
+      "scenarios": [
+        "baseline",
+        "high_noise",
+        "hub_heavy",
+        "adversarial",
+        "drift"
+      ],
+      "scenario_hashes": {
+        "baseline": "8c6300432edfabdb",
+        "high_noise": "7f768d989b7d51e6",
+        "hub_heavy": "031690a6797d4592",
+        "adversarial": "e348c3eccc50e4bb",
+        "drift": "dbaf6281ea4c2b23"
+      },
+      "seeds": [
+        301,
+        302,
+        303
+      ],
+      "methods": [
+        {
+          "name": "bwgnn_0.1",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "gnn": {
+              "node_threshold": 0.1,
+              "model_path": "results/round4/bwgnn.pt",
+              "name": "BWGNN"
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "bwgnn_0.1",
+          "hash": "949a3c90323c3a42"
+        },
+        {
+          "name": "bwgnn_0.2",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "gnn": {
+              "node_threshold": 0.2,
+              "model_path": "results/round4/bwgnn.pt",
+              "name": "BWGNN"
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "bwgnn_0.2",
+          "hash": "a17a2a6a7bbfc5a1"
+        },
+        {
+          "name": "bwgnn_0.3",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "gnn": {
+              "node_threshold": 0.3,
+              "model_path": "results/round4/bwgnn.pt",
+              "name": "BWGNN"
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "bwgnn_0.3",
+          "hash": "66e8c5eda0e388e7"
+        },
+        {
+          "name": "bwgnn_0.4",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "gnn": {
+              "node_threshold": 0.4,
+              "model_path": "results/round4/bwgnn.pt",
+              "name": "BWGNN"
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "bwgnn_0.4",
+          "hash": "cc9259a364158552"
+        },
+        {
+          "name": "bwgnn_0.5",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "gnn": {
+              "node_threshold": 0.5,
+              "model_path": "results/round4/bwgnn.pt",
+              "name": "BWGNN"
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "bwgnn_0.5",
+          "hash": "de5aac662428b411"
+        },
+        {
+          "name": "bwgnn_0.6",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "gnn": {
+              "node_threshold": 0.6,
+              "model_path": "results/round4/bwgnn.pt",
+              "name": "BWGNN"
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "bwgnn_0.6",
+          "hash": "5574752009c53b0e"
+        },
+        {
+          "name": "bwgnn_0.7",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "gnn": {
+              "node_threshold": 0.7,
+              "model_path": "results/round4/bwgnn.pt",
+              "name": "BWGNN"
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "bwgnn_0.7",
+          "hash": "800151f082f76b12"
+        },
+        {
+          "name": "bwgnn_0.8",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "gnn": {
+              "node_threshold": 0.8,
+              "model_path": "results/round4/bwgnn.pt",
+              "name": "BWGNN"
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "bwgnn_0.8",
+          "hash": "b2f239316ecd1f31"
+        },
+        {
+          "name": "bwgnn_0.9",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "gnn": {
+              "node_threshold": 0.9,
+              "model_path": "results/round4/bwgnn.pt",
+              "name": "BWGNN"
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "bwgnn_0.9",
+          "hash": "328c7755b7db9a9b"
+        },
+        {
+          "name": "bwgnn_0.95",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "gnn": {
+              "node_threshold": 0.95,
+              "model_path": "results/round4/bwgnn.pt",
+              "name": "BWGNN"
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "bwgnn_0.95",
+          "hash": "64f2805998ec3416"
+        },
+        {
+          "name": "bwgnn_0.97",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "gnn": {
+              "node_threshold": 0.97,
+              "model_path": "results/round4/bwgnn.pt",
+              "name": "BWGNN"
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "bwgnn_0.97",
+          "hash": "e3b1c40cc2ea62f3"
+        },
+        {
+          "name": "bwgnn_0.98",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "gnn": {
+              "node_threshold": 0.98,
+              "model_path": "results/round4/bwgnn.pt",
+              "name": "BWGNN"
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "bwgnn_0.98",
+          "hash": "d01832ca451da115"
+        },
+        {
+          "name": "bwgnn_0.99",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "gnn": {
+              "node_threshold": 0.99,
+              "model_path": "results/round4/bwgnn.pt",
+              "name": "BWGNN"
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "bwgnn_0.99",
+          "hash": "fbdade6ff089990a"
+        },
+        {
+          "name": "bwgnn_0.995",
+          "overrides": {
+            "static_cypher": {
+              "enabled": false
+            },
+            "hub_aware": {
+              "enabled": false
+            },
+            "temporal_cycle": {
+              "enabled": false
+            },
+            "smurfing": {
+              "enabled": false
+            },
+            "community": {
+              "enabled": false
+            },
+            "gnn": {
+              "node_threshold": 0.995,
+              "model_path": "results/round4/bwgnn.pt",
+              "name": "BWGNN"
+            }
+          },
+          "engine": {
+            "incremental": false
+          },
+          "ensemble": {},
+          "scored": false,
+          "alert_threshold": null,
+          "label": "bwgnn_0.995",
+          "hash": "1ef21d8008aadab3"
+        }
+      ],
+      "scenario_overrides": {},
+      "model": {
+        "path": "models/ring_scorer_lr.joblib",
+        "sha256": "0e33d430f7bec829f7ed34fbfc8babe005666c427b3397190635a9b93a2f1537"
+      },
+      "status": "complete",
+      "error": null,
+      "started_at": "2026-10-29T15:53:32.587252+00:00",
+      "ended_at": "2026-10-29T15:54:42.519153+00:00",
+      "wall_s": 69.932,
+      "rows": 210,
+      "git_commit": "795d1c9f5e78871d5b775abcdff98f0e2c8b1a70",
+      "git_dirty": false,
+      "python": "3.11.17",
+      "platform": "Linux-6.18.44-fc-v185-x86_64-with-glibc2.39",
+      "cpu_count": 2,
+      "libraries": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.16.2",
+        "scikit-learn": "1.7.2",
+        "networkx": "3.5",
+        "neo4j": "6.4.1",
+        "redis": "7.2.0"
+      }
+    }
+  ]
+}
