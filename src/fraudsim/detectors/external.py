@@ -274,6 +274,66 @@ def make_sage(hidden: int = 64, dropout: float = 0.2):
     return Sage()
 
 
+# Callables hook(detector, view, scores) run after each GraphSAGE scoring call; used only by the
+# round-4 guard controls to record drift statistics. Empty in every other experiment.
+DETECT_HOOKS: list = []
+
+
+def _beta_thetas(order: int) -> list[list[float]]:
+    """Coefficients of the Beta-wavelet polynomials in L (BWGNN, Tang et al. 2022, calculate_theta2)."""
+    from math import comb
+
+    from scipy.special import beta
+
+    out = []
+    for i in range(order + 1):
+        # (x/2)^i (1 - x/2)^(order-i) / B(i+1, order+1-i), expanded in powers of x
+        coef = [0.0] * (order + 1)
+        for j in range(order - i + 1):
+            c = comb(order - i, j) * ((-0.5) ** j) * (0.5 ** i)
+            coef[i + j] += c
+        b = beta(i + 1, order + 1 - i)
+        out.append([float(c / b) for c in coef])
+    return out
+
+
+def make_bwgnn(hidden: int = 64, order: int = 2, **_):
+    """BWGNN (homogeneous), following the authors' BWGNN.py: MLP, C+1 Beta-wavelet filters on the
+    symmetric normalised Laplacian, concatenation, MLP. Reference re-implementation without DGL."""
+    import torch
+    from torch import nn
+
+    thetas = _beta_thetas(order)
+
+    class BWGNN(nn.Module):
+        def __init__(self) -> None:
+            super().__init__()
+            self.l1, self.l2 = nn.Linear(N_FEATURES, hidden), nn.Linear(hidden, hidden)
+            self.l3, self.l4 = nn.Linear(hidden * len(thetas), hidden), nn.Linear(hidden, 1)
+
+        @staticmethod
+        def lap(h, ei, dinv):
+            # L h = h - D^-1/2 A D^-1/2 h  (ei holds both directions of every undirected edge)
+            m = torch.zeros_like(h)
+            if ei.shape[1]:
+                m.index_add_(0, ei[1], (h * dinv)[ei[0]])
+            return h - m * dinv
+
+        def forward(self, x, ei):
+            n = x.shape[0]
+            deg = torch.bincount(ei[1], minlength=n).clamp(min=1).float() if ei.shape[1] else torch.ones(n)
+            dinv = deg.pow(-0.5).unsqueeze(1)
+            h = torch.relu(self.l2(torch.relu(self.l1(x))))
+            powers = [h]
+            for _ in range(order):
+                powers.append(self.lap(powers[-1], ei, dinv))
+            outs = [sum(t * p for t, p in zip(th, powers, strict=True)) for th in thetas]
+            h = torch.relu(self.l3(torch.cat(outs, -1)))
+            return self.l4(h).squeeze(-1)
+
+    return BWGNN()
+
+
 @dataclass(slots=True)
 class GnnConfig(DetectorConfig):
     detector_type: DetectorType = DetectorType.COMMUNITY
@@ -308,7 +368,9 @@ class GnnDetector(BaseDetector):
             from fraudsim.experiments.harness import ROOT
 
             state = torch.load(ROOT / self.cfg.model_path, weights_only=False)
-            m = make_sage(**state["hparams"])
+            hp = dict(state["hparams"])
+            arch = hp.pop("arch", "sage")
+            m = make_bwgnn(**hp) if arch == "bwgnn" else make_sage(**hp)
             m.load_state_dict(state["state_dict"])
             m.eval()
             self._model = (m, state["mean"], state["std"])
@@ -348,6 +410,8 @@ class GnnDetector(BaseDetector):
         if scores:  # share of active users at p >= 0.5, per scoring call (anchor_protocol.md guard)
             hist = self.__dict__.setdefault("flag_history", [])
             hist.append(sum(1 for p in scores.values() if p >= 0.5) / len(scores))
+        for hook in DETECT_HOOKS:  # extra trigger statistics (round4_protocol.md, I3); empty by default
+            hook(self, view, scores)
         flagged = {u for u, p in scores.items() if p >= cfg.node_threshold}
         if len(flagged) < cfg.min_ring_size:
             return []
